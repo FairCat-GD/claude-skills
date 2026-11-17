@@ -17,8 +17,9 @@ No release: the skill's change is released as 1.0.1 by Session 2 (`SPEC.md` deci
 ## State you need that is not in the specs
 
 - **Round 1 is a home for many skills**: Session 0 (the intake) is done; Sessions 1–8 remain.
-- **Session 0's commit is local, not pushed.** `origin/main` holds everything through
-  `b0b5b51`, the skill as first published.
+- **Session 0's commit and its review commit are pushed.** `origin/main` holds everything
+  through the review commit, `review: rules that contradicted Session 1's scope, …`; no local
+  commit waits for a push. The push published documents only: nothing new is installable.
 - **What exists:** the docs Session 0 wrote, `CLAUDE.md`, `.gitignore`, the licence, the README
   as first published, and the skill at `travel-itinerary-builder/` at the root. No script, no
   `pyproject.toml`, no test.

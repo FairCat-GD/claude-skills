@@ -21,7 +21,9 @@ skill in one marketplace, and its products are mostly prose. Copied from the kit
 deviates in these places, decided at the round 1 intake:
 - **Versions are per skill.** Each plugin carries its own version in its `plugin.json` and its
   own `CHANGELOG.md`. A session cuts a version only for a skill whose shipped files it changed;
-  a session that changes no skill cuts none. Where this file says "the manifest" or
+  a session that changes no skill cuts none, and nor does a change to a skill with no
+  `plugin.json` yet, which the session that creates its manifest releases. Where this file
+  says "the manifest" or
   "`CHANGELOG.md`", read the plugin's.
 - **`verify` is tailored to skills:** the stages `skills`, `plugins`, `format`, `lint`,
   `tests` and `hygiene`, with no type-check stage, since the only code is a few small scripts.

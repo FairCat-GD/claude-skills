@@ -30,13 +30,15 @@ them) and anything still open moves to `docs/BACKLOG.md`. **State lives in
 `docs/next-session-prompt.md`**, rewritten by every session as its last act.
 
 1. `uv run scripts/verify.py` (skills + plugins + format + lint + tests + hygiene) must be green
-   before you commit, docs-only commits included. Run a skill's evals only when your block names
+   before you commit, docs-only commits included. Session 1 builds the last four; `skills` and
+   `plugins` exist from Session 2. Run a skill's evals only when your block names
    them; expected results are in ARCHITECTURE.md's baseline table.
 2. Falsify any new check before trusting it: break the assertion, watch it fail at its own
    step, restore it.
 3. A change to a skill's shipped files gets a line in that plugin's `CHANGELOG.md` and a version
    bump, `major.minor.fix`, in its `plugin.json` and its `SKILL.md` `metadata.version`. A
-   session that changes no skill cuts no version.
+   session that changes no skill cuts no version. A skill with no `plugin.json` yet cuts none
+   either: the session that creates its manifest releases the change.
 4. If a decision is genuinely underdetermined, stop and ask rather than guessing — a guess
    becomes load-bearing for everything after it.
 5. Comments state the present: why the code is shaped this way now. No session ids, no
@@ -93,7 +95,7 @@ rest of this list.
 
 | Command | Does |
 |---|---|
-| `uv run scripts/verify.py [stage …] [--message <draft>]` | The gate: the named stages, or all six, then a summary. Filled in by Session 1. |
+| `uv run scripts/verify.py [stage …] [--message <draft>]` | The gate: the named stages, or all of them, then a summary. Filled in by Session 1. |
 | `uv run scripts/verify.py hygiene --all` | Hygiene's full scan, on demand; it also runs by itself when the term list or the stage changes |
 
 Filled in further by Sessions 1, 2 and 5. No test reads the owner's term list or touches the

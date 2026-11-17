@@ -12,7 +12,7 @@ Versions are per skill (`SPEC.md` decision 3): the column names the skill a sess
 
 | Session | Scope | Decisions | Version |
 |---|---|---|---|
-| 1 | The scaffold: `verify` with `format`, `lint`, `tests` and `hygiene`; the hygiene stage; the itinerary skill's examples replaced (F1) | 5, 6, 12, 13, 14, 27; *Stack and pins*, *verify*, *The hygiene stage* | — |
+| 1 | The scaffold: `verify` with `format`, `lint`, `tests` and `hygiene`; the hygiene stage; the itinerary skill's examples replaced (F1) | 5, 6, 12, 13, 14, 26–29; *Stack and pins*, *verify*, *The hygiene stage* | — |
 | 2 | The restructure: the marketplace, the itinerary plugin, the `skills` and `plugins` stages (F2) | 1, 3, 10, 17, 18, 19, 28; *Layout and boundaries*, *The contract between the layers*, *Packaging* | travel-itinerary-builder **1.0.1** |
 | 3 | The itinerary fixes: F3–F21 | 8, 9, 18 | travel-itinerary-builder **1.1.0** |
 | 4 | crux-finder, the skill, with a thin slice to Claude Code and claude.ai (build order 1–2) | 1, 3, 10, 19, 21, 25; *crux-finder* | crux-finder **0.1.0** |
@@ -43,7 +43,8 @@ checked out at `~/Documents/GitHub Projects/krita-art-mcp`: `scripts/hygiene.py`
 - **`verify`** (`ARCHITECTURE.md`, *verify*): `scripts/verify.py` with the stages `format`,
   `lint`, `tests` and `hygiene`, each failing on its own and runnable alone by name, then a
   summary; `--message <draft>` passes the draft to `hygiene`. The `skills` and `plugins` stages
-  are Session 2's.
+  are Session 2's. Every tool a stage runs skips `.claude/worktrees/` at the root (*Day one*);
+  pytest does not read `.gitignore`, so it is told.
 - **The hygiene stage** (decision 13; `ARCHITECTURE.md`, *The hygiene stage*), from the design
   below.
   - **What the port covers:** the source checks the term list against files, paths and messages,
@@ -296,10 +297,13 @@ Copied verbatim from the kit's `KICKOFF.md`. What the stage checks and why is
   marketplace, its `CHANGELOG.md` `[0.1.0]`.
 - **The `skills` stage's crux-finder row:** under 300 lines, and no `scripts/` folder
   (invariant 4).
+- **The published names** (invariant 8): `crux-finder` added to the `plugins` stage's list.
 - **The thin slice** (PDD B, *Build order* 2; decision 25):
-  - `claude plugin marketplace add ./`, `claude plugin install crux-finder@faircat-skills`, and
-    one run on a hand-written input in a fresh session;
-  - one headless run, `claude -p` with `--plugin-dir plugins/crux-finder`, on the same input;
+  - first, one headless run, `claude -p` with `--plugin-dir` and the plugin's absolute path,
+    started from an empty temporary folder before anything is installed, so it loads only that
+    copy and not this repository's `CLAUDE.md`;
+  - then `claude plugin marketplace add ./`, `claude plugin install crux-finder@faircat-skills`,
+    and one run on the same hand-written input in a fresh session;
   - the owner zips `plugins/crux-finder/skills/crux-finder/`, uploads it to claude.ai as a
     custom skill and runs it once on the same input.
 
