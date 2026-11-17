@@ -1,0 +1,42 @@
+# Backlog
+
+Work that has been named but belongs to no session. Each item goes through an intake before it
+runs (a `docs/spec/FEATURE-*.md` with the request verbatim and the decisions resolved, then a
+block in `docs/spec/SESSIONS.md`; see `docs/DEVELOPMENT-WORKFLOW.md`). When an item is picked
+up, it moves out of this file.
+
+## Deferred
+
+- **crux-finder: live moderation.** Running during a live dispute rather than on a finished
+  one. Left out at the round 1 intake (PDD B, *Scope*).
+- **crux-finder: any UI.** Left out at the round 1 intake (PDD B, *Scope*).
+- **crux-finder: deciding who is right.** Out of scope by design, and also a guardrail; left out
+  at the round 1 intake (PDD B, *Scope*).
+- **Running either skill on Codex or another agent.** Their install steps are documented; no
+  session runs them. Left out at the round 1 intake.
+
+## Not yet checked by hand
+
+Checks that need a person at the machine. Each has an automated check covering most of it;
+these are the parts only a person can see.
+
+## Directions
+
+None yet.
+
+## Decided against
+
+- CI: `verify` is the gate, run before every commit (round 1 intake).
+- A type-check stage: the scripts are small; ruff and the tests cover them (round 1 intake).
+- crux-finder in a repository of its own: every skill lives here (round 1 intake).
+- One plugin holding every skill: each skill installs on its own (round 1 intake).
+- Renaming the GitHub account: install commands embed the owner, and `FairCat-GD` stays
+  (round 1 intake).
+- A repo-wide `docs/USER-GUIDE.md`: each plugin's README is its user guide (round 1 intake).
+- A separate docs-only command: `verify` takes seconds (round 1 intake).
+- Architecture-review sessions: the round's last session reads `ARCHITECTURE.md` cold, which
+  covers a codebase this small (round 1 intake).
+- Taking the itinerary skill's example city off the owner's term list, or a per-repository
+  hygiene exception for it: the skill's examples change instead (round 1 intake).
+- Moving the eval tooling's floor off Python 3.10: it is PDD B's floor, and running on it is
+  what proves it. Raised by the plan review; the owner may revisit it.

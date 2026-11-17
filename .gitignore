@@ -1,0 +1,22 @@
+# OS, editors, merges
+.DS_Store
+Thumbs.db
+*.swp
+*~
+*.orig
+*.rej
+
+# Local secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Parallel parts' checkouts, at the root only
+/.claude/worktrees/
