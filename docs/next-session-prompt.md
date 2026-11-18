@@ -1,46 +1,53 @@
-Read `SPEC.md` decisions 5, 6, 12, 13, 14, 26–29; `REVIEW-2026-11-17.md` F1;
-`ARCHITECTURE.md` invariant 9, *Stack and pins*, *Layout and boundaries*, *verify*, *The
-hygiene stage*, *Testing strategy*; `DEVELOPMENT-WORKFLOW.md` *Day one* and *A clean
-repository*; the port's source in the owner's public repository `FairCat-GD/krita-art-mcp`,
-checked out at `~/Documents/GitHub Projects/krita-art-mcp`: `scripts/hygiene.py`,
-`tests/test_hygiene.py`, and `scripts/verify.py` for its shape only. Then CLAUDE.md, *The
-session cycle* in docs/DEVELOPMENT-WORKFLOW.md, docs/ARCHITECTURE.md's overview, invariants and
-baseline, docs/spec/SESSIONS.md's header and your block, then this file, and do Session 1: the
-scaffold. 1 covers:
-- the toolchain: `pyproject.toml`, `uv.lock`, `.python-version`;
-- `verify` with the stages `format`, `lint`, `tests` and `hygiene`;
-- the hygiene stage: the ported part, and the rest of the kit's design;
-- the itinerary skill's seven example lines replaced (F1), with the owner's approval.
+Read `SPEC.md` decisions 1, 3, 10, 17, 18, 19, 25, 28, 29; `REVIEW-2026-11-17.md` F2;
+`PDD.md` B, *Repo structure* and *Distribution*; `ARCHITECTURE.md` invariants 1–3 and 8,
+*Context*, *Layout and boundaries*, *The contract between the layers*, *verify*,
+*travel-itinerary-builder*, *Packaging*, *Deliberate decisions*. Then CLAUDE.md, *The session
+cycle* in docs/DEVELOPMENT-WORKFLOW.md, docs/ARCHITECTURE.md's overview, invariants and baseline,
+docs/spec/SESSIONS.md's header, your block and the previous block's done-note, then this file,
+and do Session 2: the restructure. 2 covers:
+- the marketplace, `.claude-plugin/marketplace.json`;
+- the itinerary plugin: the move, its `plugin.json`, and the frontmatter (F2);
+- the `skills` and `plugins` stages;
+- the plugin's README and changelog, and the root README.
 
-No release: the skill's change is released as 1.0.1 by Session 2 (`SPEC.md` decision 18).
+Release travel-itinerary-builder 1.0.1.
 
 ## State you need that is not in the specs
 
-- **Round 1 is a home for many skills**: Session 0 (the intake) is done; Sessions 1–8 remain.
-- **Session 0's commit and its review commit are pushed.** `origin/main` holds everything
-  through the review commit, `review: rules that contradicted Session 1's scope, …`; no local
-  commit waits for a push. The push published documents only: nothing new is installable.
-- **What exists:** the docs Session 0 wrote, `CLAUDE.md`, `.gitignore`, the licence, the README
-  as first published, and the skill at `travel-itinerary-builder/` at the root. No script, no
-  `pyproject.toml`, no test.
-- **What the source of the port is, measured at intake:** 239 lines in `scripts/hygiene.py`,
-  standard library only, running on Python 3.10; `tests/test_hygiene.py` is pytest. It checks
-  terms and attribution only (see the block). Its `scripts/verify.py` imports `tomllib`.
-- **F1 is one word on 7 lines,** listed by file and line in `REVIEW-2026-11-17.md`. The same word
-  is in the three pushed commits, so the first full scan ends with a count of hits in pushed
-  history; that is expected, and the done-note records the count.
-- **Decisions written down nowhere else:**
-  - Session 0's plan had one adversarial review, on the strongest model; what it changed is in
-    Session 0's commit message, and what it rejected is in `docs/BACKLOG.md`'s *Decided
-    against*.
-  - The workflow file was copied from the kit at `02fb1d99f56ff414ec88cf7b1789328933e355d0`.
-  - The owner's attribution settings were confirmed off at intake.
-- **Baseline:** none yet; Session 1 writes the first, from its first green `verify`.
-- **Not done:** nothing is built; every Built part of `ARCHITECTURE.md` says "Not yet".
+- **Round 1 is a home for many skills**: Sessions 0 and 1 are done; Sessions 2–8 remain.
+- **Session 1 is committed locally, not pushed.** `origin/main` holds everything through
+  `review: rules that contradicted Session 1's scope, …`.
+- **What Session 1 left that Session 2 builds on:**
+  - `scripts/verify.py`'s `STAGES` maps each stage name to a function that returns the commands
+    it runs, each a list of arguments run from the root. `skills` and `plugins` go ahead of
+    `format`. `tests/test_verify.py`'s order test lists the stages, so it changes with them.
+  - `pyproject.toml` has no runtime dependencies. The Agent Skills validator stays out of it: it
+    runs through `uvx`, pinned to a commit, on Python 3.11 or newer.
+  - The hygiene stage keeps its stamp at `.git/hygiene-scanned`. A change to
+    `scripts/hygiene.py` or to the term list brings one full scan.
+  - The move carries Session 1's change to the skill: the seven F1 lines now use Lisbon
+    (`SKILL.md:89`, `:138`, `:189`; `references/location-block-template.md:37`, `:55`;
+    `references/research-playbook.md:61`, `:68`). The change is unreleased. Per decision 18,
+    1.0.1's changelog entry carries it, written for the person using the skill.
+- **What the spec said that turned out wrong or harder:**
+  - Block 1 expected F1's word to be counted in pushed history. The full scan reads pushed
+    messages, and the word is in none of them, so the count is 0 (amended at plan time, with the
+    owner). The word remains in file versions stored in 3 pushed commits, which no scan reads.
+  - ruff 0.17's default also formats the Python code blocks inside Markdown. `include` limits
+    ruff to Python files and `pyproject.toml`, so the skill's Markdown stays as written.
+  - uv refuses a `[project]` table without `version`, so `pyproject.toml` has `0.0.0`, which
+    nothing reads.
+- **Baseline** (ARCHITECTURE's table): `verify` green with 4 stages; 49 unit tests passed, 0
+  skipped; `hygiene --all` green, with 0 hits in pushed history. Session 2 adds two stages and
+  their tests.
+- **Not done:** nothing from block 1.
 
 ## Watch for
 
-- **This machine's own `python3` is 3.9.** Use `uv run`; uv has 3.10 and 3.12 installed.
-- **Never print the F1 word.** Name its places by file and line, in chat and in the done-note.
-- **Propose the replacement city before writing anything,** each of the seven lines in the
-  skill's voice, checked against the term list first.
+- **`references/location-block-template.md:49` still writes `UAH` into the snack template.**
+  That is F12, which belongs to Session 3. Session 2 changes no line of the skill beyond F2.
+- **`references/output-formats.md` holds a Python code block** that ruff would reformat if its
+  `include` widened. Keep ruff on Python files.
+- **A new check needs its own failing case at its own stage.** For `skills` and `plugins`,
+  copy the file aside, break it, watch only that stage fail, then copy it back. Never use
+  `git checkout`.

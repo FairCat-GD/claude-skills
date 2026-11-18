@@ -1,0 +1,5 @@
+# Fictional words for the hygiene tests, one per line: an ASCII probe, a Cyrillic word, and
+# a Devanagari word with combining marks. None is anyone's private term.
+zqxhygieneprobe
+йоквыщ
+झिफोरु

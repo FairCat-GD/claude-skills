@@ -34,7 +34,7 @@ Same idea, with a Rating line added. Drop "Booking" if walk-in.
 
 ## Snack/drink stop — optional mini-block
 
-Inserted *between* anchor blocks when a small, characteristic on-route bite or sip would genuinely add to the day. Examples: the Ladurée counter on the Champs-Élysées; *balık-ekmek* boats by Galata Bridge in Istanbul; a Pyana Vyshnya kiosk in Lviv; a granita at a *bar* in Palermo.
+Inserted *between* anchor blocks when a small, characteristic on-route bite or sip would genuinely add to the day. Examples: the Ladurée counter on the Champs-Élysées; *balık-ekmek* boats by Galata Bridge in Istanbul; a *ginjinha* shot off Rossio in Lisbon; a granita at a *bar* in Palermo.
 
 **Three rules — all must hold:**
 1. **On-route** — ≤2 min off the line of travel between two anchor blocks.
@@ -52,7 +52,7 @@ Visual treatment: no order number and **no marker glyph** — the tinted backgro
 ### Worked example — snack stop
 
 ```
-> **Pyana Vyshnya kiosk** — *Lviv's iconic cherry-vodka shot, sold from corner kiosks in carved wood stalls since 1900. One shot, one cherry left in the glass, gone in fifteen seconds. The one on Soborna Square is the original.* (Open 11:00–23:00; ~80 UAH a shot)
+> **A Ginjinha** — *Lisbon's sour-cherry liqueur, poured at one narrow counter off Rossio since 1840. One shot, one cherry in the cup if you ask, drunk standing in Largo de São Domingos — gone in fifteen seconds.* (Open 09:00–22:00; ~€1.50 a shot)
 ```
 
 ## Worked example — sightseeing

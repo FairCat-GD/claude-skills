@@ -30,8 +30,8 @@ them) and anything still open moves to `docs/BACKLOG.md`. **State lives in
 `docs/next-session-prompt.md`**, rewritten by every session as its last act.
 
 1. `uv run scripts/verify.py` (skills + plugins + format + lint + tests + hygiene) must be green
-   before you commit, docs-only commits included. Session 1 builds the last four; `skills` and
-   `plugins` exist from Session 2. Run a skill's evals only when your block names
+   before you commit, docs-only commits included. Today it runs the last four; Session 2 adds
+   `skills` and `plugins`. Run a skill's evals only when your block names
    them; expected results are in ARCHITECTURE.md's baseline table.
 2. Falsify any new check before trusting it: break the assertion, watch it fail at its own
    step, restore it.
@@ -95,11 +95,14 @@ rest of this list.
 
 | Command | Does |
 |---|---|
-| `uv run scripts/verify.py [stage …] [--message <draft>]` | The gate: the named stages, or all of them, then a summary. Filled in by Session 1. |
-| `uv run scripts/verify.py hygiene --all` | Hygiene's full scan, on demand; it also runs by itself when the term list or the stage changes |
+| `uv run scripts/verify.py [stage …] [--message <draft>] [--all]` | The gate: the named stages (`format`, `lint`, `tests`, `hygiene`), or all of them in that order, each run even after one fails, then a summary. `--message` and `--all` go to `hygiene`, which must be among the stages run |
+| `uv run scripts/verify.py --message "$(git rev-parse --git-dir)/COMMIT_DRAFT"` | The last act before each commit: every stage, with the drafted message checked by `hygiene` |
+| `uv run scripts/verify.py hygiene --all` | Hygiene's full scan, on demand; it also runs by itself when the term list or the stage changes, or in a checkout with no stamp |
+| `uv run ruff format .` and `uv run ruff check --fix .` | Apply what `format` checks, and the fixable part of what `lint` checks |
+| `uv run pytest tests/test_hygiene.py -k <name>` | One test file, or the tests whose names match |
 
-Filled in further by Sessions 1, 2 and 5. No test reads the owner's term list or touches the
-real hygiene stamp, `results/` or `cases/`.
+Filled in further by Sessions 2 and 5. No test reads the owner's term list or touches the real
+hygiene stamp, `results/` or `cases/`.
 
 **Exclusive resources:** the eval runner (it writes `results/` and spends real model runs) and
 the owner's claude.ai account. A parallel part never runs them; the session's integration does.

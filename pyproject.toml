@@ -1,0 +1,39 @@
+[project]
+name = "claude-skills"
+# uv requires a version field; nothing reads this one. Each skill's version is set in its
+# plugin's plugin.json.
+version = "0.0.0"
+description = "A marketplace of Agent Skills, and the tooling that checks them"
+requires-python = ">=3.10"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "pytest==9.2.0",
+    "ruff==0.17.5",
+]
+
+[tool.uv]
+# Not a Python package: uv installs the development tools and never builds the repository.
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["scripts", "tests"]
+# Python only: ruff's default also formats the code blocks inside Markdown, and a skill's
+# Markdown ships exactly as written.
+include = ["*.py", "**/pyproject.toml"]
+# A part's checkout lives here; the pattern is relative to this file, so a part's own run
+# inside such a checkout still reads its own files.
+extend-exclude = [".claude/worktrees"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "RUF"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["scripts"]
+# pytest does not read .gitignore, so it is told to skip a part's checkout; verify runs it
+# from the repository root, which this relative path is anchored to.
+addopts = "--ignore=.claude/worktrees"

@@ -166,6 +166,87 @@ Copied verbatim from the kit's `KICKOFF.md`. What the stage checks and why is
 - **The first full scan reads the pushed commits too.** F1's word is in them; that is a counted
   hit on the last line, not a failure, and the done-note records the count for the owner.
 
+**Done (2026-11-18; no version cut).**
+- **Decided with the user:**
+  - **The city and the seven lines** (*Ask at the start*): Lisbon, already the city of the
+    skill's sightseeing and restaurant worked examples, with the seven lines as proposed. Every
+    word was checked against the term list before it was shown, and every fact was checked on the
+    web.
+  - **The count of pushed hits:** the design as written (see *Amendments*).
+  - **Confirms:** *Stack and pins*, *verify*, *The hygiene stage*, *Testing strategy* and the
+    first two bullets of *Deliberate decisions*, each confirmed as built.
+- **The toolchain.**
+  - `.python-version` holds `3.10`, and `uv.lock` is committed.
+  - `pyproject.toml` describes a repository that is not a package. ruff 0.17.5 and pytest 9.2.0
+    are pinned exactly in `dev`. ruff checks only Python files and `pyproject.toml`. pytest
+    reads `testpaths`, `pythonpath = ["scripts"]` and `--ignore=.claude/worktrees` from it.
+- **`verify`.** `scripts/verify.py` runs the stages `format`, `lint`, `tests` and `hygiene`,
+  each runnable alone and each run even after one fails, then a summary. `--message` and `--all`
+  are passed to `hygiene`, and exit 2 without it. `tests/test_verify.py` covers this with
+  `_call` replaced, so the tests run nothing real.
+- **The hygiene stage.** `scripts/hygiene.py` is the port, completed from the design:
+  - secrets, `.env` files and conflict markers;
+  - the routine run and the full scan, with its stamp in the git common directory;
+  - the pushed-history count on the full scan's last line.
+
+  The choices made within the design are in ARCHITECTURE's *The hygiene stage*.
+  `tests/test_hygiene.py` holds the 19 ported tests, changed only where the API changed
+  (`check` became `scan(...).problems`), and 23 new ones. `tests/fixtures/terms.txt` holds the
+  three fictional words the tests use.
+- **F1.** The seven lines were replaced in place: `travel-itinerary-builder/SKILL.md:89`, `:138`
+  and `:189`; `references/location-block-template.md:37` and `:55`;
+  `references/research-playbook.md:61` and `:68`. A script found the listed word through the term
+  list, so it was never written or printed. Nothing else in the skill changed, and no version was
+  cut (decision 18).
+- **Docs.**
+  - `CLAUDE.md`: the Commands table, and rule 1 in the present tense.
+  - `ARCHITECTURE.md`:
+    - the Built parts of *Overview*, *Stack and pins*, *Layout and boundaries*, *verify*, *The
+      hygiene stage*, *Testing strategy* and *travel-itinerary-builder*;
+    - invariant 9's *Enforced by*;
+    - the baseline.
+  - The README's *Developing* section.
+- **Amendments:**
+  - **The first full scan counts 0 hits in pushed history.** The block's last *Watch for*
+    expected F1's word to be a counted hit. But the design's full scan reads the messages of pushed
+    commits, and the word is in none of the 5. It is only in file versions stored in 3 pushed
+    commits, which no scan reads. Amended at plan time, with the user: the design is built as
+    written, and "a file's earlier versions in history" joins the Hygiene row's *Cannot see*.
+  - **ruff checks Python files only.** ruff 0.17's default `include` also formats the Python
+    code blocks inside Markdown, and it would have rewritten one in the skill's
+    `references/output-formats.md`. `include` is now `*.py` and `pyproject.toml`, so the skill
+    ships as written. This was the session's own finding; the owner confirmed it with *Stack and
+    pins*.
+  - **`pyproject.toml` has `version = "0.0.0"`.** The plan preferred leaving the field out, but
+    uv refuses a `[project]` table without one. Nothing reads it. This was the session's own
+    finding.
+- **Measured** (2026-11-18): uv 0.12.3, Python 3.10.20, ruff 0.17.5, pytest 9.2.0, git 2.50.1.
+  A whole `verify` run takes 4.7 s, 4.4 s of it in `tests`. On this repository, `hygiene --all`
+  was red with 7 hits before F1 (the 7 places above, each printed as file and line only). After
+  F1 it was green, with 0 hits in pushed history, and wrote the stamp.
+- **Falsified:**
+  - Each stage at its own step: a formatting slip in `scripts/verify.py` failed `format` alone;
+    an unused import in `tests/test_verify.py` failed `lint` alone; a broken assertion failed
+    `tests` alone. The files were copied aside and back.
+  - `hygiene --all` against the owner's list: red before F1's lines were replaced, green after.
+  - The skip of `.claude/worktrees/`: a badly formatted file, a failing test and a conflict
+    marker under `.claude/worktrees/probe/` left all four stages green. The same marker at the
+    root failed `hygiene` alone. The probes were then deleted.
+  - Eight mutations of the stage, one at a time, each caught by its own test:
+    - secrets without bounds;
+    - markers matched anywhere on a line;
+    - no `.env` rule;
+    - a stored version read even when it equals the working tree's;
+    - a full scan that is not a superset;
+    - an index version equal to HEAD's read;
+    - a routine run reading pushed messages;
+    - the stamp renewed with any list.
+
+    Each item of the design's *Each part is falsified once* is a test that fails without its
+    part.
+- **Numbers:** 49 unit tests (+49): 42 in `test_hygiene.py` (19 ported, 23 new) and 7 in
+  `test_verify.py`, with 0 skipped. 4 `verify` stages; 0 hits in pushed history; 4 Python files.
+
 ---
 
 ## 2: The restructure

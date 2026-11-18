@@ -31,7 +31,8 @@ and other agents copy, and what claude.ai receives as a zip. The plugin wraps it
 manifest, a README that is its user guide, and a changelog. The evals are a skill's harness,
 outside the shipped folders. The tooling proves the repository is sound and ships nowhere.
 
-**Built.** Not yet: Sessions 1–2. Today the repository holds one skill folder,
+**Built.** The tooling: `scripts/verify.py`, `scripts/hygiene.py` and `tests/`. The marketplace
+and the plugins: not yet, Session 2. Today the repository holds one skill folder,
 `travel-itinerary-builder/`, at its root.
 
 ## Context
@@ -75,7 +76,14 @@ installed through uv.
 - **The Agent Skills validator** through `uvx`, on Python 3.11 or newer (it requires it),
   pinned to a commit of its repository.
 
-**Built.** Not yet: Session 1 (Python, uv, ruff, pytest), Session 2 (the validator).
+**Built.** Python 3.10.20 through uv 0.12.3: `.python-version` holds `3.10`, and
+`pyproject.toml` says `requires-python = ">=3.10"`. The repository is not a package
+(`tool.uv.package = false`): uv installs the tools and never builds it. Its `version = "0.0.0"`
+is there only because uv refuses a `[project]` table without one; nothing reads it. ruff 0.17.5
+and pytest 9.2.0 are pinned exactly in the `dev` group and locked in `uv.lock`. ruff's `include`
+is Python files and `pyproject.toml` only, because its default also formats the Python code
+blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E`, `F`, `W`, `I`,
+`UP`, `B` and `RUF`, with lines of 100. The validator: not yet, Session 2.
 
 ## Layout and boundaries
 
@@ -99,8 +107,10 @@ installed through uv.
     reading it as code.
   - `verify` never runs the evals.
 
-**Built.** Not yet: Session 1 (`scripts/`, `tests/`), Session 2 (the marketplace and
-`plugins/`), Session 5 (`evals/`). *Enforced by:* not yet.
+**Built.** `scripts/` holds `verify.py` and `hygiene.py`, both standard library only. `tests/`
+holds `test_verify.py`, `test_hygiene.py` and `fixtures/terms.txt`, a term list of three
+fictional words. The tests import the scripts through pytest's `pythonpath`. Not yet: Session 2
+(the marketplace and `plugins/`), Session 5 (`evals/`). *Enforced by:* not yet.
 
 ## The invariants
 
@@ -127,9 +137,10 @@ installed through uv.
    skill's name. *Why:* people install by them, and a rename strands their install. *Enforced
    by* the `plugins` stage, against a list of the published names (Session 2).
 9. **Nothing private enters the repository.** *Why:* the repository is public, and history
-   cannot be cleaned without a rewrite. *Enforced by* the hygiene stage (Session 1; until then,
-   Session 0's check of the term list): the owner's term list against every file, path and
-   commit message, attribution against every commit message, and secrets by their exact shapes.
+   cannot be cleaned without a rewrite. *Enforced by* the hygiene stage of `verify`
+   (`scripts/hygiene.py`): the owner's term list against every file, path and commit message,
+   attribution against every commit message, secrets by their exact shapes, `.env` files and
+   conflict markers; the last read of each diff covers what it cannot see.
 
 ## The contract between the layers
 
@@ -177,8 +188,25 @@ One command serves every commit, docs only or not.
 - **`tests`:** pytest.
 - **`hygiene`:** *The hygiene stage*, below.
 
-**Built.** Not yet: Session 1 (`format`, `lint`, `tests`, `hygiene`), Session 2 (`skills`,
-`plugins`).
+**Built.** `scripts/verify.py`. Its `STAGES` maps each name to the commands it runs, in this
+order:
+- `format`: `ruff format --check .`
+- `lint`: `ruff check .`
+- `tests`: `pytest`, which reads `testpaths` and its flags from `pyproject.toml`
+- `hygiene`: `scripts/hygiene.py`
+
+Each command runs from the root through the interpreter `uv run` gives `verify`. Every stage runs
+even after one fails. Then the summary prints PASS or FAIL and the time for each stage, followed
+by `verify: PASS` or `verify: FAIL (<stages>)`, and the exit code is 1 on any failure.
+`--message <draft>` and `--all` are passed to `hygiene`. A run that gives either without
+`hygiene` among its stages exits 2, since the flag would go unchecked. So does an unknown stage.
+
+Every tool skips `.claude/worktrees/` at the root:
+- ruff by `extend-exclude`, which is anchored at the project root, and by `.gitignore`;
+- pytest by `testpaths` and `--ignore=.claude/worktrees`, since it does not read `.gitignore`;
+- hygiene by git's ignore rules, which read the root `.gitignore`.
+
+Not yet: Session 2 (`skills`, `plugins`), which go ahead of `format` in `STAGES`.
 
 ## The hygiene stage
 
@@ -188,7 +216,48 @@ full scans and a stamp. Its terms-and-attribution part is ported from the owner'
 repository `FairCat-GD/krita-art-mcp`, relicensed here under MIT by the owner; the rest is built
 here. Every part is falsified here.
 
-**Built.** Not yet: Session 1.
+**Built.** `scripts/hygiene.py` is run by `verify` or alone, as
+`uv run scripts/hygiene.py [--terms <list>] [--message <draft>] [--all]`. The terms-and-attribution
+part is the port as it was written: the token splitting, the loading of the term list and the
+attribution patterns. The rest is built here.
+- **Secrets** (`_SECRETS`): the design's shapes, each bounded so that a longer run of its own
+  characters is not one. They are checked in file contents and in commit messages.
+- **`.env` files:** any path the run reads named `.env` or `.env.*`, except the three example
+  names.
+- **Conflict markers:** a line of file contents that starts with seven `<` or `>` and a space.
+- **The routine run** reads these paths:
+  - those that differ between the index and HEAD, or between the working tree and the index;
+  - untracked files that are not ignored;
+  - those changed by each commit on no remote (`git rev-list HEAD --not --remotes`), each against
+    its first parent, so a merge shows what it brought in.
+
+  For each path it reads its name, its working-tree version, its index version where that
+  differs from both the working tree's and HEAD's, and HEAD's version where a commit on no
+  remote changed it. It also reads the messages of the commits on no remote, and the draft.
+- **The full scan** reads all of that, plus every tracked and untracked-not-ignored path and every
+  message reachable from HEAD. It runs with `--all`, or when the stamp
+  `$(git rev-parse --git-common-dir)/hygiene-scanned` is missing, or is older than the term list in
+  use or than `scripts/hygiene.py`; its first line says why. A hit in a pushed message does not
+  fail: it is listed with `(pushed)` and counted on the last line,
+  `hygiene: <n> hit(s) in pushed history, not failing; …`.
+- **A hit names only its place**, as `<path>:<line>`, `<path> (staged):<line>`,
+  `<path> (at HEAD):<line>`, `commit <sha>, message line <n>` or
+  `commit message draft, line <n>`, followed by the kind.
+
+Decisions made here, each with its why:
+- **The full scan reads everything a routine run reads**, so it is never the weaker of the two.
+- **Only a passing full scan with the owner's own list renews the stamp**, so a run with
+  `--terms` never stands in for it.
+- **Secrets are checked in messages too:** a token pasted into a message is as public as one in a
+  file.
+- **A symlink is read as its target string**, which is what git records, so nothing outside the
+  repository is read.
+- **A repository with no commits is compared with the empty tree**, so its staged and untracked
+  files are still read. An empty one passes.
+- **An index version equal to HEAD's is not read**, because no commit would record it anew. A
+  term in pushed history that is fixed in the working tree therefore passes before the fix is
+  staged, while one in a commit on no remote is still read, as HEAD's version.
+- **git runs with stdin closed**, so it never waits on a terminal.
 
 ## travel-itinerary-builder
 
@@ -199,8 +268,9 @@ capability is missing it says what it does instead; its minimum environment is s
 after the review's fixes.
 
 **Built.** Version 1.0 in its frontmatter, at the repository root, as first published
-(2026-07-22). The audit is `docs/spec/REVIEW-2026-11-17.md`. Packaging and version: not yet,
-Session 2; targets: not yet, Session 3.
+(2026-07-22), except the seven example lines of F1, which now use Lisbon. They are unreleased
+until 1.0.1 (`SPEC.md` decision 18). The audit is `docs/spec/REVIEW-2026-11-17.md`. Packaging
+and version: not yet, Session 2; targets: not yet, Session 3.
 
 ## crux-finder
 
@@ -234,11 +304,12 @@ before every commit. The harness is each skill's eval set. The commands are in `
 |---|---|---|---|
 | Validators | `verify` (`skills`, `plugins`) | The specification's frontmatter and naming; the manifests; the limits and names in *verify* | Whether a skill behaves well |
 | Unit | `verify` (`tests`) | The scripts: hygiene, verify's own checks, the eval tooling | The skills themselves |
-| Hygiene | `verify`, with the drafted commit message; in full when the term list or the stage changes | Private terms in files, paths and messages; attribution in messages; secrets by their exact shapes; conflict markers | Images and binaries; a term joined inside one lowercase run; attribution in files; a home-directory path; a secret of any other shape |
+| Hygiene | `verify`, with the drafted commit message; in full when the term list or the stage changes | Private terms in files, paths and messages; attribution in messages; secrets by their exact shapes; `.env` files; conflict markers | Images and binaries; a term joined inside one lowercase run; attribution in files; a home-directory path; a secret of any other shape; a file's earlier versions in history |
 | Evals | Where a block names them | A skill's behaviour on fixed cases, judged by the owner and `checks.py` | Cases outside the set; targets not run |
 | By hand | Recorded in done-notes | Installs, claude.ai, a whole interview | Anything not written down; what nobody checked goes to the backlog |
 
-Not yet: Sessions 1, 2 and 5 build these.
+Built: Unit (`tests/test_verify.py`, `tests/test_hygiene.py`) and Hygiene. Not yet: Validators,
+Session 2; Evals, Session 5.
 
 ## Packaging
 
@@ -269,7 +340,18 @@ None yet.
 
 ## Baseline
 
-Filled in by Session 1, from its first green `verify`.
+Measured 2026-11-18 with Python 3.10.20, uv 0.12.3, ruff 0.17.5 and pytest 9.2.0. The heading
+carries no version because the repository has none of its own: each skill has its own version.
+
+| Check | Expected |
+|---|---|
+| `uv run scripts/verify.py` | green: 4 stages (`format`, `lint`, `tests`, `hygiene`), about 5 s |
+| Unit tests (`tests`) | 49 passed, 0 skipped: 42 in `test_hygiene.py`, 7 in `test_verify.py` |
+| `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
+| Python files under ruff | 4 |
+
+A documentation or refactoring change should not move any of these. If one moves, that is the
+finding.
 
 ## Decision log
 

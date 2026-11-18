@@ -10,6 +10,23 @@ Ready-to-use Agent Skills that give Claude new superpowers. Browse the collectio
 
 *More coming as I build them.*
 
+## Developing
+
+You need [uv](https://docs.astral.sh/uv/); it provides Python 3.10 and the pinned tools. The
+gate, run before every commit:
+
+```bash
+uv run scripts/verify.py
+```
+
+It runs the stages `format`, `lint`, `tests` and `hygiene`, then a summary; name a stage to run it
+alone. The hygiene stage reads a list of private words from `~/.config/hygiene/terms.txt`, one
+per line. If nothing is private to you, create the file empty.
+
+How the repository is built is in [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md), the way work is
+done in [docs/DEVELOPMENT-WORKFLOW.md](./docs/DEVELOPMENT-WORKFLOW.md), the standing rules in
+[CLAUDE.md](./CLAUDE.md), and the round in progress in [docs/spec/](./docs/spec/).
+
 ## License
 
 [MIT](./LICENSE)

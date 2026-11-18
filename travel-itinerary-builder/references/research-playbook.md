@@ -58,14 +58,14 @@ Run these searches before drafting. Run them in parallel where you can. Treat ea
 ### City facts, curiosities & local tastes (Appendix F)
 - `"[city] famous for what"` / `"[city] facts surprising"` / `"[city] quirks history"`
 - `"[city] local food drinks must try"` / `"[city] regional specialty alcohol"` / `"what locals drink in [city]"`
-- Search for the **stories** as much as the facts — origin myths (Vienna's first coffee house ⇆ Lviv's Kulczycki), bizarre festivals, the dish you didn't know was invented here. These are what give Appendix F its warmth.
+- Search for the **stories** as much as the facts — origin myths (Lisbon's pastel de nata ⇆ the monks of Jerónimos), bizarre festivals, the dish you didn't know was invented here. These are what give Appendix F its warmth.
 
 ### Snack / drink stops (optional, when on-route)
 For each day's route, briefly think: is there a famous, characteristic, *small* bite or drink that happens to be passed by? Search:
 - `"[neighborhood] famous coffee bar"` / `"[city] iconic street snack"`
 - `"[city] famous café locals"` / `"[city] best ice cream gelato"` (etc.)
 
-Only add a snack stop if the answer is yes AND it's ≤2 min off the route. The bar in Florence for *bombolone*, the macarons window on the Champs-Élysées, the Pyana Vyshnya kiosk on Lviv's Soborna — these are the targets. Generic cafes don't qualify.
+Only add a snack stop if the answer is yes AND it's ≤2 min off the route. The bar in Florence for *bombolone*, the macarons window on the Champs-Élysées, the ginjinha counter off Lisbon's Rossio — these are the targets. Generic cafes don't qualify.
 
 ### Weather (only if dates or at least a season are known — otherwise skip)
 - Exact dates within ~14 days: fetch the actual day-by-day forecast.
