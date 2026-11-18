@@ -108,6 +108,24 @@ def test_a_source_that_is_not_a_plugin_folder_fails(tmp_path: Path, source: obje
     ]
 
 
+def test_two_entries_with_one_name_fail(tmp_path: Path) -> None:
+    _plugin(tmp_path, NAME)
+    _plugin(tmp_path, "kite-weather")
+    entries = [{"name": NAME, "source": SOURCE}, {"name": NAME, "source": "./plugins/kite-weather"}]
+    _marketplace(tmp_path, entries)
+    assert check_plugins.check(tmp_path)[0] == f"marketplace: 2 entries share the name {NAME}"
+
+
+def test_two_entries_with_one_source_fail(tmp_path: Path) -> None:
+    _sound(tmp_path)
+    entry = {"name": NAME, "source": SOURCE}
+    _marketplace(tmp_path, [entry, entry])
+    assert check_plugins.check(tmp_path) == [
+        f"marketplace: 2 entries share the name {NAME}",
+        f"marketplace: 2 entries share the source {SOURCE}",
+    ]
+
+
 def test_a_plugin_without_a_manifest_fails(tmp_path: Path) -> None:
     (tmp_path / "plugins" / NAME / "skills" / NAME).mkdir(parents=True)
     _marketplace(tmp_path, [{"name": NAME, "source": SOURCE}])

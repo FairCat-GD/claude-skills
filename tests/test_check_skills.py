@@ -59,9 +59,19 @@ def test_a_reference_skill_md_does_not_link_fails(tmp_path: Path) -> None:
         "See [the notes](references/notes.md).\n",
         "See references/notes.md.\n",
         "See `references/notes.md#tides`.\n",
+        "See [the notes](./references/notes.md).\n",
     ],
 )
 def test_a_reference_named_by_its_path_is_linked(tmp_path: Path, body: str) -> None:
+    _skill(tmp_path, body=body)
+    assert check_skills.check(tmp_path) == []
+
+
+def test_references_inside_a_url_or_a_longer_word_are_not_named(tmp_path: Path) -> None:
+    body = (
+        "Read `references/notes.md`. Sources: https://example.org/references/tips, "
+        "docs/references/old.md and the cross-references/index.\n"
+    )
     _skill(tmp_path, body=body)
     assert check_skills.check(tmp_path) == []
 
@@ -79,6 +89,14 @@ def test_a_dotfile_under_references_is_skipped(tmp_path: Path) -> None:
     assert check_skills.check(tmp_path) == []
 
 
+def test_a_dot_folder_is_no_plugin_or_skill(tmp_path: Path) -> None:
+    folder = _skill(tmp_path)
+    (tmp_path / "plugins" / ".trash" / "skills" / "old").mkdir(parents=True)
+    (folder.parent / ".cache").mkdir()
+    assert check_skills.skill_folders(tmp_path) == [folder]
+    assert check_skills.check(tmp_path) == []
+
+
 def test_skill_md_at_its_own_limit_fails(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     folder = _skill(tmp_path)
     lines = check_skills.line_count((folder / "SKILL.md").read_text(encoding="utf-8"))
@@ -90,11 +108,18 @@ def test_skill_md_at_its_own_limit_fails(tmp_path: Path, monkeypatch: pytest.Mon
     ]
 
 
-def test_the_specification_limit_holds_for_a_skill_without_its_own(tmp_path: Path) -> None:
+@pytest.mark.parametrize("own", [None, check_skills.SPEC_LINES + 100])
+def test_the_specification_limit_holds_without_a_lower_row(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, own: int | None
+) -> None:
+    # A skill with no row, or with a row above the specification's, still stops at 500.
+    if own is not None:
+        monkeypatch.setitem(check_skills.LINE_LIMITS, NAME, own)
     padding = "line\n" * check_skills.SPEC_LINES
-    _skill(tmp_path, body=f"Read `references/notes.md`.\n{padding}")
+    folder = _skill(tmp_path, body=f"Read `references/notes.md`.\n{padding}")
+    lines = check_skills.line_count((folder / "SKILL.md").read_text(encoding="utf-8"))
     assert check_skills.check(tmp_path) == [
-        f"plugins/{NAME}/skills/{NAME}/SKILL.md: {check_skills.SPEC_LINES + 9} lines; "
+        f"plugins/{NAME}/skills/{NAME}/SKILL.md: {lines} lines; "
         f"it must stay under {check_skills.SPEC_LINES}"
     ]
 
@@ -123,6 +148,11 @@ def test_a_plugin_without_a_manifest_fails(tmp_path: Path) -> None:
 def test_metadata_reads_the_block_form_quoted_or_not(version: str) -> None:
     text = f"---\nname: x\nmetadata:\n  version: {version}\n  stage: draft\n---\nversion: 9\n"
     assert check_skills.metadata(text) == {"version": "0.3.0", "stage": "draft"}
+
+
+def test_metadata_reads_past_a_blank_line_in_its_block() -> None:
+    text = '---\nname: x\nmetadata:\n\n  version: "0.3.0"\nlicense: MIT\n---\n'
+    assert check_skills.metadata(text) == {"version": "0.3.0"}
 
 
 def test_metadata_reads_no_other_field_as_its_own() -> None:

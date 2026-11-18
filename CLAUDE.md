@@ -142,5 +142,9 @@ check, a script or a pin makes it impossible.
 - **`claude plugin marketplace add ./` registers this folder in the owner's user settings.**
   Remove it with `claude plugin marketplace remove faircat-skills` before the session ends; that
   also uninstalls the plugins installed from it, and nothing else.
+- **A `claude` update can turn the `plugins` stage red** with no change here, since
+  `claude plugin validate --strict` fails on every warning and the CLI is not pinned. The stage
+  prints the CLI's version first: compare it with the baseline's, fix what the warning names,
+  and ask the owner before dropping `--strict`.
 - Do not finish with `verify` red, or with a skill's change missing from its plugin's
   `CHANGELOG.md`.

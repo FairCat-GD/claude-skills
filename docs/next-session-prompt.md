@@ -14,10 +14,10 @@ Release travel-itinerary-builder 1.1.0.
 ## State you need that is not in the specs
 
 - **Round 1 is a home for many skills**: Sessions 0, 1 and 2 are done; Sessions 3–8 remain.
-- **Session 2 is committed locally, not pushed.** `origin/main` holds everything through
-  `review: a merge of pushed work no longer fails hygiene, …` (`76d77c1`). Session 2's commit
-  and its `review:` commit wait for the next approved push. That push publishes the
-  `faircat-skills` marketplace: travel-itinerary-builder 1.0.1 becomes installable from GitHub.
+- **Session 2 and its review fixes are pushed.** `origin/main` holds everything through
+  `review: references inside URLs, duplicate marketplace entries, …`; no local commit waits for
+  a push. The push published the `faircat-skills` marketplace: travel-itinerary-builder 1.0.1 is
+  installable from GitHub, and people who install it receive 1.1.0 once its version moves.
 - **What Session 2 left that Session 3 builds on:**
   - **The skill moved.** Its five files are under
     `plugins/travel-itinerary-builder/skills/travel-itinerary-builder/`. The review's paths are
@@ -31,7 +31,8 @@ Release travel-itinerary-builder 1.1.0.
     and `metadata.version`. The `skills` stage fails when they differ, so 1.1.0 goes into both.
   - **The `skills` stage** also fails a file under `references/` that `SKILL.md` does not name
     by its path, a `references/` path it names that is missing, and a `SKILL.md` of 500 lines
-    or more. `LINE_LIMITS` in `scripts/check_skills.py` holds no row for this skill.
+    or more. A path counts at the start of a word or after `./`; inside a URL it names nothing.
+    `LINE_LIMITS` in `scripts/check_skills.py` holds no row for this skill.
   - **The plugin's README** (`plugins/travel-itinerary-builder/README.md`) has *What it does*,
     *Using it*, install per target and the version; it says nothing yet of what each target
     needs. Its *What it does* describes the PDF as made for a phone and the chat plan as on
@@ -42,9 +43,10 @@ Release travel-itinerary-builder 1.1.0.
   `claude plugin validate .` at the root does not compare an entry's name with its manifest, so
   `scripts/check_plugins.py` does; that touches no itinerary work.
 - **Baseline** (ARCHITECTURE's table): `verify` green with 6 stages, about 6 s with uv's cache
-  warm; 95 unit tests passed, 0 skipped; `hygiene --all` green, with 0 hits in pushed history; 8
+  warm; 102 unit tests passed, 0 skipped; `hygiene --all` green, with 0 hits in pushed history; 8
   Python files; 1 skill folder, 1 plugin.
-- **Not done:** installing from GitHub, which waits for the push (`docs/BACKLOG.md`).
+- **Not done:** installing from GitHub, now possible after the push, is not yet checked by hand
+  (`docs/BACKLOG.md`).
 
 ## Watch for
 

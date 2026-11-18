@@ -38,4 +38,5 @@ As first published.
 - **A day-by-day itinerary for one city,** from a guided interview, deep web research, and a
   trip-themed PDF made to read on a phone.
 
+[1.0.1]: https://github.com/FairCat-GD/claude-skills/commit/b41611a260c8a501744d3e934b068bd44a0303fb
 [1.0.0]: https://github.com/FairCat-GD/claude-skills/commit/b0b5b5157c81de61b4d8f89d4ebee319811b21a5

@@ -88,6 +88,7 @@ def test_the_plugins_stage_validates_the_marketplace_and_each_plugin(
     assert verify.main(["plugins"]) == 0
     validate = ["claude", "plugin", "validate", "--strict"]
     assert calls == [
+        ["claude", "--version"],
         [*validate, "."],
         [*validate, "plugins/kite-weather"],
         [*validate, "plugins/tide-tables"],

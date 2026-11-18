@@ -13,18 +13,22 @@ import re
 import sys
 from pathlib import Path
 
+from check_plugins import plugin_folders, skill_folders_of
+
 ROOT = Path(__file__).resolve().parent.parent
 # The specification's limit for SKILL.md, in lines; a SKILL.md must stay under it.
 SPEC_LINES = 500
-# A skill's own SKILL.md limit, by skill name, where it is lower than the specification's.
+# A skill's own SKILL.md limit, by skill name, where it is lower than the specification's; a
+# higher row never lifts the specification's.
 LINE_LIMITS: dict[str, int] = {}
-# A path into references/ as SKILL.md names it, in a Markdown link or in backticks.
-_REFERENCE = re.compile(r"references/[^\s`'\"()<>\[\]]+")
+# A path into references/ as SKILL.md names it, in a Markdown link or in backticks: at the start
+# of a word or after `./`, never inside a URL or a longer word such as cross-references/.
+_REFERENCE = re.compile(r"(?:(?<=\./)|(?<![\w/.:-]))references/[^\s`'\"()<>\[\]]+")
 
 
 def skill_folders(root: Path) -> list[Path]:
-    """Every skill folder, plugins/<plugin>/skills/<skill>/."""
-    return sorted(path for path in root.glob("plugins/*/skills/*") if path.is_dir())
+    """Every skill folder, plugins/<plugin>/skills/<skill>/, as the plugins stage finds them."""
+    return [skill for plugin in plugin_folders(root) for skill in skill_folders_of(plugin)]
 
 
 def line_count(text: str) -> int:
@@ -52,6 +56,9 @@ def metadata(text: str) -> dict[str, str]:
     for line in lines[1:]:
         if line.rstrip() == "---":
             break
+        if not line.strip():
+            # A blank line does not end a block in YAML.
+            continue
         if not line[:1].isspace():
             inside = line.rstrip() == "metadata:"
             continue
@@ -97,7 +104,7 @@ def _check_folder(root: Path, folder: Path) -> list[str]:
     except OSError:
         return [f"{where}: no SKILL.md"]
     problems = []
-    limit = LINE_LIMITS.get(folder.name, SPEC_LINES)
+    limit = min(LINE_LIMITS.get(folder.name, SPEC_LINES), SPEC_LINES)
     lines = line_count(text)
     if lines >= limit:
         problems.append(f"{where}/SKILL.md: {lines} lines; it must stay under {limit}")

@@ -442,6 +442,34 @@ Copied verbatim from the kit's `KICKOFF.md`. What the stage checks and why is
 - **Numbers:** 95 unit tests (+43): 45 in `test_hygiene.py`, 23 in `test_check_skills.py`, 17
   in `test_check_plugins.py`, 10 in `test_verify.py`, with 0 skipped. 6 `verify` stages (+2); 8
   Python files (+4); 1 skill folder, 1 plugin; 0 hits in pushed history.
+- **Review (`/code-review high`), 9 findings: 9 fixed and 0 skipped.** The user chose to fix all
+  nine. None touched the skill's shipped files, so 1.0.1's changelog entry is unchanged.
+  - **A `references/` inside a URL or a longer word counted as a named reference,** and failed
+    as missing. A path now counts only at the start of a word or after `./`.
+  - **Two marketplace entries with one name or one source passed.** `check_plugins.py` now fails
+    them.
+  - **A blank line inside the `metadata:` block ended it,** so a valid version read as missing.
+    Blank lines are now skipped.
+  - **The two stages disagreed on dot folders:** `skills` found them, `plugins` did not.
+    Discovery now lives in `check_plugins.py` alone, and `check_skills.py` imports it.
+  - **A `LINE_LIMITS` row above 500 lifted the specification's limit.** The limit is now the
+    lower of the two.
+  - **`[1.0.1]` had no link reference** in the plugin's changelog. It now links this session's
+    commit.
+  - **`--strict` ties the gate to the unpinned CLI's warnings.** `--strict` stays; the `plugins`
+    stage now prints `claude --version` first, so a failure a CLI release brings is told apart,
+    and `CLAUDE.md`'s *Watch for* says what to do.
+  - **ARCHITECTURE said the two stages read only `.claude-plugin/` and `plugins/`.** It now
+    names the README the CLI reads for its advice.
+  - **The 500-line test hard-coded the fixture's line count.** It now counts the fixture, and
+    also covers a row above 500.
+  - **Falsified:** seven mutations, each undoing one fix, each failed its own new test: the
+    reference pattern without its boundary, and without its `./` case; blank lines ending the
+    block; discovery by glob again; the limit without `min`; duplicates allowed; the stage
+    without `claude --version`.
+  - **Numbers after the review:** 102 unit tests (+7): 45 in `test_hygiene.py`, 28 in
+    `test_check_skills.py`, 19 in `test_check_plugins.py`, 10 in `test_verify.py`, with 0
+    skipped. 6 stages; 8 Python files; 0 hits in pushed history.
 
 ---
 

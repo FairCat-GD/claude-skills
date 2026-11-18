@@ -11,6 +11,7 @@ Usage: uv run scripts/check_plugins.py
 
 import json
 import sys
+from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -20,12 +21,21 @@ PUBLISHED = ("travel-itinerary-builder",)
 _SOURCE = "./plugins/"
 
 
+def _folders(parent: Path) -> list[Path]:
+    # A dot folder is the system's or a tool's, never a plugin or a skill.
+    if not parent.is_dir():
+        return []
+    return sorted(p for p in parent.iterdir() if p.is_dir() and not p.name.startswith("."))
+
+
 def plugin_folders(root: Path) -> list[Path]:
     """Every plugin folder, plugins/<plugin>/."""
-    plugins = root / "plugins"
-    if not plugins.is_dir():
-        return []
-    return sorted(p for p in plugins.iterdir() if p.is_dir() and not p.name.startswith("."))
+    return _folders(root / "plugins")
+
+
+def skill_folders_of(plugin: Path) -> list[Path]:
+    """A plugin's skill folders, skills/<skill>/."""
+    return _folders(plugin / "skills")
 
 
 def _json(path: Path) -> tuple[dict | None, str | None]:
@@ -62,12 +72,7 @@ def _check_entry(root: Path, entry: dict, listed: set[str]) -> list[str]:
         problems.append(
             f"{where}: its plugin.json is named {manifest_name}; the folder must be too"
         )
-    skills = root / where / "skills"
-    found = (
-        sorted(p.name for p in skills.iterdir() if p.is_dir() and not p.name.startswith("."))
-        if skills.is_dir()
-        else []
-    )
+    found = [folder.name for folder in skill_folders_of(root / where)]
     if found != [manifest_name]:
         problems.append(
             f"{where}: skill folders {found}; the one expected is skills/{manifest_name}/"
@@ -87,6 +92,14 @@ def check(root: Path) -> list[str]:
     entries = marketplace.get("plugins")
     if not isinstance(entries, list) or not all(isinstance(e, dict) for e in entries):
         return [*problems, ".claude-plugin/marketplace.json: plugins is not a list of entries"]
+    # One entry per plugin: a second with the same name or source makes the install ambiguous.
+    for field in ("name", "source"):
+        counts = Counter(str(entry.get(field)) for entry in entries)
+        problems += [
+            f"marketplace: {count} entries share the {field} {value}"
+            for value, count in counts.items()
+            if count > 1
+        ]
     listed: set[str] = set()
     for entry in entries:
         problems += _check_entry(root, entry, listed)

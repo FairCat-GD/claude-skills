@@ -246,14 +246,15 @@ order:
   `scripts/check_skills.py`. That checks:
   - that there is at least one skill folder;
   - that `SKILL.md` is under its limit: the specification's, `SPEC_LINES` (500), or the skill's
-    own row in `LINE_LIMITS`, the one table of per-skill limits, empty today. Lines are counted
-    at newlines, as hygiene counts them;
+    own row in `LINE_LIMITS`, the one table of per-skill limits, empty today, where that row is
+    lower; a higher row never lifts the specification's. Lines are counted at newlines, as
+    hygiene counts them;
   - that every file under `references/` is linked from `SKILL.md`, and every `references/` path
     `SKILL.md` names exists;
   - that `metadata.version` equals `plugin.json`'s `version`.
-- `plugins`: `claude plugin validate --strict` on `.` and on each `plugins/<plugin>/`, then
-  `scripts/check_plugins.py`. That checks:
-  - that the marketplace is named `faircat-skills`;
+- `plugins`: `claude --version`, then `claude plugin validate --strict` on `.` and on each
+  `plugins/<plugin>/`, then `scripts/check_plugins.py`. That checks:
+  - that the marketplace is named `faircat-skills`, and no two entries share a name or a source;
   - that each entry's source is `./plugins/<plugin>` and it sets no version;
   - that its name, its manifest's and its folder's agree, and the plugin holds one skill folder,
     of that name;
@@ -276,24 +277,33 @@ Every tool skips `.claude/worktrees/` at the root:
 - pytest by `testpaths` and `--ignore=.claude/worktrees`, since it does not read `.gitignore`;
 - hygiene by skipping every path under it, and by git's ignore rules from the root
   `.gitignore`;
-- `skills` and `plugins` by reading only `.claude-plugin/` and `plugins/` at the root.
+- `skills` and `plugins` by reading only `.claude-plugin/` and `plugins/` at the root, and the
+  README that `claude plugin validate` reads for its advice: a plugin's own, or for the
+  marketplace the one at the root. That advice never changes its verdict.
 
 Decisions made here, each with its why:
 - **"Linked" means named by its path,** in a Markdown link or in backticks, because the
   itinerary skill names its references in backticks and a skill's text does not change to suit a
-  check. A fragment or a sentence's last mark is not part of the path.
+  check. A fragment or a sentence's last mark is not part of the path. A path counts only at the
+  start of a word or after `./`, so a URL or a longer word that contains `references/` names
+  nothing.
 - **A reference `SKILL.md` names but that is missing fails too:** it is a broken link in what
   ships, found by the same comparison.
 - **Dotfiles under `references/` are skipped:** the system's `.DS_Store` is no part of the
   skill, and git ignores it.
 - **The frontmatter is read without a YAML library,** so the scripts stay standard library only.
-  Only `metadata`'s block form is read; any other form reads as no `metadata.version` and fails
-  rather than passes. The validator parses the whole frontmatter, with strictyaml.
-- **Folder discovery lives in the two checks, and `verify` imports it,** so a stage and its
-  checks never disagree on what a skill or plugin folder is.
+  Only `metadata`'s block form is read, blank lines within it included; any other form reads as
+  no `metadata.version` and fails rather than passes. The validator parses the whole
+  frontmatter, with strictyaml.
+- **Folder discovery lives in `check_plugins.py`;** `check_skills.py` and `verify` import it, so
+  the stages and their checks never disagree on what a skill or plugin folder is. A dot folder
+  is neither.
+- **No two entries share a name or a source,** since install would then pick one.
 - **An entry that sets a version fails,** which holds *Deliberate decisions*' third bullet.
 - **`claude plugin validate` runs with `--strict`,** so an unrecognised or misspelt field fails
-  instead of printing a warning.
+  instead of printing a warning. The CLI is not pinned, so a release that adds a warning can
+  fail the stage with no change here; the stage prints the CLI's version first, to tell that
+  case apart.
 
 ## The hygiene stage
 
@@ -451,7 +461,7 @@ of its own: each skill has its own version.
 | Check | Expected |
 |---|---|
 | `uv run scripts/verify.py` | green: 6 stages (`skills`, `plugins`, `format`, `lint`, `tests`, `hygiene`), about 6 s with uv's cache warm |
-| Unit tests (`tests`) | 95 passed, 0 skipped: 45 in `test_hygiene.py`, 23 in `test_check_skills.py`, 17 in `test_check_plugins.py`, 10 in `test_verify.py` |
+| Unit tests (`tests`) | 102 passed, 0 skipped: 45 in `test_hygiene.py`, 28 in `test_check_skills.py`, 19 in `test_check_plugins.py`, 10 in `test_verify.py` |
 | `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
 | Python files (`ruff format --check .`) | 8 |
 | Skills and plugins | 1 skill folder, 1 plugin, 1 marketplace entry |

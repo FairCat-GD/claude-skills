@@ -43,10 +43,12 @@ def _skills(_: Options) -> list[list[str]]:
 
 def _plugins(_: Options) -> list[list[str]]:
     # At the marketplace root the CLI does not open the plugins' skill files, so each plugin is
-    # validated too. --strict fails on its warnings as well, such as an unrecognised field.
+    # validated too. --strict fails on its warnings as well, such as an unrecognised field. The
+    # CLI is not pinned and a new release can add a warning, so the stage prints its version first.
     validate = ["claude", "plugin", "validate", "--strict"]
     plugins = [[*validate, _relative(folder)] for folder in plugin_folders(ROOT)]
-    return [[*validate, "."], *plugins, [PYTHON, "scripts/check_plugins.py"]]
+    version = ["claude", "--version"]
+    return [version, [*validate, "."], *plugins, [PYTHON, "scripts/check_plugins.py"]]
 
 
 def _hygiene(options: Options) -> list[list[str]]:
