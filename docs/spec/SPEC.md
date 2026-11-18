@@ -106,6 +106,9 @@ it belongs to.
     `FairCat-GD` (the licence, the marketplace, `approved_by`) and their name as commit author
     (decision 5). The hygiene stage of `verify` checks what `ARCHITECTURE.md`'s testing strategy
     lists, and the last read of each diff covers the rest.
+    **Amended 2026-11-18 by the user:** the owner's name is also published as each plugin's
+    `author` in its `plugin.json`, chosen over the handle at the start of Session 2. The handle
+    stays the marketplace's `owner.name` (decision 17).
 28. **Licence: MIT,** for the repository and every skill (`license: MIT` in each `SKILL.md`).
 29. **The remote is `origin`, the public `FairCat-GD/claude-skills`.** Every push is asked on
     its own, and each request says what the push makes installable: a push after Session 4

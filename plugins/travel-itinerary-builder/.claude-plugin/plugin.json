@@ -1,0 +1,10 @@
+{
+  "name": "travel-itinerary-builder",
+  "version": "1.0.1",
+  "description": "Build a day-by-day travel itinerary for a single city through a guided interview, deep web research, and a beautifully presented, mobile-friendly trip-themed PDF.",
+  "author": {
+    "name": "Svyat Marutyak"
+  },
+  "homepage": "https://github.com/FairCat-GD/claude-skills/blob/main/plugins/travel-itinerary-builder/README.md",
+  "license": "MIT"
+}

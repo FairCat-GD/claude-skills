@@ -1,7 +1,9 @@
 ---
 name: travel-itinerary-builder
-version: "1.0"
 description: Build a day-by-day travel itinerary for a single city through a guided interview, deep web research, and a beautifully presented, mobile-friendly trip-themed PDF. Use this skill whenever the user wants help planning a trip, building an itinerary, suggesting things to do in a city, putting together a sightseeing plan, organizing a vacation, recommending what to see/eat in a place they're visiting, or any phrasing like "I'm going to X, help me plan", "what should I see in X", "build me a trip plan for X", "make me an itinerary" — even if they don't use the word "itinerary" explicitly.
+license: MIT
+metadata:
+  version: "1.0.1"
 ---
 
 # Travel Itinerary Builder

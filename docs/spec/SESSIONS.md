@@ -339,6 +339,110 @@ Copied verbatim from the kit's `KICKOFF.md`. What the stage checks and why is
   registration; the owner's other installs are untouched.
 - **Move with `git mv`,** so history follows the files.
 
+**Done (2026-11-18, travel-itinerary-builder 1.0.1).**
+- **Decided with the user:**
+  - **The display fields of `plugin.json`** (*Ask at the start*): `author` and `homepage`, no
+    keywords, as recommended, except that `author` is the owner's name rather than the handle.
+    The name is not on the term list (checked by count only). This amends decision 27 (see
+    *Amendments*).
+  - **The descriptions:** the plugin's is the first sentence of its `SKILL.md` description; the
+    marketplace's is the root README's first sentence.
+  - **The by-hand install check:** run by the session, its outputs recorded below.
+  - **Confirms:** *Overview*, *Context* (`claude plugin validate`, the validator, GitHub),
+    *Layout and boundaries*, *The contract between the layers*, *travel-itinerary-builder*
+    (packaging and version), *Packaging* and the third bullet of *Deliberate decisions*, each
+    confirmed as built.
+- **The marketplace.** `.claude-plugin/marketplace.json`: `faircat-skills`, owner `FairCat-GD`,
+  its description under `metadata`, and one entry, `travel-itinerary-builder` with source
+  `./plugins/travel-itinerary-builder`, no version and no description.
+- **The itinerary plugin.**
+  - The skill folder moved with `git mv` to
+    `plugins/travel-itinerary-builder/skills/travel-itinerary-builder/`.
+  - `plugins/travel-itinerary-builder/.claude-plugin/plugin.json`: `name`, `version` `1.0.1`,
+    `description`, `author`, `homepage` and `license` `MIT`.
+  - F2: `SKILL.md`'s frontmatter lost `version` and gained `license: MIT` and
+    `metadata.version: "1.0.1"`; the description and every other line are unchanged. The
+    frontmatter grew by two lines, so a `SKILL.md` line the review cites as `:N` is now `:N+2`.
+- **The `skills` and `plugins` stages,** ahead of `format` in `STAGES`.
+  - `skills`: the Agent Skills validator through `uvx --python ">=3.11"`, pinned to commit
+    `83021e2be457a9b6679148719c1f6074f0ad975e`, on each skill folder, then
+    `scripts/check_skills.py`: a skill folder exists; `SKILL.md` under `SPEC_LINES` or its row in
+    `LINE_LIMITS` (empty); every file under `references/` linked from `SKILL.md`, and every path
+    it names present; `metadata.version` equal to the plugin's.
+  - `plugins`: `claude plugin validate --strict` on `.` and on each plugin, then
+    `scripts/check_plugins.py`: the marketplace's name; each entry's source, absent version, and
+    name agreeing with its manifest and folder; one skill folder per plugin, of its name; every
+    plugin folder listed; every name in `PUBLISHED` present.
+  - Every command `verify` runs now has stdin closed.
+  - The choices made within the design are in ARCHITECTURE's *verify*.
+- **Tests:** `tests/test_check_skills.py` (23) and `tests/test_check_plugins.py` (17), on
+  fictional plugin trees in a temporary folder; `tests/test_verify.py` (+3): the two stages'
+  commands, the validator's pin, and stdin closed. Its order test lists six stages.
+- **Docs.**
+  - The plugin's `README.md` (what it does, how it starts, install per target) and
+    `CHANGELOG.md` (`[1.0.1]` and `[1.0.0]`, as first published; the `[1.0.1]` link waits for
+    the commit's sha).
+  - The root README: the skill linked to its plugin README, an *Installing* section, and
+    *Developing* for six stages.
+  - `CLAUDE.md`: the plugin layout, rule 1 in the present, the published name, the Commands
+    table.
+  - `ARCHITECTURE.md`: the Built parts of the sections in the Read line, *Stack and pins* and
+    *Testing strategy*; invariants 1–3 and 8's *Enforced by*; the display fields under Decided,
+    with a *Decision log* line; the baseline.
+  - `SPEC.md`: decision 27's amendment. `docs/BACKLOG.md`: installing from GitHub.
+- **Amendments:**
+  - **`author` is the owner's name, not the handle.** The owner's answer at the start; recorded
+    as an **Amended 2026-11-18 by the user** note on decision 27, and in `CLAUDE.md`.
+  - **The stages check more than the block lists:** a reference `SKILL.md` names but that is
+    missing; an entry's source and that it sets no version; a plugin's folder name and its one
+    skill folder. Each holds a Decided rule (*Layout and boundaries*, *The contract between the
+    layers*, invariant 2). Amended at plan time, with the user.
+  - **`claude plugin validate` runs with `--strict`,** so its warnings fail too. Amended at plan
+    time, with the user.
+  - **The marketplace's description sits under `metadata`,** where the CLI's schema puts it;
+    `--strict` accepts it there. The session's own finding.
+- **Measured** (2026-11-18, `claude` 2.1.326, uv 0.12.3, the validator at `83021e2` on Python
+  3.12.13):
+  - `verify` whole takes about 6 s with uv's cache warm: `skills` 0.2 s, `plugins` 1.2 s,
+    `tests` 4.3 s. The first `skills` run fetched and built the validator in 3.1 s.
+  - With uv's cache warm, `skills` passes offline (`UV_OFFLINE=1`).
+  - `claude plugin validate --strict` passes both manifests. On the plugin it prints a
+    plugin-directory warning (no icon) and, before the root README had an install line, advice
+    to add one; neither changes its verdict. At the root it passed an entry named unlike its
+    manifest; only `check_plugins.py` caught that.
+- **Checked by hand** (stdin closed, from the root):
+  - `claude plugin marketplace add ./`: "Successfully added marketplace: faircat-skills
+    (declared in user settings)".
+  - `claude plugin install travel-itinerary-builder@faircat-skills`: "Successfully installed
+    plugin: travel-itinerary-builder@faircat-skills (scope: user)".
+  - `claude plugin details travel-itinerary-builder`: `travel-itinerary-builder 1.0.1`, the
+    description, and Skills (1) `travel-itinerary-builder`, with no agents, hooks, MCP or LSP
+    servers; about 227 tokens always on and 7.2k when invoked.
+  - `claude plugin marketplace remove faircat-skills`: removed, and "Also uninstalled 1 plugin
+    from this marketplace". Afterwards neither `claude plugin marketplace list` nor
+    `claude plugin list` shows either.
+  - Installing from GitHub waits for the push: in `docs/BACKLOG.md`.
+- **Falsified:**
+  - Each break at its own stage, run through the whole `verify`, with the file copied aside and
+    back:
+    - a `version` field in the frontmatter failed `skills` alone, from the validator;
+    - a new file under `references/` failed `skills` alone;
+    - `plugin.json` at `1.0.2` failed `skills` alone;
+    - an empty `plugins/probe/` failed `plugins` alone, from the CLI and the check;
+    - the entry named `travel-itinerary` failed `plugins` alone, as a name mismatch and a
+      published name missing;
+    - the marketplace named `faircat-skill` failed `plugins` alone.
+  - The validator on an empty uv cache with no network (`UV_OFFLINE=1`, a scratch
+    `UV_CACHE_DIR`) failed `skills`, with uv's error naming the fetch it could not make.
+  - Eighteen mutations of the new code, one at a time, each failing its own unit test: every
+    check in the two scripts turned off or loosened, the line count by `splitlines()`, the
+    fragment kept on a path, stdin left open, and the stages' order swapped. The first run
+    missed one, a mutant the metadata test could not tell apart; the test now holds another
+    field's map, and a sharper mutant fails it.
+- **Numbers:** 95 unit tests (+43): 45 in `test_hygiene.py`, 23 in `test_check_skills.py`, 17
+  in `test_check_plugins.py`, 10 in `test_verify.py`, with 0 skipped. 6 `verify` stages (+2); 8
+  Python files (+4); 1 skill folder, 1 plugin; 0 hits in pushed history.
+
 ---
 
 ## 3: The itinerary fixes

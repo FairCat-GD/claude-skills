@@ -1,0 +1,15 @@
+{
+  "name": "faircat-skills",
+  "owner": {
+    "name": "FairCat-GD"
+  },
+  "metadata": {
+    "description": "Ready-to-use Agent Skills that give Claude new superpowers."
+  },
+  "plugins": [
+    {
+      "name": "travel-itinerary-builder",
+      "source": "./plugins/travel-itinerary-builder"
+    }
+  ]
+}

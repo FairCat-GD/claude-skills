@@ -1,8 +1,11 @@
 # claude-skills
 
 A public collection of Agent Skills, one Claude Code plugin per skill, in one marketplace,
-`faircat-skills`. Each skill also works as a plain skill folder in Codex, claude.ai and any
-agent that loads `SKILL.md`. The marketplace name and each plugin's and skill's name
+`faircat-skills`. `.claude-plugin/marketplace.json` lists each plugin; `plugins/<skill>/` holds
+its `.claude-plugin/plugin.json`, `README.md` and `CHANGELOG.md`; and
+`plugins/<skill>/skills/<skill>/` is the skill folder that ships, `SKILL.md` and `references/`.
+Each skill also works as a plain skill folder in Codex, claude.ai and any agent that loads
+`SKILL.md`. The marketplace name and each plugin's and skill's name
 (`travel-itinerary-builder`, `crux-finder`) never change once published, because people install
 by them.
 
@@ -30,8 +33,8 @@ them) and anything still open moves to `docs/BACKLOG.md`. **State lives in
 `docs/next-session-prompt.md`**, rewritten by every session as its last act.
 
 1. `uv run scripts/verify.py` (skills + plugins + format + lint + tests + hygiene) must be green
-   before you commit, docs-only commits included. Today it runs the last four; Session 2 adds
-   `skills` and `plugins`. Run a skill's evals only when your block names
+   before you commit, docs-only commits included. `skills` needs the network while uv's cache
+   is cold, and `plugins` needs the `claude` CLI. Run a skill's evals only when your block names
    them; expected results are in ARCHITECTURE.md's baseline table.
 2. Falsify any new check before trusting it: break the assertion, watch it fail at its own
    step, restore it.
@@ -86,7 +89,8 @@ follows these rules:
   private goes on the term list.
 
 The owner publishes on purpose the handle `FairCat-GD` (licence, marketplace owner,
-`approved_by`) and their name as commit author. The hygiene stage of `verify`
+`approved_by`) and their name as commit author and as each plugin's `author` in its
+`plugin.json`. The hygiene stage of `verify`
 (`uv run scripts/verify.py hygiene`) checks the term list in `~/.config/hygiene/terms.txt`,
 attribution in messages, secrets and conflict markers; the last read of each diff covers the
 rest of this list.
@@ -95,13 +99,15 @@ rest of this list.
 
 | Command | Does |
 |---|---|
-| `uv run scripts/verify.py [stage …] [--message <draft>] [--all]` | The gate: the named stages (`format`, `lint`, `tests`, `hygiene`), or all of them in that order, each run even after one fails, then a summary. `--message` and `--all` go to `hygiene`, which must be among the stages run |
+| `uv run scripts/verify.py [stage …] [--message <draft>] [--all]` | The gate: the named stages (`skills`, `plugins`, `format`, `lint`, `tests`, `hygiene`), or all of them in that order, each run even after one fails, then a summary. `--message` and `--all` go to `hygiene`, which must be among the stages run |
 | `uv run scripts/verify.py --message "$(git rev-parse --git-dir)/COMMIT_DRAFT"` | The last act before each commit: every stage, with the drafted message checked by `hygiene` |
 | `uv run scripts/verify.py hygiene --all` | Hygiene's full scan, on demand; it also runs by itself when the term list or the stage changes, or in a checkout with no stamp |
 | `uv run ruff format .` and `uv run ruff check --fix .` | Apply what `format` checks, and the fixable part of what `lint` checks |
 | `uv run pytest tests/test_hygiene.py -k <name>` | One test file, or the tests whose names match |
+| `uv run scripts/check_skills.py` and `uv run scripts/check_plugins.py` | The `skills` and `plugins` stages' own checks alone, without the validators |
+| `claude plugin validate --strict <path>` | The CLI's check of the marketplace (`.`) or of one plugin (`plugins/<skill>`), as the `plugins` stage runs it |
 
-Filled in further by Sessions 2 and 5. No test reads the owner's term list or touches the real
+Filled in further by Session 5. No test reads the owner's term list or touches the real
 hygiene stamp, `results/` or `cases/`.
 
 **Exclusive resources:** the eval runner (it writes `results/` and spends real model runs) and
@@ -134,6 +140,7 @@ check, a script or a pin makes it impossible.
 - **A real transcript can hold a word on the term list.** Ask the owner; never trim a quote
   silently.
 - **`claude plugin marketplace add ./` registers this folder in the owner's user settings.**
-  Remove it with `claude plugin marketplace remove faircat-skills` before the session ends.
+  Remove it with `claude plugin marketplace remove faircat-skills` before the session ends; that
+  also uninstalls the plugins installed from it, and nothing else.
 - Do not finish with `verify` red, or with a skill's change missing from its plugin's
   `CHANGELOG.md`.

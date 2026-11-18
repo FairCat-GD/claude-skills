@@ -10,8 +10,17 @@ import time
 from collections.abc import Callable
 from pathlib import Path
 
+from check_plugins import plugin_folders
+from check_skills import skill_folders
+
 ROOT = Path(__file__).resolve().parent.parent
 PYTHON = sys.executable
+# The Agent Skills validator, pinned to a commit of agentskills/agentskills. It needs Python 3.11
+# or newer, so uvx runs it on an interpreter of its own; a cold uv cache needs the network.
+VALIDATOR = (
+    "git+https://github.com/agentskills/agentskills"
+    "@83021e2be457a9b6679148719c1f6074f0ad975e#subdirectory=skills-ref"
+)
 
 
 class Options(argparse.Namespace):
@@ -22,6 +31,24 @@ class Options(argparse.Namespace):
 Stage = Callable[[Options], list[list[str]]]
 
 
+def _relative(path: Path) -> str:
+    return path.relative_to(ROOT).as_posix()
+
+
+def _skills(_: Options) -> list[list[str]]:
+    validate = ["uvx", "--python", ">=3.11", "--from", VALIDATOR, "skills-ref", "validate"]
+    validator = [[*validate, _relative(folder)] for folder in skill_folders(ROOT)]
+    return [*validator, [PYTHON, "scripts/check_skills.py"]]
+
+
+def _plugins(_: Options) -> list[list[str]]:
+    # At the marketplace root the CLI does not open the plugins' skill files, so each plugin is
+    # validated too. --strict fails on its warnings as well, such as an unrecognised field.
+    validate = ["claude", "plugin", "validate", "--strict"]
+    plugins = [[*validate, _relative(folder)] for folder in plugin_folders(ROOT)]
+    return [[*validate, "."], *plugins, [PYTHON, "scripts/check_plugins.py"]]
+
+
 def _hygiene(options: Options) -> list[list[str]]:
     draft = [] if options.message is None else ["--message", str(options.message)]
     full = ["--all"] if options.all else []
@@ -29,6 +56,8 @@ def _hygiene(options: Options) -> list[list[str]]:
 
 
 STAGES: dict[str, Stage] = {
+    "skills": _skills,
+    "plugins": _plugins,
     "format": lambda _: [[PYTHON, "-m", "ruff", "format", "--check", "."]],
     "lint": lambda _: [[PYTHON, "-m", "ruff", "check", "."]],
     "tests": lambda _: [[PYTHON, "-m", "pytest"]],
@@ -40,7 +69,8 @@ HYGIENE_FLAGS = {"message": "--message", "all": "--all"}
 
 def _call(command: list[str]) -> bool:
     try:
-        return subprocess.run(command, cwd=ROOT).returncode == 0
+        # stdin closed: no stage reads it, and a tool left waiting on it would hang the gate.
+        return subprocess.run(command, cwd=ROOT, stdin=subprocess.DEVNULL).returncode == 0
     except OSError as error:
         print(f"verify: cannot run {command[0]}: {error}")
         return False

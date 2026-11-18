@@ -31,9 +31,11 @@ and other agents copy, and what claude.ai receives as a zip. The plugin wraps it
 manifest, a README that is its user guide, and a changelog. The evals are a skill's harness,
 outside the shipped folders. The tooling proves the repository is sound and ships nowhere.
 
-**Built.** The tooling: `scripts/verify.py`, `scripts/hygiene.py` and `tests/`. The marketplace
-and the plugins: not yet, Session 2. Today the repository holds one skill folder,
-`travel-itinerary-builder/`, at its root.
+**Built.** The marketplace, `.claude-plugin/marketplace.json`, lists one plugin,
+`plugins/travel-itinerary-builder/`, whose skill folder is
+`plugins/travel-itinerary-builder/skills/travel-itinerary-builder/`. The tooling:
+`scripts/verify.py`, `scripts/hygiene.py`, `scripts/check_skills.py`, `scripts/check_plugins.py`
+and `tests/`. The evals: not yet, Session 5.
 
 ## Context
 
@@ -59,9 +61,24 @@ and the plugins: not yet, Session 2. Today the repository holds one skill folder
 - **GitHub.** `origin` is the public `FairCat-GD/claude-skills`. People add the marketplace from
   it and receive a skill's change only when that skill's version moves.
 
-**Built.** Not yet: Session 2 (`claude plugin validate`, the validator), Session 4 (`claude -p`,
-claude.ai). Measured at intake, 2026-11-17: `claude` 2.1.326; uv 0.12.3; Python 3.10.20
-installed through uv.
+**Built.**
+- **`claude plugin validate --strict`** runs in the `plugins` stage, on the marketplace root and
+  on each plugin. `--strict` fails on its warnings too, such as an unrecognised field. Its advice
+  and its plugin-directory warnings (a missing icon) do not change its verdict, so they print
+  without failing. At the root it passed an entry whose name differs from its plugin's
+  manifest, so that agreement is the stage's own check. `marketplace add`, `install`, `details`
+  and `marketplace remove` were run by hand in Session 2, on this folder.
+- **The Agent Skills validator** runs in the `skills` stage on each skill folder, through `uvx`
+  on uv's Python 3.12.13, pinned as *Stack and pins* says. At its pinned commit it allows exactly
+  the specification's frontmatter fields and checks the name against the folder, so it and the
+  specification agree. With uv's cache warm it runs offline; on a cold cache with no network the
+  stage fails, with uv's error naming the fetch.
+- **GitHub:** `origin` is `https://github.com/FairCat-GD/claude-skills.git`. Adding the
+  marketplace from it waits for a push (`docs/BACKLOG.md`).
+- Not yet: Session 4 (`claude -p`, claude.ai).
+
+Measured at intake, 2026-11-17, and again in Session 2, 2026-11-18: `claude` 2.1.326; uv 0.12.3;
+Python 3.10.20 installed through uv.
 
 ## Stack and pins
 
@@ -83,7 +100,10 @@ is there only because uv refuses a `[project]` table without one; nothing reads 
 and pytest 9.2.0 are pinned exactly in the `dev` group and locked in `uv.lock`. ruff's `include`
 is Python files and `pyproject.toml` only, because its default also formats the Python code
 blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E`, `F`, `W`, `I`,
-`UP`, `B` and `RUF`, with lines of 100. The validator: not yet, Session 2.
+`UP`, `B` and `RUF`, with lines of 100. The validator is pinned to commit
+`83021e2be457a9b6679148719c1f6074f0ad975e` of `agentskills/agentskills` (its `main` on
+2026-11-18), in `scripts/verify.py`'s `VALIDATOR`. `uvx` runs it on Python 3.11 or newer
+(`--python ">=3.11"`), so it is in neither `pyproject.toml` nor `uv.lock`.
 
 ## Layout and boundaries
 
@@ -107,22 +127,41 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
     reading it as code.
   - `verify` never runs the evals.
 
-**Built.** `scripts/` holds `verify.py` and `hygiene.py`, both standard library only. `tests/`
-holds `test_verify.py`, `test_hygiene.py` and `fixtures/terms.txt`, a term list of three
-fictional words. The tests import the scripts through pytest's `pythonpath`. Not yet: Session 2
-(the marketplace and `plugins/`), Session 5 (`evals/`). *Enforced by:* not yet.
+**Built.**
+- `.claude-plugin/marketplace.json`, and `plugins/travel-itinerary-builder/` with
+  `.claude-plugin/plugin.json`, `README.md`, `CHANGELOG.md` and `skills/travel-itinerary-builder/`
+  (`SKILL.md` and four files under `references/`).
+- `scripts/` holds `verify.py`, `hygiene.py`, `check_skills.py` and `check_plugins.py`, all
+  standard library only. The two checks are named for their stages with a `check_` prefix, so
+  neither reads as the `plugins/` folder on the import path.
+- `tests/` holds `test_verify.py`, `test_hygiene.py`, `test_check_skills.py`,
+  `test_check_plugins.py` and `fixtures/terms.txt`, a term list of three fictional words. The
+  check tests build fictional plugin trees in a temporary folder. The tests import the scripts
+  through pytest's `pythonpath`.
+- Not yet: Session 5 (`evals/`).
+
+*Enforced by,* in part:
+- The `skills` stage holds a skill folder's references one level deep from `SKILL.md`: every file
+  under `references/` is linked from `SKILL.md`, and every `references/` path it names exists.
+- The `plugins` stage holds the shape of `plugins/`: every folder listed, each holding one skill
+  folder of its plugin's name.
+- The last read of each diff covers the rest: that nothing under `plugins/` refers to `evals/`,
+  `scripts/` or `tests/`, and that `evals/` reaches a skill only through the CLI or a zip.
 
 ## The invariants
 
 1. **Every skill folder conforms to the Agent Skills specification.** *Why:* every target
-   loads the folder as the specification defines it. *Enforced by* the `skills` stage (Session
-   2).
+   loads the folder as the specification defines it. *Enforced by* the `skills` stage: the Agent
+   Skills validator on every skill folder.
 2. **A skill's names agree everywhere:** its folder, its `SKILL.md` `name`, its plugin folder,
    its `plugin.json` `name` and its marketplace entry, and every plugin folder is listed.
    *Why:* an entry name unlike its manifest name fails at install. *Enforced by* the `plugins`
-   stage (Session 2).
+   stage (`scripts/check_plugins.py`): each entry's name equals its manifest's and its folder's,
+   the plugin holds one skill folder of that name, and every plugin folder is listed. The
+   validator in the `skills` stage holds `SKILL.md`'s `name` equal to its folder.
 3. **A skill's version is the same in its `plugin.json` and its `metadata.version`.** *Why:* the
-   copy and zip targets show only the second. *Enforced by* the `skills` stage (Session 2).
+   copy and zip targets show only the second. *Enforced by* the `skills` stage
+   (`scripts/check_skills.py`).
 4. **crux-finder ships no scripts and needs no network or dependencies.** *Why:* PDD B,
    *Scope*. *Enforced by* the `skills` stage, which fails on a `scripts/` folder (Session 4).
 5. **Everything under `evals/` imports the standard library only.** *Why:* PDD B, *Scope*.
@@ -135,7 +174,9 @@ fictional words. The tests import the scripts through pytest's `pythonpath`. Not
    `checks.py`, from `git log` (Session 5).
 8. **Published names are never renamed:** the marketplace `faircat-skills`, and each plugin's and
    skill's name. *Why:* people install by them, and a rename strands their install. *Enforced
-   by* the `plugins` stage, against a list of the published names (Session 2).
+   by* the `plugins` stage, against the published names in `scripts/check_plugins.py`
+   (`MARKETPLACE` and `PUBLISHED`); a plugin's skill folder takes its name, so the same check
+   holds the skill's.
 9. **Nothing private enters the repository.** *Why:* the repository is public, and history
    cannot be cleaned without a rewrite. *Enforced by* the hygiene stage of `verify`
    (`scripts/hygiene.py`): the owner's term list against every file, path and commit message,
@@ -154,8 +195,19 @@ fictional words. The tests import the scripts through pytest's `pythonpath`. Not
   session that changes a skill's shipped files bumps both, and adds the plugin's changelog
   entry.
 - **Licence:** `license: MIT` in every `SKILL.md` and `plugin.json`.
+- **Display fields** (settled 2026-11-18): each `plugin.json` also carries `author`, the owner's
+  name, and `homepage`, the plugin's README on GitHub; no keywords.
 
-**Built.** Not yet: Session 2.
+**Built.**
+- The marketplace's one entry is `{"name": "travel-itinerary-builder", "source":
+  "./plugins/travel-itinerary-builder"}`. It carries no description, so a plugin's description
+  is set once, in its `plugin.json`, and `claude plugin validate --strict` accepts it so.
+- The marketplace's own description, under `metadata`, is the root README's first sentence. The
+  plugin's is the first sentence of its `SKILL.md` description. Both were the owner's choice.
+- `plugin.json` holds `name`, `version`, `description`, `author`, `homepage` and `license`.
+  `SKILL.md` holds `name`, `description`, `license` and `metadata.version`.
+- The `plugins` stage fails an entry that sets a version or a source other than
+  `./plugins/<plugin>`. The `skills` stage fails a `metadata.version` unlike its plugin's.
 
 ## The data layer
 
@@ -190,12 +242,30 @@ One command serves every commit, docs only or not.
 
 **Built.** `scripts/verify.py`. Its `STAGES` maps each name to the commands it runs, in this
 order:
+- `skills`: the validator (*Stack and pins*) on each skill folder, `plugins/*/skills/*/`, then
+  `scripts/check_skills.py`. That checks:
+  - that there is at least one skill folder;
+  - that `SKILL.md` is under its limit: the specification's, `SPEC_LINES` (500), or the skill's
+    own row in `LINE_LIMITS`, the one table of per-skill limits, empty today. Lines are counted
+    at newlines, as hygiene counts them;
+  - that every file under `references/` is linked from `SKILL.md`, and every `references/` path
+    `SKILL.md` names exists;
+  - that `metadata.version` equals `plugin.json`'s `version`.
+- `plugins`: `claude plugin validate --strict` on `.` and on each `plugins/<plugin>/`, then
+  `scripts/check_plugins.py`. That checks:
+  - that the marketplace is named `faircat-skills`;
+  - that each entry's source is `./plugins/<plugin>` and it sets no version;
+  - that its name, its manifest's and its folder's agree, and the plugin holds one skill folder,
+    of that name;
+  - that every folder under `plugins/` is listed, and every name in `PUBLISHED` has an entry.
 - `format`: `ruff format --check .`
 - `lint`: `ruff check .`
 - `tests`: `pytest`, which reads `testpaths` and its flags from `pyproject.toml`
 - `hygiene`: `scripts/hygiene.py`
 
-Each command runs from the root through the interpreter `uv run` gives `verify`. Every stage runs
+Each command runs from the root with stdin closed, so no tool, `claude` included, waits on it.
+The Python ones run through the interpreter `uv run` gives `verify`; `uvx` and `claude` are found
+on `PATH`, and a missing one fails its stage with `verify: cannot run <tool>`. Every stage runs
 even after one fails. Then the summary prints PASS or FAIL and the time for each stage, followed
 by `verify: PASS` or `verify: FAIL (<stages>)`, and the exit code is 1 on any failure.
 `--message <draft>` and `--all` are passed to `hygiene`. A run that gives either without
@@ -205,9 +275,25 @@ Every tool skips `.claude/worktrees/` at the root:
 - ruff by `extend-exclude`, which is anchored at the project root, and by `.gitignore`;
 - pytest by `testpaths` and `--ignore=.claude/worktrees`, since it does not read `.gitignore`;
 - hygiene by skipping every path under it, and by git's ignore rules from the root
-  `.gitignore`.
+  `.gitignore`;
+- `skills` and `plugins` by reading only `.claude-plugin/` and `plugins/` at the root.
 
-Not yet: Session 2 (`skills`, `plugins`), which go ahead of `format` in `STAGES`.
+Decisions made here, each with its why:
+- **"Linked" means named by its path,** in a Markdown link or in backticks, because the
+  itinerary skill names its references in backticks and a skill's text does not change to suit a
+  check. A fragment or a sentence's last mark is not part of the path.
+- **A reference `SKILL.md` names but that is missing fails too:** it is a broken link in what
+  ships, found by the same comparison.
+- **Dotfiles under `references/` are skipped:** the system's `.DS_Store` is no part of the
+  skill, and git ignores it.
+- **The frontmatter is read without a YAML library,** so the scripts stay standard library only.
+  Only `metadata`'s block form is read; any other form reads as no `metadata.version` and fails
+  rather than passes. The validator parses the whole frontmatter, with strictyaml.
+- **Folder discovery lives in the two checks, and `verify` imports it,** so a stage and its
+  checks never disagree on what a skill or plugin folder is.
+- **An entry that sets a version fails,** which holds *Deliberate decisions*' third bullet.
+- **`claude plugin validate` runs with `--strict`,** so an unrecognised or misspelt field fails
+  instead of printing a warning.
 
 ## The hygiene stage
 
@@ -276,10 +362,13 @@ capability is missing it says what it does instead; its minimum environment is s
 `compatibility` (wording settled in Session 3). Version 1.0.1 after the restructure, 1.1.0
 after the review's fixes.
 
-**Built.** Version 1.0 in its frontmatter, at the repository root, as first published
-(2026-07-22), except the seven example lines of F1, which now use Lisbon. They are unreleased
-until 1.0.1 (`SPEC.md` decision 18). The audit is `docs/spec/REVIEW-2026-11-17.md`. Packaging
-and version: not yet, Session 2; targets: not yet, Session 3.
+**Built.** Version 1.0.1 (2026-11-18), in `plugins/travel-itinerary-builder/`: the skill as
+first published (2026-07-22, `1.0.0` in its changelog), with F1's seven example lines on Lisbon
+and F2's frontmatter (`license: MIT` and `metadata.version` added, `version` removed). Its README
+is its user guide: what it does, and its install on each target. The audit is
+`docs/spec/REVIEW-2026-11-17.md`. Its `SKILL.md` line numbers predate F2, which added two lines
+to the frontmatter, so a line it cites as `:N` is now `:N+2`. Targets and minimum environment:
+not yet, Session 3.
 
 ## crux-finder
 
@@ -317,8 +406,9 @@ before every commit. The harness is each skill's eval set. The commands are in `
 | Evals | Where a block names them | A skill's behaviour on fixed cases, judged by the owner and `checks.py` | Cases outside the set; targets not run |
 | By hand | Recorded in done-notes | Installs, claude.ai, a whole interview | Anything not written down; what nobody checked goes to the backlog |
 
-Built: Unit (`tests/test_verify.py`, `tests/test_hygiene.py`) and Hygiene. Not yet: Validators,
-Session 2; Evals, Session 5.
+Built: Validators (the `skills` and `plugins` stages), Unit (`tests/test_verify.py`,
+`tests/test_hygiene.py`, `tests/test_check_skills.py`, `tests/test_check_plugins.py`) and
+Hygiene. Not yet: Evals, Session 5.
 
 ## Packaging
 
@@ -331,7 +421,12 @@ Session 2; Evals, Session 5.
 - **Releases:** a skill's version moves in its own session; crux-finder 1.0.0 is tagged
   `crux-finder--v1.0.0`. Pushes and tags are each the owner's yes.
 
-**Built.** Not yet: Session 2 (the marketplace), Session 4 (the claude.ai zip).
+**Built.** The marketplace, checked locally: `claude plugin marketplace add ./` and
+`claude plugin install travel-itinerary-builder@faircat-skills` installed it, and
+`claude plugin details` listed its one skill at 1.0.1. Adding it from GitHub waits for a push
+(`docs/BACKLOG.md`). The itinerary plugin's README gives each target's install, the claude.ai
+zip included. travel-itinerary-builder 1.0.1 is untagged. Not yet: Session 4 (a claude.ai
+upload, run).
 
 ## Deliberate decisions
 
@@ -349,19 +444,23 @@ None yet.
 
 ## Baseline
 
-Measured 2026-11-18 with Python 3.10.20, uv 0.12.3, ruff 0.17.5 and pytest 9.2.0. The heading
-carries no version because the repository has none of its own: each skill has its own version.
+Measured 2026-11-18 with Python 3.10.20, uv 0.12.3, ruff 0.17.5, pytest 9.2.0, `claude` 2.1.326
+and the validator at `83021e2`. The heading carries no version because the repository has none
+of its own: each skill has its own version.
 
 | Check | Expected |
 |---|---|
-| `uv run scripts/verify.py` | green: 4 stages (`format`, `lint`, `tests`, `hygiene`), about 5 s |
-| Unit tests (`tests`) | 52 passed, 0 skipped: 45 in `test_hygiene.py`, 7 in `test_verify.py` |
+| `uv run scripts/verify.py` | green: 6 stages (`skills`, `plugins`, `format`, `lint`, `tests`, `hygiene`), about 6 s with uv's cache warm |
+| Unit tests (`tests`) | 95 passed, 0 skipped: 45 in `test_hygiene.py`, 23 in `test_check_skills.py`, 17 in `test_check_plugins.py`, 10 in `test_verify.py` |
 | `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
-| Python files (`ruff format --check .`) | 4 |
+| Python files (`ruff format --check .`) | 8 |
+| Skills and plugins | 1 skill folder, 1 plugin, 1 marketplace entry |
 
 A documentation or refactoring change should not move any of these. If one moves, that is the
 finding.
 
 ## Decision log
 
-None yet.
+- 2026-11-18, Session 2: *The contract between the layers* gains the plugins' display fields:
+  `author`, the owner's name, and `homepage`, the plugin's README on GitHub; no keywords. The
+  owner settled it at the start of Session 2.
