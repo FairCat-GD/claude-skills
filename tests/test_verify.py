@@ -51,9 +51,12 @@ def test_an_unknown_stage_exits_2(calls: list[list[str]]) -> None:
 
 
 @pytest.mark.parametrize("flags", [["--message", "draft"], ["--all"]])
-def test_a_hygiene_flag_without_hygiene_exits_2(calls: list[list[str]], flags: list[str]) -> None:
+def test_a_hygiene_flag_without_hygiene_exits_2(
+    calls: list[list[str]], flags: list[str], capsys: pytest.CaptureFixture[str]
+) -> None:
     assert verify.main(["lint", *flags]) == 2
     assert calls == []
+    assert capsys.readouterr().out == f"verify: the hygiene stage reads {flags[0]}; name it too\n"
 
 
 def test_the_hygiene_flags_reach_the_stage(calls: list[list[str]], tmp_path: Path) -> None:

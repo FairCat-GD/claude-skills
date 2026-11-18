@@ -15,8 +15,10 @@ Release travel-itinerary-builder 1.0.1.
 ## State you need that is not in the specs
 
 - **Round 1 is a home for many skills**: Sessions 0 and 1 are done; Sessions 2–8 remain.
-- **Session 1 is committed locally, not pushed.** `origin/main` holds everything through
-  `review: rules that contradicted Session 1's scope, …`.
+- **Session 1 and its review fixes are pushed.** `origin/main` holds everything through
+  `review: a merge of pushed work no longer fails hygiene, …`; no local commit waits for a
+  push. The push published the tooling and the skill's Lisbon examples. There is no marketplace
+  yet, so nothing new is installable.
 - **What Session 1 left that Session 2 builds on:**
   - `scripts/verify.py`'s `STAGES` maps each stage name to a function that returns the commands
     it runs, each a list of arguments run from the root. `skills` and `plugins` go ahead of
@@ -37,7 +39,7 @@ Release travel-itinerary-builder 1.0.1.
     ruff to Python files and `pyproject.toml`, so the skill's Markdown stays as written.
   - uv refuses a `[project]` table without `version`, so `pyproject.toml` has `0.0.0`, which
     nothing reads.
-- **Baseline** (ARCHITECTURE's table): `verify` green with 4 stages; 49 unit tests passed, 0
+- **Baseline** (ARCHITECTURE's table): `verify` green with 4 stages; 52 unit tests passed, 0
   skipped; `hygiene --all` green, with 0 hits in pushed history. Session 2 adds two stages and
   their tests.
 - **Not done:** nothing from block 1.

@@ -246,6 +246,36 @@ Copied verbatim from the kit's `KICKOFF.md`. What the stage checks and why is
     part.
 - **Numbers:** 49 unit tests (+49): 42 in `test_hygiene.py` (19 ported, 23 new) and 7 in
   `test_verify.py`, with 0 skipped. 4 `verify` stages; 0 hits in pushed history; 4 Python files.
+- **Review (`/code-review high`), 9 findings: 9 fixed and 0 skipped.** The user chose to fix all
+  nine.
+  - **A merge of pushed work failed the routine run on pushed content.** Each commit on no remote
+    was compared with its first parent, so a local merge of pushed upstream work (a `git pull`
+    with an unpushed commit) read the upstream files as unpushed. A merge now lists only the
+    paths that differ from every parent (`--diff-merges=combined`), the content it made itself.
+  - **One `git diff` per commit on no remote**, which meant every commit in a repository with no
+    remote. One `git log` call now gives each such commit's message and paths.
+  - **Line numbers came from `str.splitlines()`**, which also breaks on form feeds and Unicode
+    separators, while attribution counted newlines. Every line is now counted at newlines
+    only.
+  - **The AWS key could match inside base64**, since its bound let lowercase letters, `+` and `/`
+    sit beside it. It is now bounded by base64's alphabet too. This amends the design's letter
+    ("bounded by characters that cannot belong to it") on the user's go-ahead, because a false
+    alarm would block the gate for nothing.
+  - **Working-tree files were read up to three times in one scan.** They are now read once, and
+    `scan_stored` compares against that read.
+  - **The routine run listed the unpushed commits twice and checked for commits twice.** Both
+    now come from the one `git log` call, and `commit_messages` reads only the full history.
+  - **Hygiene's skip of `.claude/worktrees/` rested on `.gitignore` alone.** The stage now skips
+    paths under it at the root itself, and a test holds that.
+  - **The baseline's "4 Python files under ruff" was ambiguous**, since ruff also lists
+    `pyproject.toml`. The row now names `ruff format --check .`.
+  - **`verify`'s message said "--message and --all is read".** It now reads "the hygiene stage
+    reads …", and a test pins the exact output.
+  - **Falsified:** four mutations each failed only their new test: a merge compared with its first
+    parent; lines split by `splitlines()`; the AWS bound without base64; part checkouts read. A
+    changed `verify` message failed its test.
+  - **Numbers after the review:** 52 unit tests (+3): 45 in `test_hygiene.py`, 7 in
+    `test_verify.py`, with 0 skipped. 4 stages; 0 hits in pushed history; 4 Python files.
 
 ---
 

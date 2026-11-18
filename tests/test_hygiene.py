@@ -230,10 +230,37 @@ def test_lookalikes_of_a_secret_pass(tmp_path: Path) -> None:
         "risk-" + "Ab1" * 16,
         "github" + "_pat_TEST",
         "AKIA" + "Q7" * 8 + "X",
+        "data:image/png;base64,iVBOR" + "ASIA" + "Q7" * 8 + "wgAAA",
+        "sha512-" + "AKIA" + "Q7" * 8 + "/x+Y==",
         "sk-" + "Ab1" * 16 + "c",
     ]
     (tmp_path / "notes.txt").write_text("".join(f"{line}\n" for line in lookalikes))
     assert hygiene.scan_files(tmp_path, ["notes.txt"], frozenset()) == []
+
+
+def test_line_numbers_count_newlines_only(tmp_path: Path, terms: Terms) -> None:
+    # A form feed or a Unicode line separator does not start a line for an editor or for git.
+    (tmp_path / "notes.txt").write_text(f"one\fstill one\u2028and still\nabout {PROBE}\n")
+    assert hygiene.scan_files(tmp_path, ["notes.txt"], terms(PROBE)) == [
+        "notes.txt:2: private term"
+    ]
+    # A term and an attribution on one line get one line number.
+    draft = f"fix: one\n\nx\u2028About {PROBE}, {GENERATED}"
+    assert hygiene.scan_draft(draft, terms(PROBE)) == [
+        "commit message draft, line 3: generated-with line",
+        "commit message draft, line 3: private term",
+    ]
+
+
+def test_a_part_checkout_at_the_root_is_skipped(tmp_path: Path, terms: Terms) -> None:
+    _git(tmp_path, "init", "-q", "-b", "main")
+    for folder in (".claude/worktrees/part", "docs/.claude/worktrees/part"):
+        (tmp_path / folder).mkdir(parents=True)
+        (tmp_path / folder / "notes.txt").write_text(f"about {PROBE}\n")
+    for full in (False, True):
+        assert hygiene.scan(tmp_path, terms(PROBE), full=full).problems == [
+            "docs/.claude/worktrees/part/notes.txt:1: private term"
+        ]
 
 
 def test_a_tracked_env_file_fails_and_an_example_passes(tmp_path: Path) -> None:
@@ -383,6 +410,26 @@ def test_a_routine_run_reads_a_commit_on_no_remote_and_skips_a_pushed_one(
     assert hygiene.scan(repo, terms(PROBE)) == hygiene.Result(
         [f"commit {unpushed[:12]}, message line 3: private term"], []
     )
+
+
+def test_a_merge_of_pushed_work_reads_only_what_the_merge_made(repo: Path, terms: Terms) -> None:
+    _commit(repo, "docs: a readme", {"README.md": "A fictional project.\n"})
+    _push(repo)
+    _git(repo, "checkout", "-q", "-b", "upstream")
+    _commit(repo, "docs: notes", {"notes.txt": f"about {PROBE}\n"})
+    _git(repo, "push", "-q", "origin", "upstream")
+    _git(repo, "checkout", "-q", "main")
+    _commit(repo, "docs: local", {"local.txt": "clean\n"})
+    _git(repo, "merge", "-q", "--no-edit", "upstream")
+    listed = terms(PROBE)
+    # The pushed term came with the merge's second parent, already pushed: it never fails.
+    assert hygiene.scan(repo, listed).problems == []
+    # Content the merge itself made, as when resolving a conflict, is read.
+    (repo / "resolved.txt").write_text(f"about {PROBE}\n")
+    _git(repo, "add", "resolved.txt")
+    _git(repo, "commit", "-q", "--amend", "--no-edit")
+    _git(repo, "reset", "-q")
+    assert hygiene.scan(repo, listed).problems == ["resolved.txt:1: private term"]
 
 
 def test_a_file_committed_without_the_stage_is_read_as_it_stands_at_head(

@@ -66,7 +66,8 @@ _KEY = "A-Za-z0-9_-"
 # key header is split so that scanners looking for its literal text pass over this file.
 _SECRETS = {
     "private-key header": re.compile("-" * 5 + "BEGIN (?:[A-Z0-9]+ )*PRIVATE KEY" + "-" * 5),
-    "AWS access key": _bounded("(?:AKIA|ASIA)[A-Z0-9]{16}", "A-Z0-9"),
+    # Bounded by base64's alphabet too, so a run inside an encoded blob or a hash is not one.
+    "AWS access key": _bounded("(?:AKIA|ASIA)[A-Z0-9]{16}", "A-Za-z0-9+/"),
     "GitHub token": _bounded(
         "gh[pousr]_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9]{22}_[A-Za-z0-9]{59}", "A-Za-z0-9_"
     ),
@@ -78,6 +79,9 @@ _SECRETS = {
 _MARKERS = ("<" * 7 + " ", ">" * 7 + " ")
 # Names that hold examples rather than secrets.
 _ENV_EXAMPLES = frozenset({".env.example", ".env.sample", ".env.template"})
+# Where a parallel part's checkout lives, at the root only: a part's own run inside such a
+# checkout still reads its own files.
+_PART_CHECKOUTS = ".claude/worktrees/"
 
 
 class TermsError(Exception):
@@ -112,7 +116,7 @@ def load_terms(path: Path) -> frozenset[str]:
             f"no term list at {_shown(path)}; create it, empty if nothing is private"
         ) from None
     terms = set()
-    for number, line in enumerate(text.splitlines(), 1):
+    for number, line in enumerate(_lines(text), 1):
         word = _fold(line.strip())
         if not word or word.startswith("#"):
             continue
@@ -121,6 +125,12 @@ def load_terms(path: Path) -> frozenset[str]:
             raise TermsError(f"{_shown(path)}:{number}: not one word")
         terms.add(word)
     return frozenset(terms)
+
+
+def _lines(text: str) -> list[str]:
+    # Newlines only, as editors and git count lines: str.splitlines also breaks on form feeds and
+    # Unicode separators, which would shift every line number after them.
+    return text.split("\n")
 
 
 def _shape(run: str) -> str:
@@ -140,13 +150,13 @@ def _tokens(line: str) -> set[str]:
 def _term_lines(text: str, terms: frozenset[str]) -> Iterator[int]:
     if not terms:
         return
-    for number, line in enumerate(text.splitlines(), 1):
+    for number, line in enumerate(_lines(text), 1):
         if not terms.isdisjoint(_tokens(line)):
             yield number
 
 
 def _line_hits(text: str, terms: frozenset[str], *, markers: bool) -> Iterator[tuple[int, str]]:
-    for number, line in enumerate(text.splitlines(), 1):
+    for number, line in enumerate(_lines(text), 1):
         if terms and not terms.isdisjoint(_tokens(line)):
             yield number, "private term"
         yield from ((number, kind) for kind, shape in _SECRETS.items() if shape.search(line))
@@ -173,28 +183,35 @@ def _content(where: str, data: bytes, terms: frozenset[str]) -> list[str]:
     return [f"{where}:{number}: {kind}" for number, kind in _line_hits(text, terms, markers=True)]
 
 
-def scan_files(root: Path, paths: Iterable[str], terms: frozenset[str]) -> list[str]:
+def _scan_worktree(worktree: Mapping[str, bytes | None], terms: frozenset[str]) -> list[str]:
     problems = []
-    for path in paths:
+    for path, data in worktree.items():
         if any(_term_lines(path, terms)):
             problems.append(f"{path}: private term in the path")
         if _is_env(path):
             problems.append(f"{path}: .env file")
-        data = _worktree(root / path)
         if data is not None:
             problems.extend(_content(path, data, terms))
     return problems
 
 
+def scan_files(root: Path, paths: Iterable[str], terms: frozenset[str]) -> list[str]:
+    return _scan_worktree({path: _worktree(root / path) for path in paths}, terms)
+
+
 def scan_stored(
-    root: Path, stored: Mapping[str, bytes], terms: frozenset[str], where: str
+    stored: Mapping[str, bytes],
+    worktree: Mapping[str, bytes | None],
+    terms: frozenset[str],
+    where: str,
 ) -> list[str]:
     # A version stored in git, read only where it differs from the working tree's.
-    problems = []
-    for path, data in stored.items():
-        if data != _worktree(root / path):
-            problems.extend(_content(f"{path} ({where})", data, terms))
-    return problems
+    return [
+        problem
+        for path, data in stored.items()
+        if data != worktree.get(path)
+        for problem in _content(f"{path} ({where})", data, terms)
+    ]
 
 
 def _message_hits(message: str, terms: frozenset[str]) -> list[tuple[int, str]]:
@@ -282,21 +299,29 @@ def _blobs(root: Path, entries: Mapping[str, str]) -> dict[str, bytes]:
     return contents
 
 
-def _on_no_remote(root: Path, empty_tree: str) -> dict[str, set[str]]:
-    # Each commit no remote holds, with the paths it changed against its first parent, so a merge
-    # shows what it brought in; a root commit is compared with the empty tree.
+def _on_no_remote(root: Path) -> dict[str, tuple[str, set[str]]]:
+    # Each commit no remote holds, with its message and the paths it changed, in one call. A
+    # merge lists only the paths that differ from every parent, the content it made itself: a
+    # path equal to a parent's came with that parent's history, pushed or read in its own commit.
+    log = _git(
+        root,
+        *("-c", "log.showRoot=true", "log", "-z", "--no-renames", "--no-show-signature"),
+        *("--diff-merges=combined", "--name-only", "--format=%x1e%H%x00%B%x1f"),
+        *("HEAD", "--not", "--remotes"),
+    )
     commits = {}
-    for line in _git(root, "rev-list", "--parents", "HEAD", "--not", "--remotes").splitlines():
-        sha, *parents = line.split()
-        base = parents[0] if parents else empty_tree
-        commits[sha] = _paths(_git(root, "diff", "--name-only", "-z", "--no-renames", base, sha))
+    for record in filter(None, log.split("\x1e")):
+        head, _, listing = record.partition("\x1f")
+        sha, _, message = head.partition("\0")
+        # git opens each commit's list of paths with a newline.
+        paths = {path.lstrip("\n") for path in listing.split("\0")} - {""}
+        commits[sha] = (message.strip("\n"), paths)
     return commits
 
 
-def commit_messages(root: Path, *revisions: str) -> list[tuple[str, str]]:
-    if not _has_commits(root):
-        return []
-    log = _git(root, "log", "--format=%H%x00%B%x1e", *(revisions or ("HEAD",)))
+def commit_messages(root: Path) -> list[tuple[str, str]]:
+    # Every message reachable from HEAD, which must exist.
+    log = _git(root, "log", "--format=%H%x00%B%x1e", "HEAD")
     records = (record.strip("\n") for record in log.split("\x1e"))
     return [(sha, message) for sha, _, message in (r.partition("\0") for r in records if r)]
 
@@ -305,10 +330,9 @@ def scan(
     root: Path, terms: frozenset[str], draft: str | None = None, *, full: bool = False
 ) -> Result:
     has_commits = _has_commits(root)
-    empty_tree = _git(root, "hash-object", "-t", "tree", "--stdin").strip()
-    unpushed = _on_no_remote(root, empty_tree) if has_commits else {}
-    committed = set().union(*unpushed.values())
-    base = "HEAD" if has_commits else empty_tree
+    unpushed = _on_no_remote(root) if has_commits else {}
+    committed = set().union(*(changed for _, changed in unpushed.values()))
+    base = "HEAD" if has_commits else _git(root, "hash-object", "-t", "tree", "--stdin").strip()
     # What a commit could still change: the index against HEAD, the working tree against the
     # index, untracked files, and what the commits on no remote changed.
     paths = (
@@ -321,13 +345,14 @@ def scan(
         paths.update(repository_files(root))
     index = _index(root)
     tree = _head_tree(root) if has_commits else {}
-    present = sorted(
-        path
-        for path in paths
-        if path in index
-        or (path in committed and path in tree)
-        or _worktree(root / path) is not None
-    )
+    worktree = {
+        path: _worktree(root / path) for path in paths if not path.startswith(_PART_CHECKOUTS)
+    }
+    present = {
+        path: data
+        for path, data in sorted(worktree.items())
+        if path in index or (path in committed and path in tree) or data is not None
+    }
     # An index version equal to HEAD's adds nothing a commit could record. HEAD's own version is
     # read only where a commit on no remote changed it: pushed history never fails.
     staged = {
@@ -335,15 +360,14 @@ def scan(
     }
     at_head = {path: tree[path] for path in present if path in committed and path in tree}
     problems = (
-        scan_files(root, present, terms)
-        + scan_stored(root, _blobs(root, staged), terms, "staged")
-        + scan_stored(root, _blobs(root, at_head), terms, "at HEAD")
+        _scan_worktree(present, terms)
+        + scan_stored(_blobs(root, staged), present, terms, "staged")
+        + scan_stored(_blobs(root, at_head), present, terms, "at HEAD")
+        + scan_messages(((sha, message) for sha, (message, _) in unpushed.items()), terms)
     )
-    messages = (
-        commit_messages(root) if full else commit_messages(root, "HEAD", "--not", "--remotes")
-    )
-    problems += scan_messages([m for m in messages if m[0] in unpushed], terms)
-    pushed = scan_messages([m for m in messages if m[0] not in unpushed], terms)
+    pushed = []
+    if full and has_commits:
+        pushed = scan_messages([m for m in commit_messages(root) if m[0] not in unpushed], terms)
     if draft is not None:
         problems += scan_draft(draft, terms)
     return Result(problems, pushed)

@@ -68,7 +68,7 @@ def main(argv: list[str]) -> int:
     names = options.stages or list(STAGES)
     given = [flag for attr, flag in HYGIENE_FLAGS.items() if getattr(options, attr)]
     if given and "hygiene" not in names:
-        print(f"verify: {' and '.join(given)} is read by the hygiene stage; name it too")
+        print(f"verify: the hygiene stage reads {' and '.join(given)}; name it too")
         return 2
     if options.message is not None:
         options.message = options.message.resolve()

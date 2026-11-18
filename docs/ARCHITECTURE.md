@@ -204,7 +204,8 @@ by `verify: PASS` or `verify: FAIL (<stages>)`, and the exit code is 1 on any fa
 Every tool skips `.claude/worktrees/` at the root:
 - ruff by `extend-exclude`, which is anchored at the project root, and by `.gitignore`;
 - pytest by `testpaths` and `--ignore=.claude/worktrees`, since it does not read `.gitignore`;
-- hygiene by git's ignore rules, which read the root `.gitignore`.
+- hygiene by skipping every path under it, and by git's ignore rules from the root
+  `.gitignore`.
 
 Not yet: Session 2 (`skills`, `plugins`), which go ahead of `format` in `STAGES`.
 
@@ -221,15 +222,21 @@ here. Every part is falsified here.
 part is the port as it was written: the token splitting, the loading of the term list and the
 attribution patterns. The rest is built here.
 - **Secrets** (`_SECRETS`): the design's shapes, each bounded so that a longer run of its own
-  characters is not one. They are checked in file contents and in commit messages.
+  characters is not one. The AWS key is also bounded by base64's alphabet, so a run inside an
+  encoded blob or a hash is not one. They are checked in file contents and in commit messages.
 - **`.env` files:** any path the run reads named `.env` or `.env.*`, except the three example
   names.
 - **Conflict markers:** a line of file contents that starts with seven `<` or `>` and a space.
 - **The routine run** reads these paths:
   - those that differ between the index and HEAD, or between the working tree and the index;
   - untracked files that are not ignored;
-  - those changed by each commit on no remote (`git rev-list HEAD --not --remotes`), each against
-    its first parent, so a merge shows what it brought in.
+  - those changed by each commit on no remote (`HEAD --not --remotes`), listed with the
+    messages in one `git log` call. A merge lists only the paths that differ from every parent
+    (`--diff-merges=combined`): the content it made itself, as in a conflict's resolution. A
+    path equal to a parent's came with that parent's history, which is either pushed or read in
+    its own commit, so merging pushed work never fails on it.
+
+  Paths under `.claude/worktrees/` at the root are skipped, so a part's checkout is never read.
 
   For each path it reads its name, its working-tree version, its index version where that
   differs from both the working tree's and HEAD's, and HEAD's version where a commit on no
@@ -257,6 +264,8 @@ Decisions made here, each with its why:
 - **An index version equal to HEAD's is not read**, because no commit would record it anew. A
   term in pushed history that is fixed in the working tree therefore passes before the fix is
   staged, while one in a commit on no remote is still read, as HEAD's version.
+- **Lines are counted at newlines only**, as editors and git count them, so a form feed or a
+  Unicode separator never shifts a reported line.
 - **git runs with stdin closed**, so it never waits on a terminal.
 
 ## travel-itinerary-builder
@@ -346,9 +355,9 @@ carries no version because the repository has none of its own: each skill has it
 | Check | Expected |
 |---|---|
 | `uv run scripts/verify.py` | green: 4 stages (`format`, `lint`, `tests`, `hygiene`), about 5 s |
-| Unit tests (`tests`) | 49 passed, 0 skipped: 42 in `test_hygiene.py`, 7 in `test_verify.py` |
+| Unit tests (`tests`) | 52 passed, 0 skipped: 45 in `test_hygiene.py`, 7 in `test_verify.py` |
 | `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
-| Python files under ruff | 4 |
+| Python files (`ruff format --check .`) | 4 |
 
 A documentation or refactoring change should not move any of these. If one moves, that is the
 finding.
