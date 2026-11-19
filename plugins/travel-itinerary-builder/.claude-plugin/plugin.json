@@ -1,6 +1,6 @@
 {
   "name": "travel-itinerary-builder",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Build a day-by-day travel itinerary for a single city through a guided interview, deep web research, and a beautifully presented, mobile-friendly trip-themed PDF.",
   "author": {
     "name": "Svyat Marutyak"

@@ -1,6 +1,6 @@
 # Output formats
 
-Two formats: **trip-themed PDF** (always produced — don't ask the user to choose) and **chat** (a fallback, only when the user explicitly asks for it or PDF rendering isn't available). PDF is the only option that lives well on a phone, and that's where the user will actually read it during the trip.
+Two formats: **trip-themed PDF** (always produced — don't ask the user to choose) and **chat** (a fallback, only when the user explicitly asks for it or WeasyPrint can't run where you are). PDF is the only option that lives well on a phone, and that's where the user will actually read it during the trip.
 
 ---
 
@@ -11,7 +11,7 @@ Print the entire itinerary directly in the conversation as Markdown.
 - Use H1 per day, H2 for parts of day, H3 per location block
 - Map URLs as plain Markdown links
 - Currency conversions inline
-- Keep all five appendices (food, shopping, weather, safety/scams + emergency, city specialties)
+- Keep all six appendices, A–F (food, shopping, weather, things to watch out for, emergency contacts, city specialties), with the same letters and the same omissions as the PDF
 
 ---
 
@@ -21,15 +21,20 @@ Build it as a properly designed document, not a dumped Word-to-PDF. This is what
 
 ### Approach
 
-Build with HTML + CSS, render to PDF with **WeasyPrint**. Install with `pip install weasyprint --break-system-packages`. ReportLab is a fallback for systems where WeasyPrint can't be installed.
+Build with HTML + CSS, render to PDF with **WeasyPrint**. The HTML/CSS approach lets you fully control typography, color, and spacing — that's what makes the difference between a beige report and a document the user is excited to open on the plane.
 
-The HTML/CSS approach lets you fully control typography, color, and spacing — that's what makes the difference between a beige report and a document the user is excited to open on the plane.
+### Building the PDF — try in this order
+
+1. **WeasyPrint is already there:** `python3 -c "import weasyprint"` succeeds. Use it.
+2. **Install it in a virtual environment:** `python3 -m venv .venv && .venv/bin/pip install weasyprint`, or `uv run --with weasyprint python build.py`. Only in a disposable sandbox whose system Python refuses pip ("externally managed") is `pip install --break-system-packages weasyprint` acceptable — never on the user's own machine.
+3. **WeasyPrint needs the Pango library from the system.** If importing it fails for want of Pango (`libgobject`, `libpango` in the error), Pango is missing or not found. Installing it changes the user's machine, so ask first: `brew install pango` on macOS, `apt install libpango-1.0-0 libpangoft2-1.0-0` on Debian or Ubuntu. On macOS with Homebrew, WeasyPrint finds it only with `DYLD_FALLBACK_LIBRARY_PATH="$(brew --prefix)/lib"` set when you run it.
+4. **None of that is possible** (no code execution, no install allowed, the user declines): deliver in chat (section 1), and say in one line why there is no PDF and what would make one.
 
 ### Page setup
 
 - **A4 portrait**, narrow margins: 12mm top/bottom, 14mm left/right
 - Single column — designed to be read on a phone in portrait
-- Embed fonts when possible (Google Fonts via `@import`)
+- Fonts load from Google Fonts by `@import`, which needs the network. Offline the PDF still builds, silently, with the fallback fonts in each stack: Georgia or the system serif for headings, Helvetica, Arial or the system sans-serif for the body. The font check under *Rendering* tells you which you got.
 
 ### Theming — seasonal palette
 
@@ -99,13 +104,13 @@ The result: a confident, gallery-style title page that uses about 5% of the page
   - No marker glyph — the tinted background and indent set it apart; lead with the bold name
   - Italic body, ~9pt
   - Indented ~6mm from the left so they're visually distinct from main blocks
-  - Sample CSS: `.snack { padding: 6px 10px; background: var(--accent-light); border-left: 2px solid var(--accent); margin: 0 0 4mm 8mm; font-size: 9pt; font-style: italic; }`
+  - CSS: `.snack` in the skeleton below
 - Avoid orphans — use `page-break-inside: avoid` on each block
 
 #### Appendices
-- Page break before each appendix (A through F)
+- Page break before each appendix that is present. Letters are fixed: one left out is skipped, and the rest keep theirs
 - Numbered headers
-- **Appendix A** (food picks): minimum 10, max 15 entries. Render as a styled table with on-route picks flagged via a colored pill. Include rating + source per row, and hyperlink each restaurant name to its official site (or the rating source if it has none).
+- **Appendix A** (food picks): minimum 10, max 15 entries. Render as a styled table with on-route picks flagged via a colored pill. Include rating + source per row, and hyperlink each restaurant name to its official site (or the rating source if it has none). If the user declined food picks, the table spans every tier, labelled, and no pick carries the pill.
 - **Appendix B** (shopping): name specific stores, flagships, brands — not generic categories.
 - **Appendix C** (weather): only if dates or at least a season are known; omit the section entirely otherwise.
 - **Appendix D** (safety): named scams, hotspots, cultural rules — no generic warnings.
@@ -115,7 +120,7 @@ The result: a confident, gallery-style title page that uses about 5% of the page
 ### Mobile readability checks
 
 Before delivering, double-check:
-- Body text at A4 print size translates to ~comfortable reading when zoomed-to-fit on a 6" phone screen (≈11pt minimum effective size).
+- The page reads well on a laptop at fit-to-width and prints at full size. On a phone, the reader zooms into the single column: at full width a 6" phone shows A4's 10pt body at about 3pt. Keep everything in one column: then one zoom and vertical scrolling read the whole page, with no sideways panning.
 - Links are clearly identifiable (color + underline).
 - Page breaks fall at sensible places — never mid-block.
 
@@ -127,13 +132,14 @@ Before delivering, double-check:
 <head>
 <meta charset="utf-8">
 <style>
-  @page { size: A4; margin: 12mm 14mm; }
+  /* @import must come first: CSS ignores an @import after any other rule */
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
-  body { font-family: 'Inter', sans-serif; font-size: 10pt; line-height: 1.5; color: #1a1a1a; }
-  h1.cover-title { font-family: 'Playfair Display', serif; font-size: 64pt; color: var(--accent-dark); margin: 0; }
+  @page { size: A4; margin: 12mm 14mm; }
+  body { font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10pt; line-height: 1.5; color: #1a1a1a; }
+  h1.cover-title { font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-size: 64pt; color: var(--accent-dark); margin: 0; }
   .day-header { margin: 24px 0 16px; padding-bottom: 6px; border-bottom: 2px solid var(--accent); }
   .day-header .day-label { font-size: 9pt; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
-  .day-header .day-title { font-family: 'Playfair Display', serif; font-size: 20pt; color: var(--accent-dark); margin: 2px 0 0; }
+  .day-header .day-title { font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-size: 20pt; color: var(--accent-dark); margin: 2px 0 0; }
   .block { page-break-inside: avoid; margin-bottom: 20px; }
   .block.meal { background: var(--accent-light); border-radius: 6px; padding: 8px 12px 5px; } /* on-route lunch/dinner */
   .label { font-weight: 600; }
@@ -153,10 +159,22 @@ Before delivering, double-check:
 
 ```python
 from weasyprint import HTML
-HTML(string=html_content, base_url='.').write_pdf('output.pdf')
+HTML(string=html_content, base_url='.').write_pdf('Lisbon_4-day_itinerary.pdf')
 ```
 
-Save to the workspace folder. Validate by opening with `pdftoppm` to spot-check pages (a text-only itinerary is small — typically well under 1 MB).
+Then check what you built (a text-only itinerary is small — typically well under 1 MB):
+
+- **Page images,** to look at: `pdftoppm -png -r 80 -f 1 -l 4 Lisbon_4-day_itinerary.pdf page` where Poppler is installed; otherwise PyMuPDF, which installs with pip and needs nothing from the system (`pip install pymupdf`):
+
+  ```python
+  import fitz  # PyMuPDF
+  doc = fitz.open('Lisbon_4-day_itinerary.pdf')
+  for i in range(min(4, len(doc))):
+      doc[i].get_pixmap(dpi=80).save(f'page-{i + 1}.png')
+  print(sorted({f[3] for p in doc for f in p.get_fonts()}))  # the fonts embedded
+  ```
+
+- **Fonts:** `pdffonts Lisbon_4-day_itinerary.pdf`, or the last line above. Inter and Playfair Display mean the Google Fonts loaded; anything else is the fallback.
 
 ---
 
@@ -176,4 +194,4 @@ Use `<Destination>_<N>-day_itinerary.<ext>` — no spaces, no special characters
 - `Lisbon_4-day_itinerary.pdf`
 - `Berlin_3-day_itinerary.pdf`
 
-Save to the workspace folder and share with a `computer://` link.
+Save it and hand it over as `SKILL.md` says (Phase 5, *Save and hand it over*).

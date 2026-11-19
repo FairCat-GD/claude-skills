@@ -47,11 +47,11 @@ Must include:
 - **Tourist police hotline** if one exists (Spain, Italy, Greece, Thailand, others have these)
 - **Country code** for dialing in
 - **Roaming dialing notes** — does the user need to dial `+[country code]` from a foreign SIM? Is there a leading `0` to drop?
+- **Your embassy** — one line telling the user to look up their own country's embassy or consulate in the destination before they go. The interview doesn't ask nationality, so name none.
 
 If findable:
 - **Nearest 24h pharmacy** to the accommodation
 - **Nearest hospital with English-speaking staff** if user is traveling somewhere with a language barrier
-- **User's home country embassy address and phone** in the destination country
 
 ## Format
 

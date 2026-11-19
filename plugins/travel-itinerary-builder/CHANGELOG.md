@@ -5,6 +5,44 @@ All notable changes to travel-itinerary-builder are documented here. The format 
 
 ## [Unreleased]
 
+## [1.1.0] — 2026-11-19
+
+Fixes from a read of the whole skill, and plain answers to what it does where an app lacks
+something it uses.
+
+### Added
+
+- **It works without question buttons.** Where the app can't show multiple-choice options, the
+  skill asks the same questions in chat, one at a time, as numbered options.
+- **It tells you what it couldn't do.** If the PDF can't be built where it runs, you get the plan
+  in chat, with the reason and what would make the PDF possible. If it couldn't look at the
+  pages, or the fonts fell back because it was offline, it says so.
+- **A pointer to your embassy.** The emergency appendix tells you to look up your own country's
+  embassy or consulate, since the interview doesn't ask your nationality.
+
+### Changed
+
+- **Saying No to food picks keeps the restaurant list.** No meals are planned into your days,
+  and the food appendix still lists 10 to 15 places across every budget, each labelled.
+- **Appendix letters stay put.** When one is left out (no shopping, or no dates), the others keep
+  their letters.
+- **It installs its PDF tool more carefully.** It uses a separate environment, asks before
+  installing anything on your system, and never overrides your system Python's protection.
+- **An honest promise on reading.** The A4 PDF reads well on a laptop and on paper; on a phone,
+  you zoom into its single column.
+- **You're told where the PDF is,** by its path or the link your app gives.
+
+### Fixed
+
+- **The PDF's own fonts now load.** Its headings and text were silently falling back to the
+  system's default fonts.
+- **Snack stops show your destination's currency** with your home-currency conversion, instead
+  of one city's currency in every plan.
+- **Weekdays are checked in a way that works on any computer,** a Mac included.
+- **Small inconsistencies:** the Wikipedia link always sits on the place's name; the example
+  restaurant links to its own site; one spelling of "(verify)"; six appendices counted as six; a
+  walk-in restaurant keeps its booking line; no doubled "Other" option; no emoji in the PDF.
+
 ## [1.0.1] — 2026-11-18
 
 The skill becomes a plugin of its own in the `faircat-skills` marketplace. What it does for your

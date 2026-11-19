@@ -26,6 +26,15 @@ these are the parts only a person can see.
   plugin's `homepage` link. The `plugins` stage validates the manifests, and Session 2 installed
   the same marketplace from this folder.
 
+- **travel-itinerary-builder 1.1.0 on Codex, claude.ai and other agents.** Session 3's run
+  was in Claude Code only. On claude.ai, check that the upload accepts the `compatibility`
+  field and that the PDF is offered for download. The `skills` stage validates the folder
+  against the specification.
+- **The itinerary skill's fallbacks:** the interview asked in chat with no question tool, and
+  the plan delivered in chat where WeasyPrint can't run. Session 3 measured the PDF build's
+  own fallbacks (offline fonts, PyMuPDF page images); these two paths need an agent without the
+  capability.
+
 ## Directions
 
 None yet.

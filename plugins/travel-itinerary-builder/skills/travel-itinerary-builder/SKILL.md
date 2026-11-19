@@ -2,8 +2,9 @@
 name: travel-itinerary-builder
 description: Build a day-by-day travel itinerary for a single city through a guided interview, deep web research, and a beautifully presented, mobile-friendly trip-themed PDF. Use this skill whenever the user wants help planning a trip, building an itinerary, suggesting things to do in a city, putting together a sightseeing plan, organizing a vacation, recommending what to see/eat in a place they're visiting, or any phrasing like "I'm going to X, help me plan", "what should I see in X", "build me a trip plan for X", "make me an itinerary" — even if they don't use the word "itinerary" explicitly.
 license: MIT
+compatibility: Needs web search. Builds the PDF with Python, WeasyPrint and its Pango library where it can run code; delivers the plan in chat otherwise. Fonts load from Google Fonts when online.
 metadata:
-  version: "1.0.1"
+  version: "1.1.0"
 ---
 
 # Travel Itinerary Builder
@@ -24,7 +25,7 @@ Flat, factual output is the failure mode to avoid. Your descriptions should make
 **Don't:**
 - Sound like a marketing brochure ("unforgettable experience", "must-see gem", "a feast for the senses"). Cliché kills voice.
 - Pad with throat-clearing ("In addition, it should be noted that..."). Cut.
-- Over-emoji. One or two per document is plenty.
+- Emoji in the PDF. It has none: they render as empty boxes (see `references/output-formats.md`). A plan delivered in chat may carry one or two.
 
 ---
 
@@ -66,13 +67,15 @@ What to avoid:
 
 ## Phase 1 — Interview (one question at a time)
 
-**The rule: one question per message.** Even though AskUserQuestion supports batching up to four, do not batch. Grouping makes the user feel quizzed, not listened to. Wait for each answer before asking the next.
+**The rule: one question per message.** Even if your question tool can batch several questions, do not batch. Grouping makes the user feel quizzed, not listened to. Wait for each answer before asking the next.
 
 Brief acknowledgements between questions are fine ("Got it." / "Three days in Lisbon — lovely time of year for it.") — keep them short, don't over-narrate.
 
-Use **chat** for free-form answers. Use **AskUserQuestion** for multiple-choice answers. Skip any step whose gating answer makes it irrelevant.
+Use **chat** for free-form answers. Use your **question tool** (AskUserQuestion in Claude Code) for the *choice* steps. Skip any step whose gating answer makes it irrelevant.
 
-**AskUserQuestion has a hard cap of 4 explicit options** (the tool auto-appends "Other" for free-text). Every multi-choice step below has been written to respect this. If you find yourself wanting to show 5+ options, pick the 4 that cover the most-common cases and trust "Other" to absorb the rest.
+**The question tool has a hard cap of 4 explicit options** (it auto-appends "Other" for free text). Every choice step below has been written to respect this. If you find yourself wanting to show 5+ options, pick the 4 that cover the most-common cases and trust "Other" to absorb the rest.
+
+**No question tool?** Ask the choice steps in chat, still one per message: the same options as a numbered list, one per line, then a last "Other — tell me" line, and say whether to pick one number or several.
 
 ### The full sequence
 
@@ -82,16 +85,16 @@ Use **chat** for free-form answers. Use **AskUserQuestion** for multiple-choice 
 4. **Accommodation** (chat) — "Where are you staying — a neighborhood, hotel name, or address? Whatever you have. I'll anchor the daily routes around it."
 5. **Arrival time** (chat) — *only if dates were given* — "What time do you arrive on day 1?"
 6. **Departure time** (chat) — *only if dates were given* — "And what time do you leave on the last day?"
-7. **Travelers profile** (AskUserQuestion, single-select) — Show exactly these 4 options: `Solo` / `Couple` / `Family with kids` / `Seniors`. The tool's auto-included "Other" catches edge cases (group of friends, multi-generational, family with teens specifically). If the user picks "Family with kids", you may follow up briefly to learn whether kids are young or teens — that shifts pace and attraction picks.
-8. **Trip style** (AskUserQuestion, single-select) — Packed (6-8 spots/day) / Balanced (4-5) / Relaxed (3-4)
-9. **Focus** (AskUserQuestion, single-select) — Famous tourist spots / Hidden gems / A mix of both
-10. **Transportation** (AskUserQuestion, multi-select) — Walking / Public transport / Car
-11. **Special interests** (AskUserQuestion, multi-select) — 3 explicit options: `Art` / `History & culture` / `Architecture`. The tool auto-appends an "Other" option that lets the user type anything else they care about — when phrasing the question, explicitly invite that free-text input: *"Which of these should I prioritize? Pick any that fit, and use 'Other' to add anything else — food, nature, nightlife, photography, music, religious sites, sports, wellness, family-friendly — whatever matters for your trip."*
-12. **Shopping time** (AskUserQuestion, single-select) — None / A bit (about half a day) / A lot (one full day or more)
-13. **Shopping categories** (AskUserQuestion, multi-select) — *only if shopping ≠ None* — Always include `Souvenirs` and `Local specialties` (the two safe defaults). Then add **1–2 destination-specific options** that reflect what the city is genuinely known for. Examples: Milan → "Fashion (luxury houses & flagships)" · Rome → "Italian leather goods & designer flagships" · Paris → "Patisserie & perfumeries" · Florence → "Leather & paper" · Istanbul → "Carpets, lamps, spices (Grand Bazaar)" · Marrakech → "Souk crafts (leather, ceramics, lamps)" · Tokyo → "Anime, electronics, stationery" · Copenhagen → "Scandinavian design" · Lisbon → "Azulejo tiles & ceramics". If you cannot confidently name a city-distinctive category, fall back to a generic 4-option set: Souvenirs / Local specialties / Clothes / Other. The auto-included "Other" lets the user free-text anything missing.
-14. **Include food picks?** (AskUserQuestion, single-select) — Yes / No
-15. **Food budget** (AskUserQuestion, single-select) — *only if food = Yes* — Cheaper / Mid-range / Higher-end / A mix of all three
-16. **Food on the route?** (AskUserQuestion, single-select) — *only if food = Yes* — `No, appendix only` / `Lunch on route` / `Dinner on route` / `Both lunch and dinner`. **This choice controls the daily structure** (see Phase 4): only the chosen meal(s) get a Lunch/Dinner section in each day; the others stay in Appendix A as alternatives. Honour it strictly — don't sneak a dinner block in just because a day has no lunch (arrival/departure days). If a day has no scheduled meal on the route, point the user at Appendix A in a one-liner.
+7. **Travelers profile** (choice, single-select) — Show exactly these 4 options: `Solo` / `Couple` / `Family with kids` / `Seniors`. The tool's auto-included "Other" catches edge cases (group of friends, multi-generational, family with teens specifically). If the user picks "Family with kids", you may follow up briefly to learn whether kids are young or teens — that shifts pace and attraction picks.
+8. **Trip style** (choice, single-select) — Packed (6-8 spots/day) / Balanced (4-5) / Relaxed (3-4)
+9. **Focus** (choice, single-select) — Famous tourist spots / Hidden gems / A mix of both
+10. **Transportation** (choice, multi-select) — Walking / Public transport / Car
+11. **Special interests** (choice, multi-select) — 3 explicit options: `Art` / `History & culture` / `Architecture`. The tool auto-appends an "Other" option that lets the user type anything else they care about — when phrasing the question, explicitly invite that free-text input: *"Which of these should I prioritize? Pick any that fit, and use 'Other' to add anything else — food, nature, nightlife, photography, music, religious sites, sports, wellness, family-friendly — whatever matters for your trip."*
+12. **Shopping time** (choice, single-select) — None / A bit (about half a day) / A lot (one full day or more)
+13. **Shopping categories** (choice, multi-select) — *only if shopping ≠ None* — Always include `Souvenirs` and `Local specialties` (the two safe defaults). Then add **1–2 destination-specific options** that reflect what the city is genuinely known for. Examples: Milan → "Fashion (luxury houses & flagships)" · Rome → "Italian leather goods & designer flagships" · Paris → "Patisserie & perfumeries" · Florence → "Leather & paper" · Istanbul → "Carpets, lamps, spices (Grand Bazaar)" · Marrakech → "Souk crafts (leather, ceramics, lamps)" · Tokyo → "Anime, electronics, stationery" · Copenhagen → "Scandinavian design" · Lisbon → "Azulejo tiles & ceramics". If you cannot confidently name a city-distinctive category, fall back to a generic set: Souvenirs / Local specialties / Clothes. The "Other" option lets the user free-text anything missing.
+14. **Include food picks?** (choice, single-select) — Yes / No. **No** means no meals on the route: skip steps 15 and 16. Appendix A still lists picks, across every budget tier.
+15. **Food budget** (choice, single-select) — *only if food = Yes* — Cheaper / Mid-range / Higher-end / A mix of all three
+16. **Food on the route?** (choice, single-select) — *only if food = Yes* — `No, appendix only` / `Lunch on route` / `Dinner on route` / `Both lunch and dinner`. **This choice controls the daily structure** (see Phase 4): only the chosen meal(s) get a Lunch/Dinner section in each day; the others stay in Appendix A as alternatives. Honour it strictly — don't sneak a dinner block in just because a day has no lunch (arrival/departure days). If a day has no scheduled meal on the route, point the user at Appendix A in a one-liner.
 17. **Home currency** (chat) — "What's your home currency? I'll show prices in local and your currency side by side."
 18. **Anything else I should know?** (chat) — "Allergies, mobility needs, must-see, must-avoid, special occasions — anything that should shape the plan. Or 'none'."
 
@@ -130,12 +133,12 @@ Shall I proceed? (yes / change something)
 
 Be persistent. A shallow web search produces a forgettable itinerary. Read `references/research-playbook.md` for the full methodology. The essentials:
 
-- Run **separate searches** for famous attractions, hidden gems, each special interest, neighborhoods to wander, food by budget tier, shopping districts, safety/scams, weather, emergency numbers, **and city specialties/curiosities** (for Appendix F).
-- **Compute weekdays carefully.** Before writing day headers, work out the weekday for each trip date from today's known date — count days forward or back from today (whose weekday is in the environment). Verify the mapping for at least one date by cross-reference (e.g., the destination's local Wikipedia event calendar, or a simple `date -d "YYYY-MM-DD"` shell check). A wrong weekday cascades: Saturday museum hours differ from Tuesday's, Sunday Mass closes some sights, Monday closes most museums in many countries.
+- Run **separate searches** for famous attractions, hidden gems, each special interest, neighborhoods to wander, food by budget tier (every tier if the user declined food picks), shopping districts, safety/scams, weather, emergency numbers, **and city specialties/curiosities** (for Appendix F).
+- **Compute weekdays carefully.** Before writing day headers, work out the weekday for each trip date from today's known date — count days forward or back from today (whose weekday is in the environment). Verify the mapping for at least one date: where you can run code, `python3 -c "import datetime; print(datetime.date(2026, 5, 18).strftime('%A'))"` prints the weekday on any system; where you can't, check it against a calendar found by search. A wrong weekday cascades: Saturday museum hours differ from Tuesday's, Sunday Mass closes some sights, Monday closes most museums in many countries.
 - **Verify hours and entry fees** on official sites where possible. Mark uncertain values `(verify)` — never invent.
 - Note which attractions typically need **advance booking**.
 - For each restaurant, find a **rating** from a trustworthy source (Google Maps, TripAdvisor, Michelin, local press) and note the score and a quick context like number of reviews or guide name.
-- **Cast wider for restaurants than you'll route.** You need at least 10 strong restaurant picks total for the appendix — only 3–4 typically end up in the daily route, so research enough to fill the list with high-quality alternatives.
+- **Cast wider for restaurants than you'll route.** You need at least 10 strong restaurant picks total for the appendix — only 3–4 typically end up in the daily route, so research enough to fill the list with high-quality alternatives. If the user declined food picks, none go on the route, and the picks span every tier.
 - For each sightseeing stop, find a **Wikipedia URL** to link from the place name.
 - **For each city, also research genuinely interesting facts, curiosities and quirks, plus signature local foods & drinks to taste** for Appendix F. Examples: a surprising origin story, a famous local oddity ("Lisbon claims to be older than Rome"), the signature dish and a regional drink worth trying.
 - Prefer authoritative sources. Avoid AI-content farms.
@@ -185,7 +188,7 @@ Day route map: [Google Maps multi-stop URL]
 ---
 
 ## Appendix A — Ranked food picks (with ratings)
-**Minimum 10, maximum 15 entries.** Grouped by tier per user's choice. Always include rating + source, and **hyperlink each restaurant name** to its official website (or to the rating source if it has none — never invent a URL). Flag on-route picks so the user can see which ones are "already in your day" vs. alternative options for future visits or substitutions. If the chosen tier doesn't yield 10 strong picks alone, fill the rest with the next-closest tier and label them clearly.
+**Minimum 10, maximum 15 entries.** Grouped by tier per user's choice. Always include rating + source, and **hyperlink each restaurant name** to its official website (or to the rating source if it has none — never invent a URL). Flag on-route picks so the user can see which ones are "already in your day" vs. alternative options for future visits or substitutions. If the chosen tier doesn't yield 10 strong picks alone, fill the rest with the next-closest tier and label them clearly. If the user declined food picks, list picks across every tier, each labelled with its tier, and flag none as on-route.
 
 ## Appendix B — Shopping (only if opted in)
 For destination-specific shopping categories, **name specific stores, flagship boutiques, brands, or districts** — not generic advice. E.g., Rome + fashion → "Golden Goose flagship on Via Borgognona"; Lisbon + azulejos → "Fábrica Sant'Anna's showroom at Rua do Alecrim 95, Solar Antiques at Rua Dom Pedro V 70".
@@ -212,11 +215,13 @@ A short, lively section on what makes this city *this* city, in two veins:
 5–10 items total. Keep it warm, specific, and short — this is the "feel of the place," not a textbook.
 ```
 
+**Appendix letters are fixed.** An appendix that is left out (B without shopping, C without dates or a season) is skipped, and the rest keep their letters, so Appendix F is always the specialties.
+
 ### Block format — required fields
 
 Every sightseeing block must include:
 
-1. Order number + place name + **Wikipedia link** (as a hyperlink on the name or right next to it)
+1. Order number + place name, with its **Wikipedia link** as a hyperlink on the name
 2. **What & why** — 3–4 sentences in engaging guide voice (see Tone section above). Sensory, specific, gives the user a reason to care.
 3. **Time to spend**
 4. **Hours** (with `(verify)` if uncertain; if hours vary by day, append the relevant day or closed days, e.g. "10:00–18:00, closed Mon")
@@ -245,20 +250,21 @@ Between anchor blocks you may insert a small, characteristic on-route bite or dr
 
 ## Phase 5 — Deliver
 
-Always produce the **trip-themed PDF** — it's the deliverable travelers actually use on their phone. Don't ask the user to choose a format. See `references/output-formats.md` for the full design spec: mobile-friendly A4, themed cover, seasonal color accent, Wikipedia links on place names, clickable map links.
+Always produce the **trip-themed PDF** — it's the deliverable travelers actually use on their phone. Don't ask the user to choose a format. See `references/output-formats.md` for the full design spec: A4 in a single column, themed cover, seasonal color accent, Wikipedia links on place names, clickable map links.
 
-Only fall back to **chat** (Markdown, inline) if the user explicitly asks for it, or if PDF rendering is unavailable in the environment.
+Only fall back to **chat** (Markdown, inline) if the user explicitly asks for it, or if WeasyPrint can't run where you are (`references/output-formats.md` gives the order to try). Then say in one line why there is no PDF, and what would make one possible.
 
 ### Before you deliver — verify
 
 Don't ship the PDF without these checks:
 
-- **Render and actually look at it.** Convert a few pages to images and inspect them for empty "tofu" boxes (missing glyphs — see the no-emoji rule in `references/output-formats.md`), images/text overflowing, and bad page breaks. Never assume it rendered clean.
+- **Render and actually look at it.** Convert a few pages to images (`pdftoppm`, or PyMuPDF where it is missing; see `references/output-formats.md`) and inspect them for empty "tofu" boxes (missing glyphs — see the no-emoji rule there), images/text overflowing, and bad page breaks. Never assume it rendered clean. If you can't render the pages or can't view images, say in your delivery message that the visual check was skipped.
+- **The fonts loaded.** List the PDF's fonts; without Inter and Playfair Display it fell back to system fonts (no network, most likely). Deliver it anyway, and say so in one line.
 - **Links resolve to the right place.** Wikipedia links point to the correct article; **each restaurant links to its official website when one exists** — don't shortcut famous places to aggregator pages (50 Best, TripAdvisor, Google Maps) if a real official site is findable. Never invent a URL.
 - **Every interview answer is reflected** — home base, meal-on-route choice, interests (incl. culture), shopping, currency.
 - **Dates and weekdays are right**, and any hours/fees you couldn't confirm are marked `(verify)`.
 
-Save to the workspace folder and share with a `computer://` link.
+**Save and hand it over.** Name the file as `references/output-formats.md` says, save it where the user can open it, and tell them where it is: its path in the working folder, or the link or download your environment gives for files (in the Claude desktop app, a `computer://` link). Don't make the user hunt for it.
 
 ---
 

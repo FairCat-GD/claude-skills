@@ -368,17 +368,45 @@ Decisions made here, each with its why:
 
 **Decided.** A day-by-day itinerary for one city, from an interview, web research and a PDF.
 Its targets are Claude Code, Codex, claude.ai and any agent that loads `SKILL.md`, and where a
-capability is missing it says what it does instead; its minimum environment is stated in
-`compatibility` (wording settled in Session 3). Version 1.0.1 after the restructure, 1.1.0
-after the review's fixes.
+capability is missing it says what it does instead. Version 1.0.1 after the restructure, 1.1.0
+after the review's fixes. Settled 2026-11-19:
+- **The minimum environment,** in `SKILL.md`'s `compatibility`: "Needs web search. Builds the
+  PDF with Python, WeasyPrint and its Pango library where it can run code; delivers the plan in
+  chat otherwise. Fonts load from Google Fonts when online."
+- **The PDF is A4,** in one column, so it reads on a laptop at fit-to-width and on paper, and on
+  a phone by zooming into the column. A phone-sized page was rendered and set aside: it reads
+  without zooming on a phone, but as a narrow column on a laptop.
+- **The PDF is built with WeasyPrint, else the plan goes to chat** with the reason; there is no
+  second PDF library.
 
-**Built.** Version 1.0.1 (2026-11-18), in `plugins/travel-itinerary-builder/`: the skill as
-first published (2026-07-22, `1.0.0` in its changelog), with F1's seven example lines on Lisbon
-and F2's frontmatter (`license: MIT` and `metadata.version` added, `version` removed). Its README
-is its user guide: what it does, and its install on each target. The audit is
-`docs/spec/REVIEW-2026-11-17.md`. Its `SKILL.md` line numbers predate F2, which added two lines
-to the frontmatter, so a line it cites as `:N` is now `:N+2`. Targets and minimum environment:
-not yet, Session 3.
+**Built.** Version 1.1.0 (2026-11-19), in `plugins/travel-itinerary-builder/`: the skill as
+first published (2026-07-22, `1.0.0` in its changelog), with F1's examples on Lisbon, F2's
+frontmatter, and F3–F21 of `docs/spec/REVIEW-2026-11-17.md` fixed. The audit's `SKILL.md` line
+numbers predate F2, which added two lines, so a line it cites as `:N` was `:N+2` before 1.1.0.
+Each missing capability has a stated fallback:
+- no question tool: the choice steps asked in chat as numbered options, with "Other" last;
+- no WeasyPrint or Pango: `references/output-formats.md`'s *Building the PDF* order (already
+  importable, then a virtual environment, then Pango asked for), then chat with the reason;
+- no `pdftoppm`: PyMuPDF from pip; neither, or no way to view images: the visual check is
+  reported as skipped;
+- no network: the fonts fall back to Georgia and Helvetica Neue (measured on macOS), found by
+  the font check the skill now runs and reported;
+- the weekday: a Python one-liner, or a calendar found by search, instead of GNU `date -d`;
+- delivery: the file's path in the working folder, or the environment's own link, instead of
+  `computer://` alone.
+
+Decisions made here, each with its why:
+- **The Wikipedia link sits on the place's name,** as four of the five places that described it
+  already said, and as restaurant names carry their links.
+- **A restaurant keeps its Booking line when walk-in,** since the template offers "Walk-in OK"
+  as a value and not being able to reserve is worth knowing.
+- **One spelling, `(verify)`,** the one used seven times against one.
+- **The save-and-hand-over rule lives in `SKILL.md` Phase 5;** `output-formats.md` points at it.
+- **On macOS with Homebrew, WeasyPrint finds Pango only with `DYLD_FALLBACK_LIBRARY_PATH` set to
+  Homebrew's `lib`,** measured with WeasyPrint 70.0 from uv and 66.0 in a venv on the system's
+  Python 3.9; the reference says so.
+
+Its README is its user guide: what it does, what it needs on each target, and its install.
 
 ## crux-finder
 
@@ -435,7 +463,7 @@ Hygiene. Not yet: Evals, Session 5.
 `claude plugin install travel-itinerary-builder@faircat-skills` installed it, and
 `claude plugin details` listed its one skill at 1.0.1. Adding it from GitHub waits for a push
 (`docs/BACKLOG.md`). The itinerary plugin's README gives each target's install, the claude.ai
-zip included. travel-itinerary-builder 1.0.1 is untagged. Not yet: Session 4 (a claude.ai
+zip included. travel-itinerary-builder 1.1.0 is untagged. Not yet: Session 4 (a claude.ai
 upload, run).
 
 ## Deliberate decisions
@@ -454,7 +482,7 @@ None yet.
 
 ## Baseline
 
-Measured 2026-11-18 with Python 3.10.20, uv 0.12.3, ruff 0.17.5, pytest 9.2.0, `claude` 2.1.326
+Measured 2026-11-19 with Python 3.10.20, uv 0.12.3, ruff 0.17.5, pytest 9.2.0, `claude` 2.1.326
 and the validator at `83021e2`. The heading carries no version because the repository has none
 of its own: each skill has its own version.
 
@@ -474,3 +502,6 @@ finding.
 - 2026-11-18, Session 2: *The contract between the layers* gains the plugins' display fields:
   `author`, the owner's name, and `homepage`, the plugin's README on GitHub; no keywords. The
   owner settled it at the start of Session 2.
+- 2026-11-19, Session 3: *travel-itinerary-builder* gains its minimum environment (the
+  `compatibility` wording), the A4 page in one column, and the WeasyPrint-else-chat order. The
+  owner settled them with the session, the page from rendered samples.

@@ -5,7 +5,7 @@ Compact, scannable, with personality. Every sightseeing stop uses this structure
 ## Sightseeing block — required fields
 
 ```
-### [N]. [Place name] · [Wikipedia](https://en.wikipedia.org/wiki/...)
+### [N]. [Place name](https://en.wikipedia.org/wiki/...)
 
 **What & why:** 3–4 sentences in an engaging guide voice. Describe what it feels like to be there, not just facts. Include one specific detail or story when you have one.
 **Time to spend:** ~[X] hr
@@ -18,7 +18,7 @@ Compact, scannable, with personality. Every sightseeing stop uses this structure
 
 ## Restaurant block — required fields
 
-Same idea, with a Rating line added. Drop "Booking" if walk-in.
+Same idea, with a Rating line added. Keep "Booking" even for a walk-in place: knowing you can't reserve is worth a line.
 
 ```
 ### [N]. [Restaurant name](official website, or the rating-source URL if it has none) · [Cuisine / vibe in 3 words]
@@ -46,19 +46,19 @@ Inserted *between* anchor blocks when a small, characteristic on-route bite or s
 Visual treatment: no order number and **no marker glyph** — the tinted background and indent already set it apart. Lead with the bold name, italic body, indented slightly under the previous block. Render in the PDF with a subtle tinted background and a smaller font size (see `output-formats.md` for the CSS).
 
 ```
-> **[Name]** — *2 sentences on why this little bite/sip is what locals are quietly proud of, and exactly where it is.* (Open [hours]; ~[X] UAH / per item)
+> **[Name]** — *2 sentences on why this little bite/sip is what locals are quietly proud of, and exactly where it is.* (Open [hours]; [local amount] (~[home currency amount]) per item)
 ```
 
 ### Worked example — snack stop
 
 ```
-> **A Ginjinha** — *Lisbon's sour-cherry liqueur, poured at one narrow counter off Rossio since 1840. One shot, one cherry in the cup if you ask, drunk standing in Largo de São Domingos — gone in fifteen seconds.* (Open 09:00–22:00; ~€1.50 a shot)
+> **A Ginjinha** — *Lisbon's sour-cherry liqueur, poured at one narrow counter off Rossio since 1840. One shot, one cherry in the cup if you ask, drunk standing in Largo de São Domingos — gone in fifteen seconds.* (Open 09:00–22:00; €1.50 (~$1.60) a shot)
 ```
 
 ## Worked example — sightseeing
 
 ```
-### 2. Jerónimos Monastery · [Wikipedia](https://en.wikipedia.org/wiki/Jer%C3%B3nimos_Monastery)
+### 2. [Jerónimos Monastery](https://en.wikipedia.org/wiki/Jer%C3%B3nimos_Monastery)
 
 **What & why:** Manueline architecture at its most exuberant — every column carved with rope, shells, and astrolabes, a 16th-century shipbuilder's stone catalogue of an empire reaching east. Vasco da Gama is buried in the church to your right as you enter. The cloister, two stories of pale limestone, is where the building stops being a monument and starts being a place you want to sit in.
 **Time to spend:** ~1.5 hr
@@ -72,7 +72,7 @@ Visual treatment: no order number and **no marker glyph** — the tinted backgro
 ## Worked example — restaurant
 
 ```
-### 3. Cervejaria Ramiro · seafood institution
+### 3. [Cervejaria Ramiro](https://www.cervejariaramiro.com/) · seafood institution
 
 **Why here:** A Lisbon ritual since 1956. You sit on plastic-y banquettes under fluorescent light and eat plate after plate of garlic prawns, tiger shrimp, percebes, and crab — finished with a prego steak roll because that's the rule. Service is brusque and fast; the queue out the door means it's working.
 **Rating:** 4.5/5 Google Maps (28,000+ reviews); featured in Time Out Lisbon

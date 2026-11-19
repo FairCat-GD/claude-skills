@@ -523,6 +523,93 @@ Copied verbatim from the kit's `KICKOFF.md`. What the stage checks and why is
 - **The description changes only with the owner's yes;** it decides when the skill triggers.
 - **No scripts are added to the skill** without the owner's yes.
 
+**Done (2026-11-19, travel-itinerary-builder 1.1.0).**
+- **Decided with the user:**
+  - **The PDF tooling:** Homebrew's `pango` and `poppler`, and WeasyPrint only in throwaway uv
+    environments, with nothing added to `pyproject.toml` or `uv.lock`. Both stay installed;
+    removing them is the owner's call.
+  - **F4, food declined:** Appendix A stays, against the block's recommendation. A No means no
+    meals on the route (steps 15 and 16 skipped), and Appendix A lists 10–15 picks across every
+    tier, each labelled, none flagged on-route.
+  - **F16:** the embassy line is dropped, replaced by one line saying to look up one's own
+    embassy or consulate. **F17:** letters are fixed, and an omitted appendix is skipped.
+  - **F5–F10:** the fallbacks as recommended, with WeasyPrint, else chat; ReportLab leaves.
+  - **`compatibility`:** the owner chose a fuller wording than the block's, naming WeasyPrint,
+    Pango and the fonts' network.
+  - **F11, the page:** **A4, in one column.** The owner first picked a 100 × 178 mm phone page
+    from rendered samples, then asked that the PDF read as well on a laptop. Laptop renders of
+    both showed the phone page as a narrow column and A4 small at fit-to-page but fine at
+    fit-to-width, and the owner chose A4 only over two PDFs or a middle size. The reading check
+    is reworded to what A4 gives: a laptop at fit-to-width, paper, and a phone by zooming into
+    the single column.
+  - **The by-hand run:** in Claude Code, from this folder's marketplace.
+  - **Confirms:** *travel-itinerary-builder* (its targets and minimum environment), confirmed as
+    built, with the `compatibility` wording, the A4 page and the fallback order added to its
+    Decided part.
+- **F3–F21,** in `plugins/travel-itinerary-builder/skills/travel-itinerary-builder/`:
+  - F3: `@import` first in the skeleton, with a comment saying why. F10: font stacks with
+    Georgia and Helvetica fallbacks, and a font check after rendering.
+  - F4: one rule in `SKILL.md` steps 14, the research list and Appendix A, `output-formats.md`'s
+    Appendix A and the playbook's Food heading.
+  - F5: one home for saving and handing over, `SKILL.md` Phase 5 (the path, or the
+    environment's own link, `computer://` in the desktop app); `output-formats.md` points at it.
+    claude.ai's output location could not be confirmed on the web, so it is not named.
+  - F6: `output-formats.md`'s *Building the PDF* order: already importable, a virtual
+    environment, `--break-system-packages` only in a disposable sandbox, Pango asked for first
+    (with the measured macOS library path), then chat with the reason.
+  - F7: a Python one-liner, or a calendar found by search. F8: `pdftoppm`, else PyMuPDF, else
+    the visual check reported as skipped. F9: the question tool named generically, the choice
+    steps marked as such, and numbered options in chat without one.
+  - F11: the reading check reworded for A4; the page and sizes unchanged.
+  - F12: the snack template in local and home currency, and its worked example gains
+    `(~$1.60)`, one of Session 1's approved lines. F13: Ramiro links to
+    `https://www.cervejariaramiro.com/`, where both its domains redirect. F14: `(verify)`.
+    F15: six appendices. F16: the embassy pointer under *Must include*. F17: the fixed-letters
+    rule in `SKILL.md` and `output-formats.md`. F18: no emoji in the PDF. F19: the Wikipedia link
+    on the name. F20: Booking kept for a walk-in. F21: no "Other" in the generic shopping set.
+  - The frontmatter gains `compatibility`; `metadata.version` and `plugin.json` are `1.1.0`. The
+    description is unchanged. `SKILL.md` has 286 lines (+6).
+- **Docs.** The plugin's `CHANGELOG.md` `[1.1.0]` (its link reference waits for this commit's
+  sha) and README (*What it does*, a new *What it needs* per target, the version);
+  `ARCHITECTURE.md` (*travel-itinerary-builder* Decided and Built, *Packaging*, the baseline's
+  date, a *Decision log* line); `docs/BACKLOG.md` (1.1.0 on the other targets, and the two
+  fallbacks no run reached).
+- **Amendments:**
+  - **F4 keeps Appendix A,** and **`compatibility` has the owner's wording,** and **ReportLab
+    leaves the fallback order:** amended at plan time, with the user.
+  - **F11 is A4 with a reworded check,** not a phone page. The block's rule ("whichever passes
+    the reference's own reading check") could not decide it: arithmetic and samples showed no
+    page passes "≈11 pt effective" on a phone, which is larger than the phone's own text
+    (about 8 pt). Decided mid-session by the user, from phone and laptop renders.
+- **Measured** (2026-11-19, macOS, Homebrew `pango` 1.58.2 and `poppler` 26.11.0):
+  - The skeleton as it was embedded Times New Roman and Verdana, with no warning; with `@import`
+    first, Playfair Display and Inter. The final skeleton offline (fetch blocked by a dead
+    proxy) built in 0.5 s with Georgia and Helvetica Neue, silently.
+  - WeasyPrint 70.0 (uv, Python 3.12) and 66.0 (a venv on the system's Python 3.9) both failed
+    to import without `DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib`, and imported with it.
+  - `pdftoppm` and PyMuPDF both wrote page images; PyMuPDF also listed the fonts. `date -d`
+    fails on macOS (`illegal option -- d`); the Python one-liner gives Monday for 2026-05-18.
+  - On a 1179 px-wide (about 65 mm) phone screen at full width, A4's 10 pt body shows at about
+    3 pt; a 100 × 178 mm page's 12 pt body at about 7.8 pt.
+- **Checked by hand:**
+  - `claude plugin marketplace add ./`, `claude plugin install
+    travel-itinerary-builder@faircat-skills` and `claude plugin details`:
+    `travel-itinerary-builder 1.1.0`, Skills (1). Then `claude plugin marketplace remove
+    faircat-skills`; neither list shows it afterwards.
+  - **The owner's run,** in a fresh Claude Code session in an empty folder, started as
+    `/travel-itinerary-builder:travel-itinerary-builder`: a six-day plan for a city without
+    exact dates, delivered as a 30-page A4 PDF by WeasyPrint 66.0. Inter and Playfair Display
+    embedded; no missing glyphs; the winter accent; days headed by their best weekdays; seasonal
+    averages labelled as such; all six appendices; the embassy pointer; `(verify)` the one
+    spelling. The owner reviewed it and approved shipping. Blocks kept whole leave some pages
+    part-empty, one holding a single spilled line; left as it is.
+  - Not run: Codex, claude.ai, other agents, and the two chat fallbacks
+    (`docs/BACKLOG.md`).
+- **Falsified:** F3, the block's gate: the skeleton as it was rendered without its fonts, and
+  the corrected one with them, shown by `pdffonts`. No check was added to `verify`.
+- **Numbers:** 102 unit tests (±0), 0 skipped; 6 `verify` stages; 8 Python files; 1 skill
+  folder, 1 plugin; 0 hits in pushed history at the last full scan.
+
 ---
 
 ## 4: crux-finder, the skill

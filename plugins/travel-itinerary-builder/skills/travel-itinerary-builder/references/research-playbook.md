@@ -35,8 +35,8 @@ Run these searches before drafting. Run them in parallel where you can. Treat ea
 - `"[city] with kids"` / `"family friendly [city]"`
 - `"photogenic spots [city]"` / `"viewpoints [city]"`
 
-### Food (if opted in)
-- For each budget tier requested:
+### Food (always, for Appendix A)
+- For each budget tier requested (every tier if the user declined food picks):
   - `"best cheap eats [city]"` / `"[city] street food"` (cheaper)
   - `"best restaurants [city] mid-range"` / `"[city] neighborhood bistro"` (mid)
   - `"[city] fine dining"` / `"Michelin [city]"` (higher-end)
@@ -85,7 +85,7 @@ For every place that survives the prioritization cut, find:
 - **Closed days** (Mondays for many European museums)
 - **Specific tips** that don't appear on the first page of Google
 
-If you can't confirm hours/fees from an authoritative source, write `(verify on site)` — never invent.
+If you can't confirm hours/fees from an authoritative source, write `(verify)` — never invent.
 
 ## Prioritization
 
