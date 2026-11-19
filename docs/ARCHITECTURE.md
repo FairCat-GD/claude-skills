@@ -386,7 +386,9 @@ numbers predate F2, which added two lines, so a line it cites as `:N` was `:N+2`
 Each missing capability has a stated fallback:
 - no question tool: the choice steps asked in chat as numbered options, with "Other" last;
 - no WeasyPrint or Pango: `references/output-formats.md`'s *Building the PDF* order (already
-  importable, then a virtual environment, then Pango asked for), then chat with the reason;
+  importable; then a virtual environment in a temporary folder, never the user's project; then
+  Pango looked for where it is installed but not found, and only then asked for), then chat
+  with the reason;
 - no `pdftoppm`: PyMuPDF from pip; neither, or no way to view images: the visual check is
   reported as skipped;
 - no network: the fonts fall back to Georgia and Helvetica Neue (measured on macOS), found by
@@ -404,7 +406,9 @@ Decisions made here, each with its why:
 - **The save-and-hand-over rule lives in `SKILL.md` Phase 5;** `output-formats.md` points at it.
 - **On macOS with Homebrew, WeasyPrint finds Pango only with `DYLD_FALLBACK_LIBRARY_PATH` set to
   Homebrew's `lib`,** measured with WeasyPrint 70.0 from uv and 66.0 in a venv on the system's
-  Python 3.9; the reference says so.
+  Python 3.9. The reference has the agent try that before asking to install Pango.
+- **The skeleton imports the italic styles the design uses** (Playfair Display italic 400,
+  Inter italic 400 and 600), so its italics are true italics rather than synthesized obliques.
 
 Its README is its user guide: what it does, what it needs on each target, and its install.
 

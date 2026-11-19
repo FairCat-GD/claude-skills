@@ -31,6 +31,8 @@ something it uses.
 - **An honest promise on reading.** The A4 PDF reads well on a laptop and on paper; on a phone,
   you zoom into its single column.
 - **You're told where the PDF is,** by its path or the link your app gives.
+- **A plan without food picks still tells you where to eat:** each day ends with a line pointing
+  to the restaurant list.
 
 ### Fixed
 
@@ -38,6 +40,9 @@ something it uses.
   system's default fonts.
 - **Snack stops show your destination's currency** with your home-currency conversion, instead
   of one city's currency in every plan.
+- **The PDF's italics are true italics,** not slanted upright letters.
+- **No leftovers in your project:** the PDF tool is installed in a temporary folder, and on a Mac
+  that already has the library it needs, the skill finds it instead of asking you to install it.
 - **Weekdays are checked in a way that works on any computer,** a Mac included.
 - **Small inconsistencies:** the Wikipedia link always sits on the place's name; the example
   restaurant links to its own site; one spelling of "(verify)"; six appendices counted as six; a
@@ -76,5 +81,6 @@ As first published.
 - **A day-by-day itinerary for one city,** from a guided interview, deep web research, and a
   trip-themed PDF made to read on a phone.
 
+[1.1.0]: https://github.com/FairCat-GD/claude-skills/commit/9bf26e79f1477553a87eb861710dd1b346f2b87a
 [1.0.1]: https://github.com/FairCat-GD/claude-skills/commit/b41611a260c8a501744d3e934b068bd44a0303fb
 [1.0.0]: https://github.com/FairCat-GD/claude-skills/commit/b0b5b5157c81de61b4d8f89d4ebee319811b21a5

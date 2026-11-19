@@ -40,8 +40,9 @@ start it with `/travel-itinerary-builder:travel-itinerary-builder`.
 Where it runs:
 
 - **Claude Code:** web search is built in; the PDF needs Python and Pango on your machine.
-- **Codex:** turn on web search (`web_search = "live"` in `~/.codex/config.toml`, or `--search`
-  for one run); the PDF needs Python and Pango, as above.
+- **Codex:** web search is on by default, with cached results. For current opening hours and
+  forecasts, set `web_search = "live"` in `~/.codex/config.toml`, or pass `--search` for one
+  run. The PDF needs Python and Pango, as above.
 - **claude.ai:** skills need *Code execution and file creation* turned on (Settings →
   Capabilities), and the chat needs web search on. Without network access from the sandbox the
   PDF can't install WeasyPrint or load its fonts.

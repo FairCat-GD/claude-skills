@@ -609,6 +609,27 @@ Copied verbatim from the kit's `KICKOFF.md`. What the stage checks and why is
   the corrected one with them, shown by `pdffonts`. No check was added to `verify`.
 - **Numbers:** 102 unit tests (±0), 0 skipped; 6 `verify` stages; 8 Python files; 1 skill
   folder, 1 plugin; 0 hits in pushed history at the last full scan.
+- **Review (`/code-review high`), 7 findings: 7 fixed and 0 skipped.** The user chose to fix
+  all seven, then commit and push. They join 1.1.0's changelog entry.
+  - **The build order asked to install Pango before trying the macOS library path,** so a Mac
+    that already had it would be asked again. The path is now tried first.
+  - **The virtual environment went in the user's working folder,** often their own repository.
+    It now goes in a temporary folder, or uv's cache.
+  - **`[1.1.0]` had no link reference.** It now links the session commit.
+  - **The skeleton loaded no italic styles,** so the design's italics were synthesized
+    obliques. The `@import` now adds Playfair Display italic 400 and Inter italic 400 and 600.
+  - **After a No to food picks, no day pointed to Appendix A.** Each day now ends with a one-line
+    pointer to it.
+  - **Two lines still promised the PDF lived well on a phone,** against the A4 reading check.
+    Both now say laptop, paper, and a phone by zooming. The description, which says
+    "mobile-friendly", is unchanged: it changes only with the owner's yes.
+  - **The README told Codex users to turn on web search,** which is on by default with cached
+    results. It now says `"live"` gives current hours and forecasts.
+  - **Falsified:** the skeleton before the fix, rendered with italic text, embedded
+    `Inter-Oblique` and `Playfair-Display-Bold-Oblique`; after it, `Inter-Italic`,
+    `Inter-Semi-Bold-Italic` and `Playfair-Display-Italic`. No check was added to `verify`.
+  - **Numbers after the review:** unchanged: 102 unit tests, 0 skipped; 6 stages; 8 Python
+    files.
 
 ---
 

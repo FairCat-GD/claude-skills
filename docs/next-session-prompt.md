@@ -19,10 +19,9 @@ Release crux-finder 0.1.0.
 ## State you need that is not in the specs
 
 - **Round 1 is a home for many skills**: Sessions 0–3 are done; Sessions 4–8 remain.
-- **Push status.** `origin/main` holds everything through `review: references inside URLs,
-  duplicate marketplace entries, …`. Session 3's commit (travel-itinerary-builder 1.1.0) is
-  local and waits for an approved push. Until that push, people who
-  install from GitHub still get 1.0.1.
+- **Push status.** `origin/main` holds everything through Session 3's `review:` commit
+  (`review: the Pango path tried first, …`); no local commit waits for a push. People who
+  install from GitHub now get travel-itinerary-builder 1.1.0.
 - **What Session 3 left that Session 4 builds on:**
   - **The marketplace has one entry,** `travel-itinerary-builder`, at 1.1.0. crux-finder is
     the second; `PUBLISHED` in `scripts/check_plugins.py` lists only the itinerary skill today.

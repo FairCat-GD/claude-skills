@@ -1,6 +1,6 @@
 # Output formats
 
-Two formats: **trip-themed PDF** (always produced — don't ask the user to choose) and **chat** (a fallback, only when the user explicitly asks for it or WeasyPrint can't run where you are). PDF is the only option that lives well on a phone, and that's where the user will actually read it during the trip.
+Two formats: **trip-themed PDF** (always produced — don't ask the user to choose) and **chat** (a fallback, only when the user explicitly asks for it or WeasyPrint can't run where you are). The PDF is what the user keeps and carries on the trip: on a laptop, on paper, and on a phone by zooming into its single column.
 
 ---
 
@@ -26,8 +26,8 @@ Build with HTML + CSS, render to PDF with **WeasyPrint**. The HTML/CSS approach 
 ### Building the PDF — try in this order
 
 1. **WeasyPrint is already there:** `python3 -c "import weasyprint"` succeeds. Use it.
-2. **Install it in a virtual environment:** `python3 -m venv .venv && .venv/bin/pip install weasyprint`, or `uv run --with weasyprint python build.py`. Only in a disposable sandbox whose system Python refuses pip ("externally managed") is `pip install --break-system-packages weasyprint` acceptable — never on the user's own machine.
-3. **WeasyPrint needs the Pango library from the system.** If importing it fails for want of Pango (`libgobject`, `libpango` in the error), Pango is missing or not found. Installing it changes the user's machine, so ask first: `brew install pango` on macOS, `apt install libpango-1.0-0 libpangoft2-1.0-0` on Debian or Ubuntu. On macOS with Homebrew, WeasyPrint finds it only with `DYLD_FALLBACK_LIBRARY_PATH="$(brew --prefix)/lib"` set when you run it.
+2. **Install it in a virtual environment outside the user's project,** in a temporary folder, so nothing is left in their files: `python3 -m venv /tmp/itinerary-venv && /tmp/itinerary-venv/bin/pip install weasyprint`, or `uv run --with weasyprint python build.py`, which keeps its environment in uv's own cache. Only in a disposable sandbox whose system Python refuses pip ("externally managed") is `pip install --break-system-packages weasyprint` acceptable — never on the user's own machine.
+3. **WeasyPrint needs the Pango library from the system.** If importing it fails for want of Pango (`libgobject`, `libpango` in the error), first check whether Pango is installed but not found. On macOS with Homebrew (`brew list pango` succeeds), WeasyPrint finds it only with `DYLD_FALLBACK_LIBRARY_PATH="$(brew --prefix)/lib"` set when you run it: retry that way. Only if Pango is truly missing, ask before installing it, since that changes the user's machine: `brew install pango` on macOS, `apt install libpango-1.0-0 libpangoft2-1.0-0` on Debian or Ubuntu.
 4. **None of that is possible** (no code execution, no install allowed, the user declines): deliver in chat (section 1), and say in one line why there is no PDF and what would make one.
 
 ### Page setup
@@ -133,7 +133,7 @@ Before delivering, double-check:
 <meta charset="utf-8">
 <style>
   /* @import must come first: CSS ignores an @import after any other rule */
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:ital,wght@0,400;0,600;1,400;1,600&display=swap');
   @page { size: A4; margin: 12mm 14mm; }
   body { font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10pt; line-height: 1.5; color: #1a1a1a; }
   h1.cover-title { font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-size: 64pt; color: var(--accent-dark); margin: 0; }
