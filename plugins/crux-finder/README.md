@@ -17,9 +17,9 @@ what would settle it, without taking sides.
   values, or two sides answering different questions) and **what would move it:** the evidence
   to look at, a forecast with a date, two clearer words, the trade-off named, or the two
   questions set apart.
-- **Gives a report of at most 400 words,** with up to two secondary cruxes, the disagreements
-  that turn out not to be real, and how confident it is. Ask for the claim map to see every
-  claim each side makes.
+- **Gives a short report,** meant to stay within 400 words (in 0.1.0 it often runs to about
+  500), with up to two secondary cruxes, the disagreements that turn out not to be real, and how
+  confident it is. Ask for the claim map to see every claim each side makes.
 
 What it never does: say who is right, or say anything about either person's motives, intelligence
 or good faith. If you give only your side and your account of the other's, it asks once for their

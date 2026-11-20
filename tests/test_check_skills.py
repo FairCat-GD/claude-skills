@@ -135,6 +135,29 @@ def test_a_scripts_folder_fails_where_the_skills_row_forbids_it(
     ]
 
 
+@pytest.mark.parametrize("path", ["run.sh", "references/count.py", "assets/logo.png"])
+def test_any_file_but_markdown_references_fails_where_the_row_forbids_scripts(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, path: str
+) -> None:
+    file = _skill(tmp_path) / path
+    file.parent.mkdir(exist_ok=True)
+    file.write_text("x\n", encoding="utf-8")
+    monkeypatch.setitem(check_skills.LIMITS, NAME, check_skills.Limits(scripts=False))
+    problems = check_skills.check(tmp_path)
+    assert (
+        f"plugins/{NAME}/skills/{NAME}/{path}: this skill ships instructions and references only"
+        in problems
+    )
+
+
+def test_a_skill_without_scripts_passes_with_its_markdown_and_a_dotfile(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    (_skill(tmp_path) / ".DS_Store").write_bytes(b"\0")
+    monkeypatch.setitem(check_skills.LIMITS, NAME, check_skills.Limits(scripts=False))
+    assert check_skills.check(tmp_path) == []
+
+
 def test_a_scripts_folder_passes_without_a_row(tmp_path: Path) -> None:
     # The specification allows scripts/; only a skill's own row forbids it.
     (_skill(tmp_path) / "scripts").mkdir()

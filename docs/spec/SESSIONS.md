@@ -755,6 +755,23 @@ Copied verbatim from the kit's `KICKOFF.md`. What the stage checks and why is
   - a `scripts/probe.sh` in the skill folder failed `skills` alone, at `check_skills.py`.
 - **Numbers:** 105 unit tests (+3), 0 skipped; 6 `verify` stages; 8 Python files (±0); 2 skill
   folders, 2 plugins, 2 marketplace entries (+1 each).
+- **Review (`/code-review high`), 6 findings: 6 fixed and 0 skipped.** The user chose to fix all
+  six, then commit and push. The skill's fixes join 0.1.0, which was not yet published.
+  - **`SKILL.md` made A the party named first, even in a one-sided input,** where only
+    `procedure.md` said A is the party whose own words you have; `SKILL.md` now says so too.
+  - **`procedure.md` said to keep the input's own labels,** against "always A and B"; it now
+    maps any labels to A and B.
+  - **The README promised at most 400 words,** which no run met; it now says the report is meant
+    to stay within 400 and often runs to about 500 in 0.1.0.
+  - **`[0.1.0]` had no link reference;** it now links the session commit.
+  - **`ARCHITECTURE.md` said the claude.ai run was seen to trigger by its description;** only its
+    output was seen, and it now says so.
+  - **The no-scripts rule caught only a folder named `scripts/`;** a `scripts=False` row now also
+    fails any file but `SKILL.md` and Markdown under `references/`, so a script anywhere fails.
+  - **Falsified:** a `run.sh` beside `SKILL.md` failed `skills` alone, at `check_skills.py`, through
+    the whole `verify`. Four new tests (three cases of one, and a sound skill with a dotfile).
+  - **Numbers after the review:** 109 unit tests (+4), 0 skipped; 6 stages; 8 Python files.
+  - **Pushed** with the user's yes, with this commit.
 
 ---
 

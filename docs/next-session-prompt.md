@@ -18,9 +18,9 @@ No version: the session changes no skill.
 ## State you need that is not in the specs
 
 - **Round 1 is a home for many skills**: Sessions 0–4 are done; Sessions 5–8 remain.
-- **Push status.** `origin/main` holds everything through Session 3's `review:` commit. Session
-  4's commits wait for an approved push; until then, people who install from GitHub get only
-  travel-itinerary-builder 1.1.0. A push lists crux-finder at 0.1.0.
+- **Push status.** `origin/main` holds everything through Session 4's `review:` commit
+  (`review: one label rule for A and B, …`); no local commit waits for a push. People who install
+  from GitHub now get travel-itinerary-builder 1.1.0 and crux-finder 0.1.0.
 - **What Session 4 left that Session 5 builds on:**
   - **crux-finder 0.1.0** in `plugins/crux-finder/`, with `skills/crux-finder/SKILL.md` and
     `references/{procedure,crux-types,output-template}.md`. The report's fixed parts are in
@@ -48,7 +48,8 @@ No version: the session changes no skill.
     While it exists, it appears in Claude Code sessions as `anthropic-skills:crux-finder`, beside
     the plugin's `crux-finder:crux-finder`; check that it is gone before measuring isolation.
 - **`LIMITS` in `scripts/check_skills.py`** replaced `LINE_LIMITS`: one table of
-  `Limits(lines, scripts)` rows, crux-finder's the only one.
+  `Limits(lines, scripts)` rows, crux-finder's the only one. Its `scripts=False` fails a
+  `scripts/` folder and any file but `SKILL.md` and Markdown under `references/`.
 - **What the spec said that turned out wrong or harder:** the report's 400 words is not met by
   instruction alone; the owner left further tuning to Session 7's cycle.
 - **Decisions written down nowhere else:** Session 6's synthetic inputs must not reuse the topics
@@ -56,11 +57,11 @@ No version: the session changes no skill.
   module, a flat running route, local news, a bandstand and footpaths, library hours and books, a
   garden shed, a kitchen rota) or the thin slice's bakery, so the cases test the skill rather than
   its own examples.
-- **Baseline** (ARCHITECTURE's table): `verify` green with 6 stages; 105 unit tests passed, 0
-  skipped (31 in `test_check_skills.py`); `hygiene --all` green; 8 Python files; 2 skill folders,
+- **Baseline** (ARCHITECTURE's table): `verify` green with 6 stages; 109 unit tests passed, 0
+  skipped (35 in `test_check_skills.py`); `hygiene --all` green; 8 Python files; 2 skill folders,
   2 plugins, 2 marketplace entries; `claude` 2.1.328. Session 5 adds Python files under `evals/`
   and tests.
-- **Not done:** installing from GitHub, for both skills, waits for a push and a person
+- **Not done:** installing from GitHub, for both skills, is not yet checked by a person
   (`docs/BACKLOG.md`).
 
 ## Watch for

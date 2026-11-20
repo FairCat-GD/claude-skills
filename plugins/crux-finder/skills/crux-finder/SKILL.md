@@ -35,11 +35,12 @@ Classify the input first (step 1).
 | One party's position + that party's paraphrase of the other | Gate (see Guardrails) |
 | Anything else | Ask for two positions labelled A and B |
 
-**Labels.** The report always calls the two parties A and B. Two positions given under names or
-roles count as labelled: A is the party named first (in a transcript, the first to speak) unless
-the user says otherwise. Where the input names its parties, the two steelman lines add the name or
-role in brackets, `**A (<name or role>), strongest form:**`; everywhere else the report says A
-and B.
+**Labels.** The report always calls the two parties A and B, whatever the input calls them.
+Positions given under names, roles or other labels count as labelled: A is the party named first
+(in a transcript, the first to speak) unless the user says otherwise. In a one-sided input, A is
+always the party whose own words you have, and B the one they describe. Where the input names its
+parties, the two steelman lines add the name or role in brackets,
+`**A (<name or role>), strongest form:**`; everywhere else the report says A and B.
 
 ## Procedure
 

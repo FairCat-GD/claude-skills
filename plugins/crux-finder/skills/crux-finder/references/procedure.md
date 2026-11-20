@@ -18,10 +18,10 @@ Decide which row of the Inputs table the input is.
 - **Anything else.** A single position with no account of the other side, a topic with no
   positions, or more than two parties. Ask for two positions labelled A and B.
 
-**Labels.** The report calls the parties A and B. Where the input labels them, keep its labels.
-Where it names them instead, A is the party named first (in a transcript, the first to speak)
+**Labels.** The report calls the parties A and B, whatever the input calls them. Where the input
+uses other labels or names, A is the party named first (in a transcript, the first to speak)
 unless the user says otherwise, and the two steelman lines add the name or role in brackets. In
-a one-sided input, A is the party whose own words you have.
+a one-sided input, A is always the party whose own words you have.
 
 ### Asking
 

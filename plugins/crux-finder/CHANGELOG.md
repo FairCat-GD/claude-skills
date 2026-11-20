@@ -28,3 +28,5 @@ before 1.0.0.
   such, rather than with a crux made up to fill the page.
 - **The full breakdown on request.** Ask for the claim map to see every claim each side makes,
   and how they depend on each other.
+
+[0.1.0]: https://github.com/FairCat-GD/claude-skills/commit/352a3835dca5f9bf0527cfc74a6d92403756ab2a

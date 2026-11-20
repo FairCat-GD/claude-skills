@@ -26,7 +26,8 @@ class Limits(NamedTuple):
 
     # SKILL.md must stay under this many lines; a row above SPEC_LINES never lifts it.
     lines: int = SPEC_LINES
-    # Whether the skill folder may hold a scripts/ folder.
+    # Whether the skill may ship scripts. Without, it holds a SKILL.md and Markdown references
+    # only, so a script anywhere in it fails, not only one in a scripts/ folder.
     scripts: bool = True
 
 
@@ -111,6 +112,22 @@ def _plugin_version(manifest: Path) -> tuple[str | None, str | None]:
     return (version, None) if isinstance(version, str) else (None, "has no version")
 
 
+def _scripts(folder: Path, where: str) -> list[str]:
+    """What breaks "instructions and references only": a scripts/ folder, or any file but
+    SKILL.md and Markdown under references/."""
+    only = "this skill ships instructions and references only"
+    problems = [f"{where}: has a scripts/ folder; {only}"] if (folder / "scripts").is_dir() else []
+    for path in sorted(folder.rglob("*")):
+        parts = path.relative_to(folder).parts
+        # A dotfile such as .DS_Store is the system's, as under references/.
+        if not path.is_file() or any(p.startswith(".") for p in parts):
+            continue
+        if parts == ("SKILL.md",) or (parts[0] == "references" and path.suffix == ".md"):
+            continue
+        problems.append(f"{where}/{'/'.join(parts)}: {only}")
+    return problems
+
+
 def _check_folder(root: Path, folder: Path) -> list[str]:
     where = folder.relative_to(root).as_posix()
     try:
@@ -123,10 +140,8 @@ def _check_folder(root: Path, folder: Path) -> list[str]:
     lines = line_count(text)
     if lines >= limit:
         problems.append(f"{where}/SKILL.md: {lines} lines; it must stay under {limit}")
-    if not own.scripts and (folder / "scripts").is_dir():
-        problems.append(
-            f"{where}: has a scripts/ folder; this skill ships instructions and references only"
-        )
+    if not own.scripts:
+        problems += _scripts(folder, where)
     named = _named_references(text)
     files = _reference_files(folder)
     problems += [f"{where}/{path}: not linked from SKILL.md" for path in sorted(files - named)]

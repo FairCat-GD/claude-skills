@@ -176,7 +176,7 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
    (`scripts/check_skills.py`).
 4. **crux-finder ships no scripts and needs no network or dependencies.** *Why:* PDD B,
    *Scope*. *Enforced by* the `skills` stage (`scripts/check_skills.py`): crux-finder's row in `LIMITS`
-   forbids a `scripts/` folder. Needing no network or dependencies is held by the last read of
+   forbids a `scripts/` folder and any file but `SKILL.md` and Markdown under `references/`. Needing no network or dependencies is held by the last read of
    each diff.
 5. **Everything under `evals/` imports the standard library only.** *Why:* PDD B, *Scope*.
    *Enforced by* a test (Session 5).
@@ -263,7 +263,8 @@ order:
   - that `SKILL.md` is under its limit: the specification's, `SPEC_LINES` (500), or the skill's
     own row in `LIMITS` where that row's `lines` is lower; a higher row never lifts the
     specification's. Lines are counted at newlines, as hygiene counts them;
-  - that a skill whose row says `scripts=False` has no `scripts/` folder;
+  - that a skill whose row says `scripts=False` ships instructions and references only: no
+    `scripts/` folder, and no file but `SKILL.md` and Markdown under `references/`;
   - that every file under `references/` is linked from `SKILL.md`, and every `references/` path
     `SKILL.md` names exists;
   - that `metadata.version` equals `plugin.json`'s `version`.
@@ -446,7 +447,7 @@ verdict, no statement about either party; instructions and references only. `SKI
 - **The report's length:** a check before sending (the steelmen's balance, the 400 words, the
   quotations), each field of a crux one sentence, and nothing after Confidence.
 
-**Built.** Version 0.1.0 (2026-11-20), in `plugins/crux-finder/`. `SKILL.md` (135 lines) holds
+**Built.** Version 0.1.0 (2026-11-20), in `plugins/crux-finder/`. `SKILL.md` (136 lines) holds
 PDD B's frontmatter, its description word for word, plus `metadata.version`; the Inputs table,
 steps 1–9 in brief, the report's rules and the check before sending, and the seven guardrails.
 `references/procedure.md` defines each step in full; `crux-types.md` gives the five types, the
@@ -462,9 +463,9 @@ Decisions made here, each with its why:
   the procedure where the brief rules leave a case open, as PDD B has the procedure "loaded on
   demand".
 
-Its runs on one fictional input (Session 4): every run triggered the skill by its description
-and gave the template's shape; three headless and one installed run in Claude Code, and one on
-claude.ai. None met the 400 words (486 to 564); the primary crux's label differed between
+Its runs on one fictional input (Session 4): three headless and one installed run in Claude
+Code, each seen to trigger the skill by its description, and one on claude.ai, seen only by its
+output; every run gave the template's shape. None met the 400 words (486 to 564); the primary crux's label differed between
 runs (double crux, or a crux for A). The eval cycle measures both.
 
 ## The eval harness
@@ -541,7 +542,7 @@ of its own: each skill has its own version.
 | Check | Expected |
 |---|---|
 | `uv run scripts/verify.py` | green: 6 stages (`skills`, `plugins`, `format`, `lint`, `tests`, `hygiene`), about 6 s with uv's cache warm |
-| Unit tests (`tests`) | 105 passed, 0 skipped: 45 in `test_hygiene.py`, 31 in `test_check_skills.py`, 19 in `test_check_plugins.py`, 10 in `test_verify.py` |
+| Unit tests (`tests`) | 109 passed, 0 skipped: 45 in `test_hygiene.py`, 35 in `test_check_skills.py`, 19 in `test_check_plugins.py`, 10 in `test_verify.py` |
 | `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
 | Python files (`ruff format --check .`) | 8 |
 | Skills and plugins | 2 skill folders, 2 plugins, 2 marketplace entries |

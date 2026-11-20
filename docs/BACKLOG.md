@@ -21,7 +21,7 @@ Checks that need a person at the machine. Each has an automated check covering m
 these are the parts only a person can see.
 
 - **Installing from GitHub** (travel-itinerary-builder, 1.1.0 since Session 3's push;
-  crux-finder 0.1.0 once Session 4's commits are pushed): run
+  crux-finder 0.1.0 since Session 4's push): run
   `/plugin marketplace add FairCat-GD/claude-skills`, then
   `/plugin install travel-itinerary-builder@faircat-skills` and
   `/plugin install crux-finder@faircat-skills` in Claude Code, and open each plugin's `homepage`
