@@ -3,7 +3,7 @@ source: "First Debate: Ottawa, Illinois, August 21, 1858, as published by the Li
 license: public-domain
 ---
 
-Where do these two really disagree? Below are two passages from the first Lincoln-Douglas debate, at Ottawa, Illinois, on August 21, 1858, both on Lincoln's "house divided" speech. Douglas spoke first, and Lincoln replied.
+Where do these two really disagree? Below are two passages from the first Lincoln-Douglas debate, at Ottawa, Illinois, on August 21, 1858. Douglas spoke first, and Lincoln replied.
 
 Mr. Douglas:
 

@@ -283,7 +283,9 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
 - **A case's frontmatter** is read as one `key: value` per line, a quoted value unquoted, with
   no YAML library: gold.md's `crux`, `type`, `crux_for` and `approved_by` each on one line.
 - **crux-finder's ten cases** (Session 6), one folder each under `evals/crux-finder/cases/`,
-  named `<set or type>-<topic>`; the id never reaches a run, which sees only the body:
+  named for the row it fills and its topic (`<type>-<topic>`, `one-sided-…`, `no-conflict-…`,
+  `real-…`, and `transcript-…` for the one case named for its form); the id never reaches a
+  run, which sees only the body:
   - nine synthetic, fictional, drafted by the session and approved by the owner. Eight are one
     per row of PDD B's synthetic set: `empirical-orchard-stall`, `empirical-studio-kiln`,
     `predictive-hall-solar`, `definitional-vintage-rail`, `value-theatre-season`,

@@ -1006,6 +1006,19 @@ invariants 5–7, *Context* (the `claude` CLI), *The data layer*, *The eval harn
   cases committed it reported `10 case(s), 0 problem(s); no results yet` and exited 0.
 - **Numbers:** 203 unit tests (±0), 0 skipped; 6 `verify` stages; 13 Python files (±0); 2 skill
   folders, 2 plugins, 2 marketplace entries (±0); 10 cases (+10); no `results/`.
+- **Review (`/code-review high`), 3 findings: 3 fixed and 0 skipped.** Each fixed before any
+  result exists, so the gold order still holds; the user chose the first two.
+  - **`real-lincoln-douglas`'s gold named a premise, not the deepest crux:** it is now whether
+    slavery is one of the local differences that bind the Union or a cause of division, the
+    point Lincoln's reply turns on, Empirical, both; the founders' policy, the old crux, still
+    counts as a match.
+  - **The excerpt's request line named the "house divided" speech,** steering a run toward
+    whether the Union can endure divided, which the gold counts as a miss: it now names only
+    the debate, the date, and who spoke first. The passages are unchanged.
+  - **`ARCHITECTURE.md` named the ids `<set or type>-<topic>`,** which `transcript-father-care`
+    is not: it now lists each pattern.
+  - **Falsified:** no new check.
+  - **Numbers after the review:** unchanged; `checks.py` 10 cases, 0 problems, no results.
 
 ---
 
