@@ -35,7 +35,8 @@ outside the shipped folders. The tooling proves the repository is sound and ship
 `plugins/travel-itinerary-builder/` and `plugins/crux-finder/`, each with its skill folder at
 `plugins/<skill>/skills/<skill>/`. The tooling:
 `scripts/verify.py`, `scripts/hygiene.py`, `scripts/check_skills.py`, `scripts/check_plugins.py`
-and `tests/`. The evals: not yet, Session 5.
+and `tests/`. The evals: `evals/crux-finder/run.py` and `checks.py`; crux-finder's cases come
+in Session 6 and its results in Session 7.
 
 ## Context
 
@@ -83,13 +84,27 @@ and `tests/`. The evals: not yet, Session 5.
   test, auto memory was on, and the permission mode was the user's `auto`. The skill read its
   references with the shell, outside the run's folder, and nothing was denied. A marketplace
   added from a local folder loads the plugin in place, not from a copy.
+- **`claude -p` isolated,** measured in Session 5 from the run's start event (the stream's
+  `system`/`init`, printed before any model call). With `--setting-sources ""`,
+  `--strict-mcp-config`, `--no-session-persistence`, `--permission-prompts none` and
+  `CLAUDE_CODE_DISABLE_AUTO_MEMORY=1`, and the plugin copied to a temporary folder outside the
+  repository, a run lists only that copy and Claude Code's built-in plugins and skills, no MCP
+  server, the `default` permission mode and no memory paths. Without them, it also listed the
+  owner's two user-level plugins, a plugin and twelve skills synced from claude.ai, a claude.ai
+  MCP server and the `auto` mode. Under those flags, a read outside the run's folder and the
+  copy (given by `--add-dir`) was denied, by Read and by Bash alike, while the skill's references
+  in the copy were read. Skills in `~/.claude/skills/` carry no namespace in the start event, so
+  they cannot be told from the built-ins there; none loaded under those flags.
 - **claude.ai** accepted crux-finder's zip as a custom skill after its security scan, and read
   `license` and `metadata.version` from the frontmatter (it shows License MIT and Version
   0.1.0). An uploaded skill is then synced into the owner's Claude Code sessions as
-  `anthropic-skills:<skill>`, beside any plugin of the same name.
+  `anthropic-skills:<skill>`, beside any plugin of the same name. Session 5 removed the upload
+  (claude.ai deletes it with its version history), and the next `claude` start dropped its
+  synced copy.
 
 Measured at intake, 2026-11-17, and again in Session 2, 2026-11-18: `claude` 2.1.326; uv 0.12.3;
-Python 3.10.20 installed through uv. In Session 4, 2026-11-20: `claude` 2.1.328.
+Python 3.10.20 installed through uv. In Session 4, 2026-11-20: `claude` 2.1.328. In Session 5,
+2026-11-20: `claude` 2.1.329.
 
 ## Stack and pins
 
@@ -147,10 +162,14 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   standard library only. The two checks are named for their stages with a `check_` prefix, so
   neither reads as the `plugins/` folder on the import path.
 - `tests/` holds `test_verify.py`, `test_hygiene.py`, `test_check_skills.py`,
-  `test_check_plugins.py` and `fixtures/terms.txt`, a term list of three fictional words. The
+  `test_check_plugins.py`, `test_crux_finder_run.py`, `test_crux_finder_checks.py`,
+  `test_evals_stdlib.py` and `fixtures/terms.txt`, a term list of three fictional words. The
   check tests build fictional plugin trees in a temporary folder. The tests import the scripts
-  through pytest's `pythonpath`.
-- Not yet: Session 5 (`evals/`).
+  through pytest's `pythonpath`, and the eval scripts by their paths, since a folder named
+  `crux-finder` is no package and each skill's evals will have a `run.py` of its own.
+- `evals/crux-finder/` holds `run.py` and `checks.py`, standard library only. `cases/` comes in
+  Session 6 and `results/` in Session 7. `run.py` reaches the skill only through the CLI: it
+  copies the plugin folder, unread, to where the run can load it.
 
 *Enforced by,* in part:
 - The `skills` stage holds a skill folder's references one level deep from `SKILL.md`: every file
@@ -179,13 +198,18 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
    forbids a `scripts/` folder and any file but `SKILL.md` and Markdown under `references/`. Needing no network or dependencies is held by the last read of
    each diff.
 5. **Everything under `evals/` imports the standard library only.** *Why:* PDD B, *Scope*.
-   *Enforced by* a test (Session 5).
+   *Enforced by* `tests/test_evals_stdlib.py`: every import in every Python file under `evals/`,
+   read with `ast`, names a module in `sys.stdlib_module_names`.
 6. **Neither the runner nor the session under test reads `gold.md`.** *Why:* a run that sees the
-   answer proves nothing. *Enforced by* a test that `run.py` never opens it, and by each run's
-   isolation, measured (Session 5).
+   answer proves nothing. *Enforced by* `tests/test_crux_finder_run.py`, which runs `run.py`
+   against a stub with an audit hook on every file it opens and gold.md made unreadable; and by
+   each run's isolation, measured in Session 5 (*Context*) and checked on every run from its
+   start event, before anything is written (*The eval harness*).
 7. **Each `gold.md` is committed before any file under its `results/<id>/`, and names who
    approved it.** *Why:* gold written after the results could be fitted to them. *Enforced by*
-   `checks.py`, from `git log` (Session 5).
+   `evals/crux-finder/checks.py`, from git: gold.md committed, in the parent of the first commit
+   under `results/<id>/` and unchanged since, in the commit each run names and unchanged since,
+   with no uncommitted change while results exist, and with a non-empty `approved_by`.
 8. **Published names are never renamed:** the marketplace `faircat-skills`, and each plugin's and
    skill's name. *Why:* people install by them, and a rename strands their install. *Enforced
    by* the `plugins` stage, against the published names in `scripts/check_plugins.py`
@@ -234,10 +258,28 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   permanent; results are rewritten by each cycle as Session 7 settles, with git keeping the
   earlier ones.
 - **Evolution:** the formats are PDD B's; a change to one is an amendment with the owner.
+- **Amended at the start of Session 5, with the owner** (2026-11-20):
+  - `review.md` records, per output, `crux_match`, `type_match` and `people_statement` (yes or
+    no) and a one-line `note`, as PDD B has it, plus `same_crux_as_run_1` from run 2 on, and
+    `gate_fired` and `no_conflict_reported` where they apply: the three bars that had no field.
+  - The prompt is input.md's body, its frontmatter left out, and quotes are checked against the
+    same body.
 - **Machine identifiers, never renamed:** the marketplace name `faircat-skills`; the plugin
   and skill names `travel-itinerary-builder` and `crux-finder`; the case ids once results exist.
 
-**Built.** Not yet: Sessions 5 and 6.
+**Built** (the formats; the cases come in Session 6, the results in Session 7).
+- **A case's frontmatter** is read as one `key: value` per line, a quoted value unquoted, with
+  no YAML library: gold.md's `crux`, `type`, `crux_for` and `approved_by` each on one line.
+- **`run-N.md`** is written by `run.py`: frontmatter of `case`, `run`, `model`, `claude` (the
+  CLI's version), `skill_version` (the copy's `plugin.json`), `commit` (HEAD, which holds the
+  plugin as it ran), `date` (UTC), `skill_calls` (the Skill tool's calls, or `none`), `denials`
+  (permission denials) and `cost_usd`; then a blank line and the reply as returned, with a last
+  newline added where it has none.
+- **`claude-ai.md`** is the owner's claude.ai reply, written by hand; frontmatter is optional and
+  is left out of the checks.
+- **`review.md`** is `# Review: <id>`, then a `## run-N` or `## claude-ai` section per output,
+  each of `- field: value` lines, one per field, values in lower case. A line of any other shape
+  is a problem, so a note stays on one line.
 
 ## verify
 
@@ -474,10 +516,80 @@ runs (double crux, or a crux for A). The eval cycle measures both.
 `run.py` in a fresh session, the owner's review of every run, `checks.py`'s deterministic
 checks and summary against the pass bars, and a claude.ai smoke test on three cases. It spends
 real model runs, so it runs only where a session's block names it, never in `verify`, one run
-at a time. How runs are isolated, and the gaps in the checks, are settled at the start of
-Session 5.
+at a time. Settled at the start of Session 5, with the owner (2026-11-20), where PDD B left a
+gap:
+- **Isolation:** `run.py` as PDD B has it, each run isolated from the user's settings, plugins,
+  synced skills, MCP servers and memory, and from every file outside its own folder and the
+  plugin; measured first.
+- **The model:** `claude-opus-5-5`, named in `run.py` and written at the head of every result,
+  with the CLI's version, the skill's version and the commit, so cycles compare.
+- **A quoted span** is text between double quotation marks, straight or curly, and any
+  blockquote but the crux sentence's, which is the skill's own words; the template's fixed
+  labels are never quoted. It must be in the input after line breaks are joined and curly and
+  straight quotation marks and apostrophes are folded; with an ellipsis, piece by piece, in
+  order. Single quotes mark no span, since they are apostrophes too.
+- **A question is not a report:** an output without `## Crux report` is held to neither
+  symmetry nor length, and is judged by `gate_fired`.
+- **A word** is a whitespace-separated token with a letter or digit, so markup alone (`##`,
+  `**`, `-`, `·`, `>`) is none. Length counts the output after its header, a claim map left out,
+  at most 400. Symmetry: each steelman within 25% of the other, the longer at most 1.25 times
+  the shorter.
+- **Gold order** fails a gold.md that is not committed, whose first commit does not precede the
+  first commit of its results, or that changed after results existed, committed or not.
 
-**Built.** Not yet: Sessions 5–7.
+**Built.** `evals/crux-finder/run.py` and `evals/crux-finder/checks.py`, both standard library
+only, on Python 3.10.
+
+`run.py --runs N [--case <id> …]`:
+- **Before anything is spent,** it reads every chosen case's input.md (missing, an unclosed
+  frontmatter or an empty body exits 2, as do an unknown case and no cases), and it refuses,
+  exiting 2, while `plugins/crux-finder/` has uncommitted changes, so every result's `commit`
+  holds the skill it ran.
+- **Each run** gets a new temporary folder holding an empty `work/`, its working directory, and
+  a copy of `plugins/crux-finder`. The command is `claude -p --model claude-opus-5-5
+  --output-format stream-json --verbose --plugin-dir <copy> --add-dir <copy>` with the isolation
+  flags *Context* names, `CLAUDE_CODE_DISABLE_AUTO_MEMORY=1`, a 900-second timeout and
+  `--max-budget-usd 2`. The prompt goes in on stdin. The folder is removed when the run ends.
+- **The start event is checked** before anything is written: the model is `MODEL`; the only
+  plugin not built in is the copy; `crux-finder:crux-finder` is listed and no other namespaced
+  skill or other `crux-finder`; no MCP server; the `default` permission mode; no memory paths.
+  A breach, a non-zero exit, a timeout, an error result or an empty reply writes nothing for
+  that run and stops with exit 1; earlier files stay.
+- **An existing `run-N.md` is skipped,** never overwritten, so a stopped cycle resumes by
+  running the same command and a new cycle starts by removing the old files.
+- **It never names gold.md:** it lists the case folders and opens only each `input.md`.
+
+`checks.py` reads every case and every output and prints one line per problem, then the summary
+table, then `checks: <n> case(s), <n> problem(s); <state>`. It exits 0 with no problem and either
+no results yet or every bar met; otherwise 1.
+- **Per case:** gold.md's four fields, `approved_by` non-empty; the gold order (invariant 7).
+- **Per output:** the quotes; for a report, symmetry, from the text after
+  `**A[ (…)], strongest form:**` and `**B[ (…)], strongest form:**` up to the next label, blank
+  line or heading; and length. A `run-N.md` must carry the `commit` `run.py` writes.
+- **`review.md`:** a section for every output and none for a missing one; the three yes-or-no
+  fields and the note; `same_crux_as_run_1` from run 2 on and not on run 1; `gate_fired` for a
+  question; `gate_fired` and `no_conflict_reported` on every output of a case or none. Every case
+  has run-1 to the highest run present, and every results folder names a case.
+- **The summary table:** PDD B's ten bars over the `run-N` outputs, each with its bar, its count
+  and whether it is met. The ratios are exact fractions of the runs or cases present: crux at
+  least 4/5, type 9/10, stability 4/5 of the cases with two or more runs, which over ten cases
+  and two runs are PDD B's 16/20, 18/20 and 8/10. Gate and no-conflict count the runs whose
+  review records the field, at least one. The claude.ai smoke test is a row of its own: three
+  outputs, each matching gold on crux and type and passing every check.
+
+Decisions made here, each with its why:
+- **The isolation guard reads the start event of every run,** not only the session's
+  measurement, because a CLI release or a new upload can change what loads with no change here.
+- **The plugin is copied out of the repository,** so the run's only open folder outside its own
+  holds the plugin and nothing that leads to gold.md; `--add-dir` opens it because the skill
+  reads its references with the file tools.
+- **The prompt goes on stdin,** because a body that starts with `-` would be read as a flag.
+- **A sentence's last mark just inside the closing quotation mark is not part of the quote,**
+  since English punctuation puts it there whether or not the input had it.
+- **An unpaired quotation mark is a problem,** since the span it opens cannot be checked.
+- **An eleventh row, beyond PDD B's ten bars,** "Runs on the skill as it stands": every run's `commit`
+  has the skill folder as it is now, which is decision 22's condition and the one Session 8
+  checks for decision 23. It came with the plan the owner approved.
 
 ## Testing strategy — five layers, and what each cannot see
 
@@ -496,8 +608,9 @@ before every commit. The harness is each skill's eval set. The commands are in `
 | By hand | Recorded in done-notes | Installs, claude.ai, a whole interview | Anything not written down; what nobody checked goes to the backlog |
 
 Built: Validators (the `skills` and `plugins` stages), Unit (`tests/test_verify.py`,
-`tests/test_hygiene.py`, `tests/test_check_skills.py`, `tests/test_check_plugins.py`) and
-Hygiene. Not yet: Evals, Session 5.
+`tests/test_hygiene.py`, `tests/test_check_skills.py`, `tests/test_check_plugins.py`,
+`tests/test_crux_finder_run.py`, `tests/test_crux_finder_checks.py`, `tests/test_evals_stdlib.py`)
+and Hygiene. Evals: the tooling (`run.py`, `checks.py`); the cases come in Session 6.
 
 ## Packaging
 
@@ -535,17 +648,18 @@ None yet.
 
 ## Baseline
 
-Measured 2026-11-20 with Python 3.10.20, uv 0.12.3, ruff 0.17.5, pytest 9.2.0, `claude` 2.1.328
+Measured 2026-11-20 with Python 3.10.20, uv 0.12.3, ruff 0.17.5, pytest 9.2.0, `claude` 2.1.329
 and the validator at `83021e2`. The heading carries no version because the repository has none
 of its own: each skill has its own version.
 
 | Check | Expected |
 |---|---|
-| `uv run scripts/verify.py` | green: 6 stages (`skills`, `plugins`, `format`, `lint`, `tests`, `hygiene`), about 6 s with uv's cache warm |
-| Unit tests (`tests`) | 109 passed, 0 skipped: 45 in `test_hygiene.py`, 35 in `test_check_skills.py`, 19 in `test_check_plugins.py`, 10 in `test_verify.py` |
+| `uv run scripts/verify.py` | green: 6 stages (`skills`, `plugins`, `format`, `lint`, `tests`, `hygiene`), about 25 s with uv's cache warm, most of it the eval tooling's git fixtures |
+| Unit tests (`tests`) | 195 passed, 0 skipped: 64 in `test_crux_finder_checks.py`, 45 in `test_hygiene.py`, 35 in `test_check_skills.py`, 20 in `test_crux_finder_run.py`, 19 in `test_check_plugins.py`, 10 in `test_verify.py`, 2 in `test_evals_stdlib.py` |
 | `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
-| Python files (`ruff format --check .`) | 8 |
+| Python files (`ruff format --check .`) | 13 |
 | Skills and plugins | 2 skill folders, 2 plugins, 2 marketplace entries |
+| `uv run evals/crux-finder/checks.py` | `checks: 0 case(s), 0 problem(s); no cases yet`, exit 0 |
 
 A documentation or refactoring change should not move any of these. If one moves, that is the
 finding.
@@ -562,3 +676,7 @@ finding.
   and the check before sending, with one sentence per crux field and nothing after Confidence.
   The owner settled the first two at the start of Session 4, where PDD B's template left them
   open, and the third after the first headless runs ran over the 400 words.
+- 2026-11-20, Session 5: *The data layer* gains `review.md`'s three fields and the prompt
+  without its frontmatter, and *The eval harness* the isolation, the model, the quoted span, a
+  question judged by `gate_fired`, the word rules and the strict gold order. The owner settled
+  them at the start of Session 5, each as the session recommended (decision 21).

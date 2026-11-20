@@ -825,6 +825,81 @@ invariants 5–7, *Context* (the `claude` CLI), *The data layer*, *The eval harn
 - **Tests never touch the real `cases/` or `results/`.**
 - **The eval runner is the exclusive resource:** one run at a time.
 
+**Done (2026-11-20, no version).**
+- **Decided with the user** (each as recommended):
+  - **Isolation:** `run.py` as PDD B has it, isolated, measured first.
+  - **The synced claude.ai copy:** still synced at the start (`anthropic-skills:crux-finder`,
+    0.1.0); the user asked the session to delete it and anything it left.
+  - **The model:** `claude-opus-5-5`, named in `run.py` and written at the head of every result
+    with the CLI's version, the skill's version and the commit.
+  - **A quoted span:** text between double quotation marks, straight or curly, and any
+    blockquote but the crux sentence's; matched with line breaks joined, curly and straight
+    marks folded, an ellipsis piece by piece in order; single quotes are no span.
+  - **The three bars' fields:** `same_crux_as_run_1`, `gate_fired`, `no_conflict_reported` in
+    `review.md`; an output without `## Crux report` is a question, held to neither symmetry nor
+    length and judged by `gate_fired`.
+  - **Word rules:** a word is a token with a letter or digit; length at most 400, header and
+    claim map left out; symmetry: the longer steelman at most 1.25 times the shorter.
+  - **Gold order, strict:** fails a gold.md uncommitted, not committed before its results, or
+    changed after results existed, committed or not.
+  - **The prompt:** input.md's body, its frontmatter left out; quotes checked against it.
+  - **Confirms:** *The eval harness*, *The data layer* and *Deliberate decisions*' fourth bullet,
+    each confirmed as built, with the answers above in their Decided parts.
+- **The runner,** `evals/crux-finder/run.py`: `--runs N [--case <id> …]`; every case read and
+  the plugin's tree checked clean before anything is spent; each run a new temporary folder
+  with an empty working directory and a copy of the plugin, `claude -p` with the measured flags
+  and the prompt on stdin; the start event checked before anything is written; an existing
+  result skipped; a failure writes nothing and stops. Never names gold.md.
+- **The checks,** `evals/crux-finder/checks.py`: gold.md's fields and `approved_by`, the gold
+  order from git, quotes, symmetry and length per output, `review.md`'s format and fields,
+  completeness, then the summary table: PDD B's ten bars, the extra row below, and the smoke
+  test apart. Exits 0 with no problem and no results yet or every bar met.
+- **Tests:** `tests/test_crux_finder_run.py` (20; a stub `claude`, an audit hook on `open`,
+  gold.md made unreadable), `tests/test_crux_finder_checks.py` (64; fictional outputs and temp
+  git repositories), `tests/test_evals_stdlib.py` (2; invariant 5).
+- **Docs:** `CLAUDE.md` (the two commands, the runner one run at a time, a *Watch for* line on
+  claude.ai uploads syncing into Claude Code); `ARCHITECTURE.md` (*Overview*, *Context*,
+  *Layout*, invariants 5–7's *Enforced by*, *The data layer* and *The eval harness* Decided and
+  Built, *Testing strategy*, the baseline, a *Decision log* line).
+- **Amendments:**
+  - **PDD B, *Review*, gains three fields,** and **the prompt leaves out input.md's
+    frontmatter,** where PDD B says the prompt is the file's contents: both settled at the start
+    with the user.
+  - **An eleventh row in the summary table,** "Runs on the skill as it stands" (decision 22),
+    beyond PDD B's six checks: in the plan the user approved.
+  - **`run.py` refuses while the plugin has uncommitted changes:** in the approved plan, so each
+    result's `commit` holds the skill it ran.
+- **Measured** (`claude` 2.1.329, up from the baseline's 2.1.328):
+  - **The deletion:** claude.ai's *Customize → Skills → Yours* still listed crux-finder; the
+    session removed it (claude.ai deletes it with its version history), and the next `claude`
+    start dropped `anthropic-skills:crux-finder` and its folder under
+    `~/.claude/skills/synced/`. No `faircat-skills` marketplace was registered and no zip was
+    left from Session 4.
+  - **What a run loads,** from the start event, ended before any model call. As Session 4 ran
+    it: the plugin, the owner's two user-level plugins, a synced plugin, twelve synced skills, a
+    claude.ai MCP server, the `auto` mode and memory paths. With `--setting-sources ""`,
+    `--strict-mcp-config`, `--no-session-persistence`, `--permission-prompts none`,
+    `CLAUDE_CODE_DISABLE_AUTO_MEMORY=1` and the plugin copied out: the copy and Claude Code's
+    built-ins only, no MCP server, `default`, no memory paths. `--restricted`, `--safe-mode` and
+    `--bare` were not needed.
+  - **The canary** (one call, $0.10): with those flags and `--add-dir <copy>`, a fictional file
+    beside the run's folder was denied to Read and to Bash alike, as needing approval no one can
+    give; the skill's `output-template.md` in the copy was read.
+  - **One real run** through `run.py`'s own code, on a fictional input (an allotment society's
+    seed swap) in a temporary folder, nothing written under `evals/`: the header as designed,
+    `skill_calls: crux-finder:crux-finder`, 0 denials, $0.17, 29 s; the template's shape,
+    **Double crux · Value**, steelmen 66/64, no quotes, 472 words, so it fails the length bar as
+    Session 4's runs did. The temporary folders were removed.
+- **Falsified,** each through the whole `verify`, the file copied aside and back:
+  - `run.py` made to read gold.md failed `tests` at `test_the_runner_never_opens_gold_md`;
+  - an `import yaml` in a new file under `evals/` failed `tests` at the standard-library test;
+    put into `checks.py` itself it failed lint and stopped the checks' tests at collection;
+  - the quote matcher made to accept everything failed the five quote tests;
+  - the symmetry ratio loosened to 1.5 failed four tests, the 53/69 cases among them;
+  - the gold-order condition reversed failed the four gold-order tests on committed results.
+- **Numbers:** 195 unit tests (+86), 0 skipped; 6 `verify` stages, about 25 s (from about 6 s);
+  13 Python files (+5); 2 skill folders, 2 plugins, 2 marketplace entries (±0).
+
 ---
 
 ## 6: The eval cases

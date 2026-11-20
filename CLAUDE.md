@@ -106,12 +106,14 @@ rest of this list.
 | `uv run pytest tests/test_hygiene.py -k <name>` | One test file, or the tests whose names match |
 | `uv run scripts/check_skills.py` and `uv run scripts/check_plugins.py` | The `skills` and `plugins` stages' own checks alone, without the validators |
 | `claude plugin validate --strict <path>` | The CLI's check of the marketplace (`.`) or of one plugin (`plugins/<skill>`), as the `plugins` stage runs it |
+| `uv run evals/crux-finder/run.py --runs N [--case <id> …]` | The eval runner: one isolated `claude -p` session per case per run, into `results/<id>/run-N.md`. Skips a run whose file exists; refuses while `plugins/crux-finder/` has uncommitted changes. Spends real model runs: only where a block names it |
+| `uv run evals/crux-finder/checks.py` | crux-finder's deterministic checks (gold order, `approved_by`, quotes, symmetry, length, `review.md`) and the summary table against the pass bars |
 
-Filled in further by Session 5. No test reads the owner's term list or touches the real
-hygiene stamp, `results/` or `cases/`.
+No test reads the owner's term list or touches the real hygiene stamp, `results/` or `cases/`.
 
-**Exclusive resources:** the eval runner (it writes `results/` and spends real model runs) and
-the owner's claude.ai account. A parallel part never runs them; the session's integration does.
+**Exclusive resources:** the eval runner (it writes `results/` and spends real model runs, one
+at a time) and the owner's claude.ai account. A parallel part never runs them; the session's
+integration does.
 
 ## Git
 
@@ -146,5 +148,8 @@ check, a script or a pin makes it impossible.
   `claude plugin validate --strict` fails on every warning and the CLI is not pinned. The stage
   prints the CLI's version first: compare it with the baseline's, fix what the warning names,
   and ask the owner before dropping `--strict`.
+- **A skill uploaded to claude.ai syncs into every Claude Code session** as
+  `anthropic-skills:<skill>`, beside the plugin's copy. `run.py` refuses a run where it loads;
+  after a smoke test, delete the upload unless the owner keeps it.
 - Do not finish with `verify` red, or with a skill's change missing from its plugin's
   `CHANGELOG.md`.
