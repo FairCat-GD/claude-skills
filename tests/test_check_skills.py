@@ -100,9 +100,9 @@ def test_a_dot_folder_is_no_plugin_or_skill(tmp_path: Path) -> None:
 def test_skill_md_at_its_own_limit_fails(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     folder = _skill(tmp_path)
     lines = check_skills.line_count((folder / "SKILL.md").read_text(encoding="utf-8"))
-    monkeypatch.setitem(check_skills.LINE_LIMITS, NAME, lines + 1)
+    monkeypatch.setitem(check_skills.LIMITS, NAME, check_skills.Limits(lines=lines + 1))
     assert check_skills.check(tmp_path) == []
-    monkeypatch.setitem(check_skills.LINE_LIMITS, NAME, lines)
+    monkeypatch.setitem(check_skills.LIMITS, NAME, check_skills.Limits(lines=lines))
     assert check_skills.check(tmp_path) == [
         f"plugins/{NAME}/skills/{NAME}/SKILL.md: {lines} lines; it must stay under {lines}"
     ]
@@ -114,7 +114,7 @@ def test_the_specification_limit_holds_without_a_lower_row(
 ) -> None:
     # A skill with no row, or with a row above the specification's, still stops at 500.
     if own is not None:
-        monkeypatch.setitem(check_skills.LINE_LIMITS, NAME, own)
+        monkeypatch.setitem(check_skills.LIMITS, NAME, check_skills.Limits(lines=own))
     padding = "line\n" * check_skills.SPEC_LINES
     folder = _skill(tmp_path, body=f"Read `references/notes.md`.\n{padding}")
     lines = check_skills.line_count((folder / "SKILL.md").read_text(encoding="utf-8"))
@@ -122,6 +122,29 @@ def test_the_specification_limit_holds_without_a_lower_row(
         f"plugins/{NAME}/skills/{NAME}/SKILL.md: {lines} lines; "
         f"it must stay under {check_skills.SPEC_LINES}"
     ]
+
+
+def test_a_scripts_folder_fails_where_the_skills_row_forbids_it(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    (_skill(tmp_path) / "scripts").mkdir()
+    monkeypatch.setitem(check_skills.LIMITS, NAME, check_skills.Limits(scripts=False))
+    assert check_skills.check(tmp_path) == [
+        f"plugins/{NAME}/skills/{NAME}: has a scripts/ folder; "
+        "this skill ships instructions and references only"
+    ]
+
+
+def test_a_scripts_folder_passes_without_a_row(tmp_path: Path) -> None:
+    # The specification allows scripts/; only a skill's own row forbids it.
+    (_skill(tmp_path) / "scripts").mkdir()
+    assert NAME not in check_skills.LIMITS
+    assert check_skills.check(tmp_path) == []
+
+
+def test_crux_finders_row_holds_its_limits() -> None:
+    # Invariant 4: crux-finder ships no scripts; its SKILL.md stays under 300 lines.
+    assert check_skills.LIMITS["crux-finder"] == check_skills.Limits(lines=300, scripts=False)
 
 
 def test_a_metadata_version_unlike_the_plugins_fails(tmp_path: Path) -> None:

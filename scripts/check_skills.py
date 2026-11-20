@@ -1,9 +1,9 @@
 """The skills stage's own checks, run after the Agent Skills validator on each skill folder.
 
 The validator checks each folder's frontmatter and name against the specification. These check
-what it leaves to this repository: SKILL.md's length, that SKILL.md links every file under
-references/ and names no reference that is missing, and that metadata.version repeats the
-plugin's version.
+what it leaves to this repository: SKILL.md's length, a skill's own limits, that SKILL.md links
+every file under references/ and names no reference that is missing, and that metadata.version
+repeats the plugin's version.
 
 Usage: uv run scripts/check_skills.py
 """
@@ -12,15 +12,29 @@ import json
 import re
 import sys
 from pathlib import Path
+from typing import NamedTuple
 
 from check_plugins import plugin_folders, skill_folders_of
 
 ROOT = Path(__file__).resolve().parent.parent
 # The specification's limit for SKILL.md, in lines; a SKILL.md must stay under it.
 SPEC_LINES = 500
-# A skill's own SKILL.md limit, by skill name, where it is lower than the specification's; a
-# higher row never lifts the specification's.
-LINE_LIMITS: dict[str, int] = {}
+
+
+class Limits(NamedTuple):
+    """A skill's own limits; the defaults are what the specification allows."""
+
+    # SKILL.md must stay under this many lines; a row above SPEC_LINES never lifts it.
+    lines: int = SPEC_LINES
+    # Whether the skill folder may hold a scripts/ folder.
+    scripts: bool = True
+
+
+# The one table of per-skill limits, a row per skill that has its own, by skill name.
+LIMITS: dict[str, Limits] = {
+    # A short SKILL.md, and instructions and references only (invariant 4).
+    "crux-finder": Limits(lines=300, scripts=False),
+}
 # A path into references/ as SKILL.md names it, in a Markdown link or in backticks: at the start
 # of a word or after `./`, never inside a URL or a longer word such as cross-references/.
 _REFERENCE = re.compile(r"(?:(?<=\./)|(?<![\w/.:-]))references/[^\s`'\"()<>\[\]]+")
@@ -104,10 +118,15 @@ def _check_folder(root: Path, folder: Path) -> list[str]:
     except OSError:
         return [f"{where}: no SKILL.md"]
     problems = []
-    limit = min(LINE_LIMITS.get(folder.name, SPEC_LINES), SPEC_LINES)
+    own = LIMITS.get(folder.name, Limits())
+    limit = min(own.lines, SPEC_LINES)
     lines = line_count(text)
     if lines >= limit:
         problems.append(f"{where}/SKILL.md: {lines} lines; it must stay under {limit}")
+    if not own.scripts and (folder / "scripts").is_dir():
+        problems.append(
+            f"{where}: has a scripts/ folder; this skill ships instructions and references only"
+        )
     named = _named_references(text)
     files = _reference_files(folder)
     problems += [f"{where}/{path}: not linked from SKILL.md" for path in sorted(files - named)]

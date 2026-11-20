@@ -683,6 +683,79 @@ Copied verbatim from the kit's `KICKOFF.md`. What the stage checks and why is
   either party as a person, and fictional.
 - **The report's rules are instructions here, not checks.** `checks.py` is Session 5's.
 
+**Done (2026-11-20, crux-finder 0.1.0).**
+- **Decided with the user:**
+  - **The hand-written input:** the session's draft, approved as written: two co-owners of a
+    bakery on opening on Sundays, labelled A and B. It stayed in a temporary folder; nothing of
+    it is in the repository.
+  - **Party labels** (PDD B's template left it open): A and B throughout; named parties get their
+    name or role in brackets on the two steelman lines.
+  - **No conflict** (step 9's shape): every heading stays; *The crux* reads **No crux** with one
+    neutral sentence; an empty section says `None.`
+  - **The root README:** a **Reasoning** heading, crux-finder marked *(in development)*.
+  - **Mid-session, after the first headless run ran 547 words with unbalanced steelmen:** a check
+    before sending (steelmen, length, quotations); after the second ran 564, one sentence per
+    crux field and nothing after Confidence; then one last run, with further length tuning left
+    to Session 7.
+  - **Confirms:** *crux-finder*, *Context* (`claude -p`, claude.ai) and *Packaging* (the claude.ai
+    zip), each confirmed as built, with the three settlements above added to *crux-finder*'s
+    Decided part.
+- **The skill,** `plugins/crux-finder/skills/crux-finder/`: `SKILL.md` (135 lines) with PDD B's
+  frontmatter, description word for word, `license: MIT` and `metadata.version: "0.1.0"`; the
+  Inputs table and labels, steps 1–9 in brief, the report's rules and the check before sending,
+  the seven guardrails. `references/procedure.md` (each step in full), `crux-types.md` (the five
+  types, the order to test them, tie-breaks, two fictional examples each, parties as roles) and
+  `output-template.md` (PDD B's template verbatim and its variants).
+- **The plugin:** `plugin.json` at 0.1.0 in the itinerary plugin's pattern, its description the
+  first sentence of the skill's; the marketplace's second entry; `CHANGELOG.md` `[0.1.0]` (its
+  link reference waits for this commit's sha); a `README.md` with *What it does*, *Using it*,
+  *What it needs*, *Installing* and *Version*, which Session 8 completes with the example report
+  and the eval table.
+- **The checks:** `scripts/check_skills.py`'s `LINE_LIMITS` became `LIMITS`, one table of
+  `Limits(lines, scripts)` rows, whose one row, crux-finder's, is `Limits(lines=300,
+  scripts=False)`; a `scripts/` folder fails where a row forbids it. `crux-finder` is in
+  `PUBLISHED`. Three new tests, two moved to `LIMITS`.
+- **Docs:** the root README; `ARCHITECTURE.md` (*Overview*, *Context*, *Layout*, invariant 4's
+  *Enforced by*, *The contract*, *verify*, *crux-finder* Decided and Built, *Packaging*, the
+  baseline, a *Decision log* line); `docs/BACKLOG.md` (crux-finder in the install from GitHub).
+- **Amendments:**
+  - **The plugin has a README now,** not only in Session 8: the layout requires one, and its
+    `homepage` and the root README link to it. The block's intent held; it named no README.
+  - **The skill changed after the thin slice's first run,** with the user, for the report's
+    length and balance (above).
+- **Measured** (`claude` 2.1.328; the model each run reported was claude-opus-5-5):
+  - **Headless,** from an empty folder in a temporary directory with no `CLAUDE.md` above it,
+    `claude -p` with `--plugin-dir` and `--output-format stream-json --verbose`, stdin closed:
+    each run called the Skill tool as `crux-finder:crux-finder` from the description alone, then
+    read `output-template.md` and `crux-types.md` with one shell `cat` outside its folder, with
+    no denial (the user's permission mode, `auto`); `procedure.md` was never read. The owner's
+    user-level plugins and synced skills loaded too, and auto memory was on: Session 5's
+    isolation question.
+  - **The three headless runs,** in words (tokens with a letter or digit), steelmen A/B, label:
+    547, 53/69, double crux · Predictive; 564 with a 60-word summary after Confidence, 56/61,
+    double crux · Predictive; 515, 55/61, crux for A · Predictive, ending at Confidence. About
+    $0.23 each.
+  - **Installed:** `claude plugin marketplace add ./` ("declared in user settings"), `claude
+    plugin install crux-finder@faircat-skills` (scope: user), `claude plugin details
+    crux-finder`: `crux-finder 0.1.0`, Skills (1) `crux-finder`, about 94 tokens always on and
+    2.3k on invoke. A run from another empty folder, without `--plugin-dir`, triggered
+    `crux-finder:crux-finder`, loaded in place from this folder: 486 words, 53/65, crux for A ·
+    Predictive, the template's six headings.
+  - **Removed:** `claude plugin marketplace remove faircat-skills` removed it and uninstalled
+    crux-finder; neither `marketplace list` nor `plugin list` shows either.
+- **Checked by hand:** the owner asked the session to upload the zip; it was uploaded through
+  the owner's browser to claude.ai's *Customize → Skills*, passed its security scan, and showed
+  License MIT and Version 0.1.0. The owner ran the input in a fresh chat: the template's shape,
+  **Double crux · Predictive**, 558 words, steelmen 58/66, nothing after Confidence. The upload
+  then appeared in this Claude Code session as `anthropic-skills:crux-finder`; the owner chose to
+  delete it after the run. Not run: Codex and other agents (`docs/BACKLOG.md`, *Deferred*).
+- **Falsified,** each through the whole `verify`, the file copied aside and back:
+  - `SKILL.md` padded to 300 lines failed `skills` alone, at `check_skills.py` ("300 lines; it
+    must stay under 300"), with the validator still passing the folder;
+  - a `scripts/probe.sh` in the skill folder failed `skills` alone, at `check_skills.py`.
+- **Numbers:** 105 unit tests (+3), 0 skipped; 6 `verify` stages; 8 Python files (±0); 2 skill
+  folders, 2 plugins, 2 marketplace entries (+1 each).
+
 ---
 
 ## 5: The eval tooling

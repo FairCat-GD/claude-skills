@@ -31,9 +31,9 @@ and other agents copy, and what claude.ai receives as a zip. The plugin wraps it
 manifest, a README that is its user guide, and a changelog. The evals are a skill's harness,
 outside the shipped folders. The tooling proves the repository is sound and ships nowhere.
 
-**Built.** The marketplace, `.claude-plugin/marketplace.json`, lists one plugin,
-`plugins/travel-itinerary-builder/`, whose skill folder is
-`plugins/travel-itinerary-builder/skills/travel-itinerary-builder/`. The tooling:
+**Built.** The marketplace, `.claude-plugin/marketplace.json`, lists two plugins,
+`plugins/travel-itinerary-builder/` and `plugins/crux-finder/`, each with its skill folder at
+`plugins/<skill>/skills/<skill>/`. The tooling:
 `scripts/verify.py`, `scripts/hygiene.py`, `scripts/check_skills.py`, `scripts/check_plugins.py`
 and `tests/`. The evals: not yet, Session 5.
 
@@ -75,10 +75,21 @@ and `tests/`. The evals: not yet, Session 5.
   stage fails, with uv's error naming the fetch.
 - **GitHub:** `origin` is `https://github.com/FairCat-GD/claude-skills.git`. Adding the
   marketplace from it waits for a push (`docs/BACKLOG.md`).
-- Not yet: Session 4 (`claude -p`, claude.ai).
+- **`claude -p`** ran crux-finder in Session 4, from an empty folder in a temporary directory,
+  with no `CLAUDE.md` above it: first with `--plugin-dir` and the plugin's absolute path, then
+  with the plugin installed instead, each with `--output-format stream-json --verbose` to show
+  which skill ran. It ran under the owner's sign-in and the owner's user settings, so the
+  owner's user-level plugins and skills synced from claude.ai loaded beside the plugin under
+  test, auto memory was on, and the permission mode was the user's `auto`. The skill read its
+  references with the shell, outside the run's folder, and nothing was denied. A marketplace
+  added from a local folder loads the plugin in place, not from a copy.
+- **claude.ai** accepted crux-finder's zip as a custom skill after its security scan, and read
+  `license` and `metadata.version` from the frontmatter (it shows License MIT and Version
+  0.1.0). An uploaded skill is then synced into the owner's Claude Code sessions as
+  `anthropic-skills:<skill>`, beside any plugin of the same name.
 
 Measured at intake, 2026-11-17, and again in Session 2, 2026-11-18: `claude` 2.1.326; uv 0.12.3;
-Python 3.10.20 installed through uv.
+Python 3.10.20 installed through uv. In Session 4, 2026-11-20: `claude` 2.1.328.
 
 ## Stack and pins
 
@@ -128,9 +139,10 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   - `verify` never runs the evals.
 
 **Built.**
-- `.claude-plugin/marketplace.json`, and `plugins/travel-itinerary-builder/` with
-  `.claude-plugin/plugin.json`, `README.md`, `CHANGELOG.md` and `skills/travel-itinerary-builder/`
-  (`SKILL.md` and four files under `references/`).
+- `.claude-plugin/marketplace.json`, and two plugins, each with `.claude-plugin/plugin.json`,
+  `README.md`, `CHANGELOG.md` and its skill folder: `plugins/travel-itinerary-builder/`
+  (`SKILL.md` and four files under `references/`) and `plugins/crux-finder/` (`SKILL.md` and
+  three).
 - `scripts/` holds `verify.py`, `hygiene.py`, `check_skills.py` and `check_plugins.py`, all
   standard library only. The two checks are named for their stages with a `check_` prefix, so
   neither reads as the `plugins/` folder on the import path.
@@ -163,7 +175,9 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
    copy and zip targets show only the second. *Enforced by* the `skills` stage
    (`scripts/check_skills.py`).
 4. **crux-finder ships no scripts and needs no network or dependencies.** *Why:* PDD B,
-   *Scope*. *Enforced by* the `skills` stage, which fails on a `scripts/` folder (Session 4).
+   *Scope*. *Enforced by* the `skills` stage (`scripts/check_skills.py`): crux-finder's row in `LIMITS`
+   forbids a `scripts/` folder. Needing no network or dependencies is held by the last read of
+   each diff.
 5. **Everything under `evals/` imports the standard library only.** *Why:* PDD B, *Scope*.
    *Enforced by* a test (Session 5).
 6. **Neither the runner nor the session under test reads `gold.md`.** *Why:* a run that sees the
@@ -199,9 +213,10 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   name, and `homepage`, the plugin's README on GitHub; no keywords.
 
 **Built.**
-- The marketplace's one entry is `{"name": "travel-itinerary-builder", "source":
-  "./plugins/travel-itinerary-builder"}`. It carries no description, so a plugin's description
-  is set once, in its `plugin.json`, and `claude plugin validate --strict` accepts it so.
+- The marketplace's two entries are `{"name": "<skill>", "source": "./plugins/<skill>"}`, for
+  `travel-itinerary-builder` and `crux-finder`. They carry no description, so a plugin's
+  description is set once, in its `plugin.json`, and `claude plugin validate --strict` accepts
+  it so.
 - The marketplace's own description, under `metadata`, is the root README's first sentence. The
   plugin's is the first sentence of its `SKILL.md` description. Both were the owner's choice.
 - `plugin.json` holds `name`, `version`, `description`, `author`, `homepage` and `license`.
@@ -246,9 +261,9 @@ order:
   `scripts/check_skills.py`. That checks:
   - that there is at least one skill folder;
   - that `SKILL.md` is under its limit: the specification's, `SPEC_LINES` (500), or the skill's
-    own row in `LINE_LIMITS`, the one table of per-skill limits, empty today, where that row is
-    lower; a higher row never lifts the specification's. Lines are counted at newlines, as
-    hygiene counts them;
+    own row in `LIMITS` where that row's `lines` is lower; a higher row never lifts the
+    specification's. Lines are counted at newlines, as hygiene counts them;
+  - that a skill whose row says `scripts=False` has no `scripts/` folder;
   - that every file under `references/` is linked from `SKILL.md`, and every `references/` path
     `SKILL.md` names exists;
   - that `metadata.version` equals `plugin.json`'s `version`.
@@ -295,6 +310,10 @@ Decisions made here, each with its why:
   Only `metadata`'s block form is read, blank lines within it included; any other form reads as
   no `metadata.version` and fails rather than passes. The validator parses the whole
   frontmatter, with strictyaml.
+- **`LIMITS` is one table, a row per skill,** each row a `Limits` of `lines` and `scripts`,
+  whose defaults are what the specification allows. A skill's own limits then read in one
+  place, as the per-skill limits are one table in the Decided part. Its one row is
+  crux-finder's: `Limits(lines=300, scripts=False)`.
 - **Folder discovery lives in `check_plugins.py`;** `check_skills.py` and `verify` import it, so
   the stages and their checks never disagree on what a skill or plugin folder is. A dot folder
   is neither.
@@ -417,9 +436,36 @@ Its README is its user guide: what it does, what it needs on each target, and it
 **Decided.** PDD B, carried into this round by `SPEC.md` with the amendments of its §3: two
 positions in, the smallest claim the rest hinges on out, as a report of at most 400 words; no
 verdict, no statement about either party; instructions and references only. `SKILL.md` under
-300 lines, with `references/procedure.md`, `crux-types.md` and `output-template.md`.
+300 lines, with `references/procedure.md`, `crux-types.md` and `output-template.md`. Settled
+2026-11-20, where PDD B's template left it open:
+- **Party labels:** the report says A and B throughout; where the input names its parties (a
+  transcript's speakers, or positions given under names), the two steelman lines add the name or
+  role in brackets, `**A (<name or role>), strongest form:**`.
+- **No conflict:** the report keeps every heading; *The crux* reads `**No crux**` with one
+  neutral sentence on why both positions can hold at once, and an empty section says `None.`
+- **The report's length:** a check before sending (the steelmen's balance, the 400 words, the
+  quotations), each field of a crux one sentence, and nothing after Confidence.
 
-**Built.** Not yet: Session 4.
+**Built.** Version 0.1.0 (2026-11-20), in `plugins/crux-finder/`. `SKILL.md` (135 lines) holds
+PDD B's frontmatter, its description word for word, plus `metadata.version`; the Inputs table,
+steps 1–9 in brief, the report's rules and the check before sending, and the seven guardrails.
+`references/procedure.md` defines each step in full; `crux-types.md` gives the five types, the
+order to test them in, tie-breaks, and two fictional examples each, with roles for parties;
+`output-template.md` gives PDD B's template verbatim and every variant (labels, `None.`, the
+one-sided form, **No crux**, you as a party, the claim map on request, a gate's question).
+Decisions made here, each with its why:
+- **A is the party named first** (in a transcript, the first to speak) unless the user says
+  otherwise, so labelling is never a guess.
+- **A Framing crux is labelled by the crux test run on the question itself** (would A's
+  conclusion change if A took up B's question?), so it fits the template's labels.
+- **The references are read when needed:** the template before any report, the types at step 7,
+  the procedure where the brief rules leave a case open, as PDD B has the procedure "loaded on
+  demand".
+
+Its runs on one fictional input (Session 4): every run triggered the skill by its description
+and gave the template's shape; three headless and one installed run in Claude Code, and one on
+claude.ai. None met the 400 words (486 to 564); the primary crux's label differed between
+runs (double crux, or a crux for A). The eval cycle measures both.
 
 ## The eval harness
 
@@ -466,9 +512,11 @@ Hygiene. Not yet: Evals, Session 5.
 **Built.** The marketplace, checked locally: `claude plugin marketplace add ./` and
 `claude plugin install travel-itinerary-builder@faircat-skills` installed it, and
 `claude plugin details` listed its one skill at 1.0.1. Adding it from GitHub waits for a push
-(`docs/BACKLOG.md`). The itinerary plugin's README gives each target's install, the claude.ai
-zip included. travel-itinerary-builder 1.1.0 is untagged. Not yet: Session 4 (a claude.ai
-upload, run).
+(`docs/BACKLOG.md`). Each plugin's README gives each target's install, the claude.ai zip
+included. travel-itinerary-builder 1.1.0 and crux-finder 0.1.0 are untagged. crux-finder was
+installed the same way in Session 4 (`claude plugin details crux-finder` listed its one skill at
+0.1.0, about 94 tokens always on), and its zip, `zip -r crux-finder.zip crux-finder` from
+`plugins/crux-finder/skills/`, was uploaded to claude.ai as a custom skill and run once.
 
 ## Deliberate decisions
 
@@ -486,17 +534,17 @@ None yet.
 
 ## Baseline
 
-Measured 2026-11-19 with Python 3.10.20, uv 0.12.3, ruff 0.17.5, pytest 9.2.0, `claude` 2.1.326
+Measured 2026-11-20 with Python 3.10.20, uv 0.12.3, ruff 0.17.5, pytest 9.2.0, `claude` 2.1.328
 and the validator at `83021e2`. The heading carries no version because the repository has none
 of its own: each skill has its own version.
 
 | Check | Expected |
 |---|---|
 | `uv run scripts/verify.py` | green: 6 stages (`skills`, `plugins`, `format`, `lint`, `tests`, `hygiene`), about 6 s with uv's cache warm |
-| Unit tests (`tests`) | 102 passed, 0 skipped: 45 in `test_hygiene.py`, 28 in `test_check_skills.py`, 19 in `test_check_plugins.py`, 10 in `test_verify.py` |
+| Unit tests (`tests`) | 105 passed, 0 skipped: 45 in `test_hygiene.py`, 31 in `test_check_skills.py`, 19 in `test_check_plugins.py`, 10 in `test_verify.py` |
 | `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
 | Python files (`ruff format --check .`) | 8 |
-| Skills and plugins | 1 skill folder, 1 plugin, 1 marketplace entry |
+| Skills and plugins | 2 skill folders, 2 plugins, 2 marketplace entries |
 
 A documentation or refactoring change should not move any of these. If one moves, that is the
 finding.
@@ -509,3 +557,7 @@ finding.
 - 2026-11-19, Session 3: *travel-itinerary-builder* gains its minimum environment (the
   `compatibility` wording), the A4 page in one column, and the WeasyPrint-else-chat order. The
   owner settled them with the session, the page from rendered samples.
+- 2026-11-20, Session 4: *crux-finder* gains the party labels, the **No crux** report's shape
+  and the check before sending, with one sentence per crux field and nothing after Confidence.
+  The owner settled the first two at the start of Session 4, where PDD B's template left them
+  open, and the third after the first headless runs ran over the 400 words.

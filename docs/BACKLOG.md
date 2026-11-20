@@ -20,10 +20,13 @@ up, it moves out of this file.
 Checks that need a person at the machine. Each has an automated check covering most of it;
 these are the parts only a person can see.
 
-- **Installing from GitHub** (travel-itinerary-builder, 1.1.0 since Session 3's push): run `/plugin marketplace add FairCat-GD/claude-skills` and
-  `/plugin install travel-itinerary-builder@faircat-skills` in Claude Code, and open the
-  plugin's `homepage` link. The `plugins` stage validates the manifests, and Session 2 installed
-  the same marketplace from this folder.
+- **Installing from GitHub** (travel-itinerary-builder, 1.1.0 since Session 3's push;
+  crux-finder 0.1.0 once Session 4's commits are pushed): run
+  `/plugin marketplace add FairCat-GD/claude-skills`, then
+  `/plugin install travel-itinerary-builder@faircat-skills` and
+  `/plugin install crux-finder@faircat-skills` in Claude Code, and open each plugin's `homepage`
+  link. The `plugins` stage validates the manifests, and Sessions 2 and 4 installed the same
+  marketplace from this folder.
 
 - **travel-itinerary-builder 1.1.0 on Codex, claude.ai and other agents.** Session 3's run
   was in Claude Code only. On claude.ai, check that the upload accepts the `compatibility`

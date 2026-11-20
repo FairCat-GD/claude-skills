@@ -8,6 +8,10 @@ Ready-to-use Agent Skills that give Claude new superpowers. Browse the collectio
 
 - [travel-itinerary-builder](./plugins/travel-itinerary-builder/README.md) — Helps you effortlessly craft the perfect travel experience for the city of your choice: a day-by-day plan tailored to what you actually want to see, do, and eat.
 
+**Reasoning**
+
+- [crux-finder](./plugins/crux-finder/README.md) *(in development)* — Untangles an argument that keeps going in circles: finds the one claim both sides hinge on, and what would settle it, without taking sides.
+
 *More coming as I build them.*
 
 ## Installing

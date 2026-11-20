@@ -1,65 +1,76 @@
-Read `SPEC.md` decisions 1, 3, 10, 19, 21, 25, 28; `PDD.md` B, *Scope*, *Inputs*,
-*Repo structure*, *Procedure*, *Output format*, *Guardrails*, *Distribution*, *Build order*;
-`ARCHITECTURE.md` invariants 2–4, *Context*, *The contract between the layers*, *crux-finder*,
-*Packaging*. Then CLAUDE.md, *The session cycle* in docs/DEVELOPMENT-WORKFLOW.md,
-docs/ARCHITECTURE.md's overview, invariants and baseline, docs/spec/SESSIONS.md's header, your
-block and the previous block's done-note, then this file, and do Session 4: crux-finder, the
-skill. 4 covers:
-- the skill, `plugins/crux-finder/skills/crux-finder/`, with PDD B's frontmatter plus
-  `metadata.version: "0.1.0"`, under 300 lines, and its three references;
-- the plugin: `plugin.json` at `0.1.0`, its marketplace entry, its `CHANGELOG.md` `[0.1.0]`;
-- the `skills` stage's crux-finder row (under 300 lines, no `scripts/` folder) and
-  `crux-finder` among the published names;
-- the thin slice: one headless `claude -p` run, one installed run, and the owner's claude.ai
-  upload and run;
-- the root README listing crux-finder as in development.
+Read `SPEC.md` decisions 21, 22, 23; `PDD.md` B, *Evals* in full; `ARCHITECTURE.md` invariants
+5–7, *Context* (the `claude` CLI), *The data layer*, *The eval harness*. Then CLAUDE.md, *The
+session cycle* in docs/DEVELOPMENT-WORKFLOW.md, docs/ARCHITECTURE.md's overview, invariants and
+baseline, docs/spec/SESSIONS.md's header, your block and the previous block's done-note, then this
+file, and do Session 5: the eval tooling. 5 covers:
+- `evals/crux-finder/run.py --runs N`: one fresh session per case per run, the prompt the
+  contents of `input.md`, output to `results/<id>/run-N.md`, never opening `gold.md`, isolated
+  as settled at the start;
+- `evals/crux-finder/checks.py`: quotes, symmetry, length, gold order, `approved_by`, and the
+  summary table of `review.md` against the pass bars;
+- tests of both in `tests/`, on fictional fixtures, and the standard-library-only test
+  (invariant 5);
+- `CLAUDE.md`'s commands and the eval runner as the exclusive resource; `ARCHITECTURE.md`'s
+  Built parts and the baseline.
 
-Release crux-finder 0.1.0.
+No version: the session changes no skill.
 
 ## State you need that is not in the specs
 
-- **Round 1 is a home for many skills**: Sessions 0–3 are done; Sessions 4–8 remain.
-- **Push status.** `origin/main` holds everything through Session 3's `review:` commit
-  (`review: the Pango path tried first, …`); no local commit waits for a push. People who
-  install from GitHub now get travel-itinerary-builder 1.1.0.
-- **What Session 3 left that Session 4 builds on:**
-  - **The marketplace has one entry,** `travel-itinerary-builder`, at 1.1.0. crux-finder is
-    the second; `PUBLISHED` in `scripts/check_plugins.py` lists only the itinerary skill today.
-  - **`LINE_LIMITS` in `scripts/check_skills.py` is still empty.** crux-finder's 300 is its first
-    row. The `scripts/` rule (invariant 4) is not built yet.
-  - **`compatibility` passes both validators.** The Agent Skills validator at `83021e2` and
-    `claude plugin validate --strict` (2.1.326) accepted the itinerary skill's
-    `compatibility` field. Whether claude.ai's upload accepts it is unchecked
-    (`docs/BACKLOG.md`).
-  - **The plugin pattern to copy** is `plugins/travel-itinerary-builder/`:
-    - `plugin.json` with `name`, `version`, `description`, `author` (the owner's name),
-      `homepage` and `license`;
-    - a README with *What it does*, *What it needs*, *Installing* and *Version*;
-    - a changelog with an empty `[Unreleased]` and a link reference per version.
-- **On this machine:** Homebrew's `pango` and `poppler` are installed from Session 3 (the owner
-  approved them, and removing them is the owner's call). crux-finder needs neither.
-- **What the spec said that turned out wrong or harder:** nothing in Session 4's ground.
-  Session 3's F11 rule could not decide the page size (no page passes the old phone check), so
-  the owner chose A4; that touches only the itinerary skill.
-- **An older copy of the itinerary skill** appears in the desktop app's skill list as
-  `anthropic-skills:travel-itinerary-builder`, likely the owner's earlier claude.ai upload.
-  A plugin's own skill must be started by its namespaced command to be sure it is the one that
-  runs. The same will hold for crux-finder if a copy is ever uploaded before it is installed.
-- **Baseline** (ARCHITECTURE's table): `verify` green with 6 stages, about 6 s with uv's cache
-  warm; 102 unit tests passed, 0 skipped; `hygiene --all` green, with 0 hits in pushed history; 8
-  Python files; 1 skill folder, 1 plugin. Session 4 adds a skill folder, a plugin and tests.
-- **Not done:** installing from GitHub is still not checked by hand, and travel-itinerary-builder
-  1.1.0 has run only in Claude Code (`docs/BACKLOG.md`).
+- **Round 1 is a home for many skills**: Sessions 0–4 are done; Sessions 5–8 remain.
+- **Push status.** `origin/main` holds everything through Session 3's `review:` commit. Session
+  4's commits wait for an approved push; until then, people who install from GitHub get only
+  travel-itinerary-builder 1.1.0. A push lists crux-finder at 0.1.0.
+- **What Session 4 left that Session 5 builds on:**
+  - **crux-finder 0.1.0** in `plugins/crux-finder/`, with `skills/crux-finder/SKILL.md` and
+    `references/{procedure,crux-types,output-template}.md`. The report's fixed parts are in
+    `output-template.md`: `## Crux report`, the steelman lines `**A, strongest form:**` and
+    `**B, strongest form:**` (with a name or role in brackets after A or B where the input names
+    its parties, and `**B (reconstructed by A), strongest form:**` after a one-sided input), the
+    headings *Common ground*, *The crux*, *Secondary cruxes*, *Not actually in dispute* and
+    *Confidence*, a label `**Double crux · <Type>**`, `**Crux for A · <Type>**`, `**Crux for B ·
+    <Type>**` or `**No crux**`, then a blockquoted crux sentence that is the skill's own words,
+    not a quote. A first line above `## Crux report` appears only when the agent is a party. The
+    claim map, `### Claim map`, follows Confidence only on request. These shape the "quoted span"
+    and "a question, not a report" questions at your start.
+  - **What the skill did on the thin slice** (one fictional input, not an eval case): every run
+    triggered it by its description and gave the template's shape, but none met the 400 words:
+    547, 564, 515 headless, 486 installed, 558 on claude.ai, counted as tokens with a letter or
+    digit. Your length check needs a stated rule for what a word is, and whether markup counts.
+    The primary crux's label varied between runs (double crux, or a crux for A).
+  - **What a `claude -p` run loads,** measured with 2.1.328 from an empty folder with
+    `--plugin-dir`: the plugin under test, but also the owner's user-level plugins, the skills
+    synced from the owner's claude.ai uploads, auto memory, and the user's permission mode
+    (`auto`). The skill read its references with a shell `cat` outside the run's folder, with no
+    denial. `--output-format stream-json --verbose` shows the Skill call and every tool call, which
+    is how to tell which copy ran. This is the measurement your isolation question starts from.
+  - **The claude.ai upload:** the owner chose to delete crux-finder's upload after its one run.
+    While it exists, it appears in Claude Code sessions as `anthropic-skills:crux-finder`, beside
+    the plugin's `crux-finder:crux-finder`; check that it is gone before measuring isolation.
+- **`LIMITS` in `scripts/check_skills.py`** replaced `LINE_LIMITS`: one table of
+  `Limits(lines, scripts)` rows, crux-finder's the only one.
+- **What the spec said that turned out wrong or harder:** the report's 400 words is not met by
+  instruction alone; the owner left further tuning to Session 7's cycle.
+- **Decisions written down nowhere else:** Session 6's synthetic inputs must not reuse the topics
+  of `crux-types.md`'s examples (a boiler, a crossing guard, online choir rehearsals, an export
+  module, a flat running route, local news, a bandstand and footpaths, library hours and books, a
+  garden shed, a kitchen rota) or the thin slice's bakery, so the cases test the skill rather than
+  its own examples.
+- **Baseline** (ARCHITECTURE's table): `verify` green with 6 stages; 105 unit tests passed, 0
+  skipped (31 in `test_check_skills.py`); `hygiene --all` green; 8 Python files; 2 skill folders,
+  2 plugins, 2 marketplace entries; `claude` 2.1.328. Session 5 adds Python files under `evals/`
+  and tests.
+- **Not done:** installing from GitHub, for both skills, waits for a push and a person
+  (`docs/BACKLOG.md`).
 
 ## Watch for
 
-- **The headless run must load only the plugin under test:** `claude -p` from an empty
-  temporary folder with `--plugin-dir` and the plugin's absolute path, before anything is
-  installed, so this repository's `CLAUDE.md` is not read.
-- **`claude plugin marketplace add ./` registers this folder in the owner's user settings.**
-  Remove it with `claude plugin marketplace remove faircat-skills` at the end. One call removes
-  it and prints its result first; a second call reports "not found".
-- **A new check needs its own failing case at its own stage:** 300 lines fails `skills`, a
-  `scripts/` folder fails `skills`. Copy the file aside, break it, and copy it back; never use
-  `git checkout`.
-- **The description is PDD B's, word for word.**
+- **Python 3.10 and the standard library only** under `evals/` (invariant 5).
+- **Tests never touch the real `cases/` or `results/`,** which do not exist yet.
+- **The eval runner is the exclusive resource:** one real run at a time, recorded in the
+  done-note, nothing written to `results/`.
+- **A `claude -p` run from inside this repository reads its `CLAUDE.md`,** and could read
+  `gold.md` once cases exist: measure from an empty temporary folder.
+- **`claude plugin marketplace add ./` registers this folder in the owner's user settings,** if
+  the isolation measurement uses an install: remove it with `claude plugin marketplace remove
+  faircat-skills` before the session ends.
