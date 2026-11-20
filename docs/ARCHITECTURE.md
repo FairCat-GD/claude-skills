@@ -271,12 +271,13 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
 - **A case's frontmatter** is read as one `key: value` per line, a quoted value unquoted, with
   no YAML library: gold.md's `crux`, `type`, `crux_for` and `approved_by` each on one line.
 - **`run-N.md`** is written by `run.py`: frontmatter of `case`, `run`, `model`, `claude` (the
-  CLI's version), `skill_version` (the copy's `plugin.json`), `commit` (HEAD, which holds the
+  CLI's version), `skill_version` (the plugin's `plugin.json`), `commit` (HEAD, which holds the
   plugin as it ran), `date` (UTC), `skill_calls` (the Skill tool's calls, or `none`), `denials`
   (permission denials) and `cost_usd`; then a blank line and the reply as returned, with a last
   newline added where it has none.
 - **`claude-ai.md`** is the owner's claude.ai reply, written by hand; frontmatter is optional and
-  is left out of the checks.
+  is left out of the checks. An output's leading block is its header only when it closes and
+  holds `key: value` lines alone, so a reply that opens with a `---` rule is checked whole.
 - **`review.md`** is `# Review: <id>`, then a `## run-N` or `## claude-ai` section per output,
   each of `- field: value` lines, one per field, values in lower case. A line of any other shape
   is a problem, so a note stays on one line.
@@ -544,7 +545,7 @@ only, on Python 3.10.
 - **Before anything is spent,** it reads every chosen case's input.md (missing, an unclosed
   frontmatter or an empty body exits 2, as do an unknown case and no cases), and it refuses,
   exiting 2, while `plugins/crux-finder/` has uncommitted changes, so every result's `commit`
-  holds the skill it ran.
+  holds the skill it ran, or while its `plugin.json` gives no version.
 - **Each run** gets a new temporary folder holding an empty `work/`, its working directory, and
   a copy of `plugins/crux-finder`. The command is `claude -p --model claude-opus-5-5
   --output-format stream-json --verbose --plugin-dir <copy> --add-dir <copy>` with the isolation
@@ -563,7 +564,8 @@ only, on Python 3.10.
 table, then `checks: <n> case(s), <n> problem(s); <state>`. It exits 0 with no problem and either
 no results yet or every bar met; otherwise 1.
 - **Per case:** gold.md's four fields, `approved_by` non-empty; the gold order (invariant 7).
-- **Per output:** the quotes; for a report, symmetry, from the text after
+- **Per output:** an output that cannot be read is a problem, not a crash; the quotes; for a
+  report, symmetry, from the text after
   `**A[ (…)], strongest form:**` and `**B[ (…)], strongest form:**` up to the next label, blank
   line or heading; and length. A `run-N.md` must carry the `commit` `run.py` writes.
 - **`review.md`:** a section for every output and none for a missing one; the three yes-or-no
@@ -655,7 +657,7 @@ of its own: each skill has its own version.
 | Check | Expected |
 |---|---|
 | `uv run scripts/verify.py` | green: 6 stages (`skills`, `plugins`, `format`, `lint`, `tests`, `hygiene`), about 25 s with uv's cache warm, most of it the eval tooling's git fixtures |
-| Unit tests (`tests`) | 195 passed, 0 skipped: 64 in `test_crux_finder_checks.py`, 45 in `test_hygiene.py`, 35 in `test_check_skills.py`, 20 in `test_crux_finder_run.py`, 19 in `test_check_plugins.py`, 10 in `test_verify.py`, 2 in `test_evals_stdlib.py` |
+| Unit tests (`tests`) | 203 passed, 0 skipped: 70 in `test_crux_finder_checks.py`, 45 in `test_hygiene.py`, 35 in `test_check_skills.py`, 22 in `test_crux_finder_run.py`, 19 in `test_check_plugins.py`, 10 in `test_verify.py`, 2 in `test_evals_stdlib.py` |
 | `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
 | Python files (`ruff format --check .`) | 13 |
 | Skills and plugins | 2 skill folders, 2 plugins, 2 marketplace entries |

@@ -15,8 +15,8 @@ No version: the session changes no skill.
 
 - **Round 1 is a home for many skills**: Sessions 0–5 are done; Sessions 6–8 remain.
 - **Push status.** `origin/main` holds everything through Session 4's `review:` commit. Session
-  5's commit (`feat: the eval tooling, …`) and any review commit after it are local until the
-  owner approves a push; list `git log origin/main..HEAD` first.
+  5's commit (`feat: the eval tooling, …`) and its `review:` commit are pushed with the owner's
+  yes, so `origin/main` holds everything through Session 5.
 - **What Session 5 left that Session 6 builds on:**
   - **The formats `checks.py` reads** (*The data layer*, Built): a case is
     `evals/crux-finder/cases/<id>/` with `input.md` and `gold.md`. gold.md's frontmatter is read
@@ -43,7 +43,7 @@ No version: the session changes no skill.
   - The owner deleted crux-finder's claude.ai upload in Session 5. Session 7's smoke test
     uploads the zip again; the upload then syncs into Claude Code as
     `anthropic-skills:crux-finder`, and `run.py` refuses runs while it loads.
-- **Baseline** (ARCHITECTURE's table): `verify` green with 6 stages, about 25 s; 195 unit tests
+- **Baseline** (ARCHITECTURE's table): `verify` green with 6 stages, about 25 s; 203 unit tests
   passed, 0 skipped; `hygiene --all` green; 13 Python files; 2 skill folders, 2 plugins, 2
   marketplace entries; `claude` 2.1.329. Session 6 adds no Python file.
 - **Not done:** installing from GitHub, for both skills, is not yet checked by a person

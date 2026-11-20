@@ -39,6 +39,7 @@ _CRUX_LABEL = re.compile(r"\*\*(?:(?:Double crux|Crux for [AB]) · [^*\n]+|No cr
 _HEADING = re.compile(r"#{1,3}\s")
 _CLAIM_MAP = re.compile(r"###\s+Claim map\s*")
 _FIELD = re.compile(r"- ([a-z0-9_]+):[ \t]*(.*)")
+_HEADER_LINE = re.compile(r"[a-z0-9_]+:.*")
 _ELLIPSIS = re.compile(r"…|\.\.\.")
 # Typographic quotation marks and apostrophes read as their plain forms: the double ones
 # (curly, low, reversed, double prime) as ", the single ones as '.
@@ -149,13 +150,14 @@ def quoted_spans(body: str) -> tuple[list[str], int]:
     def close_block() -> None:
         nonlocal previous
         if block:
-            # The crux sentence follows its label; any other blockquote quotes the input.
+            # The crux sentence follows its label, a blank line between or not; any other
+            # blockquote quotes the input.
             if _CRUX_LABEL.fullmatch(previous):
                 paragraph.extend(block)
             else:
                 spans.append(_fold(" ".join(block)).strip('"'))
             block.clear()
-        previous = ""
+            previous = ""
 
     for line in body.split("\n"):
         stripped = line.strip()
@@ -258,16 +260,17 @@ def gold_order(root: Path, case: str, outputs: list[Output], results_exist: bool
             problems.append(f"{gold}: not committed before the first commit of its results")
         elif not _unchanged_since(root, parent, gold):
             problems.append(f"{gold}: changed since its results were first committed")
+    # The runs of one cycle share a commit, so each commit is asked about once.
+    ran_on: dict[str, list[str]] = {}
     for output in outputs:
-        commit = output.header.get("commit")
-        if not commit:
-            continue
+        if output.header.get("commit"):
+            ran_on.setdefault(output.header["commit"], []).append(output.name)
+    for commit, names in ran_on.items():
+        which = f"which {', '.join(names)} ran on"
         if not _in_commit(root, commit, gold):
-            problems.append(f"{gold}: not in commit {commit[:12]}, which {output.name} ran on")
+            problems.append(f"{gold}: not in commit {commit[:12]}, {which}")
         elif not _unchanged_since(root, commit, gold):
-            problems.append(
-                f"{gold}: changed since commit {commit[:12]}, which {output.name} ran on"
-            )
+            problems.append(f"{gold}: changed since commit {commit[:12]}, {which}")
     if results_exist and not _unchanged_since(root, "HEAD", gold):
         problems.append(f"{gold}: uncommitted changes while results exist")
     return problems
@@ -285,14 +288,27 @@ def _gold_fields(root: Path, case: str) -> list[str]:
     return [f"{path}: no {name}" for name in GOLD_FIELDS if not found.get(name)]
 
 
+def output_parts(text: str) -> tuple[str | None, str]:
+    """An output's header and its reply. A leading block counts as a header only when it closes
+    and holds `key: value` lines alone, so a reply that opens with a `---` rule stays whole."""
+    try:
+        header, body = split_frontmatter(text)
+    except ValueError:
+        return None, text
+    lines = [line for line in (header or "").split("\n") if line.strip()]
+    if header is None or not all(_HEADER_LINE.fullmatch(line) for line in lines):
+        return None, text
+    return header, body
+
+
 def _read_output(root: Path, case: str, path: Path, source: str) -> tuple[Output, list[str]]:
     where = path.relative_to(root).as_posix()
     problems = []
     try:
-        header, body = split_frontmatter(path.read_text(encoding="utf-8"))
-    except ValueError as error:
+        header, body = output_parts(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as error:
         header, body = None, ""
-        problems.append(f"{where}: {error}")
+        problems.append(f"{where}: cannot be read ({error})")
     spans, unpaired = quoted_spans(body)
     missing = [span for span in spans if not found_verbatim(span, source)]
     problems += [f'{where}: quote not in input.md: "{span}"' for span in missing]

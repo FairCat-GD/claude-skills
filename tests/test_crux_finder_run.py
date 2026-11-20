@@ -316,3 +316,21 @@ def test_no_cases_refuses(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> No
 def test_runs_must_be_one_or_more() -> None:
     with pytest.raises(SystemExit):
         run.main(["--runs", "0"])
+
+
+@pytest.mark.parametrize(
+    ("manifest", "message"),
+    [
+        ("{not json", "plugin.json: cannot be read"),
+        ('{"name": "crux-finder"}', "plugin.json: no version"),
+    ],
+)
+def test_a_plugin_without_a_readable_version_refuses_before_any_run(
+    root: Path, manifest: str, message: str, capsys: pytest.CaptureFixture[str]
+) -> None:
+    path = root / "plugins" / "crux-finder" / ".claude-plugin" / "plugin.json"
+    path.write_text(manifest, encoding="utf-8")
+    _git(root, "commit", "-q", "-am", "manifest")
+    assert run.main(["--runs", "1"]) == 2
+    assert _log(root) == []
+    assert message in capsys.readouterr().out

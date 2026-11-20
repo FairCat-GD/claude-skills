@@ -899,6 +899,23 @@ invariants 5–7, *Context* (the `claude` CLI), *The data layer*, *The eval harn
   - the gold-order condition reversed failed the four gold-order tests on committed results.
 - **Numbers:** 195 unit tests (+86), 0 skipped; 6 `verify` stages, about 25 s (from about 6 s);
   13 Python files (+5); 2 skill folders, 2 plugins, 2 marketplace entries (±0).
+- **Review (`/code-review high`), 6 findings: 6 fixed and 0 skipped.** The user asked for every
+  finding fixed, then a commit and a push.
+  - **A blank line between the crux label and its sentence made the sentence a quote:** the label
+    is now remembered across blank lines, and forgotten once a blockquote closes.
+  - **A reply opening with a `---` rule was read as frontmatter,** emptied or cut: an output's
+    leading block is a header only when it closes and holds `key: value` lines alone.
+  - **`run.py` read the skill's version after the run was paid for,** and a bad `plugin.json`
+    crashed it: it is read first, and a missing or unreadable version refuses with exit 2.
+  - **An unreadable output crashed `checks.py`:** it is now a problem line.
+  - **A comment in `run.py` named a session:** it now names only the CLI version measured.
+  - **`gold_order` asked git about the same commit once per output:** once per commit now.
+  - **Falsified,** each through the whole `verify`, the file copied aside and back: the label
+    forgotten at a blank line again failed the blank-line test; `split_frontmatter` back in place
+    of `output_parts` failed the leading-rule test; `_skill_version` returning a fixed value
+    failed the header test and both refusal tests.
+  - **Numbers after the review:** 203 unit tests (+8), 0 skipped; 6 stages; 13 Python files.
+  - **Pushed** with the user's yes, with this commit.
 
 ---
 

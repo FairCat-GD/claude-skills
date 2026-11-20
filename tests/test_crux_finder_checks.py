@@ -614,3 +614,41 @@ def test_main_prints_the_table_and_fails_on_a_missed_bar(
     out = capsys.readouterr().out
     assert "| Type matches gold | ≥ 18 / 20 runs | 16 / 20 | **no** |" in out
     assert out.endswith("pass bars not met: Type matches gold\n")
+
+
+def test_a_blank_line_between_the_crux_label_and_its_sentence_keeps_it_exempt() -> None:
+    body = reply().replace("**Double crux · Empirical**\n>", "**Double crux · Empirical**\n\n>")
+    assert _quotes(body) == ([], 0)
+
+
+@pytest.mark.parametrize(
+    ("text", "header"),
+    [
+        ("---\ncase: ferry\ncommit: abc\n---\n\n## Crux report\n", "case: ferry\ncommit: abc"),
+        ("---\n\n## Crux report\n\nText.\n", None),
+        ("---\n\n## Crux report\n\nText.\n\n---\n\nMore.\n", None),
+    ],
+)
+def test_only_a_block_of_fields_is_an_outputs_header(text: str, header: str | None) -> None:
+    found, body = checks.output_parts(text)
+    assert found == header
+    assert body == (text if header is None else "\n## Crux report\n")
+
+
+def test_an_output_that_opens_with_a_rule_is_still_checked(root: Path) -> None:
+    _case(root, "ferry")
+    _commit(root)
+    _output(root, "ferry", "claude-ai", "---\n\n" + reply(53, 69))
+    _review(root, "ferry", ["claude-ai"])
+    assert _problems(root, "claude-ai.md") == [
+        f"{EVALS}/results/ferry/claude-ai.md: steelmen of 53 and 69 words: "
+        "one is over 1.25 times the other"
+    ]
+
+
+def test_an_output_that_cannot_be_read_is_a_problem_not_a_crash(root: Path) -> None:
+    _case(root, "ferry")
+    _commit(root)
+    (root / EVALS / "results" / "ferry" / "claude-ai.md").mkdir(parents=True)
+    problems = _problems(root, "claude-ai.md: cannot be read")
+    assert len(problems) == 1

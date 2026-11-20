@@ -35,7 +35,7 @@ SKILL = "crux-finder:crux-finder"
 CLAUDE = ["claude"]
 TIMEOUT_SECONDS = 900
 BUDGET_USD = "2"
-# Measured in Session 5 with claude 2.1.329: with these, the start event lists the copy and
+# Measured with claude 2.1.329: with these, the start event lists the copy and
 # Claude Code's built-ins only, no MCP server, the default permission mode and no memory paths,
 # and a read outside the run's two folders is denied, by Read and by Bash alike.
 ISOLATION = [
@@ -116,6 +116,18 @@ def _git(*args: str) -> str:
     return done.stdout.strip()
 
 
+def _skill_version() -> str:
+    """The plugin's version, read before any run is spent."""
+    manifest = PLUGIN / ".claude-plugin" / "plugin.json"
+    try:
+        version = json.loads(manifest.read_text(encoding="utf-8")).get("version")
+    except (OSError, ValueError, AttributeError) as error:
+        raise Refusal(f"{_relative(manifest)}: cannot be read ({error})") from None
+    if not isinstance(version, str) or not version:
+        raise Refusal(f"{_relative(manifest)}: no version")
+    return version
+
+
 def _commit() -> str:
     """HEAD, refusing while the plugin has changes no commit holds."""
     plugin = _relative(PLUGIN)
@@ -185,7 +197,7 @@ def _skill_calls(events: list[dict]) -> list[str]:
     return calls
 
 
-def run_once(case: str, number: int, prompt: str, commit: str) -> str:
+def run_once(case: str, number: int, prompt: str, commit: str, version: str) -> str:
     """One isolated session; the result file's text."""
     with tempfile.TemporaryDirectory(prefix="crux-finder-run-") as folder:
         work = Path(folder) / "work"
@@ -239,14 +251,13 @@ def run_once(case: str, number: int, prompt: str, commit: str) -> str:
             raise RunFailed(f"exit {done.returncode}: {done.stderr.strip()[-500:] or reply}")
         if not isinstance(reply, str) or not reply.strip():
             raise RunFailed("an empty reply")
-        manifest = json.loads((plugin / ".claude-plugin" / "plugin.json").read_text("utf-8"))
         calls = _skill_calls(events)
         header = {
             "case": case,
             "run": str(number),
             "model": str(start.get("model")),
             "claude": str(start.get("claude_code_version")),
-            "skill_version": str(manifest.get("version")),
+            "skill_version": version,
             "commit": commit,
             "date": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "skill_calls": ", ".join(calls) or "none",
@@ -273,6 +284,7 @@ def main(argv: list[str]) -> int:
     try:
         prompts = _prompts(options.case)
         commit = _commit()
+        version = _skill_version()
     except Refusal as refusal:
         print(f"run.py: {refusal}")
         return 2
@@ -284,7 +296,7 @@ def main(argv: list[str]) -> int:
                 print(f"run.py: {_relative(target)} exists; skipped")
                 continue
             try:
-                text = run_once(case, number, prompt, commit)
+                text = run_once(case, number, prompt, commit, version)
             except RunFailed as failure:
                 print(f"run.py: {case} run {number}: {failure}; nothing written")
                 return 1
