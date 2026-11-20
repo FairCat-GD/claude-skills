@@ -12,6 +12,11 @@ up, it moves out of this file.
 - **crux-finder: any UI.** Left out at the round 1 intake (PDD B, *Scope*).
 - **crux-finder: deciding who is right.** Out of scope by design, and also a guardrail; left out
   at the round 1 intake (PDD B, *Scope*).
+- **crux-finder: a second real eval case.** PDD B's real set has two cases: a public-domain
+  debate excerpt and a dispute the maintainer writes up. Session 6 committed the excerpt; the
+  owner had no dispute to write up, so a fictional transcript took its place. A real one, from
+  the owner or another public-domain source, joins as a new case with its gold committed
+  before any of its results.
 - **Running either skill on Codex or another agent.** Their install steps are documented; no
   session runs them. Left out at the round 1 intake.
 

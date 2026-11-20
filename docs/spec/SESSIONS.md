@@ -953,6 +953,60 @@ invariants 5–7, *Context* (the `claude` CLI), *The data layer*, *The eval harn
   the owner, never trim the quote silently.
 - **The inputs are quoted verbatim by the reports,** so their text is final once gold exists.
 
+**Done (2026-11-20, no version).**
+- **Decided with the user** (each *Ask at the start* as recommended):
+  - **The public-domain excerpt:** the first Lincoln–Douglas debate (Ottawa, 1858) on the
+    "house divided": one unbroken passage per speaker, Douglas first.
+  - **The owner's dispute:** each side as it was put, labelled A and B. Superseded mid-session
+    (Amendments).
+  - **The one-sided case's gold:** the crux and type expected had B's own words been given; the
+    gate must fire, and a run that asks for B's words matches on crux and type.
+  - **The no-conflict case's gold:** no crux, `type: none`, `crux_for: none`; only a **No crux**
+    report matches, and a Framing crux meets PDD B's no-conflict bar but not crux or type.
+  - **Every input** was approved by the user as drafted, and **every gold** as proposed: nine
+    in one table, the tenth with its input.
+- **The ten cases,** in `evals/crux-finder/cases/<id>/`, each `input.md` and `gold.md`:
+  - eight synthetic, one per row of PDD B's synthetic set: `empirical-orchard-stall`,
+    `empirical-studio-kiln`, `predictive-hall-solar`, `definitional-vintage-rail`,
+    `value-theatre-season`, `framing-piano-lessons`, `one-sided-games-night`,
+    `no-conflict-quiz-team`; about 150 to 210 words each, a one-line request, then A and B as
+    roles;
+  - `transcript-father-care`: a fictional message thread between two siblings, a Value crux
+    (Amendments);
+  - `real-lincoln-douglas`: Douglas's 591 words and Lincoln's 722, with `source:` and
+    `license: public-domain`.
+  - Each gold.md: the four fields on one line each, `approved_by: FairCat-GD`, and a short note
+    for the review: the common ground that pins the crux, what else counts as a match, and the
+    counting rules for the one-sided and no-conflict cases.
+- **Docs:** `ARCHITECTURE.md` (*The data layer* Decided, two amendments, and Built, the cases as
+  committed; *Overview*, *Layout* and *Testing strategy* lines; the baseline's `checks.py` row;
+  a *Decision log* line); `docs/BACKLOG.md` (a second real case).
+- **Amendments:**
+  - **The real set holds one case, where the block and PDD B have two:** the user had no dispute
+    of their own to write up and asked the session to write a serious one. Being fictional, it
+    is a synthetic case, `transcript-father-care`, with no `license:`, rather than one labelled
+    `maintainer-authored`; it is the set's only transcript. Added mid-session by the user; a
+    second real case is in `docs/BACKLOG.md`.
+  - **The excerpt is longer than planned** (591 and 722 words, against about 300 to 450 each):
+    the page runs Douglas's paragraphs together and Lincoln's answer is one paragraph, so a
+    shorter cut would start or stop mid-argument. Approved by the user with the input.
+- **Measured:**
+  - **The excerpt's source:** the National Park Service's Ottawa transcript, read with the
+    standard library's HTML parser and cut by a script, so the text is the page's character for
+    character, its typos ("The knew", "shall became") kept. Douglas's cut ends just before the
+    paragraph-run that turns to citizenship, so his most openly racist passage is left out; the
+    era's terms in what remains stay as published.
+  - **The ids reach no run:** `run.py` sends the body alone, from a temporary folder of a fixed
+    name, so an id that names its type biases nothing.
+  - **gold.md as `checks.py` reads it:** every gold's four fields through its own `fields()`.
+    A value quoted whole in single quotes keeps a doubled apostrophe, since nothing unescapes
+    it, so the vintage case's crux, holding both kinds of quotation mark, is left unquoted.
+- **Falsified:** no new check. `checks.py`'s gold order on the real cases: before the commit it
+  reported each of the ten gold.md `not committed` and exited 1; in a scratch clone with the
+  cases committed it reported `10 case(s), 0 problem(s); no results yet` and exited 0.
+- **Numbers:** 203 unit tests (±0), 0 skipped; 6 `verify` stages; 13 Python files (±0); 2 skill
+  folders, 2 plugins, 2 marketplace entries (±0); 10 cases (+10); no `results/`.
+
 ---
 
 ## 7: The eval cycle and the smoke test

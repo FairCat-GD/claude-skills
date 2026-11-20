@@ -35,8 +35,8 @@ outside the shipped folders. The tooling proves the repository is sound and ship
 `plugins/travel-itinerary-builder/` and `plugins/crux-finder/`, each with its skill folder at
 `plugins/<skill>/skills/<skill>/`. The tooling:
 `scripts/verify.py`, `scripts/hygiene.py`, `scripts/check_skills.py`, `scripts/check_plugins.py`
-and `tests/`. The evals: `evals/crux-finder/run.py` and `checks.py`; crux-finder's cases come
-in Session 6 and its results in Session 7.
+and `tests/`. The evals: `evals/crux-finder/run.py` and `checks.py`, and crux-finder's ten cases
+in `evals/crux-finder/cases/`; its results come in Session 7.
 
 ## Context
 
@@ -167,9 +167,9 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   check tests build fictional plugin trees in a temporary folder. The tests import the scripts
   through pytest's `pythonpath`, and the eval scripts by their paths, since a folder named
   `crux-finder` is no package and each skill's evals will have a `run.py` of its own.
-- `evals/crux-finder/` holds `run.py` and `checks.py`, standard library only. `cases/` comes in
-  Session 6 and `results/` in Session 7. `run.py` reaches the skill only through the CLI: it
-  copies the plugin folder, unread, to where the run can load it.
+- `evals/crux-finder/` holds `run.py` and `checks.py`, standard library only, and `cases/`, the
+  ten cases (*The data layer*). `results/` comes in Session 7. `run.py` reaches the skill only
+  through the CLI: it copies the plugin folder, unread, to where the run can load it.
 
 *Enforced by,* in part:
 - The `skills` stage holds a skill folder's references one level deep from `SKILL.md`: every file
@@ -264,12 +264,46 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
     `gate_fired` and `no_conflict_reported` where they apply: the three bars that had no field.
   - The prompt is input.md's body, its frontmatter left out, and quotes are checked against the
     same body.
+- **Amended at the start of Session 6, with the owner** (2026-11-20), where PDD B left open how
+  two cases are judged:
+  - **The one-sided case's gold** is the crux and type expected had B's own words been given,
+    and the gate must fire. A run that asks for B's words and writes no report matches on crux
+    and type; a run that reports instead is judged against the crux.
+  - **The no-conflict case's gold** is no crux, with `type: none` and `crux_for: none`. Only a
+    **No crux** report matches; a Framing crux meets PDD B's no-conflict bar but not crux or
+    type.
+- **Amended mid-Session 6, with the owner** (2026-11-20): the real set holds one case, the
+  public-domain debate excerpt, where PDD B has two. The owner had no dispute of their own to
+  write up and asked the session to write a serious one; being fictional, it is a synthetic
+  case, with no `license:`. A second real case is in `docs/BACKLOG.md`.
 - **Machine identifiers, never renamed:** the marketplace name `faircat-skills`; the plugin
   and skill names `travel-itinerary-builder` and `crux-finder`; the case ids once results exist.
 
-**Built** (the formats; the cases come in Session 6, the results in Session 7).
+**Built** (the formats and the ten cases; the results come in Session 7).
 - **A case's frontmatter** is read as one `key: value` per line, a quoted value unquoted, with
   no YAML library: gold.md's `crux`, `type`, `crux_for` and `approved_by` each on one line.
+- **crux-finder's ten cases** (Session 6), one folder each under `evals/crux-finder/cases/`,
+  named `<set or type>-<topic>`; the id never reaches a run, which sees only the body:
+  - nine synthetic, fictional, drafted by the session and approved by the owner. Eight are one
+    per row of PDD B's synthetic set: `empirical-orchard-stall`, `empirical-studio-kiln`,
+    `predictive-hall-solar`, `definitional-vintage-rail`, `value-theatre-season`,
+    `framing-piano-lessons`, `one-sided-games-night` and `no-conflict-quiz-team`. The ninth,
+    `transcript-father-care`, stands in the second real case's place (Decided, above): a
+    message thread between two siblings, a Value crux, the only synthetic case in transcript
+    form. Each input has no frontmatter: a one-line request in the words of the skill's
+    description, then the two parties labelled A and B, given as roles, never names (the
+    one-sided case is one voice giving both). No topic is one of `crux-types.md`'s examples,
+    so the cases test the skill rather than its own examples;
+  - `real-lincoln-douglas`: two unbroken passages from the first Lincoln–Douglas debate
+    (Ottawa, 1858) on the "house divided", Douglas first, chosen with the owner and copied
+    verbatim from the National Park Service's transcript, its typos kept, since quotes are
+    checked against it; `source:` names the page and `license: public-domain`.
+- **gold.md** holds `crux` (one sentence), `type` (one of the five, or `none`), `crux_for` (`A`,
+  `B`, `both` or `none`) and `approved_by: FairCat-GD`. The owner approved or wrote every one
+  before it was written, and all ten were committed together, before any result. Below the
+  frontmatter, which is all `checks.py` reads, a short note for the owner's review: the common
+  ground that pins the crux, what else counts as a match, and, for the one-sided and
+  no-conflict cases, the rules above.
 - **`run-N.md`** is written by `run.py`: frontmatter of `case`, `run`, `model`, `claude` (the
   CLI's version), `skill_version` (the plugin's `plugin.json`), `commit` (HEAD, which holds the
   plugin as it ran), `date` (UTC), `skill_calls` (the Skill tool's calls, or `none`), `denials`
@@ -612,7 +646,8 @@ before every commit. The harness is each skill's eval set. The commands are in `
 Built: Validators (the `skills` and `plugins` stages), Unit (`tests/test_verify.py`,
 `tests/test_hygiene.py`, `tests/test_check_skills.py`, `tests/test_check_plugins.py`,
 `tests/test_crux_finder_run.py`, `tests/test_crux_finder_checks.py`, `tests/test_evals_stdlib.py`)
-and Hygiene. Evals: the tooling (`run.py`, `checks.py`); the cases come in Session 6.
+and Hygiene. Evals: the tooling (`run.py`, `checks.py`) and crux-finder's ten cases; the first
+cycle runs in Session 7.
 
 ## Packaging
 
@@ -661,7 +696,7 @@ of its own: each skill has its own version.
 | `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
 | Python files (`ruff format --check .`) | 13 |
 | Skills and plugins | 2 skill folders, 2 plugins, 2 marketplace entries |
-| `uv run evals/crux-finder/checks.py` | `checks: 0 case(s), 0 problem(s); no cases yet`, exit 0 |
+| `uv run evals/crux-finder/checks.py` | `checks: 10 case(s), 0 problem(s); no results yet, so the pass bars are not counted`, exit 0 |
 
 A documentation or refactoring change should not move any of these. If one moves, that is the
 finding.
@@ -682,3 +717,7 @@ finding.
   without its frontmatter, and *The eval harness* the isolation, the model, the quoted span, a
   question judged by `gate_fired`, the word rules and the strict gold order. The owner settled
   them at the start of Session 5, each as the session recommended (decision 21).
+- 2026-11-20, Session 6: *The data layer* gains how the one-sided and no-conflict cases are
+  judged against their gold. The owner settled both at the start of Session 6, as the session
+  recommended (decision 21), with the debate excerpt. Mid-session, with no dispute of their own
+  to write up, the owner asked for a serious fictional one, so the real set holds one case.
