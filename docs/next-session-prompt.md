@@ -15,8 +15,8 @@ Release 0.2.0 only when the cycle changes the skill.
 ## State you need that is not in the specs
 
 - **Round 1 is a home for many skills**: Sessions 0–6 are done; Sessions 7–8 remain.
-- **Push status.** `origin/main` holds everything through Session 5's `review:` commit. Session
-  6's commit and its `review:` commit wait for the owner's yes to a push.
+- **Push status.** `origin/main` holds everything through Session 6: its commit, its `review:`
+  commit and the docs commit that corrects this note, each pushed with the owner's yes.
 - **What Session 6 left that Session 7 builds on:**
   - **Ten cases** in `evals/crux-finder/cases/`, each `input.md` and an owner-approved `gold.md`,
     committed together, before any result: `definitional-vintage-rail`,
