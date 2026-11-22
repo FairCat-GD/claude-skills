@@ -18,8 +18,10 @@ Release 0.4.0 only when the cycle changes the skill.
 
 - **Round 1 is a home for many skills**: Sessions 0–7a are done; 7b, inserted in Session 7a, and
   8 remain.
-- **Push status.** `origin/main` holds everything through Session 7. Session 7a's commits are
-  local unless the owner approved a push at its end: list `git log origin/main..HEAD`.
+- **Push status.** `origin/main` holds everything through Session 7a: its commit and its
+  `review:` commit ("review: crux-finder's caps hold with a three-word party label and the party
+  note, the 0.3.0 link, and 4 smaller"), pushed with the owner's yes, so crux-finder 0.3.0 is
+  installable.
 - **What Session 7a left that 7b builds on:**
   - **Session 7a's results** in `evals/crux-finder/results/<id>/`: `run-1.md`, `run-2.md` and
     `review.md` for each case, run on 0.2.0 at commit `9cae03b`. A new cycle replaces them:
@@ -34,7 +36,10 @@ Release 0.4.0 only when the cycle changes the skill.
   - **crux-finder 0.3.0** changed for length alone: a cap in words for every section, adding up
     to under 400 with the headings and labels (each steelman 45, Common ground 40, The crux 130
     with its sentence 25 and each field 22, Secondary cruxes 50 in all, Not actually in dispute
-    30, Confidence 25), and the steelman kept to the reasons the conclusion most rests on.
+    30, Confidence 25), a name or role in a steelman's brackets of at most three words, no
+    secondary cruxes in a report that opens with the note on the agent as a party, and the
+    steelman kept to the reasons the conclusion most rests on. The last two came after the spot
+    check, from Session 7a's review, and no run has measured the label rule or the note rule.
   - **The review's rules for two cases** (*The data layer*): record `gate_fired` on every output
     of `one-sided-games-night` and `no_conflict_reported` on every output of
     `no-conflict-quiz-team`; each gold.md's note, below its frontmatter, says what else counts.
@@ -52,10 +57,10 @@ Release 0.4.0 only when the cycle changes the skill.
   300 words, steelmen 48/48 and 43/43, every quotation verbatim, the same crux in both.
 - **The smoke test:** no claude.ai upload of crux-finder exists. The smoke test uploads the zip,
   made outside the repository (`zip -r -X <scratchpad>/crux-finder.zip crux-finder -x
-  '*.DS_Store'` from `plugins/crux-finder/skills/`, since `skills/` holds a `.DS_Store`); it then
-  syncs into Claude Code as `anthropic-skills:crux-finder`, and `run.py` refuses while it loads,
-  so run the cycle first, the smoke test after, and delete the upload when done unless the owner
-  keeps it. claude.ai is the owner's by hand: the owner pastes each case's `input.md` body into a
+  '*.DS_Store'` from `plugins/crux-finder/skills/`, which keeps any Finder file inside the skill
+  folder out of the upload); it then syncs into Claude Code as `anthropic-skills:crux-finder`,
+  and `run.py` refuses while it loads, so run the cycle first, the smoke test after, and delete
+  the upload when done unless the owner keeps it. claude.ai is the owner's by hand: the owner pastes each case's `input.md` body into a
   fresh chat and pastes back the reply from claude.ai's Copy button, with the model used.
 - **Baseline** (ARCHITECTURE's table): `verify` green with 6 stages, about 21 s; 203 unit tests
   passed, 0 skipped; 13 Python files; 2 skill folders, 2 plugins, 2 marketplace entries;

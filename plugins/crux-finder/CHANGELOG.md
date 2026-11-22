@@ -16,7 +16,7 @@ reports kept within 400 words, and the two on a long debate excerpt ran to 463 a
 - **A report stays within 400 words however long the input.** Each part of the report now has a
   limit in words, and the limits add up to under 400: a long input gets the same limits as a
   short one, so the report says less about each point rather than running long. A secondary
-  crux is a single short line.
+  crux is a single short line, and a name or role given to either side is at most three words.
 - **Each side's strongest form keeps to its main reasons.** It gives the conclusion and the
   reasons it most rests on, in at most 45 words, rather than every reason a long argument
   offers, so the two sides stay the same length.
@@ -69,5 +69,6 @@ before 1.0.0.
 - **The full breakdown on request.** Ask for the claim map to see every claim each side makes,
   and how they depend on each other.
 
+[0.3.0]: https://github.com/FairCat-GD/claude-skills/commit/522a2cf5cba66e2575ba53e03a318736b7e3bfc6
 [0.2.0]: https://github.com/FairCat-GD/claude-skills/commit/c52b303881d3ad90dd4c6167644af1cccba61a07
 [0.1.0]: https://github.com/FairCat-GD/claude-skills/commit/352a3835dca5f9bf0527cfc74a6d92403756ab2a

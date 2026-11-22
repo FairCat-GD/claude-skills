@@ -39,7 +39,7 @@ Classify the input first (step 1).
 Positions given under names, roles or other labels count as labelled: A is the party named first
 (in a transcript, the first to speak) unless the user says otherwise. In a one-sided input, A is
 always the party whose own words you have, and B the one they describe. Where the input names its
-parties, the two steelman lines add the name or role in brackets,
+parties, the two steelman lines add the name or role in brackets, in at most three words,
 `**A (<name or role>), strongest form:**`; everywhere else the report says A and B.
 
 ## Procedure
@@ -97,7 +97,8 @@ Write it in the exact format of `references/output-template.md`:
   `references/output-template.md`: each steelman 45, Common ground 40, The crux 130 (its
   sentence at most 25 and each field at most 22), Secondary cruxes 50 in all, Not actually in
   dispute 30, Confidence 25. The caps add up to under 400 with the headings and labels, so a
-  report inside every cap is inside 400, however long the input.
+  report inside every cap is inside 400, however long the input. A report that opens with the
+  note on you as a party has no room for secondary cruxes: that section says `None.`
 - **Every heading stays,** in the template's order; a section with nothing in it says `None.`
 - **Each field of a crux is one sentence of at most 22 words:** A holds, B holds, If A accepted
   (both directions in one sentence), and What would move it.

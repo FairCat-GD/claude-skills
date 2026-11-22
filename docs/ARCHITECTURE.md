@@ -567,12 +567,14 @@ missed bar, length, on the long excerpt alone):
   each steelman 45; Common ground 40; The crux 130, its sentence at most 25 and each field at
   most 22; Secondary cruxes 50 in all; Not actually in dispute 30; Confidence 25. A report inside
   every cap is inside 400 however long the input (386 words with every section at its cap, by
-  `checks.py`'s count), so length no longer rests on the model counting its whole report.
+  `checks.py`'s count; 390 with a three-word name in each steelman's brackets, the most the
+  label allows; 368 with the note on the agent as a party, whose report has no secondary
+  cruxes), so length no longer rests on the model counting its whole report.
 - **A steelman keeps to the reasons the conclusion most rests on,** not every reason the input
   gives; a list of further reasons is the first thing cut. Added after the first spot check of
   the caps broke symmetry (below).
 
-**Built.** Version 0.3.0 (2026-11-22), in `plugins/crux-finder/`. `SKILL.md` (158 lines) holds
+**Built.** Version 0.3.0 (2026-11-22), in `plugins/crux-finder/`. `SKILL.md` (159 lines) holds
 PDD B's frontmatter, its description word for word, plus `metadata.version`; the Inputs table,
 steps 1–9 in brief, the report's rules and the check before sending, and the seven guardrails.
 `references/procedure.md` defines each step in full; `crux-types.md` gives the five types, the

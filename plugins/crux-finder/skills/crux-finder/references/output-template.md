@@ -61,7 +61,7 @@ High | Medium | Low, with the reason.
 - **The steelman lines.** 2 to 4 sentences each, at most 45 words: the conclusion and the
   reasons it most rests on, never a list of every reason the input gives, with `[inferred]`
   after each premise the input does not state. Where the input names its parties, add the name
-  or role in brackets: `**A (<name or role>), strongest form:**`. After a one-sided input:
+  or role in brackets, in at most three words: `**A (<name or role>), strongest form:**`. After a one-sided input:
   `**B (reconstructed by A), strongest form:**`.
 - **Common ground.** One short line per claim both accept, at most three and 40 words in all,
   the ones the crux stands on. A claim only one party makes is not common ground.
@@ -125,6 +125,8 @@ session and paste this conversation's transcript as the input.
 
 ## Crux report
 ````
+
+The note counts toward the 400 words, so this report's Secondary cruxes says `None.`
 
 ## The claim map, on request
 

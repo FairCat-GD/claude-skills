@@ -1286,6 +1286,30 @@ layer*, *The eval harness*; the done-notes of Sessions 6 and 7.
 - **Numbers:** 203 unit tests (±0), 0 skipped; 6 `verify` stages, about 21 s; 13 Python files
   (±0); 2 skill folders, 2 plugins, 2 marketplace entries (±0); 10 cases; 20 runs and 10
   reviews in `results/` (±0 files, all replaced); `checks.py` 2 problems, exit 1.
+- **Review (`/code-review high`), 6 findings: 6 fixed and 0 skipped.** The user asked for every
+  finding fixed. Two correct this done-note, which the review only adds to, so they are
+  recorded here.
+  - **The 400 words held only with a one-word name in each steelman's label:** a long role in
+    brackets, or the note opening a report where the agent is a party (about 25 words, which
+    `checks.py` counts), sat under no cap; with the note and every section at its cap a report
+    came to 417. A name or role in brackets is now at most three words, and a report that opens
+    with the note says `None.` under Secondary cruxes; at every cap that gives 390 with
+    three-word roles, 389 with the reconstructed-by-A label and 368 with the note. Neither rule
+    was in the spot check: 7b's cycle measures the first, and no case is an agent-as-party one.
+  - **The changelog had no `[0.3.0]` link:** added, to the feat commit.
+  - **The README said "at most 400 words"** before any cycle on 0.3.0: it says the report is
+    meant to stay within 400 again.
+  - **Correction, What the reviews and checks showed:** the crux section averaged about 145
+    words over the 16 reports with a crux, not about 144 over 17; one of the two **No crux**
+    reports had been counted.
+  - **Correction, Decided with the user:** the user approved inserting Session 7b as a step of
+    the plan; the block's text was written by the session and first seen by the user in this
+    review.
+  - **The handoff gave a wrong reason for the zip's `.DS_Store` exclusion:** it keeps any
+    Finder file inside the skill folder out of the upload.
+  - **Falsified:** no new check. The new worst-case totals come from reports filled to every
+    cap and counted by `checks.py`'s own functions.
+  - **Numbers after the review:** unchanged; `SKILL.md` 159 lines.
 
 ---
 
