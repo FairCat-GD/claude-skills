@@ -3,40 +3,38 @@ case: empirical-studio-kiln
 run: 1
 model: claude-opus-5-5
 claude: 2.1.329
-skill_version: 0.1.0
-commit: a04f10df1318f2bcb65e9fe927ec447d98e422a1
-date: 2026-11-21T22:58:07Z
+skill_version: 0.2.0
+commit: 9cae03b0a232ccc334ba4fb8bc6515f14b8689c1
+date: 2026-11-22T10:56:09Z
 skill_calls: crux-finder:crux-finder
 denials: 0
-cost_usd: 0.1762876
+cost_usd: 0.175778
 ---
 
 ## Crux report
 
-**A, strongest form:** The bill should follow each potter's use, not be split evenly. B fires the kiln most weeks and A about once a fortnight, and the kiln is by far the biggest load on the meter, so most of last quarter's electricity went on B's firings. An even split therefore has A paying for B's kiln use.
+**A, strongest form:** The bill should follow use. A fires the kiln about once a fortnight and B most weeks. The kiln is the biggest load on the meter, so most of last quarter's electricity went on B's firings, and an even split has A paying for them.
 
-**B, strongest form:** An even split is simpler and fair, because most of the bill is heaters and lights, which both use equally. The kiln is well insulated and runs only a few hours per firing, so it was a small share of last quarter's electricity, even with B's more frequent firings. If the kiln had used most of the bill, B would agree to pay more.
+**B, strongest form:** An even split is simpler, and it is fair because heaters and lights make up most of the bill and both use them equally. The kiln is well insulated and runs only a few hours a firing, so even with B's firings it was a small share of last quarter's electricity.
 
 ### Common ground
 - B fires the kiln more often than A.
-- If the kiln used most of the bill, B should pay more.
-- Both use the heaters and lights about equally (B says so, and A does not dispute it).
+- If the kiln used most of the bill, B should pay more. B says so directly.
 
 ### The crux
 **Double crux · Empirical**
-> How much of last quarter's electricity the kiln used.
+> Whether B's kiln firings or the shared heaters and lights used most of last quarter's electricity.
 
-- A holds: the kiln was most of last quarter's electricity, so most of the bill came from B's firings.
-- B holds: the kiln was a small share, and heaters and lights made up most of the bill.
-- If A accepted B's view here: a usage-based split would come out close to even, and A's case that A is paying for B's kiln would fall away; if B accepted A's view, B has already said they would agree to pay more.
-- What would move it: the kiln's rated power (kW on its data plate) times the hours of each firing last quarter (from the controller log or a firing diary), compared with the quarter's total kWh on the bill. A plug-in or sub-meter on the kiln next quarter would confirm the figure.
+- A holds: the kiln is by far the biggest thing on the meter, so most of last quarter's electricity went on B's firings.
+- B holds: the kiln runs only a few hours a firing and is well insulated, so the heaters and lights used most of the electricity.
+- If A accepted B's view here: A's reason for splitting by use would mostly fall away, because the difference would be small; if B accepted A's, B has already said they would agree to pay more.
+- What would move it: the kiln's kWh per firing, from a plug-in energy monitor, a sub-meter, or its rated power times firing hours, multiplied by last quarter's firings and set against the bill's total kWh.
 
 ### Secondary cruxes
-- **Double crux · Value**: Whether a modest gap in use is worth moving away from an even split. A holds: the bill should follow use; B holds: an even split is simpler when the gap is small; if accepted: either side's preferred method would change once the kiln's share is known to be modest; what would move it: the trade-off between exact fairness and simplicity, with no resolution offered.
+None.
 
 ### Not actually in dispute
-- Whether heavier use should cost more. B accepts it in principle ("If it really had used most of the bill, I would agree to pay more"), so the two share the principle and differ on the size of the difference.
-- Who fires the kiln more often. Both agree that B does.
+- Even split versus split by use: B accepts a usage-based split if the kiln dominates, so the question of principle comes down to the measurement above.
 
 ### Confidence
-High. Both positions are in their own words, and each one explicitly makes its conclusion depend on the kiln's share of the bill.
+High. Both say how much the kiln used is what decides it, and B says outright that the kiln using most of the bill would change their view.

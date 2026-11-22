@@ -104,7 +104,7 @@ in `evals/crux-finder/cases/`, with the latest cycle's results in `evals/crux-fi
 
 Measured at intake, 2026-11-17, and again in Session 2, 2026-11-18: `claude` 2.1.326; uv 0.12.3;
 Python 3.10.20 installed through uv. In Session 4, 2026-11-20: `claude` 2.1.328. In Session 5,
-2026-11-20, and Session 7, 2026-11-21: `claude` 2.1.329.
+2026-11-20, Session 7, 2026-11-21, and Session 7a, 2026-11-22: `claude` 2.1.329.
 
 ## Stack and pins
 
@@ -281,6 +281,10 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   run's fields and note were drafted for the owner against gold.md and its note, and the owner
   confirmed every row before `review.md` recorded it. `review.md` holds the owner's answers either way. Each
   cycle's session asks at its start how its review is made.
+- **Settled at the start of Session 7a, with the owner** (2026-11-22): its review was made as
+  Session 7's ended, each run's fields and note drafted against gold.md and its note by a fresh
+  reader that saw no earlier verdict, and every row confirmed or corrected by the owner before
+  `review.md` recorded it.
 - **Machine identifiers, never renamed:** the marketplace name `faircat-skills`; the plugin
   and skill names `travel-itinerary-builder` and `crux-finder`; the case ids once results exist.
 
@@ -311,9 +315,10 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   frontmatter, which is all `checks.py` reads, a short note for the owner's review: the common
   ground that pins the crux, what else counts as a match, and, for the one-sided and
   no-conflict cases, the rules above.
-- **The latest cycle** (Session 7, crux-finder 0.1.0, commit `a04f10d`): `run-1.md` and
+- **The latest cycle** (Session 7a, crux-finder 0.2.0, commit `9cae03b`): `run-1.md` and
   `run-2.md` for each of the ten cases, and each case's `review.md`. Its summary table is in
-  Session 7's done-note; the skill changed after it, so no bar counts from it (decision 22).
+  Session 7a's done-note; the skill changed after it, so no bar counts from it (decision 22).
+  Session 7's cycle, on 0.1.0, is in git and its done-note.
 - **`run-N.md`** is written by `run.py`: frontmatter of `case`, `run`, `model`, `claude` (the
   CLI's version), `skill_version` (the plugin's `plugin.json`), `commit` (HEAD, which holds the
   plugin as it ran), `date` (UTC), `skill_calls` (the Skill tool's calls, or `none`), `denials`
@@ -536,7 +541,8 @@ verdict, no statement about either party; instructions and references only. `SKI
 
 Settled 2026-11-22, with the owner, for 0.2.0, from what Session 7's cycle showed (each change
 general, none fitted to one case):
-- **A budget per section,** aiming at about 350 words: each steelman at most 50 words (still 2
+- **A budget per section,** aiming at about 350 words (replaced in 0.3.0 by caps in words,
+  below): each steelman at most 50 words (still 2
   to 4 sentences), Common ground at most three lines, each crux field one sentence of about 25
   words, a secondary crux only where each party states a side, *Not actually in dispute* at most
   two lines and never a repeat of Common ground, Confidence one sentence.
@@ -555,12 +561,23 @@ general, none fitted to one case):
   change a conclusion, else **No crux**; and the report is the whole answer, with nothing after
   Confidence.
 
-**Built.** Version 0.2.0 (2026-11-22), in `plugins/crux-finder/`. `SKILL.md` (152 lines) holds
+Settled 2026-11-22, with the owner, for 0.3.0, from what Session 7a's cycle showed (its one
+missed bar, length, on the long excerpt alone):
+- **A cap in words for each section, adding up to under 400** with the headings and labels:
+  each steelman 45; Common ground 40; The crux 130, its sentence at most 25 and each field at
+  most 22; Secondary cruxes 50 in all; Not actually in dispute 30; Confidence 25. A report inside
+  every cap is inside 400 however long the input (386 words with every section at its cap, by
+  `checks.py`'s count), so length no longer rests on the model counting its whole report.
+- **A steelman keeps to the reasons the conclusion most rests on,** not every reason the input
+  gives; a list of further reasons is the first thing cut. Added after the first spot check of
+  the caps broke symmetry (below).
+
+**Built.** Version 0.3.0 (2026-11-22), in `plugins/crux-finder/`. `SKILL.md` (158 lines) holds
 PDD B's frontmatter, its description word for word, plus `metadata.version`; the Inputs table,
 steps 1–9 in brief, the report's rules and the check before sending, and the seven guardrails.
 `references/procedure.md` defines each step in full; `crux-types.md` gives the five types, the
 order to test them in, tie-breaks, and two fictional examples each, with roles for parties;
-`output-template.md` gives PDD B's template verbatim, the section budget, and every variant
+`output-template.md` gives PDD B's template verbatim, the section caps, and every variant
 (labels, `None.`, the one-sided form, **No crux**, you as a party, the claim map on request, a
 gate's question).
 Decisions made here, each with its why:
@@ -583,8 +600,18 @@ no-conflict case 2/2, all met; type 13/20 (each miss repeated in both runs of a 
 read as Value, Predictive as Empirical, Empirical as Predictive), quotes 16/20 (the skill's own
 words and labels in quotation marks) and length 2/18 (416 to 591 words, about 470 on average)
 missed. 0.2.0 is the change for those three. Two spot-check runs of 0.2.0 on a fictional input
-outside the set gave 296 and 315 words, with every quotation verbatim; the bars wait on the
-next cycle.
+outside the set gave 296 and 315 words, with every quotation verbatim.
+
+**The second eval cycle** (Session 7a, 0.2.0, `claude` 2.1.329, $3.56 for 20 runs): crux 20/20,
+type 18/20 (the two piano runs read as Value, the *Known debt*), stability 10/10, quotes 20/20,
+symmetry 18/18, no statement about people, the gate 2/2 and the no-conflict case 2/2, all met;
+length 16/18 missed: the sixteen other reports ran 283 to 393 words, and both reports on the
+debate excerpt ran over, at 488 and 463, a full secondary crux of 92 to 95 words and a crux
+section of 151 to 162. 0.3.0 is the change for it. Its spot check, on a fictional two-speaker
+debate of 1,208 words outside the set: with the caps alone, 336 and 318 words, but one run's
+steelmen at 43 and 54, outside the 25%; with the steelman rule added, 326 and 300 words,
+steelmen 48/48 and 43/43, the same crux in both, every quotation verbatim. The bars wait on
+the next cycle.
 
 ## The eval harness
 
@@ -688,7 +715,7 @@ Built: Validators (the `skills` and `plugins` stages), Unit (`tests/test_verify.
 `tests/test_hygiene.py`, `tests/test_check_skills.py`, `tests/test_check_plugins.py`,
 `tests/test_crux_finder_run.py`, `tests/test_crux_finder_checks.py`, `tests/test_evals_stdlib.py`)
 and Hygiene. Evals: the tooling (`run.py`, `checks.py`) and crux-finder's ten cases; the first
-cycle ran in Session 7, on crux-finder 0.1.0.
+cycle ran in Session 7, on crux-finder 0.1.0, and the second in Session 7a, on 0.2.0.
 
 ## Packaging
 
@@ -705,7 +732,7 @@ cycle ran in Session 7, on crux-finder 0.1.0.
 `claude plugin install travel-itinerary-builder@faircat-skills` installed it, and
 `claude plugin details` listed its one skill at 1.0.1. Adding it from GitHub waits for a push
 (`docs/BACKLOG.md`). Each plugin's README gives each target's install, the claude.ai zip
-included. travel-itinerary-builder 1.1.0 and crux-finder 0.1.0 are untagged. crux-finder was
+included. travel-itinerary-builder 1.1.0 and crux-finder 0.3.0 are untagged. crux-finder was
 installed the same way in Session 4 (`claude plugin details crux-finder` listed its one skill at
 0.1.0, about 94 tokens always on), and its zip, `zip -r crux-finder.zip crux-finder` from
 `plugins/crux-finder/skills/`, was uploaded to claude.ai as a custom skill and run once.
@@ -742,7 +769,7 @@ of its own: each skill has its own version.
 | `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
 | Python files (`ruff format --check .`) | 13 |
 | Skills and plugins | 2 skill folders, 2 plugins, 2 marketplace entries |
-| `uv run evals/crux-finder/checks.py` | Session 7's cycle on 0.1.0: `checks: 10 case(s), 21 problem(s); pass bars not met: Type matches gold, Quotes verbatim, Length ≤ 400 words, Runs on the skill as it stands (decision 22)`, exit 1; the 21 are the cycle's length and quote misses |
+| `uv run evals/crux-finder/checks.py` | Session 7a's cycle on 0.2.0: `checks: 10 case(s), 2 problem(s); pass bars not met: Length ≤ 400 words, Runs on the skill as it stands (decision 22)`, exit 1; the 2 are the debate excerpt's two reports over 400 words |
 
 A documentation or refactoring change should not move any of these. If one moves, that is the
 finding.
@@ -772,3 +799,8 @@ finding.
   gains 0.2.0's section budget, conflict pairs and their ranking, the Empirical-or-Predictive rule, quotation
   marks and the no-conflict exit. The owner settled the first at the start of Session 7, the
   second mid-session, and the rest from the cycle's results, each as the session proposed.
+- 2026-11-22, Session 7a: *The data layer* gains how Session 7a's review was made, a draft by a
+  fresh reader that saw no earlier verdict, confirmed row by row by the owner; *crux-finder*
+  gains 0.3.0's caps in words that add up to under 400, and the steelman kept to its main
+  reasons. The owner settled the first at the start of Session 7a, and the rest from the
+  cycle's results and the spot check, each as the session proposed.

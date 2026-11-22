@@ -3,40 +3,39 @@ case: definitional-vintage-rail
 run: 2
 model: claude-opus-5-5
 claude: 2.1.329
-skill_version: 0.1.0
-commit: a04f10df1318f2bcb65e9fe927ec447d98e422a1
-date: 2026-11-21T22:56:50Z
+skill_version: 0.2.0
+commit: 9cae03b0a232ccc334ba4fb8bc6515f14b8689c1
+date: 2026-11-22T10:55:03Z
 skill_calls: crux-finder:crux-finder
 denials: 0
-cost_usd: 0.16389140000000002
+cost_usd: 0.18169760000000001
 ---
 
 ## Crux report
 
-**A, strongest form:** The jacket was made in 1996, and its label and care tag both say so. Vintage means at least twenty years old. That is how most second-hand sellers use the word, and it is what customers expect when they see the sign. So the jacket qualifies for the vintage rail, where it would sell at a higher price.
+**A, strongest form:** The jacket was made in 1996, as its label and care tag show, so it counts as vintage under the common twenty-year rule. Most second-hand sellers use that rule, and customers expect it when they see the sign. On the vintage rail it would sell at a higher price, which helps the shop [inferred].
 
-**B, strongest form:** The jacket was made in 1996 and would probably sell on either rail. On this shop's rail, vintage means made before 1980, because the rail was set up for older pieces that people come in looking for. Its regular customers trust that line, and moving the line would weaken that trust [inferred]. So a 1996 jacket goes on the ordinary rail.
+**B, strongest form:** On this shop's rail, vintage means made before 1980. The rail was set up for that, and the customers who know it rely on that line. The jacket really is from 1996 and would sell anywhere, but it falls outside that line and belongs on the ordinary rail.
 
 ### Common ground
 - The jacket was made in 1996.
-- The jacket would probably sell on the vintage rail.
-- The rail's label should match what its customers expect [inferred].
+- It would probably sell on either rail.
+- The vintage rail should hold whatever "vintage" properly covers; the only question is where the line falls.
 
 ### The crux
 **Double crux · Definitional**
 > Whether "vintage" on the shop's rail means at least twenty years old or made before 1980.
 
-- A holds: Vintage means at least twenty years old, which is the usual meaning among second-hand sellers.
-- B holds: On this rail, vintage means made before 1980, which is the line the rail was set up around.
-- If A accepted B's view here: a 1996 jacket would not qualify, and A's case for the vintage rail would fall; if B accepted A's, the jacket would qualify, and B's case for the ordinary rail would fall.
-- What would move it: Replace the one word with two labelled terms: *vintage-by-age* (at least twenty years old, the usual trade meaning) and *vintage-by-era* (made before 1980, the rail's original rule). The shop can then decide which one its rail uses.
+- A holds: the rail should use the twenty-year meaning that most second-hand sellers use, which makes a 1996 jacket vintage.
+- B holds: the rail was set up for pieces made before 1980, and that cutoff is what the rail means, so a 1996 jacket does not qualify.
+- If A accepted B's view here: A would agree the jacket goes on the ordinary rail; if B accepted A's: B would move it to the vintage rail.
+- What would move it: replace the shared word with two labelled terms, *vintage-20* (at least twenty years old) and *vintage-pre-1980* (made before 1980), and have each say which one the rail's sign should mean.
 
 ### Secondary cruxes
-- **Crux for A · Empirical**: Whether the people who shop this rail read the sign as meaning twenty-plus years or pre-1980. A holds: customers expect the usual trade meaning. B holds: customers who know the rail trust the pre-1980 line. If accepted: if A came to see that this rail's customers expect pre-1980, A's appeal to customer expectation would point the other way, while B's conclusion stands either way. What would move it: a short survey or tally of regular rail shoppers asking what they understand the sign to mean.
+- **Double crux · Empirical**: What the shop's own customers take the vintage sign to promise. A holds: customers expect the twenty-year meaning; B holds: regular customers trust the pre-1980 line; if accepted: either side's case for its meaning would lose its customer footing; what would move it: ask the rail's regular buyers, or look at what they buy and ask about, to see which cutoff they assume.
 
 ### Not actually in dispute
-- Whether the jacket is from 1996. B accepts the label and care tag.
-- Whether it would sell. B agrees it would probably sell on either rail, so sales do not decide where it goes.
+None.
 
 ### Confidence
-High: both of them state their definitions outright and agree on every fact about the jacket, so the disagreement comes down to what the word on the rail means.
+High: both agree on the jacket's date and that it would sell, so the only thing they disagree about is which meaning of the word the rail uses.

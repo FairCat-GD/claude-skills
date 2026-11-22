@@ -3,43 +3,39 @@ case: transcript-father-care
 run: 2
 model: claude-opus-5-5
 claude: 2.1.329
-skill_version: 0.1.0
-commit: a04f10df1318f2bcb65e9fe927ec447d98e422a1
-date: 2026-11-21T23:04:03Z
+skill_version: 0.2.0
+commit: 9cae03b0a232ccc334ba4fb8bc6515f14b8689c1
+date: 2026-11-22T11:01:54Z
 skill_calls: crux-finder:crux-finder
 denials: 0
-cost_usd: 0.1783506
+cost_usd: 0.19855420000000001
 ---
 
 ## Crux report
 
-**A, strongest form:** Dad has fallen three times since March and lay on the kitchen floor for two hours on Sunday. The occupational therapist rates him at high risk, and carers twice a day would not cover that. His wishes count, but they do not keep him safe. A worse fall could force the move anyway, from a hospital bed, so choosing a home now lets him take part in the choice.
-
-**B, strongest form:** The report is accepted: Dad is at high risk, and carers twice a day won't change that much. But he is clear in his mind and has said more than once that he wants to stay in his own house, so the risk is his to take. Carers and an alarm pendant reduce the harm while keeping to what he asked for, even if his time at home turns out shorter.
+**A, strongest form:** Dad has fallen three times since March, once lying two hours on the floor, and the report rates him high risk that twice-daily carers won't change much. His wishes count but don't make him safe. Moving now lets him help choose, before a serious injury decides for him.
+**B, strongest form:** The report is accurate: he is at high risk, and twice-daily carers won't change that much. But he is clear in his mind and has repeatedly said he wants to stay at home. It is his life and his risk to take, so: carers, an alarm pendant, and he stays.
 
 ### Common ground
-- Dad has fallen three times since March, and on Sunday he lay on the floor for two hours.
-- The occupational therapist's report is accurate: he is at high risk of another fall.
-- Carers twice a day would not change that risk much.
-- Dad is clear in his mind and has said he wants to stay at home.
-- His wishes count.
+- He is at high risk of another fall, and carers twice a day won't reduce that much.
+- He is clear in his mind and has said more than once that he wants to stay in his house.
+- His wishes matter in the decision.
 
 ### The crux
 **Double crux · Value**
-> Both agree he is clear-minded and at high risk. The question is whether his wish to stay at home should decide the matter, or be weighed against the chance of serious injury and a longer, safer life elsewhere.
+> Whether his clearly stated wish to stay at home should settle the decision, when the risk of a serious fall is agreed to be high.
 
-- A holds: His wish matters but does not settle it, and his safety and the chance to choose before a crisis come first.
-- B holds: His clearly stated wish settles it, and a shorter time in his own house is better than a longer one somewhere he never wanted to be.
-- If A accepted B's view here: A would support carers and the pendant at home; if B accepted A's view, B would support the move to the care home.
-- What would move it: This is a trade-off between his own choice about where he lives and how much risk he takes, and a lower chance of serious injury plus a longer life. The facts can't settle it, so no resolution is offered.
+- A holds: his wish counts but is outweighed by the risk, and it is better to choose a move "now, with him, than later, for him."
+- B holds: since he is clear in his mind, the choice is "his life and his risk to take," even if it means less time at home.
+- If A accepted B's view here: A would back carers and the pendant and let him stay; if B accepted A's: B would support moving to the care home now.
+- What would move it: Nothing factual. The trade-off is respecting a clear-minded person's choice to accept risk, against acting to prevent a likely serious injury and a later move made without him.
 
 ### Secondary cruxes
 None.
 
 ### Not actually in dispute
-- **The level of risk.** B says outright that they are not disputing the report.
-- **Whether his wishes count.** A says they do. The question is how much weight they carry, not whether they matter.
-- **A worse fall could mean choosing a home from a hospital bed.** B doesn't challenge this, and B's last message accepts that staying may mean a shorter time at home.
+- Whether his wishes count at all: A says they do. The disagreement is about how much they should weigh against the risk, not whether they matter.
+- Whether a worse fall could come: B doesn't deny it, and accepts less time at home as the cost. A's hospital-bed scenario and B's preference both assume the same risk.
 
 ### Confidence
-High. Both of them state the shared facts outright, and B's last message names the trade-off directly, so the facts aren't what divides them.
+High: both explicitly accept the same report and the same facts about his wishes, and their last messages state the different weightings directly.

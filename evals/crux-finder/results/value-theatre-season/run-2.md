@@ -3,39 +3,39 @@ case: value-theatre-season
 run: 2
 model: claude-opus-5-5
 claude: 2.1.329
-skill_version: 0.1.0
-commit: a04f10df1318f2bcb65e9fe927ec447d98e422a1
-date: 2026-11-21T23:04:54Z
+skill_version: 0.2.0
+commit: 9cae03b0a232ccc334ba4fb8bc6515f14b8689c1
+date: 2026-11-22T11:02:33Z
 skill_calls: crux-finder:crux-finder
 denials: 0
-cost_usd: 0.16179860000000001
+cost_usd: 0.16772600000000001
 ---
 
 ## Crux report
 
-**A, strongest form:** The slot should go to the farce, which sold out both earlier runs and is forecast to sell about 900 tickets. Full houses keep the regular audience coming back and give the cast the experience of playing to a packed room. The group exists to put on the shows people want to see, and the demand shows this is one.
+**A, strongest form:** The farce has sold out twice, and the box office expects about 900 tickets again. Full houses keep the regular audience coming back and give the cast the experience of a packed room. The group exists to stage shows people want to see.
 
-**B, strongest form:** The slot should go to the new play by the writer from the group's own workshop. The forecasts are accepted (900 tickets against 450), and either play would cover its costs, so money does not decide this. No one else will give a new local writer a full production, and giving new writing a stage is what a group like this is for.
+**B, strongest form:** Both plays would cover their costs, so money is not the issue, even though the farce would sell about twice as many tickets. No one else will give a new local writer a full production. Staging new writing is what the group is for.
 
 ### Common ground
 - The farce would sell about 900 tickets and the new play about 450.
-- Either play would cover its costs, so money is not the deciding factor.
-- The group has one slot left and can stage only one of the two plays.
+- Either play would cover its costs, so money does not decide this.
+- There is one slot, so only one play can go in it.
 
 ### The crux
 **Double crux · Value**
-> Is the group's main purpose to stage the plays its audience most wants to see, or to give a stage to work that would otherwise not get one?
+> Both sides accept the sales and cost figures, so the question is whether this slot should go to the play more people will come to see, or to a new local writer who would not otherwise get a full production.
 
-- A holds: The group exists to put on the shows people want to see, and full houses are how it serves that purpose.
-- B holds: Giving new writing a stage, especially work no one else will produce, is what a group like this is for.
-- If A accepted B's view here: A's case would lose its basis, since sales would stop being the measure; if B accepted A's: the higher sales would settle it for the farce.
-- What would move it: Nothing factual. The trade-off is twice the audience for a proven show against the only full production a new local writer is likely to get.
+- A holds: the group's main purpose is to stage the shows its audience wants, and 900 tickets against 450 shows which one that is.
+- B holds: the group's main purpose is to give new writing a stage, which matters most when no one else will produce the writer.
+- If A accepted B's view here: A would pick the new play, because the figures that favour the farce would no longer decide it. If B accepted A's view, B would pick the farce, because it serves about twice the audience.
+- What would move it: this comes down to a trade-off, with no answer in the facts. One side is a larger audience and packed houses for the regulars and cast. The other is the only full production a new local writer is likely to get.
 
 ### Secondary cruxes
-- **Crux for B · Predictive**: Would a run of about 450 tickets weaken the regular audience's habit of coming back? A holds: full houses are what keep the regulars returning; B holds that a smaller run would not lose them [inferred]; if accepted: B might put the regulars first and A's conclusion would stand either way; what would move it: compare the audience numbers for the show after the new play with those for the show after the farce's earlier runs, checked once next season's first show has played.
+None.
 
 ### Not actually in dispute
-- The ticket forecasts and the costs. B accepts both outright, so the extra sales count for A only if one first accepts A's view of what the group is for.
+None.
 
 ### Confidence
-High: both sides state their view of the group's purpose outright, and B accepts every fact A relies on, so what remains is a difference in what each values.
+High: both sides accept the same figures and say plainly what they think the group is for, and that is the only point where they differ.

@@ -5,6 +5,22 @@ All notable changes to crux-finder are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.3.0] — 2026-11-22
+
+Still in development: the change below comes from the second full test of the skill, ten
+disagreements run twice each and every report read. Every other measure was met; 16 of the 18
+reports kept within 400 words, and the two on a long debate excerpt ran to 463 and 488.
+
+### Changed
+
+- **A report stays within 400 words however long the input.** Each part of the report now has a
+  limit in words, and the limits add up to under 400: a long input gets the same limits as a
+  short one, so the report says less about each point rather than running long. A secondary
+  crux is a single short line.
+- **Each side's strongest form keeps to its main reasons.** It gives the conclusion and the
+  reasons it most rests on, in at most 45 words, rather than every reason a long argument
+  offers, so the two sides stay the same length.
+
 ## [0.2.0] — 2026-11-22
 
 Still in development: the changes below come from the first full test of the skill, ten

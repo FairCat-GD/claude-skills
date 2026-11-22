@@ -20,6 +20,7 @@ Versions are per skill (`SPEC.md` decision 3): the column names the skill a sess
 | 6 | The eval cases: ten inputs and the owner's ten gold files (build order 4–5) | 17, 21 | — |
 | 7 | One eval cycle, then the claude.ai smoke test once the bars are met (build order 6–7) | 21, 22, 23 | crux-finder **0.2.0**, when the cycle changes the skill |
 | 7a | The second eval cycle, on 0.2.0, then the claude.ai smoke test once the bars are met (inserted in Session 7) | 21, 22, 23 | crux-finder **0.3.0**, when the cycle changes the skill |
+| 7b | The third eval cycle, on 0.3.0, then the claude.ai smoke test once the bars are met (inserted in Session 7a) | 21, 22, 23 | crux-finder **0.4.0**, when the cycle changes the skill |
 | 8 | READMEs, `ARCHITECTURE.md` read cold, the release, close the round (build order 8) | 11, 19, 20, 23, 29 | crux-finder **1.0.0**, tagged `crux-finder--v1.0.0` |
 
 **The owner at the keyboard**, by session: approving the replacement examples (1); a by-hand
@@ -1198,6 +1199,135 @@ layer*, *The eval harness*; the done-notes of Sessions 6 and 7.
 - **Bars count only from a cycle run on the skill as it stands** (decision 22).
 - **Length is the bar to watch:** 0.2.0's spot check gave 296 and 315 words on one short input;
   `real-lincoln-douglas` (about 1,370 words in) gave 564 and 591 on 0.1.0.
+- **Twenty real runs:** the eval runner is the exclusive resource, and the cost is the owner's.
+
+**Done (2026-11-22, 0.3.0).**
+- **Decided with the user:**
+  - **The review** (the block's Ask), as recommended: each run's fields and note drafted by a
+    fresh reader that saw only each case's input, gold.md and its note, and the two runs, with
+    no earlier verdict; the user confirmed all twenty rows unchanged, each case's gold shown
+    beside its runs and the draft in a scratch file.
+  - **The change for 0.3.0,** the first of the session's two options: a cap in words for every
+    section, the caps adding up to under 400, over a cap on the secondary crux alone.
+  - **The spot check's input:** a fictional two-speaker debate about the excerpt's length,
+    since the miss showed only on the long input.
+  - **A line on the steelman,** after the first spot check broke symmetry, with two more spot
+    runs, over releasing the caps alone (Measured).
+  - **Session 7b,** inserted as the session proposed (below).
+- **The cycle** (`claude` 2.1.329, `claude-opus-5-5`, 0.2.0, commit `9cae03b`): Session 7's 30
+  result files removed first; `run.py --runs 2` wrote all 20 runs in 8 min 20 s for $3.56 ($0.09
+  to $0.25 a run), each calling `crux-finder:crux-finder`, 0 denials, no failure. Both one-sided
+  runs asked for B's own words; the other 18 were reports.
+- **The review,** ten `review.md`: the user's answers, every row confirmed from the draft.
+- **The summary table** (`checks.py`, before the skill changed; 2 problems, both length):
+
+  | Check | Pass bar | Result | Met |
+  |---|---|---|---|
+  | Crux matches gold | ≥ 16 / 20 runs | 20 / 20 | yes |
+  | Type matches gold | ≥ 18 / 20 runs | 18 / 20 | yes |
+  | Stability: same primary crux in both runs | ≥ 8 / 10 cases | 10 / 10 | yes |
+  | Quotes verbatim | all runs | 20 / 20 | yes |
+  | Steelman symmetry | all reports | 18 / 18 | yes |
+  | Length ≤ 400 words | all reports | 16 / 18 | **no** |
+  | people_statement no | all runs | 20 / 20 | yes |
+  | One-sided gate fires | all runs that record it | 2 / 2 | yes |
+  | No-conflict case reports no conflict or a Framing crux | all runs that record it | 2 / 2 | yes |
+  | Gold order + approved_by | all cases | 10 / 10 | yes |
+  | Runs on the skill as it stands (decision 22) | all runs | 20 / 20 | yes |
+
+  After the change the last row reads 0 / 20, as decision 22 means it to. The claude.ai smoke
+  test waits on a cycle that meets every bar.
+- **What the reviews and checks showed:**
+  - **Length:** sixteen reports at 283 to 393 words (0.1.0: 416 to 591); `real-lincoln-douglas`
+    at 488 and 463 (0.1.0: 564 and 591), each with a full secondary crux of 92 to 95 words where
+    the template asks for one line, a crux section of 151 to 162, and Common ground of 36 to 44.
+    0.2.0's budget was in lines and about 25 words a field, and its maxima with the headings
+    came to about 400 before any section ran over; its rule to cut the secondary cruxes first
+    when over 400 did not take hold on the long input.
+  - **The crux section** was the largest everywhere: about 144 words on average over the 17
+    reports with a crux, 177 at most (`value-theatre-season`).
+  - **Type:** both `framing-piano-lessons` runs read as Value, the *Known debt*, within the bar;
+    `predictive-hall-solar` and `real-lincoln-douglas`, which 0.1.0 missed, matched in both runs.
+  - **No conflict:** both runs **No crux** (0.1.0: one Framing crux).
+  - **The reader's notes, below any bar:** what would move it left out a record gold names
+    (`empirical-orchard-stall` run 1) or gave a calculation for a measurement
+    (`empirical-studio-kiln` run 2); a common-ground line widened what one party said (the kiln
+    and quiz runs); both excerpt runs took the founders' policy, the alternative gold allows, as
+    the crux.
+- **crux-finder 0.3.0,** in `SKILL.md` (158 lines), `output-template.md` and `procedure.md`: a cap
+  in words for each section (each steelman 45, Common ground 40, The crux 130 with its sentence at
+  most 25 and each field at most 22, Secondary cruxes 50 in all, Not actually in dispute 30,
+  Confidence 25), adding up to under 400 with the headings and labels; the check before sending
+  section by section against its cap; the steelman kept to the reasons the conclusion most rests
+  on. `plugin.json` and `metadata.version` 0.3.0; the changelog entry; the README's version line
+  and its length sentence, which still named 0.1.0.
+- **Docs:** `ARCHITECTURE.md` (*Context*'s measured line; *The data layer* Decided, 7a's review,
+  and Built, the latest cycle; *crux-finder* Decided and Built, with the cycle's numbers;
+  *Testing strategy*; *Packaging*'s untagged version; the baseline's `checks.py` row; a
+  *Decision log* line); the plugin's `CHANGELOG.md` and `README.md`; this file's 7b block and
+  row.
+- **Amendments:**
+  - **The change went through two spot checks, where Session 7's had one:** the first, of the
+    caps alone, broke symmetry on one run, and the user chose a line on the steelman and a
+    second check over releasing the caps alone. Added mid-session by the user.
+- **Measured:**
+  - **The caps add up:** a report with every section filled to its cap is 386 words by
+    `checks.py`'s count, the crux section exactly 130.
+  - **The spot checks** (0.3.0, uncommitted, through `run.py`'s `run_once`, a fictional
+    two-speaker debate of 1,208 words in the scratchpad, nothing under `evals/`): the caps alone
+    gave 336 and 318 words, every quotation verbatim, but steelmen of 45/46 and 43/54, the second
+    outside the 25%, its longer side listing every further reason; with the steelman line, 326
+    and 300 words, steelmen 48/48 and 43/43, the same Empirical crux in both, secondary cruxes
+    `None.` in all four, 0 denials; $0.82 for the four. A check of the change, not a cycle: no
+    bar counts from it.
+  - **No synced claude.ai copy** of crux-finder at the start, so `run.py` ran; no upload this
+    session.
+- **Falsified:** no new check.
+- **Numbers:** 203 unit tests (±0), 0 skipped; 6 `verify` stages, about 21 s; 13 Python files
+  (±0); 2 skill folders, 2 plugins, 2 marketplace entries (±0); 10 cases; 20 runs and 10
+  reviews in `results/` (±0 files, all replaced); `checks.py` 2 problems, exit 1.
+
+---
+
+## 7b: The third eval cycle and the smoke test
+
+Inserted in Session 7a, 2026-11-22, with the owner (decision 22): Session 7a's cycle on 0.2.0
+met every bar but length (16/18: the debate excerpt's two reports at 488 and 463 words), and the
+skill changed to 0.3.0 for it.
+
+**Read:** `SPEC.md` decisions 21, 22, 23; `PDD.md` B, *Runner*, *claude.ai smoke test*,
+*Review*, *Deterministic checks*, *Pass bars*; `ARCHITECTURE.md` *crux-finder*, *The data
+layer*, *The eval harness*; the done-notes of Sessions 7 and 7a.
+
+- **One cycle on 0.3.0** (decision 22): Session 7a's result files removed first, since `run.py`
+  skips a file that exists; then `run.py --runs 2` over the ten cases, `checks.py`, the owner's
+  review of every run into `review.md`, and the summary table against the pass bars.
+- **A bar missed:** the skill is changed for what the reviews show, crux-finder `0.4.0` is cut,
+  the results are recorded, and 7c is inserted with the owner.
+- **Every bar met, with the skill as it stands:** the claude.ai smoke test (PDD B, *claude.ai
+  smoke test*) on `empirical-studio-kiln`, `one-sided-games-night` and `no-conflict-quiz-team`:
+  the owner uploads the zip and runs each in a fresh chat; the outputs go to
+  `results/<id>/claude-ai.md`, through the same checks and review. A smoke test that calls for a
+  skill change is a missed bar.
+- **Docs.** The plugin's `CHANGELOG.md`, when a version is cut; `ARCHITECTURE.md`'s
+  *crux-finder* Built part and *The data layer*'s results, with the cycle's numbers; the
+  baseline's `checks.py` row; *Packaging*, after an upload.
+- **Confirms:** none.
+- **Ask at the start of 7b:** how the review is made. *Recommended:* as Session 7a's: each run's
+  fields and note drafted by a fresh reader that sees only each case's input, gold.md and its
+  note, and the two runs, and the owner confirms or corrects every row before `review.md`
+  records it.
+
+**Gates:**
+- `uv run scripts/verify.py`, green.
+- `checks.py`'s summary table, recorded in the done-note against every pass bar.
+
+**Watch for:**
+- **The owner's answers are what `review.md` records.** The session never fills `crux_match`,
+  `type_match` or `people_statement` from its own judgement.
+- **Bars count only from a cycle run on the skill as it stands** (decision 22).
+- **Length on `real-lincoln-douglas`,** and whether the tighter caps cost the bars 0.2.0 met:
+  symmetry, with steelmen of at most 45 words, and crux and type with shorter fields.
 - **Twenty real runs:** the eval runner is the exclusive resource, and the cost is the owner's.
 
 ---

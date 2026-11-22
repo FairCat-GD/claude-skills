@@ -52,7 +52,10 @@ The strongest form of a position is the version its author would accept as bette
 own words: the same conclusion, the best reasons the input gives for it, its premises made
 explicit.
 
-- **2 to 4 sentences** for each side, at most 50 words.
+- **2 to 4 sentences** for each side, at most 45 words.
+- **The reasons it most rests on,** not every reason the input gives. A position argued at
+  length still gets its conclusion and its main reasons only; a list of further reasons is the
+  first thing cut.
 - **Only content present in the input.** No new evidence, no new arguments, no outside facts.
 - **`[inferred]`** follows any premise the conclusion needs but the input never states. Infer
   only what the position cannot stand without.

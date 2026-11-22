@@ -4,18 +4,21 @@ The exact format of every report. Keep every heading, in this order. The whole r
 400 words, and it ends at Confidence: nothing follows it but the claim map, appended only on
 request, which does not count toward the 400.
 
-## The budget
+## The caps
 
-Aim for about 350 words, so the report stays under 400 when a section runs long:
+Each section has a cap in words. A section's words are everything under its heading, its labels
+included; a steelman's are those after its label. The caps add up to under 400 with the headings
+and labels, so a report inside every cap is inside 400, however long the input. A long input
+gets the same caps as a short one: say less about each point, never more.
 
 | Section | At most |
 | --- | --- |
-| Each steelman | 50 words |
-| Common ground | 3 lines |
-| The crux | its sentence, then four fields of one sentence each, about 25 words a field |
-| Secondary cruxes | 2, one line each; most reports have none or one |
-| Not actually in dispute | 2 lines |
-| Confidence | 1 sentence |
+| Each steelman | 45 words |
+| Common ground | 40 words in all, at most 3 lines |
+| The crux | 130 words in all: the crux sentence at most 25, each of the four fields at most 22 |
+| Secondary cruxes | 50 words in all: one, or two short ones; most reports have none or one |
+| Not actually in dispute | 30 words in all, at most 2 lines |
+| Confidence | 25 words, one sentence |
 
 ## The template
 
@@ -55,17 +58,19 @@ High | Medium | Low, with the reason.
 
 ## Filling it in
 
-- **The steelman lines.** 2 to 4 sentences each, at most 50 words, with `[inferred]` after each
-  premise the input does not state. Where the input names its parties, add the name or role in
-  brackets: `**A (<name or role>), strongest form:**`. After a one-sided input:
+- **The steelman lines.** 2 to 4 sentences each, at most 45 words: the conclusion and the
+  reasons it most rests on, never a list of every reason the input gives, with `[inferred]`
+  after each premise the input does not state. Where the input names its parties, add the name
+  or role in brackets: `**A (<name or role>), strongest form:**`. After a one-sided input:
   `**B (reconstructed by A), strongest form:**`.
-- **Common ground.** One line per claim both accept, at most three, the ones the crux stands on.
-  A claim only one party makes is not common ground.
+- **Common ground.** One short line per claim both accept, at most three and 40 words in all,
+  the ones the crux stands on. A claim only one party makes is not common ground.
 - **The crux label.** One of `Double crux`, `Crux for A` or `Crux for B`, then ` · ` and the
   type: `**Crux for B · Value**`. When the positions do not conflict, the label is
   `**No crux**` alone.
-- **The crux sentence.** One sentence in a blockquote: your own neutral wording, which both
-  parties would accept as fair, with no loaded term from either side.
+- **The crux sentence.** One sentence of at most 25 words in a blockquote: your own neutral
+  wording, which both parties would accept as fair, with no loaded term from either side.
+- **The four fields** below it are one sentence each, at most 22 words.
 - **A holds, B holds.** Each side's view of the crux claim, in one sentence, paraphrased without
   quotation marks unless the words are verbatim from the input.
 - **If A accepted B's view here.** One sentence, both directions: what would happen to A's
@@ -74,20 +79,22 @@ High | Medium | Low, with the reason.
 - **What would move it.** One sentence: the resolution path for the crux's type (procedure,
   step 8). For a Value crux, the trade-off, with no resolution. Name the evidence or the
   forecast; do not list every check that would go into it.
-- **Secondary cruxes.** At most two, one line each, with the primary crux's fields in the same
-  order. Each needs a side from each party, as procedure step 5 has it: a point one party never
-  addresses is no crux, so never write that a side is not addressed, or invent one for a party
-  whose words never touch the point. With none, the section says `None.`
+- **Secondary cruxes.** At most two, one line each and 50 words in all, with the primary crux's
+  fields in the same order, each a short clause. Each needs a side from each party, as
+  procedure step 5 has it: a point one party never addresses is no crux, so never write that a
+  side is not addressed, or invent one for a party whose words never touch the point. With
+  none, the section says `None.`
 
   ```markdown
   - **Crux for A · Predictive**: <the crux sentence> A holds: …; B holds: …; if accepted: …; what would move it: …
   ```
 
 - **Not actually in dispute.** Apparent disagreements that dissolve once a word is defined or the
-  questions are told apart, one line each, at most two. It never repeats Common ground: a claim
-  both accept goes there, not here. With none, the section says `None.`
-- **Confidence.** `High`, `Medium` or `Low`, then the reason in one sentence. After a one-sided
-  input it is at most `Low`, and it suggests sharing the report with B to confirm their side.
+  questions are told apart, one line each, at most two and 30 words in all. It never repeats
+  Common ground: a claim both accept goes there, not here. With none, the section says `None.`
+- **Confidence.** `High`, `Medium` or `Low`, then the reason in one sentence, 25 words in all.
+  After a one-sided input it is at most `Low`, and it suggests sharing the report with B to
+  confirm their side.
 - **An empty section** keeps its heading and says `None.`
 - **Quotation marks** hold only text copied verbatim from the input, its capitals included:
   never your own words, a question you pose, a section's label, or one of this template's

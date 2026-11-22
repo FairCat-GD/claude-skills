@@ -2,13 +2,13 @@
 
 ## run-1
 - crux_match: yes
-- type_match: no
+- type_match: yes
 - people_statement: no
-- note: Slavery "unlike other local differences" dividing the Union: matches, but cast as a forecast and typed Predictive. Close to the excluded endurance crux.
+- note: The crux is whether the founders left slavery wholly to each State or also restricted its spread toward extinction. Gold explicitly counts this founders'-policy alternative as a match. The Predictive secondary crux about the Union enduring is only secondary, so the run is not penalised.
 
 ## run-2
 - crux_match: yes
-- type_match: no
+- type_match: yes
 - people_statement: no
 - same_crux_as_run_1: yes
-- note: Closer call than run 1: "left to each state indefinitely without dividing" leans to the excluded endurance crux; still sets slavery against local differences. Predictive.
+- note: The crux is the founders' arrangement, either left to the states only or also limiting slavery's spread, the same claim as run 1 and a match. The secondary crux's check, "by the 1860 election", is an anachronistic forecast but harmless.

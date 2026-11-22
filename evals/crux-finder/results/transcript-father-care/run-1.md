@@ -3,43 +3,39 @@ case: transcript-father-care
 run: 1
 model: claude-opus-5-5
 claude: 2.1.329
-skill_version: 0.1.0
-commit: a04f10df1318f2bcb65e9fe927ec447d98e422a1
-date: 2026-11-21T23:03:31Z
+skill_version: 0.2.0
+commit: 9cae03b0a232ccc334ba4fb8bc6515f14b8689c1
+date: 2026-11-22T11:01:21Z
 skill_calls: crux-finder:crux-finder
 denials: 0
-cost_usd: 0.1754454
+cost_usd: 0.18471579999999999
 ---
 
 ## Crux report
 
-**A, strongest form:** Three falls since March, two hours on the floor this time, and a report rating him high risk show the danger is real. Carers twice a day leave most hours uncovered. A worse fall would force the decision from a hospital bed, so moving now lets them choose with him rather than for him.
-
-**B, strongest form:** The report is accepted: he is at high risk, and carers twice a day won't change that much. But he is clear in his mind and has said more than once that he wants to stay, so the risk is his to take. A shorter time in his own house is better than a longer one somewhere he never wanted to be.
+**A, strongest form:** Dad has fallen three times since March and lay on the floor two hours on Sunday; the report rates him high risk, and twice-daily carers won't remove it. Moving him now lets the family decide with him, rather than for him after a serious injury.
+**B, strongest form:** The report's risk is real and carers won't remove it, but Dad is clear in his mind and has repeatedly said he wants to stay home. It is his life and his risk. Carers plus an alarm pendant honour his choice, even if that means less time there.
 
 ### Common ground
-- He is at high risk of another fall.
-- Carers twice a day would not change that risk much.
-- He is clear in his mind.
-- He has told both of them, more than once, that he wants to stay in his own house.
-- His wishes count.
+- Dad is at high risk of another fall, and carers twice a day would not change that much.
+- Dad is clear in his mind and has said more than once that he wants to stay in his house.
+- His wishes count in the decision.
 
 ### The crux
 **Double crux · Value**
-> Given that both accept the risk and both accept what he wants, should his safety or his wish to stay at home decide this?
+> Whether reducing Dad's risk of a serious fall should outweigh his clearly stated wish to stay in his own house, when both siblings agree on the risk and on the wish.
 
-- A holds: The high risk of a worse fall, and of being forced into a choice later, outweighs his wish to stay.
-- B holds: His clearly stated wish to stay in his own house outweighs the extra risk, even if it means less time there.
-- If A accepted B's view here: A would back carers and the pendant and let him stay; if B accepted A's, B would back the move to the care home.
-- What would move it: Nothing factual. This is a trade-off between more time and safety in a place he did not choose, and less time with more risk in the home he has asked to keep.
+- A holds: the risk is serious enough to move him now, and a planned move made with him is better than a forced one after an injury.
+- B holds: his clearly stated wish decides it, because it is his risk to take, even if staying means a shorter time at home.
+- If A accepted B's view here: A would drop the care home and agree to carers and the pendant; if B accepted A's: B would support taking the room next month.
+- What would move it: this is a trade-off between his physical safety and the choice of a clear-minded adult about his own life and risks, with no resolution offered.
 
 ### Secondary cruxes
 None.
 
 ### Not actually in dispute
-- **The risk.** B says, "I'm not disputing any of it," so the report's findings aren't in question.
-- **His mental capacity.** A says, "I know he's clear in his mind."
-- **Whether his wishes matter.** A says, "I'm not saying his wishes don't count." The disagreement is how much weight his wishes get, not whether they count.
+- Whether Dad's wishes matter: A says plainly that they count, so the disagreement is about how much they weigh against the risk, not whether they matter at all.
+- What could happen next: B does not dispute that a worse fall is possible, and accepts a shorter time at home as the price of staying.
 
 ### Confidence
-High. Both of them say outright that they agree on the facts, and B's last two lines describe this exact trade-off.
+High: both siblings say outright that they accept the report and his wishes, so what's left is a difference in how they weigh the same facts.

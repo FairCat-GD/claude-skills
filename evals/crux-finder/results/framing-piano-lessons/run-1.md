@@ -3,39 +3,39 @@ case: framing-piano-lessons
 run: 1
 model: claude-opus-5-5
 claude: 2.1.329
-skill_version: 0.1.0
-commit: a04f10df1318f2bcb65e9fe927ec447d98e422a1
-date: 2026-11-21T22:58:55Z
+skill_version: 0.2.0
+commit: 9cae03b0a232ccc334ba4fb8bc6515f14b8689c1
+date: 2026-11-22T10:56:50Z
 skill_calls: crux-finder:crux-finder
 denials: 0
-cost_usd: 0.16674660000000002
+cost_usd: 0.181415
 ---
 
 ## Crux report
 
-**A, strongest form:** She should stop at the end of this term, because a child's after-school activities should be ones she looks forward to, and this one is not: she dreads Tuesday evenings, argues about practising every night, and told her teacher she hates it. Her progress is real, but it does not outweigh lasting dread in how a child spends her time after school [inferred].
-**B, strongest form:** She should carry on, because lessons are for learning and she is learning fast: a year ago she could barely read music, and now she plays whole pieces with both hands and has passed Grade 2 with a merit. Her dislike of practising is real, but stopping now would throw that progress away, and progress matters more here than enjoyment [inferred].
+**A, strongest form:** She should stop at the end of this term. She dreads Tuesday lessons, argues about practice every night and told her teacher she hates it. Her progress is real, but an after-school activity should be one a child looks forward to, and this is not.
+
+**B, strongest form:** She should carry on. In a year she went from barely reading music to playing whole pieces with both hands and passing Grade 2 with a merit. She dislikes practising, but lessons exist for learning, she is learning fast, and stopping now would waste that progress.
 
 ### Common ground
-- She has learned a lot this year.
-- She does not enjoy lessons or practising.
-- The decision is whether she carries on after this term.
+- She has learned a great deal and is progressing.
+- She does not enjoy the lessons or the practice.
+- The question is whether she continues after this term [inferred].
 
 ### The crux
 **Double crux · Value**
-> Whether her strong dislike of piano or her fast progress should count for more when deciding if she continues.
+> Given that both accept she is progressing and she dislikes it, which of those two facts should decide whether she continues.
 
-- A holds: a child should look forward to her after-school activities, so her dislike settles it even though she is progressing.
-- B holds: lessons are for learning, so her fast progress settles it even though she does not enjoy it.
-- If A accepted B's view here: A would favour carrying on, since A already grants the progress; if B accepted A's: B would favour stopping, since B already grants the dislike.
-- What would move it: the trade-off, named: how much she enjoys her time after school now, against the skill she is building for later; no resolution is offered.
+- A holds: Whether a child looks forward to an after-school activity should decide it, and real progress does not outweigh steady dread and conflict.
+- B holds: Since "lessons are for learning", fast progress should decide it, and dislike of practising is not a reason to stop.
+- If A accepted B's view here: A would keep her in lessons despite the complaints; if B accepted A's, B would let her stop despite the progress.
+- What would move it: Nothing factual. The choice is between her present enjoyment and peace at home on one side and the skill she is building fast on the other.
 
 ### Secondary cruxes
-- **Crux for B · Predictive**: Whether stopping at the end of this term would lose most of what she has learned. A holds: not addressed, and A's conclusion does not rest on it; B holds: stopping now would throw that away; if accepted: if B came to think her skills would largely last, B's case would weaken, while A's conclusion would stand either way; what would move it: whether she can still read music and play her Grade 2 pieces six months after stopping, judged by her teacher or by an agreed test.
+None.
 
 ### Not actually in dispute
-- Whether she has learned anything: A says she "plainly has".
-- Whether she enjoys it: B says "I am not pretending she enjoys it; she doesn't."
+- Whether she is learning and whether she enjoys it. Each parent explicitly grants the other's point ("she plainly has"; "she doesn't"). Their conclusions differ only because they weight these two facts differently.
 
 ### Confidence
-High: each parent openly grants the other's facts, so what is left is how to weigh them.
+High: each parent openly grants the other's factual point, so the disagreement left is about which good should count for more.

@@ -3,7 +3,7 @@ name: crux-finder
 description: "Find the crux of a disagreement: the smallest claim two positions hinge on. Use when the user shares two positions, a debate or a transcript and asks where people really disagree, why an argument goes in circles, or what would change someone's mind."
 license: MIT
 metadata:
-  version: "0.2.0"
+  version: "0.3.0"
 ---
 
 # Crux Finder
@@ -50,9 +50,10 @@ their results reach the report.
 1. **Gate.** Classify the input by the table above. For a one-sided input, or anything else, ask
    as Guardrails says and stop until the user answers. If you are one of the two parties, the
    report's first line says so (Guardrails).
-2. **Steelman.** Restate each position in its strongest form, 2 to 4 sentences and at most 50
-   words, using only content present in the input. Mark any premise that is not stated but is
-   required `[inferred]`. The two steelmen are within ±25% of each other by word count.
+2. **Steelman.** Restate each position in its strongest form, 2 to 4 sentences and at most 45
+   words, using only content present in the input: the conclusion and the reasons it most rests
+   on, not every reason the input gives. Mark any premise that is not stated but is required
+   `[inferred]`. The two steelmen are within ±25% of each other by word count.
 3. **Claim map.** Break each position into atomic claims, `A1..An` and `B1..Bn`. Tag each
    `stated` or `inferred`, and `conclusion` or `premise`, and note its dependencies
    (`A3 depends on A1`).
@@ -92,11 +93,13 @@ their results reach the report.
 
 Write it in the exact format of `references/output-template.md`:
 
-- **At most 400 words; aim for about 350.** Each section has a budget, in
-  `references/output-template.md`: each steelman at most 50 words, Common ground at most three
-  lines, Not actually in dispute at most two, Confidence one sentence.
+- **At most 400 words, by a cap in words for each section,** in
+  `references/output-template.md`: each steelman 45, Common ground 40, The crux 130 (its
+  sentence at most 25 and each field at most 22), Secondary cruxes 50 in all, Not actually in
+  dispute 30, Confidence 25. The caps add up to under 400 with the headings and labels, so a
+  report inside every cap is inside 400, however long the input.
 - **Every heading stays,** in the template's order; a section with nothing in it says `None.`
-- **Each field of a crux is one sentence of about 25 words:** A holds, B holds, If A accepted
+- **Each field of a crux is one sentence of at most 22 words:** A holds, B holds, If A accepted
   (both directions in one sentence), and What would move it.
 - **A secondary crux needs a side from each party,** as step 5 has it. A point one party never
   addresses is no crux: never write that a side is not addressed, or invent one for a party whose
@@ -119,11 +122,14 @@ your own words, a question you pose, a section's label, or a label of this skill
 
 **Check before you send.** Count, then fix what is over:
 
-1. **The two steelmen.** Count the words of each. Trim either over 50 words, and if the longer
-   is more than 25% longer than the shorter, trim the longer; never pad the shorter.
-2. **Each section against its budget,** then **the whole report,** from its first line to the
-   end of Confidence. If it is over 400 words, cut the secondary cruxes and *Not actually in
-   dispute* first, then the rest. Never cut a field of the primary crux.
+1. **The two steelmen.** Count the words of each. Trim either over 45 words, and if the longer
+   is more than 25% longer than the shorter, trim the longer; never pad the shorter. A list of
+   further reasons is the first thing to cut.
+2. **Each section against its cap, in words,** one section at a time, and cut each section that
+   is over back to its cap: a long input gets the same caps as a short one. Then **the whole
+   report,** from its first line to the end of Confidence; if it is still over 400 words, cut
+   the secondary cruxes and *Not actually in dispute* first, then the rest. Never drop a field
+   of the primary crux.
 3. **Every pair of quotation marks,** against the input: verbatim, or no quotation marks.
 
 ## Guardrails
