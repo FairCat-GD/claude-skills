@@ -1,71 +1,68 @@
 Read `SPEC.md` decisions 21, 22, 23; `PDD.md` B, *Runner*, *claude.ai smoke test*, *Review*,
-*Deterministic checks*, *Pass bars*; `ARCHITECTURE.md` *crux-finder*, *The eval harness*; the
-done-notes of Sessions 5 and 6. Then CLAUDE.md, *The session cycle* in
+*Deterministic checks*, *Pass bars*; `ARCHITECTURE.md` *crux-finder*, *The data layer*, *The
+eval harness*; the done-notes of Sessions 6 and 7. Then CLAUDE.md, *The session cycle* in
 docs/DEVELOPMENT-WORKFLOW.md, docs/ARCHITECTURE.md's overview, invariants and baseline,
 docs/spec/SESSIONS.md's header, your block and the previous block's done-note, then this file,
-and do Session 7: one eval cycle, then the claude.ai smoke test once the bars are met. 7 covers:
-- `run.py --runs 2` over the ten cases, `checks.py`, the owner's review of every run into
-  `review.md`, and the summary table against the pass bars;
-- a bar missed: the skill changed for what the reviews show, crux-finder 0.2.0, the results
-  recorded, and 7a inserted with the owner;
-- every bar met on the skill as it stands: the claude.ai smoke test on three cases.
+and do Session 7a: the second eval cycle, on crux-finder 0.2.0, then the claude.ai smoke test
+once the bars are met. 7a covers:
+- Session 7's result files removed, then `run.py --runs 2` over the ten cases, `checks.py`, the
+  owner's review of every run into `review.md`, and the summary table against the pass bars;
+- a bar missed: the skill changed for what the reviews show, crux-finder 0.3.0, the results
+  recorded, and 7b inserted with the owner;
+- every bar met on the skill as it stands: the claude.ai smoke test on `empirical-studio-kiln`,
+  `one-sided-games-night` and `no-conflict-quiz-team`.
 
-Release 0.2.0 only when the cycle changes the skill.
+Release 0.3.0 only when the cycle changes the skill.
 
 ## State you need that is not in the specs
 
-- **Round 1 is a home for many skills**: Sessions 0–6 are done; Sessions 7–8 remain.
-- **Push status.** `origin/main` holds everything through Session 6: its commit, its `review:`
-  commit and the docs commit that corrects this note, each pushed with the owner's yes.
-- **What Session 6 left that Session 7 builds on:**
-  - **Ten cases** in `evals/crux-finder/cases/`, each `input.md` and an owner-approved `gold.md`,
-    committed together, before any result: `definitional-vintage-rail`,
-    `empirical-orchard-stall`, `empirical-studio-kiln`, `framing-piano-lessons`,
-    `no-conflict-quiz-team`, `one-sided-games-night`, `predictive-hall-solar`,
-    `real-lincoln-douglas`, `transcript-father-care`, `value-theatre-season` (`run.py`'s
-    order). The ids are now permanent once results exist.
-  - **Each gold.md's note,** below the frontmatter, is for the owner's review: what else counts
-    as a match, and what does not. Show it to the owner beside each run.
-  - **How two cases count** (*The data layer*, Decided): `one-sided-games-night`, a run that asks
-    for B's own words and writes no report matches on crux and type, and records
-    `gate_fired: yes`; a report counts as the gate firing only if it labels B "reconstructed by
-    A". `no-conflict-quiz-team`, only a **No crux** report matches; a Framing crux records
-    `no_conflict_reported: yes` but `crux_match: no`. `checks.py` wants `gate_fired` and
-    `no_conflict_reported` on every output of a case or none, so record each on all of that
-    case's outputs.
-  - **`uv run evals/crux-finder/checks.py`** prints `checks: 10 case(s), 0 problem(s); no results
-    yet, so the pass bars are not counted` and exits 0.
-- **The smoke test's three cases** (PDD B: one Empirical, the one-sided, the no-conflict):
-  `empirical-orchard-stall` or `empirical-studio-kiln` (`real-lincoln-douglas` is Empirical too,
-  but long), `one-sided-games-night`, `no-conflict-quiz-team`. Choose with the owner.
-- **What the spec said that turned out wrong or harder:**
-  - **The real set holds one case:** the owner had no dispute of their own, so a fictional
-    transcript, `transcript-father-care`, took the second real case's place
-    (`docs/BACKLOG.md`).
-  - **The report's 400 words** are still not met by any run so far: 472 in Session 5's one real
-    run, 486 to 564 in Session 4's. `real-lincoln-douglas` is the longest input (about 1,350
-    words), so expect its reports to strain the length bar most.
-- **Decisions written down nowhere else:**
-  - The two cases most likely to miss on type: `framing-piano-lessons` (a run may call it
-    Value) and `real-lincoln-douglas` (a run may make the Predictive "can the Union endure"
-    point primary, which its gold counts as no).
-  - The owner deleted crux-finder's claude.ai upload in Session 5. The smoke test uploads the zip
-    again; it then syncs into Claude Code as `anthropic-skills:crux-finder`, and `run.py`
-    refuses runs while it loads, so run the cycle first and the smoke test after, and delete the
-    upload when done unless the owner keeps it.
-- **Baseline** (ARCHITECTURE's table): `verify` green with 6 stages, about 25 s; 203 unit tests
-  passed, 0 skipped; `hygiene --all` green; 13 Python files; 2 skill folders, 2 plugins, 2
-  marketplace entries; `claude` 2.1.329; `checks.py` 10 cases, 0 problems, no results.
+- **Round 1 is a home for many skills**: Sessions 0–7 are done; 7a, inserted in Session 7, and 8
+  remain.
+- **Push status.** `origin/main` holds everything through Session 6. Session 7's commits are
+  local until the owner says yes to a push; a push makes crux-finder 0.2.0 installable.
+- **What Session 7 left that 7a builds on:**
+  - **Session 7's results** in `evals/crux-finder/results/<id>/`: `run-1.md`, `run-2.md` and
+    `review.md` for each case, run on 0.1.0 at commit `a04f10d`. A new cycle replaces them
+    (decided at the start of 7): remove all three files of every case before running, since
+    `run.py` skips a run file that exists and `checks.py` wants a `review.md` section for every
+    output. Git keeps them.
+  - **`uv run evals/crux-finder/checks.py`** prints 21 problems (the old cycle's length and quote
+    misses) and `pass bars not met: Type matches gold, Quotes verbatim, Length ≤ 400 words, Runs
+    on the skill as it stands (decision 22)`, exit 1, until the old results are removed.
+  - **crux-finder 0.2.0** changed for Session 7's misses: a budget per section, conflict pairs of
+    stated claims, two type tie-breaks in `crux-types.md`, quotation marks for verbatim text
+    only, the no-conflict test, nothing after Confidence.
+  - **The review's rules for two cases** (*The data layer*): record `gate_fired` on every output
+    of `one-sided-games-night` and `no_conflict_reported` on every output of
+    `no-conflict-quiz-team`; each gold.md's note, below its frontmatter, says what else counts.
+- **How Session 7's review went:** the owner reviewed the first case in the chat, then asked for
+  an agent to evaluate the rest; an agent drafted each run's fields and note against gold.md and
+  its note into a scratch file, and the owner confirmed all eighteen rows before they were
+  recorded. Show the owner each case's gold beside its runs either way.
+- **Where 0.1.0 missed, to watch in 0.2.0's runs:** type on `framing-piano-lessons` (Value for
+  Framing), `predictive-hall-solar` (Empirical, with an inferred premise as its crux) and
+  `real-lincoln-douglas` (Predictive); length everywhere, worst on `real-lincoln-douglas`
+  (564 and 591) and `value-theatre-season`; quotes on `no-conflict-quiz-team`.
+- **The spot check of 0.2.0:** two runs on a fictional bookshop dispute, 296 and 315 words, every
+  quotation verbatim. One short input, so it says nothing about the long excerpt.
+- **The smoke test:** the owner deleted crux-finder's claude.ai upload in Session 5 and none was
+  made since. The smoke test uploads the zip (`zip -r crux-finder.zip crux-finder` from
+  `plugins/crux-finder/skills/`); it then syncs into Claude Code as `anthropic-skills:crux-finder`,
+  and `run.py` refuses while it loads, so run the cycle first, the smoke test after, and delete
+  the upload when done unless the owner keeps it.
+- **Baseline** (ARCHITECTURE's table): `verify` green with 6 stages, about 21 s; 203 unit tests
+  passed, 0 skipped; 13 Python files; 2 skill folders, 2 plugins, 2 marketplace entries;
+  `claude` 2.1.329; `checks.py` as above.
 - **Not done:** installing from GitHub, for both skills, is not yet checked by a person
   (`docs/BACKLOG.md`).
 
 ## Watch for
 
-- **The owner records every judgement in `review.md`.** The session never fills `crux_match`,
-  `type_match` or `people_statement` itself.
+- **`review.md` records the owner's answers.** The session never fills `crux_match`,
+  `type_match` or `people_statement` from its own judgement.
 - **A gold.md is never edited once results exist:** `checks.py` fails the gold order. A gold
   that turns out wrong is the owner's call, and the case's results start over.
 - **The real excerpt holds the era's racial terms,** and reports quote it verbatim into
   committed results; that was known and accepted when the case was chosen.
-- **Twenty real runs:** the eval runner is the exclusive resource, run one at a time; the cost
-  is the owner's. Record `claude`'s version, since it is not pinned.
+- **Twenty real runs, about $3.40:** the eval runner is the exclusive resource, run one at a
+  time; the cost is the owner's. Record `claude`'s version, since it is not pinned.

@@ -52,7 +52,7 @@ The strongest form of a position is the version its author would accept as bette
 own words: the same conclusion, the best reasons the input gives for it, its premises made
 explicit.
 
-- **2 to 4 sentences** for each side.
+- **2 to 4 sentences** for each side, at most 50 words.
 - **Only content present in the input.** No new evidence, no new arguments, no outside facts.
 - **`[inferred]`** follows any premise the conclusion needs but the input never states. Infer
   only what the position cannot stand without.
@@ -85,6 +85,11 @@ side makes and the other never touches is neither common ground nor in conflict.
 
 Pair the claims that cannot both be true (facts, forecasts) or cannot both be accepted (values,
 meanings). Each pair names the claim at issue, X.
+
+Each claim in a pair is stated by its own party, in words or close paraphrase. A premise you
+inferred, or a point one party never touches, is in no pair, however much the other side's case
+rests on it: when one side argues from such a point and the other never answers it, the conflict
+is the stated claim it supports. Silence is not disagreement, as it is not agreement (step 4).
 
 An apparent conflict that dissolves once a shared word is split into its two meanings, or once
 two questions are told apart, leaving both parties agreeing on everything else, is not a
@@ -127,7 +132,7 @@ For each reported crux, what would move it, by its type:
   side can state its claim without the word.
 - **Value:** name the trade-off: which goods are weighed against which, and how each side weighs
   them. Offer no resolution: no compromise, no ranking of the goods.
-- **Framing:** state both questions separately, each as a question.
+- **Framing:** state both questions separately, each as a question, without quotation marks.
 
 ## 9. No-conflict exit
 

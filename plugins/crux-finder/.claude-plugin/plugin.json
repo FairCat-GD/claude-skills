@@ -1,6 +1,6 @@
 {
   "name": "crux-finder",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Find the crux of a disagreement: the smallest claim two positions hinge on.",
   "author": {
     "name": "Svyat Marutyak"

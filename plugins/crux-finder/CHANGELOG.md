@@ -5,6 +5,31 @@ All notable changes to crux-finder are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.2.0] — 2026-11-22
+
+Still in development: the changes below come from the first full test of the skill, ten
+disagreements run twice each and every report read.
+
+### Changed
+
+- **Shorter reports.** Each part of the report has a word budget, so a report now comes in
+  around 350 words, inside the 400 it promises, where most ran to 420–590.
+- **The crux is something both sides actually say.** A point only one side raises, or one you
+  have to infer, is no longer reported as the crux or as a secondary crux; nor is a side "not
+  addressed". Common ground lists only what both accept.
+- **Clearer crux types.** A dispute over what has happened is a question of fact, even when both
+  sides draw forecasts from it. Two sides who accept each other's facts but judge the decision
+  by different tests are answering different questions, not weighing the same values.
+
+### Fixed
+
+- **Quotation marks only around words copied exactly from what you shared:** never around the
+  report's own wording, a question it poses or one of its labels.
+- **"No crux" when nothing would change.** Two sides answering different questions are reported
+  as such only where taking up the other's question would change a conclusion; otherwise the
+  report says the positions do not conflict.
+- **Nothing after the report.** It no longer adds a short answer or a summary after Confidence.
+
 ## [0.1.0] — 2026-11-20
 
 The first release, in development: it works end to end, and its behaviour may still change

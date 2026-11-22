@@ -28,18 +28,27 @@ Ask these in order, and take the first yes:
 
 ## Where two types seem to fit
 
-- **Empirical or Predictive:** go by the tense of the claim. What is or was is Empirical; what
-  will be is Predictive. "Sales rose last year" is Empirical; "sales will keep rising" is
-  Predictive.
+- **Empirical or Predictive:** go by what would settle it, not by the tense of the sentence.
+  What is or was, which a record could check, is Empirical; what will be, which no record yet
+  settles, is Predictive. *Sales rose last year* is Empirical; *sales will keep rising* is
+  Predictive. When the sides read what has happened differently (a history, or figures each
+  reads its own way) and each forecast follows from its reading, the crux is that record, and
+  it is Empirical: word its sentence in the past or present. When they agree on the record and
+  differ only on what will follow from it, the crux is Predictive.
 - **Definitional, or not in dispute at all:** split the word into two labelled terms. If both
   parties then agree on both terms and each conclusion still stands, the disagreement dissolves:
   it goes under *Not actually in dispute*. It is a Definitional crux only when a conclusion
   still turns on which meaning applies.
 - **Value or a fact underneath it:** when one side's weighting rests on a fact the other
-  disputes ("the path is dangerous"), that fact is the deeper crux, and it is Empirical or
+  disputes (that the path is dangerous), that fact is the deeper crux, and it is Empirical or
   Predictive. A Value crux is what is left when the facts are shared.
 - **Framing or Value:** in a Value crux both sides answer the same question and weigh its goods
-  differently; in a Framing crux they answer different questions.
+  differently; in a Framing crux they answer different questions. Ask what each side says the
+  decision should be judged by. When each grants the other's facts and judges the decision by a
+  test of its own (in the shed example, what the garden can pay for, or what it needs), each
+  answer can be true at once, and the dispute is over which test applies: Framing. It is Value
+  when both sides judge by the same goods and differ on how much each weighs, in a choice that
+  cannot serve both (one sum, one slot, one job this year).
 
 ## Examples
 
@@ -163,11 +172,11 @@ the two this year.
 - A does not dispute the rust, and B does not dispute the funds.
 - **Double crux · Framing**
   > Whether the decision turns on what the garden can pay for this year or on what it needs.
-- Why Framing: no claim conflicts; A answers "can we pay for a shed this year?" and B answers
-  "do we need a shed?", and each conclusion would change if its side took up the other's
-  question.
-- What would move it: both questions, stated separately: "Do we need a shed?" and "Can we pay
-  for one this year?"
+- Why Framing: no claim conflicts; A answers whether the garden can pay for a shed this year,
+  and B answers whether it needs one, and each conclusion would change if its side took up the
+  other's question.
+- What would move it: both questions, stated separately: Do we need a shed? Can we pay for one
+  this year?
 
 **2. The kitchen.** Two flatmates.
 
@@ -177,7 +186,7 @@ the two this year.
 - **Double crux · Framing**
   > Whether the rota should be judged by how evenly it splits the work or by how clean the
   > kitchen is.
-- Why Framing: A answers "is the split even?" and B answers "is the kitchen clean enough?"; both
-  answers can be true at once.
-- What would move it: both questions, stated separately: "Is the split of tasks even?" and "Is
-  the kitchen clean enough?"
+- Why Framing: A answers whether the split is even, and B answers whether the kitchen is clean
+  enough; both answers can be true at once.
+- What would move it: both questions, stated separately: Is the split of tasks even? Is the
+  kitchen clean enough?

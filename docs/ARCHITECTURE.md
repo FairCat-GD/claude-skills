@@ -36,7 +36,7 @@ outside the shipped folders. The tooling proves the repository is sound and ship
 `plugins/<skill>/skills/<skill>/`. The tooling:
 `scripts/verify.py`, `scripts/hygiene.py`, `scripts/check_skills.py`, `scripts/check_plugins.py`
 and `tests/`. The evals: `evals/crux-finder/run.py` and `checks.py`, and crux-finder's ten cases
-in `evals/crux-finder/cases/`; its results come in Session 7.
+in `evals/crux-finder/cases/`, with the latest cycle's results in `evals/crux-finder/results/`.
 
 ## Context
 
@@ -104,7 +104,7 @@ in `evals/crux-finder/cases/`; its results come in Session 7.
 
 Measured at intake, 2026-11-17, and again in Session 2, 2026-11-18: `claude` 2.1.326; uv 0.12.3;
 Python 3.10.20 installed through uv. In Session 4, 2026-11-20: `claude` 2.1.328. In Session 5,
-2026-11-20: `claude` 2.1.329.
+2026-11-20, and Session 7, 2026-11-21: `claude` 2.1.329.
 
 ## Stack and pins
 
@@ -168,7 +168,7 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   through pytest's `pythonpath`, and the eval scripts by their paths, since a folder named
   `crux-finder` is no package and each skill's evals will have a `run.py` of its own.
 - `evals/crux-finder/` holds `run.py` and `checks.py`, standard library only, and `cases/`, the
-  ten cases (*The data layer*). `results/` comes in Session 7. `run.py` reaches the skill only
+  ten cases (*The data layer*), and `results/`, the latest cycle's. `run.py` reaches the skill only
   through the CLI: it copies the plugin folder, unread, to where the run can load it.
 
 *Enforced by,* in part:
@@ -255,8 +255,8 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   with `input.md` (real cases carry `source:` and `license:` frontmatter) and `gold.md`
   (frontmatter `crux`, `type`, `crux_for`, `approved_by`). A result is
   `evals/<skill>/results/<id>/` with `run-N.md`, `claude-ai.md` and `review.md`. Cases are
-  permanent; results are rewritten by each cycle as Session 7 settles, with git keeping the
-  earlier ones.
+  permanent; each cycle replaces the results, with git keeping the earlier ones and each
+  done-note its summary table (settled with the owner at the start of Session 7).
 - **Evolution:** the formats are PDD B's; a change to one is an amendment with the owner.
 - **Amended at the start of Session 5, with the owner** (2026-11-20):
   - `review.md` records, per output, `crux_match`, `type_match` and `people_statement` (yes or
@@ -276,10 +276,15 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   public-domain debate excerpt, where PDD B has two. The owner had no dispute of their own to
   write up and asked the session to write a serious one; being fictional, it is a synthetic
   case, with no `license:`. A second real case is in `docs/BACKLOG.md`.
+- **Amended mid-Session 7, with the owner** (2026-11-22): how one cycle's review was made. The
+  owner reviewed the first case in the chat; for the other nine, at the owner's request, an
+  agent drafted each run's fields and note against gold.md and its note, and the owner confirmed
+  every row before `review.md` recorded it. `review.md` holds the owner's answers either way. Each
+  cycle's session asks at its start how its review is made.
 - **Machine identifiers, never renamed:** the marketplace name `faircat-skills`; the plugin
   and skill names `travel-itinerary-builder` and `crux-finder`; the case ids once results exist.
 
-**Built** (the formats and the ten cases; the results come in Session 7).
+**Built** (the formats, the ten cases and the latest cycle's results).
 - **A case's frontmatter** is read as one `key: value` per line, a quoted value unquoted, with
   no YAML library: gold.md's `crux`, `type`, `crux_for` and `approved_by` each on one line.
 - **crux-finder's ten cases** (Session 6), one folder each under `evals/crux-finder/cases/`,
@@ -306,6 +311,9 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   frontmatter, which is all `checks.py` reads, a short note for the owner's review: the common
   ground that pins the crux, what else counts as a match, and, for the one-sided and
   no-conflict cases, the rules above.
+- **The latest cycle** (Session 7, crux-finder 0.1.0, commit `a04f10d`): `run-1.md` and
+  `run-2.md` for each of the ten cases, and each case's `review.md`. Its summary table is in
+  Session 7's done-note; the skill changed after it, so no bar counts from it (decision 22).
 - **`run-N.md`** is written by `run.py`: frontmatter of `case`, `run`, `model`, `claude` (the
   CLI's version), `skill_version` (the plugin's `plugin.json`), `commit` (HEAD, which holds the
   plugin as it ran), `date` (UTC), `skill_calls` (the Skill tool's calls, or `none`), `denials`
@@ -526,13 +534,32 @@ verdict, no statement about either party; instructions and references only. `SKI
 - **The report's length:** a check before sending (the steelmen's balance, the 400 words, the
   quotations), each field of a crux one sentence, and nothing after Confidence.
 
-**Built.** Version 0.1.0 (2026-11-20), in `plugins/crux-finder/`. `SKILL.md` (136 lines) holds
+Settled 2026-11-22, with the owner, for 0.2.0, from what Session 7's cycle showed (each change
+general, none fitted to one case):
+- **A budget per section,** aiming at about 350 words: each steelman at most 50 words (still 2
+  to 4 sentences), Common ground at most three lines, each crux field one sentence of about 25
+  words, a secondary crux only where each party states a side, *Not actually in dispute* at most
+  two lines and never a repeat of Common ground, Confidence one sentence.
+- **A conflict pair is two stated claims:** a premise inferred, or a point one party never
+  touches, is in no pair, so it cannot be the crux.
+- **Two type tie-breaks:** Empirical or Predictive by what would settle it, so a dispute over a
+  record both read differently is Empirical even when each draws a forecast from it; Framing
+  when each side grants the other's facts and judges the decision by a test of its own, Value
+  when both weigh the same goods in a choice that cannot serve both.
+- **Quotation marks** only around text copied verbatim from the input, capitals included: never
+  the skill's own words, a question it poses or a label.
+- **The no-conflict exit** reports a Framing crux only where taking up the other's question would
+  change a conclusion, else **No crux**; and the report is the whole answer, with nothing after
+  Confidence.
+
+**Built.** Version 0.2.0 (2026-11-22), in `plugins/crux-finder/`. `SKILL.md` (152 lines) holds
 PDD B's frontmatter, its description word for word, plus `metadata.version`; the Inputs table,
 steps 1–9 in brief, the report's rules and the check before sending, and the seven guardrails.
 `references/procedure.md` defines each step in full; `crux-types.md` gives the five types, the
 order to test them in, tie-breaks, and two fictional examples each, with roles for parties;
-`output-template.md` gives PDD B's template verbatim and every variant (labels, `None.`, the
-one-sided form, **No crux**, you as a party, the claim map on request, a gate's question).
+`output-template.md` gives PDD B's template verbatim, the section budget, and every variant
+(labels, `None.`, the one-sided form, **No crux**, you as a party, the claim map on request, a
+gate's question).
 Decisions made here, each with its why:
 - **A is the party named first** (in a transcript, the first to speak) unless the user says
   otherwise, so labelling is never a guess.
@@ -544,8 +571,17 @@ Decisions made here, each with its why:
 
 Its runs on one fictional input (Session 4): three headless and one installed run in Claude
 Code, each seen to trigger the skill by its description, and one on claude.ai, seen only by its
-output; every run gave the template's shape. None met the 400 words (486 to 564); the primary crux's label differed between
-runs (double crux, or a crux for A). The eval cycle measures both.
+output; every run gave the template's shape. None met the 400 words (486 to 564); the primary
+crux's label differed between runs (double crux, or a crux for A).
+
+**The first eval cycle** (Session 7, 0.1.0, `claude` 2.1.329, $3.40 for 20 runs): crux 17/20,
+stability 9/10, symmetry 18/18, no statement about people, the one-sided gate 2/2 and the
+no-conflict case 2/2, all met; type 13/20 (each miss repeated in both runs of a case: Framing
+read as Value, Predictive as Empirical, Empirical as Predictive), quotes 16/20 (the skill's own
+words and labels in quotation marks) and length 2/18 (416 to 591 words, about 470 on average)
+missed. 0.2.0 is the change for those three. Two spot-check runs of 0.2.0 on a fictional input
+outside the set gave 296 and 315 words, with every quotation verbatim; the bars wait on the
+next cycle.
 
 ## The eval harness
 
@@ -649,7 +685,7 @@ Built: Validators (the `skills` and `plugins` stages), Unit (`tests/test_verify.
 `tests/test_hygiene.py`, `tests/test_check_skills.py`, `tests/test_check_plugins.py`,
 `tests/test_crux_finder_run.py`, `tests/test_crux_finder_checks.py`, `tests/test_evals_stdlib.py`)
 and Hygiene. Evals: the tooling (`run.py`, `checks.py`) and crux-finder's ten cases; the first
-cycle runs in Session 7.
+cycle ran in Session 7, on crux-finder 0.1.0.
 
 ## Packaging
 
@@ -687,7 +723,7 @@ None yet.
 
 ## Baseline
 
-Measured 2026-11-20 with Python 3.10.20, uv 0.12.3, ruff 0.17.5, pytest 9.2.0, `claude` 2.1.329
+Measured 2026-11-22 with Python 3.10.20, uv 0.12.3, ruff 0.17.5, pytest 9.2.0, `claude` 2.1.329
 and the validator at `83021e2`. The heading carries no version because the repository has none
 of its own: each skill has its own version.
 
@@ -698,7 +734,7 @@ of its own: each skill has its own version.
 | `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
 | Python files (`ruff format --check .`) | 13 |
 | Skills and plugins | 2 skill folders, 2 plugins, 2 marketplace entries |
-| `uv run evals/crux-finder/checks.py` | `checks: 10 case(s), 0 problem(s); no results yet, so the pass bars are not counted`, exit 0 |
+| `uv run evals/crux-finder/checks.py` | Session 7's cycle on 0.1.0: `checks: 10 case(s), 21 problem(s); pass bars not met: Type matches gold, Quotes verbatim, Length ≤ 400 words, Runs on the skill as it stands (decision 22)`, exit 1; the 21 are the cycle's length and quote misses |
 
 A documentation or refactoring change should not move any of these. If one moves, that is the
 finding.
@@ -723,3 +759,8 @@ finding.
   judged against their gold. The owner settled both at the start of Session 6, as the session
   recommended (decision 21), with the debate excerpt. Mid-session, with no dispute of their own
   to write up, the owner asked for a serious fictional one, so the real set holds one case.
+- 2026-11-22, Session 7: *The data layer* gains that each cycle replaces the results, and how
+  Session 7's review was made, an agent's draft confirmed row by row by the owner; *crux-finder*
+  gains 0.2.0's section budget, conflict pairs of stated claims, two type tie-breaks, quotation
+  marks and the no-conflict exit. The owner settled the first at the start of Session 7, the
+  second mid-session, and the rest from the cycle's results, each as the session proposed.

@@ -3,7 +3,7 @@ name: crux-finder
 description: "Find the crux of a disagreement: the smallest claim two positions hinge on. Use when the user shares two positions, a debate or a transcript and asks where people really disagree, why an argument goes in circles, or what would change someone's mind."
 license: MIT
 metadata:
-  version: "0.1.0"
+  version: "0.2.0"
 ---
 
 # Crux Finder
@@ -50,14 +50,18 @@ their results reach the report.
 1. **Gate.** Classify the input by the table above. For a one-sided input, or anything else, ask
    as Guardrails says and stop until the user answers. If you are one of the two parties, the
    report's first line says so (Guardrails).
-2. **Steelman.** Restate each position in its strongest form, 2 to 4 sentences, using only
-   content present in the input. Mark any premise that is not stated but is required
-   `[inferred]`. The two steelmen are within ±25% of each other by word count.
+2. **Steelman.** Restate each position in its strongest form, 2 to 4 sentences and at most 50
+   words, using only content present in the input. Mark any premise that is not stated but is
+   required `[inferred]`. The two steelmen are within ±25% of each other by word count.
 3. **Claim map.** Break each position into atomic claims, `A1..An` and `B1..Bn`. Tag each
    `stated` or `inferred`, and `conclusion` or `premise`, and note its dependencies
    (`A3 depends on A1`).
 4. **Common ground.** List the claims both parties accept, explicitly or by clear implication.
-5. **Conflict set.** Pair the claims that cannot both be true, or cannot both be accepted.
+   A claim only one party makes is not common ground.
+5. **Conflict set.** Pair the claims that cannot both be true, or cannot both be accepted. Each
+   claim in a pair is stated by its own party, in words or close paraphrase: a premise you
+   inferred, or a point one party never touches, is in no pair, however much the other side's
+   case rests on it.
 6. **Crux test.** For each conflicting claim X, ask: if A adopted B's view of X, would A's
    conclusion change? Then the reverse.
    - Yes for both: a double crux.
@@ -79,19 +83,28 @@ their results reach the report.
    - Definitional: two labelled terms replacing the shared word.
    - Value: name the trade-off. Offer no resolution.
    - Framing: state both questions separately.
-9. **No-conflict exit.** If step 6 yields nothing, report a Framing crux where the parties
-   answer different questions; otherwise state that the positions do not conflict, as
-   **No crux**. Never manufacture a crux.
+9. **No-conflict exit.** If step 6 yields nothing, report a Framing crux only where the parties
+   answer different questions and taking up the other's question would change at least one
+   conclusion; otherwise state that the positions do not conflict, as **No crux**. Never
+   manufacture a crux.
 
 ## The report
 
 Write it in the exact format of `references/output-template.md`:
 
-- **At most 400 words.**
+- **At most 400 words; aim for about 350.** Each section has a budget, in
+  `references/output-template.md`: each steelman at most 50 words, Common ground at most three
+  lines, Not actually in dispute at most two, Confidence one sentence.
 - **Every heading stays,** in the template's order; a section with nothing in it says `None.`
-- **Each field of a crux is one sentence:** A holds, B holds, If A accepted (both directions in
-  one sentence), and What would move it.
-- **The report ends at Confidence.** Nothing follows it: no summary, no closing note.
+- **Each field of a crux is one sentence of about 25 words:** A holds, B holds, If A accepted
+  (both directions in one sentence), and What would move it.
+- **A secondary crux needs a side from each party,** stated in the input. A point one party
+  never addresses is no crux: never write that a side is not addressed, or give it an
+  `[inferred]` side.
+- **Not actually in dispute** lists only apparent disagreements that dissolve under a definition
+  or a reframing. It never repeats Common ground; with none, it says `None.`
+- **The report ends at Confidence.** Nothing follows it: no summary, no closing note. The report
+  is the whole answer to the user's question, so the question is never answered again after it.
 - **The claim map stays internal.** The full claim map from step 3 is appended after the report
   only when the user asks for it, and does not count toward the 400 words.
 
@@ -101,20 +114,23 @@ Its rules:
 - Text shown as a quote must appear verbatim in the input.
 - Steelman lengths for A and B within ±25% of each other by word count.
 
+**Quotation marks** hold only text copied verbatim from the input, its capitals included: never
+your own words, a question you pose, a section's label, or a label of this skill's own.
+
 **Check before you send.** Count, then fix what is over:
 
-1. **The two steelmen.** Count the words of each. If the longer is more than 25% longer than the
-   shorter, trim the longer; never pad the shorter.
-2. **The whole report,** from its first line to the end of Confidence. If it is over 400 words,
-   shorten the secondary cruxes and *Not actually in dispute* first, then the rest. Never cut
-   a field of the primary crux.
-3. **Every quotation,** against the input: verbatim, or paraphrased without quotation marks.
+1. **The two steelmen.** Count the words of each. Trim either over 50 words, and if the longer
+   is more than 25% longer than the shorter, trim the longer; never pad the shorter.
+2. **Each section against its budget,** then **the whole report,** from its first line to the
+   end of Confidence. If it is over 400 words, cut the secondary cruxes and *Not actually in
+   dispute* first, then the rest. Never cut a field of the primary crux.
+3. **Every pair of quotation marks,** against the input: verbatim, or no quotation marks.
 
 ## Guardrails
 
 - **One-sided input.** Ask once for the other party's own words or a transcript. If the user
-  proceeds anyway: run, label B as "reconstructed by A", cap Confidence at Low, and suggest
-  sharing the report with B to confirm their side.
+  proceeds anyway: run, label B's steelman `**B (reconstructed by A), strongest form:**`, cap
+  Confidence at Low, and suggest sharing the report with B to confirm their side.
 - **No verdict.** The report never states who is right. For an Empirical crux it names the
   evidence that would settle the question, not the answer.
 - **Claims, not people.** No statements about the motives, intelligence, psychology or good

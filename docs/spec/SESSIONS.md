@@ -19,6 +19,7 @@ Versions are per skill (`SPEC.md` decision 3): the column names the skill a sess
 | 5 | The eval tooling: `run.py`, `checks.py` and their tests (build order 3) | 21, 22, 23; *The eval harness*, *The data layer* | — |
 | 6 | The eval cases: ten inputs and the owner's ten gold files (build order 4–5) | 17, 21 | — |
 | 7 | One eval cycle, then the claude.ai smoke test once the bars are met (build order 6–7) | 21, 22, 23 | crux-finder **0.2.0**, when the cycle changes the skill |
+| 7a | The second eval cycle, on 0.2.0, then the claude.ai smoke test once the bars are met (inserted in Session 7) | 21, 22, 23 | crux-finder **0.3.0**, when the cycle changes the skill |
 | 8 | READMEs, `ARCHITECTURE.md` read cold, the release, close the round (build order 8) | 11, 19, 20, 23, 29 | crux-finder **1.0.0**, tagged `crux-finder--v1.0.0` |
 
 **The owner at the keyboard**, by session: approving the replacement examples (1); a by-hand
@@ -1050,6 +1051,128 @@ harness*; the done-notes of Sessions 5 and 6.
 - **The owner records every judgement in `review.md`.** The session never fills `crux_match`,
   `type_match` or `people_statement` itself.
 - **Bars count only from a cycle run on the skill as it stands** (decision 22).
+- **Twenty real runs:** the eval runner is the exclusive resource, and the cost is the owner's.
+
+**Done (2026-11-22, 0.2.0).**
+- **Decided with the user:**
+  - **A new cycle replaces the result files** (the block's Ask), as recommended: git keeps each
+    earlier cycle, and each done-note its summary table.
+  - **The review:** case by case in chat, the owner answering every field and the session
+    writing the answers verbatim; changed mid-session (Amendments).
+  - **The smoke test's Empirical case,** chosen before any result: `empirical-studio-kiln`.
+  - **A skill change gets a spot check:** two isolated runs on a fictional input outside the set,
+    nothing written under `evals/`.
+  - **The changes for 0.2.0,** all four the session proposed, each tied to the review and the
+    checks: section budgets; conflict pairs of stated claims, with two type tie-breaks;
+    quotation marks; the no-conflict test and nothing after Confidence.
+  - **Session 7a,** inserted as the session proposed (below).
+- **The cycle** (`claude` 2.1.329, `claude-opus-5-5`, 0.1.0, commit `a04f10d`): `run.py --runs 2`
+  wrote all 20 runs in 8 min 47 s for $3.40 ($0.09 to $0.23 a run), each calling
+  `crux-finder:crux-finder`, 0 denials, no failure. Both one-sided runs asked for B's own words;
+  the other 18 were reports.
+- **The review,** ten `review.md`: the owner's answers, one case in the chat and nine confirmed
+  from a draft (Amendments).
+- **The summary table** (`checks.py`, before the skill changed; 21 problems, every one a length
+  or quote miss):
+
+  | Check | Pass bar | Result | Met |
+  |---|---|---|---|
+  | Crux matches gold | ≥ 16 / 20 runs | 17 / 20 | yes |
+  | Type matches gold | ≥ 18 / 20 runs | 13 / 20 | **no** |
+  | Stability: same primary crux in both runs | ≥ 8 / 10 cases | 9 / 10 | yes |
+  | Quotes verbatim | all runs | 16 / 20 | **no** |
+  | Steelman symmetry | all reports | 18 / 18 | yes |
+  | Length ≤ 400 words | all reports | 2 / 18 | **no** |
+  | people_statement no | all runs | 20 / 20 | yes |
+  | One-sided gate fires | all runs that record it | 2 / 2 | yes |
+  | No-conflict case reports no conflict or a Framing crux | all runs that record it | 2 / 2 | yes |
+  | Gold order + approved_by | all cases | 10 / 10 | yes |
+  | Runs on the skill as it stands (decision 22) | all runs | 20 / 20 | yes |
+
+  After the change the last row reads 0 / 20, as decision 22 means it to.
+- **What the reviews and checks showed:**
+  - **Type:** each miss repeated in both runs of its case: `framing-piano-lessons` as Value,
+    `predictive-hall-solar` as Empirical (its primary an inferred premise under the gold's crux,
+    so crux missed too), `real-lincoln-douglas` as Predictive.
+  - **Length:** 416 to 591 words, about 470 on average: steelmen 134, Common ground 42, the crux
+    141, secondary cruxes 58, *Not actually in dispute* 46, Confidence 29; secondary cruxes built
+    on a side one party never states, multi-sentence fields, *Not actually in dispute*
+    repeating Common ground, and one run's 140 words after Confidence.
+  - **Quotes:** the skill's own Framing questions, a label with changed case or wording, and its
+    own reconstructed-by-A label, all in quotation marks.
+  - **No conflict:** `no-conflict-quiz-team` run 1 reported a Framing crux its own test said
+    changed no conclusion; run 2 reported **No crux**.
+- **crux-finder 0.2.0,** in `SKILL.md` (152 lines) and its three references: the section budget
+  (a table in `output-template.md`); each conflict pair two stated claims, in `SKILL.md` and
+  `procedure.md`; the Empirical-or-Predictive and Framing-or-Value tie-breaks in
+  `crux-types.md`; quotation marks for verbatim text only, the Framing examples' questions and
+  the reconstructed-by-A label unquoted; step 9's test in `SKILL.md`; the report as the whole
+  answer. `plugin.json` and `metadata.version` 0.2.0; the changelog entry.
+- **Docs:** `ARCHITECTURE.md` (*crux-finder* Decided and Built with the cycle's numbers; *The
+  data layer* Decided, two lines, and Built, the results; *Overview*, *Layout*, *Context*,
+  *Testing strategy*; the baseline's `checks.py` row; a *Decision log* line); the plugin's
+  `CHANGELOG.md`; this file's 7a block and row.
+- **Amendments:**
+  - **The review of nine cases was drafted by an agent and confirmed by the owner,** where the
+    block has the owner record every judgement: after the first case the owner asked for an
+    agent to evaluate the rest, and chose, among the session's options, a draft confirmed row
+    by row over a draft recorded as it stood. The owner confirmed all eighteen rows unchanged.
+    `review.md` records the owner's answers; the bars of a cycle that met them would rest on
+    that confirmation. Added mid-session by the user.
+  - **The Framing-or-Value tie-break's example is the reference's own shed,** where the session
+    first wrote one from an eval case: an example taken from a case would fit the skill to it.
+    The session's own finding, before the spot check.
+- **Measured:**
+  - **The spot check** (0.2.0, uncommitted, through `run.py`'s `run_once`, a fictional bookshop
+    dispute in the scratchpad, nothing under `evals/`): 296 and 315 words; steelmen 48/47 and
+    43/45; every quotation verbatim; secondary cruxes `None.` in both; 0 denials; $0.39. A
+    check of the change, not a cycle: no bar counts from it.
+  - **No synced claude.ai copy** of crux-finder at the start, so `run.py` ran; no upload this
+    session.
+- **Falsified:** no new check.
+- **Numbers:** 203 unit tests (±0), 0 skipped; 6 `verify` stages, about 21 s; 13 Python files
+  (±0); 2 skill folders, 2 plugins, 2 marketplace entries (±0); 10 cases; 20 runs and 10
+  reviews in `results/` (+30 files); `checks.py` 21 problems, exit 1.
+
+---
+
+## 7a: The second eval cycle and the smoke test
+
+Inserted in Session 7, 2026-11-22, with the owner (decision 22): Session 7's cycle on 0.1.0
+missed type (13/20), quotes (16/20) and length (2/18), and the skill changed to 0.2.0 for them.
+
+**Read:** `SPEC.md` decisions 21, 22, 23; `PDD.md` B, *Runner*, *claude.ai smoke test*,
+*Review*, *Deterministic checks*, *Pass bars*; `ARCHITECTURE.md` *crux-finder*, *The data
+layer*, *The eval harness*; the done-notes of Sessions 6 and 7.
+
+- **One cycle on 0.2.0** (decision 22): Session 7's result files removed first, since `run.py`
+  skips a file that exists; then `run.py --runs 2` over the ten cases, `checks.py`, the owner's
+  review of every run into `review.md`, and the summary table against the pass bars.
+- **A bar missed:** the skill is changed for what the reviews show, crux-finder `0.3.0` is cut,
+  the results are recorded, and 7b is inserted with the owner.
+- **Every bar met, with the skill as it stands:** the claude.ai smoke test (PDD B, *claude.ai
+  smoke test*) on `empirical-studio-kiln`, `one-sided-games-night` and `no-conflict-quiz-team`,
+  chosen at the start of Session 7: the owner uploads the zip and runs each in a fresh chat; the
+  outputs go to `results/<id>/claude-ai.md`, through the same checks and review. A smoke test
+  that calls for a skill change is a missed bar.
+- **Docs.** The plugin's `CHANGELOG.md`, when a version is cut; `ARCHITECTURE.md`'s
+  *crux-finder* Built part and *The data layer*'s results, with the cycle's numbers; the
+  baseline's `checks.py` row.
+- **Confirms:** none.
+- **Ask at the start of 7a:** how the review is made. *Recommended:* as Session 7's ended: a
+  fresh agent drafts each run's fields and note against gold.md and its note, and the owner
+  confirms or corrects every row before `review.md` records it.
+
+**Gates:**
+- `uv run scripts/verify.py`, green.
+- `checks.py`'s summary table, recorded in the done-note against every pass bar.
+
+**Watch for:**
+- **The owner's answers are what `review.md` records.** The session never fills `crux_match`,
+  `type_match` or `people_statement` from its own judgement.
+- **Bars count only from a cycle run on the skill as it stands** (decision 22).
+- **Length is the bar to watch:** 0.2.0's spot check gave 296 and 315 words on one short input;
+  `real-lincoln-douglas` (about 1,370 words in) gave 564 and 591 on 0.1.0.
 - **Twenty real runs:** the eval runner is the exclusive resource, and the cost is the owner's.
 
 ---
