@@ -55,6 +55,10 @@ in `evals/crux-finder/cases/`, with the latest cycle's results in `evals/crux-fi
   specification disagree, the specification wins and the session stops.
 - **claude.ai.** A skill folder zipped with the folder at its root, uploaded by the owner as a
   custom skill. Nothing drives it automatically; every claude.ai run is the owner's, by hand.
+  **Amended mid-Session 7c, with the owner** (2026-11-22): at the owner's word, the session
+  itself may run claude.ai in the owner's Chrome, through Claude in Chrome: the upload, each case
+  in a fresh chat, the reply taken from claude.ai's own Copy button, and the upload's deletion
+  once the owner confirms it. The owner's review of each reply is unchanged.
 - **Codex and other agents.** They load a copied skill folder. No session runs them this round;
   their install steps are documented only.
 - **The owner's term list,** `~/.config/hygiene/terms.txt`, outside every repository, shared by
@@ -101,12 +105,19 @@ in `evals/crux-finder/cases/`, with the latest cycle's results in `evals/crux-fi
   `anthropic-skills:<skill>`, beside any plugin of the same name. Session 5 removed the upload
   (claude.ai deletes it with its version history), and the next `claude` start dropped its
   synced copy.
+- **claude.ai in Session 7c:** uploads are made on the Plugins page (*Add*, *Upload plugin*),
+  which takes a plugin archive or a skill's `.zip`, `.skill` or `SKILL.md`. crux-finder's zip was
+  listed as a plugin, "Crux finder", made by the owner, with its one skill, and its version shown as
+  "v1", not the `metadata.version`. Each chat read the skill's files before replying. The Copy
+  button under a reply gives its Markdown as `text/plain`, which the session read by wrapping
+  the page's clipboard calls. *Delete* in the plugin's menu removed it after a "can't be
+  undone" prompt, and a `claude` start after that listed no `crux-finder` skill.
 
 Measured at intake, 2026-11-17, and again in Session 2, 2026-11-18: `claude` 2.1.326; uv 0.12.3;
 Python 3.10.20 installed through uv. In Session 4, 2026-11-20: `claude` 2.1.328. In Session 5,
 2026-11-20, Session 7, 2026-11-21, and Session 7a, 2026-11-22: `claude` 2.1.329. In Session 7b,
 2026-11-22: 2.1.329 at the start, and 2.1.330 from the cycle's sixteenth run, the CLI having
-updated itself mid-cycle.
+updated itself mid-cycle. In Session 7c, 2026-11-22: 2.1.330 throughout.
 
 ## Stack and pins
 
@@ -289,6 +300,8 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   `review.md` recorded it.
 - **Settled at the start of Session 7b, with the owner** (2026-11-22): its review was made as
   Session 7a's, for the cycle's runs and for any claude.ai replies alike.
+- **Settled at the start of Session 7c, with the owner** (2026-11-22): its review was made as
+  Session 7b's, for the cycle's runs and the claude.ai replies alike.
 - **Machine identifiers, never renamed:** the marketplace name `faircat-skills`; the plugin
   and skill names `travel-itinerary-builder` and `crux-finder`; the case ids once results exist.
 
@@ -319,18 +332,22 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   frontmatter, which is all `checks.py` reads, a short note for the owner's review: the common
   ground that pins the crux, what else counts as a match, and, for the one-sided and
   no-conflict cases, the rules above.
-- **The latest cycle** (Session 7b, crux-finder 0.3.0, commit `5a26a12`): `run-1.md` and
-  `run-2.md` for each of the ten cases, and each case's `review.md`. Its summary table is in
-  Session 7b's done-note; the skill changed after it, so no bar counts from it (decision 22).
-  The cycles of Sessions 7 (0.1.0) and 7a (0.2.0) are in git and their done-notes.
+- **The latest cycle** (Session 7c, crux-finder 0.4.0, commit `b187824`): `run-1.md` and
+  `run-2.md` for each of the ten cases, `claude-ai.md` for `empirical-studio-kiln`,
+  `one-sided-games-night` and `no-conflict-quiz-team`, and each case's `review.md`. It met every
+  bar and the smoke test on the skill as it stands; its summary table is in Session 7c's
+  done-note. The cycles of Sessions 7 (0.1.0), 7a (0.2.0) and 7b (0.3.0) are in git and their
+  done-notes.
 - **`run-N.md`** is written by `run.py`: frontmatter of `case`, `run`, `model`, `claude` (the
   CLI's version), `skill_version` (the plugin's `plugin.json`), `commit` (HEAD, which holds the
   plugin as it ran), `date` (UTC), `skill_calls` (the Skill tool's calls, or `none`), `denials`
   (permission denials) and `cost_usd`; then a blank line and the reply as returned, with a last
   newline added where it has none.
-- **`claude-ai.md`** is the owner's claude.ai reply, written by hand; frontmatter is optional and
-  is left out of the checks. An output's leading block is its header only when it closes and
-  holds `key: value` lines alone, so a reply that opens with a `---` rule is checked whole.
+- **`claude-ai.md`** is a claude.ai reply as its Copy button gives it, under a header of `case`,
+  `target`, `model`, `skill_version`, `commit` (the commit holding the zipped skill) and `date`,
+  written by the session; the header is optional and is left out of the checks. An output's
+  leading block is its header only when it closes and holds `key: value` lines alone, so a
+  reply that opens with a `---` rule is checked whole.
 - **`review.md`** is `# Review: <id>`, then a `## run-N` or `## claude-ai` section per output,
   each of `- field: value` lines, one per field, values in lower case. A line of any other shape
   is a problem, so a note stays on one line.
@@ -644,6 +661,23 @@ under it): 277 and 323 words, steelmen 43/40 and 40/48, the stated condition as 
 crux in both, typed Predictive, the deeper claim a secondary crux in one; neither quoted the
 input, so the quotation rule waits on the next cycle. The bars wait on that cycle.
 
+**The fourth eval cycle** (Session 7c, 0.4.0, `claude` 2.1.330, $3.73 for 20 runs): every bar
+met on the skill as it stands. Crux 20/20, type 18/20 (the two piano runs read as Value, the
+*Known debt*), stability 9/10 (the debate excerpt's runs took the two cruxes gold allows, one
+each), quotes 20/20, symmetry 18/18, length 18/18 (194 to 358 words), no statement about people,
+the gate 2/2 and the no-conflict case 2/2. Both `predictive-hall-solar` runs took the ten-year
+payback B names as the crux, typed Predictive, the self-use share a secondary crux; the orchard,
+kiln and excerpt cases kept the cruxes they matched before. Only one run quoted the input, so the
+quotation rule's first letter had little to catch. The owner's review notes, below any bar:
+what would move it left out a record gold names (the pitch fee invoices, the supplier's
+readings) or gave a calculation; common-ground lines that widened what a party said.
+
+**The claude.ai smoke test** (Session 7c, 0.4.0 from `b187824`, Fable 5.2 at High effort, run by
+the session in the owner's Chrome): `empirical-studio-kiln` gave gold's Empirical crux in 280
+words, with a meter on the kiln's circuit as what would move it; `one-sided-games-night` asked
+for the co-host's own words and wrote no report; `no-conflict-quiz-team` reported **No crux** in
+186 words. All three matched gold on crux and type and passed every check: 3/3.
+
 ## The eval harness
 
 **Decided.** PDD B, *Evals*, under `evals/crux-finder/`: ten cases, two runs each through
@@ -746,8 +780,9 @@ Built: Validators (the `skills` and `plugins` stages), Unit (`tests/test_verify.
 `tests/test_hygiene.py`, `tests/test_check_skills.py`, `tests/test_check_plugins.py`,
 `tests/test_crux_finder_run.py`, `tests/test_crux_finder_checks.py`, `tests/test_evals_stdlib.py`)
 and Hygiene. Evals: the tooling (`run.py`, `checks.py`) and crux-finder's ten cases; the first
-cycle ran in Session 7, on crux-finder 0.1.0, the second in Session 7a, on 0.2.0, and the third
-in Session 7b, on 0.3.0.
+cycle ran in Session 7, on crux-finder 0.1.0, the second in Session 7a, on 0.2.0, the third
+in Session 7b, on 0.3.0, and the fourth in Session 7c, on 0.4.0, which met every bar and was
+followed by the claude.ai smoke test on three cases.
 
 ## Packaging
 
@@ -767,7 +802,10 @@ in Session 7b, on 0.3.0.
 included. travel-itinerary-builder 1.1.0 and crux-finder 0.4.0 are untagged. crux-finder was
 installed the same way in Session 4 (`claude plugin details crux-finder` listed its one skill at
 0.1.0, about 94 tokens always on), and its zip, `zip -r crux-finder.zip crux-finder` from
-`plugins/crux-finder/skills/`, was uploaded to claude.ai as a custom skill and run once.
+`plugins/crux-finder/skills/`, was uploaded to claude.ai as a custom skill and run once. In
+Session 7c the 0.4.0 zip (`zip -r -X crux-finder.zip crux-finder -x '*.DS_Store'`, made
+outside the repository: `SKILL.md` and the three references) was uploaded on claude.ai's Plugins
+page, run on the smoke test's three cases, and deleted (*Context*).
 
 ## Deliberate decisions
 
@@ -785,9 +823,9 @@ installed the same way in Session 4 (`claude plugin details crux-finder` listed 
   `value-theatre-season` (gold Value) have the same shape: each side states what the decision
   is for and grants the other's facts. A rule that sent the first to Framing would send the
   second there too, so the tie-break stays as 0.1.0 had it and both piano runs may miss on type,
-  which the type bar's 18/20 allows. They did in Sessions 7a and 7b, so every other case must
-  match on type for the bar to hold. The owner's call whether either gold should change
-  (`docs/BACKLOG.md`).
+  which the type bar's 18/20 allows. They did in Sessions 7a, 7b and 7c, so every other case
+  must match on type for the bar to hold; in 7c every other case did. The owner's call whether
+  either gold should change (`docs/BACKLOG.md`).
 
 ## Baseline
 
@@ -802,7 +840,7 @@ of its own: each skill has its own version.
 | `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
 | Python files (`ruff format --check .`) | 13 |
 | Skills and plugins | 2 skill folders, 2 plugins, 2 marketplace entries |
-| `uv run evals/crux-finder/checks.py` | Session 7b's cycle on 0.3.0: `checks: 10 case(s), 1 problem(s); pass bars not met: Type matches gold, Quotes verbatim, Runs on the skill as it stands (decision 22)`, exit 1; the 1 is `predictive-hall-solar` run 1's quotation with a capital the input does not have |
+| `uv run evals/crux-finder/checks.py` | Session 7c's cycle and smoke test on 0.4.0: `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0, the smoke test's row 3 / 3 |
 
 A documentation or refactoring change should not move any of these. If one moves, that is the
 finding.
@@ -843,3 +881,6 @@ finding.
   first at the start of Session 7b, and the rest from the cycle's results, each as the session
   recommended. In the session's review the owner had the type tie-breaks yield to the new
   ranking and recorded the departure from PDD B's step 6 beside `SPEC.md` decision 21.
+- 2026-11-22, Session 7c: *The data layer* gains how Session 7c's review was made, as 7b's;
+  *Context* gains that the session may run claude.ai in the owner's Chrome at the owner's word. The owner settled the first at the start of Session 7c, and the
+  second mid-session, asking the session to run the smoke test itself.

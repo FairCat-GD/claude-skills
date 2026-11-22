@@ -4,11 +4,11 @@
 - crux_match: yes
 - type_match: yes
 - people_statement: no
-- note: The primary crux is whether the framers left slavery to each state as a lasting local matter or limited its spread expecting it to end. That is the founders'-policy alternative gold's note accepts explicitly. "What would move it" names the founding record (the Northwest Ordinance, the slave-trade ban, the framers' statements) rather than the record of slavery as a cause of division, which suits this alternative. The common-ground line "The framers' arrangement is the right standard to return to" is a fair but generous reading of Douglas.
+- note: The primary crux is whether slavery, unlike other local differences, has been a lasting source of division, which is gold's main crux. What would move it names the political record since 1787 of slavery-driven sectional crises, as gold asks. The founders' policy appears as a secondary. The common ground "the founders' arrangement is the right standard to return to" widens both men's positions: Douglas wants it continued as he reads it, and Lincoln wants restriction restored. "Hold the Union together" credits Lincoln's phrasing to Douglas too. Confidence notes a possible deeper value disagreement, drawn from Lincoln's "moral constitution".
 
 ## run-2
 - crux_match: yes
 - type_match: yes
 - people_statement: no
-- same_crux_as_run_1: yes
-- note: Same founders'-settlement crux as run 1, with the same founding-era evidence. Two lines say a little more than Douglas said: the common-ground line that local variety is "good for the Union", and "Neither expects the Union to dissolve" under not in dispute. Douglas instead calls Lincoln's doctrine "destructive of the existence of this Government". Both runs carry a secondary Predictive crux, whether slavery left as it stands will keep dividing the Union, which is near gold's main bond-or-division claim.
+- same_crux_as_run_1: no
+- note: The primary crux is the founders' policy: whether they left slavery wholly to each State or restricted its spread so that it would die out. Gold's note counts this as a match too. What would move it names the founding-era record (the Northwest Ordinance, the 1808 slave-trade ban). Gold's historical record of slavery as a cause of division appears only in the secondary. Run 1's primary is run 2's secondary and the other way round. The common ground "the founders' arrangement on slavery is the model to follow" makes the same widening as run 1.

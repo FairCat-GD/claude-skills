@@ -1511,6 +1511,83 @@ layer*, *The eval harness*; the done-notes of Sessions 7a and 7b.
 - **Twenty real runs:** the eval runner is the exclusive resource, and the cost is the owner's.
   The CLI updates itself; each run's header records its version.
 
+**Done (2026-11-22, no version).**
+- **Decided with the user:**
+  - **The review** (the block's Ask), as recommended: as Session 7b's, for the cycle's runs and
+    the claude.ai replies alike. The user confirmed all twenty run rows and the three claude.ai
+    rows unchanged.
+  - **The session ran claude.ai itself,** at the user's word ("do it yourself"), in the user's
+    Chrome: the upload, the three chats and, once the user confirmed it, the upload's deletion.
+- **The cycle** (`claude` 2.1.330 throughout, `claude-opus-5-5`, 0.4.0, commit `b187824`):
+  Session 7b's 30 result files removed first; `run.py --runs 2` wrote all 20 runs in 9 min 11 s
+  for $3.73 ($0.09 to $0.25 a run), each calling `crux-finder:crux-finder`, 0 denials, no
+  failure. Both one-sided runs asked for B's own words; the other 18 were reports.
+- **The review,** ten `review.md`: the user's answers, every row confirmed from the draft of a
+  fresh reader that saw only each case's input, gold.md and its note, and the two runs.
+- **The summary table** (`checks.py`, 0 problems, exit 0):
+
+  | Check | Pass bar | Result | Met |
+  |---|---|---|---|
+  | Crux matches gold | ≥ 16 / 20 runs | 20 / 20 | yes |
+  | Type matches gold | ≥ 18 / 20 runs | 18 / 20 | yes |
+  | Stability: same primary crux in both runs | ≥ 8 / 10 cases | 9 / 10 | yes |
+  | Quotes verbatim | all runs | 20 / 20 | yes |
+  | Steelman symmetry | all reports | 18 / 18 | yes |
+  | Length ≤ 400 words | all reports | 18 / 18 | yes |
+  | people_statement no | all runs | 20 / 20 | yes |
+  | One-sided gate fires | all runs that record it | 2 / 2 | yes |
+  | No-conflict case reports no conflict or a Framing crux | all runs that record it | 2 / 2 | yes |
+  | Gold order + approved_by | all cases | 10 / 10 | yes |
+  | Runs on the skill as it stands (decision 22) | all runs | 20 / 20 | yes |
+  | claude.ai smoke test | 3 / 3 cases | 3 / 3 | yes |
+
+- **What the reviews and checks showed:**
+  - **Type and crux:** both `predictive-hall-solar` runs took the ten-year payback B names as
+    the primary crux, typed Predictive, with the self-use share as a secondary crux, so 0.4.0's
+    ranking held there; the orchard, kiln and excerpt cases, which the block watched, kept the
+    cruxes they matched before. Both piano runs read as Value, the *Known debt*, the bar's two
+    allowed misses.
+  - **Stability:** the excerpt's run 1 took the record of slavery as a lasting source of
+    division, run 2 the founders' policy, each the other's secondary crux; gold accepts either.
+  - **Quotes:** one run in twenty quoted the input (`no-conflict-quiz-team` run 2), so the
+    letter-for-letter rule had little to catch.
+  - **Length and symmetry:** 194 to 358 words (0.3.0: 191 to 348), the excerpt at 358 and 355;
+    every steelman pair within 25%, the widest 40/47.
+  - **The reader's notes, below any bar:** what would move it left out a record gold names
+    (the pitch fee invoices in both orchard runs; the supplier's half-hourly readings in both
+    kiln runs, which gave a calculation from power and hours beside a meter) or, for solar,
+    gave no near dated check; common-ground lines that widened what a party said (orchard, kiln,
+    quiz, excerpt and theatre runs).
+- **The claude.ai smoke test** (0.4.0, zipped from `b187824`; Fable 5.2 at High effort, the
+  account's default): the zip, made in the scratchpad, held `SKILL.md` and the three references;
+  uploaded on claude.ai's Plugins page, where it was listed as a plugin, "Crux finder", version
+  "v1". Each case's `input.md` was typed into a fresh chat and checked against the input before
+  sending; each chat read the skill's files first; each reply was taken from claude.ai's Copy
+  button. `empirical-studio-kiln`: gold's Empirical double crux, 280 words, steelmen 44/42;
+  `one-sided-games-night`: no report, a request for the co-host's own words; `no-conflict-quiz-team`:
+  **No crux**, 186 words, steelmen 35/41. Every check passed and the user confirmed all three
+  rows: 3/3. The upload was then deleted, and a `claude` start after that listed no
+  `crux-finder` skill. The three chats stay in the account's history.
+- **No version:** every bar and the smoke test were met on the skill as it stands, so the skill
+  did not change. Decision 23's conditions now hold for Session 8, as long as nothing in the
+  skill's instructions or references changes before it.
+- **Docs:** `ARCHITECTURE.md` (*Context* Decided, amended, and Built, claude.ai in 7c and the
+  measured line; *The data layer* Decided, 7c's review, and Built, the latest cycle and
+  `claude-ai.md`'s header; *crux-finder* Built, the fourth cycle and the smoke test; *Testing
+  strategy*; *Packaging*; *Known debt*; the baseline's `checks.py` row; a *Decision log* line);
+  this file's done-note; the handoff.
+- **Amendments:**
+  - **The session ran the smoke test on claude.ai, where the block has the owner upload the zip
+    and run each case:** added mid-session by the user, who asked the session to do it itself.
+    The owner's review of each reply and their yes before the deletion stayed theirs.
+- **Measured:**
+  - **No synced claude.ai copy** of crux-finder at the start, so `run.py` ran; after the
+    upload's deletion, a fresh `claude` start (2.1.330) listed no `crux-finder` skill.
+- **Falsified:** no new check.
+- **Numbers:** 203 unit tests (±0), 0 skipped; 6 `verify` stages; 13 Python files (±0); 2 skill
+  folders, 2 plugins, 2 marketplace entries (±0); 10 cases; 20 runs, 3 claude.ai replies and 10
+  reviews in `results/` (+3 files, the rest replaced); `checks.py` 0 problems, exit 0.
+
 ---
 
 ## 8: The release and the round's close

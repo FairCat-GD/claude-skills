@@ -2,20 +2,20 @@
 case: predictive-hall-solar
 run: 1
 model: claude-opus-5-5
-claude: 2.1.329
-skill_version: 0.3.0
-commit: 5a26a12479351eec7c6a1bf97499e79c5215d6cf
-date: 2026-11-22T11:37:10Z
+claude: 2.1.330
+skill_version: 0.4.0
+commit: b18782480fe3a1d30e839d887ab2feb09f6c44c6
+date: 2026-11-22T12:19:43Z
 skill_calls: crux-finder:crux-finder
 denials: 0
-cost_usd: 0.1930336
+cost_usd: 0.1679996
 ---
 
 ## Crux report
 
-**A, strongest form:** The panels should go up this year. The hall's £6,000 share must pay for itself within ten years, and it will. The hall is used every weekday daytime, so each unit generated replaces a unit bought at today's high prices.
+**A, strongest form:** The hall should install the panels this year. After the grant the hall pays £6,000. The hall is busy in the daytime and electricity prices are high, and every unit the panels make is one the hall doesn't buy, so savings will pass £6,000 within ten years.
 
-**B, strongest form:** The panels should not go up on this case. Most output comes in summer, when the playgroup and art class break up and the hall is quietest. Units exported earn little, so ten-year savings will fall short of £6,000.
+**B, strongest form:** The hall should not install the panels on these terms. Most of their output will come in summer, when the playgroup and art class break up and the hall is quietest. Exported units earn very little, so ten-year savings will fall short of £6,000.
 
 ### Common ground
 - The quote is £9,000, the grant covers a third, and the hall pays £6,000.
@@ -23,19 +23,19 @@ cost_usd: 0.1930336
 - The hall is busy in the daytime.
 
 ### The crux
-**Double crux · Empirical**
-> How much of the panels' yearly output would be used in the hall, and how much would go back to the grid.
+**Double crux · Predictive**
+> Whether the panels' electricity savings over ten years will exceed the hall's £6,000 share of the cost.
 
-- A holds: Daytime use is steady enough that nearly every unit generated replaces a unit the hall would otherwise buy.
-- B holds: Most output arrives in summer, when the hall is quietest, so much of it is exported for little return.
-- If A accepted B's view here: A's payback case would fail; if B accepted A's, B would vote for the panels.
-- What would move it: The hall's past meter readings and booking diary, set against a month-by-month generation estimate for this roof.
+- A holds: At current electricity prices, savings will pass £6,000 well inside ten years.
+- B holds: Over ten years, savings will not reach £6,000.
+- If A accepted B's view here: A's own ten-year rule would reject the panels; if B accepted A's, B says outright they would vote for them.
+- What would move it: An installer's monthly generation forecast set against the hall's metered monthly use, with cumulative savings checked ten years after installation.
 
 ### Secondary cruxes
-- **Double crux · Predictive**: Whether ten-year savings will reach £6,000. A holds: well inside ten years; B holds: they won't; if accepted: either vote flips; what would move it: payback model from hall data, checked against bills after two years.
+- **Double crux · Empirical**: How much of the panels' output the hall would use itself rather than export. A holds: nearly every unit replaces a bought one; B holds: summer output mostly goes to the grid cheaply; if accepted: the savings estimate changes; what would move it: past metered use by month against expected generation.
 
 ### Not actually in dispute
-- "Busy in the daytime" holds in term time. B's point is about the summer breaks, so the two claims don't contradict each other.
+None.
 
 ### Confidence
-High: both apply the same ten-year test, and B says outright, "If I thought they would, I would vote for the panels."
+High: both accept the ten-year rule as the test, and B says outright which claim would change their vote.

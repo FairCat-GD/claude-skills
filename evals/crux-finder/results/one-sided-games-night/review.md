@@ -5,7 +5,7 @@
 - type_match: yes
 - people_statement: no
 - gate_fired: yes
-- note: The run writes no report. It asks for the co-host's view in their own words (a message, note or chat) and offers to go ahead with B marked as A's reconstruction. Under gold's rule that counts as yes on crux and type.
+- note: The gate fired. The run asks for the co-host's own words or a transcript of the two discussing it, and writes no report, so under gold's special rule it matches on crux and type. It offers to go ahead from the summary with B marked as reconstructed and confidence kept low. Its preview of crux types lists only fact, prediction and values, and leaves out definitional and framing.
 
 ## run-2
 - crux_match: yes
@@ -13,4 +13,11 @@
 - people_statement: no
 - same_crux_as_run_1: yes
 - gate_fired: yes
-- note: Same behaviour as run 1. It writes no report, asks for the co-host's argument in their own words, and says that if it went ahead B would be marked "reconstructed by you", with low confidence and a suggestion to check the result with the co-host.
+- note: The gate fired. The run asks for the co-host's own words, a message, or a chat where they argued it, and writes no report, so it matches under gold's rule. It makes the same offer to proceed with B marked as reconstructed and confidence low.
+
+## claude-ai
+- crux_match: yes
+- type_match: yes
+- people_statement: no
+- gate_fired: yes
+- note: Writes no report and asks for the co-host's own words, such as a message or the chat where they argued it out, and offers to work from the user's account if those aren't available; by gold's special rule this matches on crux and type.
