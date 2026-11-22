@@ -774,7 +774,7 @@ before every commit. The harness is each skill's eval set. The commands are in `
 | Unit | `verify` (`tests`) | The scripts: hygiene, verify's own checks, the eval tooling | The skills themselves |
 | Hygiene | `verify`, with the drafted commit message; in full when the term list or the stage changes | Private terms in files, paths and messages; attribution in messages; secrets by their exact shapes; `.env` files; conflict markers | Images and binaries; a term joined inside one lowercase run; attribution in files; a home-directory path; a secret of any other shape; a file's earlier versions in history |
 | Evals | Where a block names them | A skill's behaviour on fixed cases, judged by the owner and `checks.py` | Cases outside the set; targets not run |
-| By hand | Recorded in done-notes | Installs, claude.ai, a whole interview | Anything not written down; what nobody checked goes to the backlog |
+| By hand | Recorded in done-notes | Installs, claude.ai (run by the owner, or at their word by the session in their browser), a whole interview | Anything not written down; what nobody checked goes to the backlog |
 
 Built: Validators (the `skills` and `plugins` stages), Unit (`tests/test_verify.py`,
 `tests/test_hygiene.py`, `tests/test_check_skills.py`, `tests/test_check_plugins.py`,

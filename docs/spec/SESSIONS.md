@@ -1565,8 +1565,9 @@ layer*, *The eval harness*; the done-notes of Sessions 7a and 7b.
   sending; each chat read the skill's files first; each reply was taken from claude.ai's Copy
   button. `empirical-studio-kiln`: gold's Empirical double crux, 280 words, steelmen 44/42;
   `one-sided-games-night`: no report, a request for the co-host's own words; `no-conflict-quiz-team`:
-  **No crux**, 186 words, steelmen 35/41. Every check passed and the user confirmed all three
-  rows: 3/3. The upload was then deleted, and a `claude` start after that listed no
+  **No crux**, 186 words, steelmen 35/41. Every check passed. A second fresh reader, which saw
+  only each case's input, gold.md and its note, and the claude.ai reply, drafted the three rows,
+  and the user confirmed them: 3/3. The upload was then deleted, and a `claude` start after that listed no
   `crux-finder` skill. The three chats stay in the account's history.
 - **No version:** every bar and the smoke test were met on the skill as it stands, so the skill
   did not change. Decision 23's conditions now hold for Session 8, as long as nothing in the
@@ -1587,6 +1588,18 @@ layer*, *The eval harness*; the done-notes of Sessions 7a and 7b.
 - **Numbers:** 203 unit tests (±0), 0 skipped; 6 `verify` stages; 13 Python files (±0); 2 skill
   folders, 2 plugins, 2 marketplace entries (±0); 10 cases; 20 runs, 3 claude.ai replies and 10
   reviews in `results/` (+3 files, the rest replaced); `checks.py` 0 problems, exit 0.
+- **Review (`/code-review high`), 3 findings: 3 fixed and 0 skipped.** The user asked for every
+  finding fixed; all three are in the docs.
+  - **The handoff set a rule nobody decided:** it told Session 8 to take the README's example
+    report from a synthetic case. It now records that the excerpt's era terms were accepted with
+    the case, and leaves the choice of example to the owner.
+  - **This done-note did not say who drafted the claude.ai rows:** a second fresh reader, which
+    saw only each case's input, gold.md and its note, and the claude.ai reply. The smoke-test
+    bullet now says so.
+  - ***Testing strategy*'s By-hand row still had claude.ai run by hand only:** it now names the
+    session running it at the owner's word, as *Context* allows.
+  - **Falsified:** no new check.
+  - **Numbers after the review:** unchanged.
 
 ---
 

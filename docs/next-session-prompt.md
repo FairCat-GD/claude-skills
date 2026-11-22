@@ -17,9 +17,11 @@ Release crux-finder 1.0.0.
 ## State you need that is not in the specs
 
 - **Round 1 is a home for many skills**: Sessions 0–7c are done; 8 remains, the round's last.
-- **Push status.** `origin/main` holds everything through Session 7b (`b187824`). Session 7c's
-  commit and its `review:` commit are local until the owner approves a push; list
-  `git log origin/main..HEAD` before any push.
+- **Push status.** `origin/main` holds everything through Session 7c: its commit ("eval:
+  crux-finder 0.4.0 meets every pass bar in the fourth cycle and passes the claude.ai smoke
+  test") and its `review:` commit ("review: the handoff leaves the README's example to the
+  owner, the claude.ai rows' reader recorded, and the testing strategy's claude.ai row"),
+  pushed with the owner's yes. Nothing installable changed: crux-finder stays at 0.4.0.
 - **Decision 23's conditions, as 7c left them:**
   - **Every pass bar met** by Session 7c's cycle on crux-finder 0.4.0, commit `b187824`:
     crux 20/20, type 18/20, stability 9/10, quotes 20/20, symmetry 18/18, length 18/18,
@@ -58,5 +60,6 @@ Release crux-finder 1.0.0.
   README and CHANGELOG are outside the skill folder.
 - **The tag comes last,** after the review, the close and any approved push (*Git*), and each
   is asked on its own.
-- **The real excerpt holds the era's racial terms;** choose the README's example report from a
-  synthetic case.
+- **The real excerpt holds the era's racial terms,** and its reports quote them verbatim; that
+  was known and accepted when the case was chosen. Which case's report the README shows is the
+  owner's choice: ask, with a recommendation.
