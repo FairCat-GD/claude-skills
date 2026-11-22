@@ -8,6 +8,11 @@ something is built, its Built part says "Not yet: Session <id>", or "Not yet: ba
 once the round that planned it closes without it. In the invariants, each rule and its why are
 decided and *Enforced by* is built; the debt and the baseline are built only.
 
+Round 1's spec files, cited throughout (`SPEC.md` and its numbered decisions, `PDD.md` as PDD B,
+the audit `REVIEW-2026-11-17.md`, and `SESSIONS.md`'s blocks and done-notes), were deleted from
+`docs/spec/` when the round closed; git history keeps them, as of the review commit before
+`docs: close round 1`.
+
 ## Overview
 
 **Decided.**
@@ -79,7 +84,7 @@ in `evals/crux-finder/cases/`, with the latest cycle's results in `evals/crux-fi
   specification agree. With uv's cache warm it runs offline; on a cold cache with no network the
   stage fails, with uv's error naming the fetch.
 - **GitHub:** `origin` is `https://github.com/FairCat-GD/claude-skills.git`. Adding the
-  marketplace from it waits for a push (`docs/BACKLOG.md`).
+  marketplace from it is not yet checked by hand (`docs/BACKLOG.md`).
 - **`claude -p`** ran crux-finder in Session 4, from an empty folder in a temporary directory,
   with no `CLAUDE.md` above it: first with `--plugin-dir` and the plugin's absolute path, then
   with the plugin installed instead, each with `--output-format stream-json --verbose` to show
@@ -117,7 +122,8 @@ Measured at intake, 2026-11-17, and again in Session 2, 2026-11-18: `claude` 2.1
 Python 3.10.20 installed through uv. In Session 4, 2026-11-20: `claude` 2.1.328. In Session 5,
 2026-11-20, Session 7, 2026-11-21, and Session 7a, 2026-11-22: `claude` 2.1.329. In Session 7b,
 2026-11-22: 2.1.329 at the start, and 2.1.330 from the cycle's sixteenth run, the CLI having
-updated itself mid-cycle. In Session 7c, 2026-11-22: 2.1.330 throughout.
+updated itself mid-cycle. In Session 7c, 2026-11-22: 2.1.330 throughout. In Session 8,
+2026-11-22: 2.1.330.
 
 ## Stack and pins
 
@@ -182,7 +188,8 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   `crux-finder` is no package and each skill's evals will have a `run.py` of its own.
 - `evals/crux-finder/` holds `run.py` and `checks.py`, standard library only, and `cases/`, the
   ten cases (*The data layer*), and `results/`, the latest cycle's. `run.py` reaches the skill only
-  through the CLI: it copies the plugin folder, unread, to where the run can load it.
+  through the CLI: it copies the plugin folder, without reading the skill's files, to where the
+  run can load it.
 
 *Enforced by,* in part:
 - The `skills` stage holds a skill folder's references one level deep from `SKILL.md`: every file
@@ -257,7 +264,8 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
 - The marketplace's own description, under `metadata`, is the root README's first sentence. The
   plugin's is the first sentence of its `SKILL.md` description. Both were the owner's choice.
 - `plugin.json` holds `name`, `version`, `description`, `author`, `homepage` and `license`.
-  `SKILL.md` holds `name`, `description`, `license` and `metadata.version`.
+  `SKILL.md` holds `name`, `description`, `license` and `metadata.version`, and the itinerary
+  skill's also `compatibility`.
 - The `plugins` stage fails an entry that sets a version or a source other than
   `./plugins/<plugin>`. The `skills` stage fails a `metadata.version` unlike its plugin's.
 
@@ -328,16 +336,17 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
     checked against it; `source:` names the page and `license: public-domain`.
 - **gold.md** holds `crux` (one sentence), `type` (one of the five, or `none`), `crux_for` (`A`,
   `B`, `both` or `none`) and `approved_by: FairCat-GD`. The owner approved or wrote every one
-  before it was written, and all ten were committed together, before any result. Below the
-  frontmatter, which is all `checks.py` reads, a short note for the owner's review: the common
-  ground that pins the crux, what else counts as a match, and, for the one-sided and
-  no-conflict cases, the rules above.
+  before it was written, and all ten were committed together, before any result; the debate
+  excerpt's was changed with its input in that session's review, still before any result.
+  Below the frontmatter, which is all `checks.py` reads, a short note for the owner's review:
+  the common ground that pins the crux, what else counts as a match, and, for the one-sided
+  and no-conflict cases, the rules above.
 - **The latest cycle** (Session 7c, crux-finder 0.4.0, commit `b187824`): `run-1.md` and
   `run-2.md` for each of the ten cases, `claude-ai.md` for `empirical-studio-kiln`,
   `one-sided-games-night` and `no-conflict-quiz-team`, and each case's `review.md`. It met every
   bar and the smoke test on the skill as it stands; its summary table is in Session 7c's
-  done-note. The cycles of Sessions 7 (0.1.0), 7a (0.2.0) and 7b (0.3.0) are in git and their
-  done-notes.
+  done-note and in crux-finder's README. The cycles of Sessions 7 (0.1.0), 7a (0.2.0) and 7b
+  (0.3.0) are in git and their done-notes.
 - **`run-N.md`** is written by `run.py`: frontmatter of `case`, `run`, `model`, `claude` (the
   CLI's version), `skill_version` (the plugin's `plugin.json`), `commit` (HEAD, which holds the
   plugin as it ran), `date` (UTC), `skill_calls` (the Skill tool's calls, or `none`), `denials`
@@ -395,9 +404,10 @@ order:
 
 Each command runs from the root with stdin closed, so no tool, `claude` included, waits on it.
 The Python ones run through the interpreter `uv run` gives `verify`; `uvx` and `claude` are found
-on `PATH`, and a missing one fails its stage with `verify: cannot run <tool>`. Every stage runs
-even after one fails. Then the summary prints PASS or FAIL and the time for each stage, followed
-by `verify: PASS` or `verify: FAIL (<stages>)`, and the exit code is 1 on any failure.
+on `PATH`, and a missing one fails its stage with `verify: cannot run <tool>: <error>`. Every
+stage runs even after one fails. Then the summary prints PASS or FAIL and the time for each
+stage, followed by `verify: PASS` or `verify: FAIL (<stages>)`, and the exit code is 1 on any
+failure.
 `--message <draft>` and `--all` are passed to `hygiene`. A run that gives either without
 `hygiene` among its stages exits 2, since the flag would go unchecked. So does an unknown stage.
 
@@ -514,8 +524,9 @@ after the review's fixes. Settled 2026-11-19:
 
 **Built.** Version 1.1.0 (2026-11-19), in `plugins/travel-itinerary-builder/`: the skill as
 first published (2026-07-22, `1.0.0` in its changelog), with F1's examples on Lisbon, F2's
-frontmatter, and F3–F21 of `docs/spec/REVIEW-2026-11-17.md` fixed. The audit's `SKILL.md` line
-numbers predate F2, which added two lines, so a line it cites as `:N` was `:N+2` before 1.1.0.
+frontmatter, and F3–F21 of round 1's audit, `REVIEW-2026-11-17.md`, fixed. The audit's
+`SKILL.md` line numbers predate F2, which added two lines, so a line it cites as `:N` was `:N+2`
+before 1.1.0.
 Each missing capability has a stated fallback:
 - no question tool: the choice steps asked in chat as numbered options, with "Other" last;
 - no WeasyPrint or Pango: `references/output-formats.md`'s *Building the PDF* order (already
@@ -606,9 +617,11 @@ quotes missed):
   capital or lower case wherever it falls, and the line is reworded around it. The harness's
   quoted-span rule stays as it is.
 
-**Built.** Version 0.4.0 (2026-11-22), in `plugins/crux-finder/`. `SKILL.md` (166 lines) holds
-PDD B's frontmatter, its description word for word, plus `metadata.version`; the Inputs table,
-steps 1–9 in brief, the report's rules and the check before sending, and the seven guardrails.
+**Built.** Version 1.0.0 (2026-11-22), in `plugins/crux-finder/`: 0.4.0 with its version fields
+alone changed, released once 0.4.0 met every pass bar and the claude.ai smoke test. `SKILL.md`
+(166 lines) holds PDD B's frontmatter, its description word for word, plus `metadata.version`;
+the Inputs table, steps 1–9 in brief, the report's rules and the check before sending, and the
+seven guardrails.
 `references/procedure.md` defines each step in full; `crux-types.md` gives the five types, the
 order to test them in, tie-breaks, and two fictional examples each, with roles for parties;
 `output-template.md` gives PDD B's template verbatim, the section caps, and every variant
@@ -659,7 +672,7 @@ every report kept inside 400. 0.4.0 is the change for both misses. Its spot chec
 fictional input outside the set with the same shape (a stated condition with a deeper premise
 under it): 277 and 323 words, steelmen 43/40 and 40/48, the stated condition as the primary
 crux in both, typed Predictive, the deeper claim a secondary crux in one; neither quoted the
-input, so the quotation rule waits on the next cycle. The bars wait on that cycle.
+input, so the quotation rule was left to the fourth cycle.
 
 **The fourth eval cycle** (Session 7c, 0.4.0, `claude` 2.1.330, $3.73 for 20 runs): every bar
 met on the skill as it stands. Crux 20/20, type 18/20 (the two piano runs read as Value, the
@@ -704,6 +717,10 @@ gap:
   the shorter.
 - **Gold order** fails a gold.md that is not committed, whose first commit does not precede the
   first commit of its results, or that changed after results existed, committed or not.
+- **Settled at the start of Session 8, with the owner** (2026-11-22): a run is on the skill as it
+  stands when the skill folder is as it was in the run's commit, a change to `SKILL.md`'s
+  `metadata.version` line alone aside, since that is the one change decision 23 allows a
+  release.
 
 **Built.** `evals/crux-finder/run.py` and `evals/crux-finder/checks.py`, both standard library
 only, on Python 3.10.
@@ -756,9 +773,12 @@ Decisions made here, each with its why:
 - **A sentence's last mark just inside the closing quotation mark is not part of the quote,**
   since English punctuation puts it there whether or not the input had it.
 - **An unpaired quotation mark is a problem,** since the span it opens cannot be checked.
-- **An eleventh row, beyond PDD B's ten bars,** "Runs on the skill as it stands": every run's `commit`
-  has the skill folder as it is now, which is decision 22's condition and the one Session 8
-  checks for decision 23. It came with the plan the owner approved.
+- **An eleventh row, beyond PDD B's ten bars,** "Runs on the skill as it stands": every run's
+  `commit` has the skill folder as it is now, `SKILL.md`'s `metadata.version` line aside. That is
+  decision 22's condition with decision 23's one allowed change, so a release that moves only the
+  version keeps the row met. `VERSION_LINE` is ignored, by `git diff -I`, in `SKILL.md` alone,
+  so a version-shaped line changed anywhere else in the folder still counts. The row came with
+  the plan the owner approved.
 
 ## Testing strategy — five layers, and what each cannot see
 
@@ -797,9 +817,11 @@ followed by the claude.ai smoke test on three cases.
 
 **Built.** The marketplace, checked locally: `claude plugin marketplace add ./` and
 `claude plugin install travel-itinerary-builder@faircat-skills` installed it, and
-`claude plugin details` listed its one skill at 1.0.1. Adding it from GitHub waits for a push
-(`docs/BACKLOG.md`). Each plugin's README gives each target's install, the claude.ai zip
-included. travel-itinerary-builder 1.1.0 and crux-finder 0.4.0 are untagged. crux-finder was
+`claude plugin details` listed its one skill at 1.0.1. Adding it from GitHub is not yet checked
+by hand (`docs/BACKLOG.md`). Each plugin's README gives each target's install, the claude.ai zip
+and the Plugins page it is uploaded on included. crux-finder 1.0.0 is tagged
+`crux-finder--v1.0.0`, made with `claude plugin tag`, which checks that `plugin.json` and the
+marketplace entry agree; travel-itinerary-builder 1.1.0 is untagged. crux-finder was
 installed the same way in Session 4 (`claude plugin details crux-finder` listed its one skill at
 0.1.0, about 94 tokens always on), and its zip, `zip -r crux-finder.zip crux-finder` from
 `plugins/crux-finder/skills/`, was uploaded to claude.ai as a custom skill and run once. In
@@ -836,11 +858,11 @@ of its own: each skill has its own version.
 | Check | Expected |
 |---|---|
 | `uv run scripts/verify.py` | green: 6 stages (`skills`, `plugins`, `format`, `lint`, `tests`, `hygiene`), about 25 s with uv's cache warm, most of it the eval tooling's git fixtures |
-| Unit tests (`tests`) | 203 passed, 0 skipped: 70 in `test_crux_finder_checks.py`, 45 in `test_hygiene.py`, 35 in `test_check_skills.py`, 22 in `test_crux_finder_run.py`, 19 in `test_check_plugins.py`, 10 in `test_verify.py`, 2 in `test_evals_stdlib.py` |
+| Unit tests (`tests`) | 206 passed, 0 skipped: 73 in `test_crux_finder_checks.py`, 45 in `test_hygiene.py`, 35 in `test_check_skills.py`, 22 in `test_crux_finder_run.py`, 19 in `test_check_plugins.py`, 10 in `test_verify.py`, 2 in `test_evals_stdlib.py` |
 | `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
 | Python files (`ruff format --check .`) | 13 |
 | Skills and plugins | 2 skill folders, 2 plugins, 2 marketplace entries |
-| `uv run evals/crux-finder/checks.py` | Session 7c's cycle and smoke test on 0.4.0: `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0, the smoke test's row 3 / 3 |
+| `uv run evals/crux-finder/checks.py` | Session 7c's cycle and smoke test on 0.4.0, read on 1.0.0, whose skill differs only in its version line: `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0, the "as it stands" row 20 / 20 and the smoke test's row 3 / 3 |
 
 A documentation or refactoring change should not move any of these. If one moves, that is the
 finding.
@@ -884,3 +906,6 @@ finding.
 - 2026-11-22, Session 7c: *The data layer* gains how Session 7c's review was made, as 7b's;
   *Context* gains that the session may run claude.ai in the owner's Chrome at the owner's word. The owner settled the first at the start of Session 7c, and the
   second mid-session, asking the session to run the smoke test itself.
+- 2026-11-22, Session 8: *The eval harness* gains that a change to `SKILL.md`'s
+  `metadata.version` line alone leaves a run on the skill as it stands. The owner settled it at
+  the start of Session 8, as the session recommended.

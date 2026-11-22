@@ -1631,3 +1631,77 @@ layer*, *The eval harness*; the done-notes of Sessions 7a and 7b.
 - **The example report's input** must be one of the committed cases, so nothing new is
   published.
 - **The tag comes last,** after the review, the close and any approved push (*Git*).
+
+**Done (2026-11-22, crux-finder 1.0.0).**
+- **Decided with the user:**
+  - **The push** (the block's Ask): yes, once, after the review and the close.
+  - **The tag** (the block's Ask): `crux-finder--v1.0.0`, made last with `claude plugin tag`,
+    and pushed on its own.
+  - **The example report:** none. crux-finder's README holds no example report, recorded beside
+    `SPEC.md` decision 19 as amended by the user and in `docs/BACKLOG.md`'s *Decided against*.
+  - **The "as it stands" row after the bump** (the handoff's open question), as the session
+    recommended: the check changes so that a change to `SKILL.md`'s `metadata.version` line alone
+    leaves a run on the skill as it stands. It is in ARCHITECTURE's *The eval harness* Decided,
+    with a *Decision log* line.
+- **Decision 23's gate,** checked against git: `git log b187824.. --
+  plugins/crux-finder/skills/crux-finder/` listed nothing at the start, and after the bump
+  `git diff b187824 -- plugins/crux-finder/skills/crux-finder/` is the version line alone.
+- **crux-finder 1.0.0:** `plugin.json` and `metadata.version` at 1.0.0. The changelog's 1.0.0
+  entry is the first stable release, with no change in behaviour from 0.4.0; `[1.0.0]` links to
+  the tag, and `[Unreleased]` compares it with `HEAD`.
+- **The check.** `checks.py`'s `_as_it_stands` now asks `_skill_unchanged_since`: the folder
+  apart from `SKILL.md` unchanged (`git diff --quiet` with an exclude pathspec), and `SKILL.md`
+  unchanged apart from `VERSION_LINE` (`git diff --quiet -I`). `_unchanged_since` still serves
+  the gold order. Three tests in `tests/test_crux_finder_checks.py`: a version-line-only change
+  keeps the row met, the version line with another change does not, and a version-shaped line
+  changed in a reference does not.
+- **The READMEs.**
+  - crux-finder's: no longer marked in development; a new *How it was tested* section with
+    Session 7c's summary table, its eleventh row without "(decision 22)", which the README cannot
+    explain, and a note on what *gold* and *people_statement* mean, why 18 reports count, and the
+    type bar's two misses. It names no path into `evals/` (*Layout and boundaries*).
+  - Both plugin READMEs name claude.ai's Plugins page (*Add*, then *Upload plugin*) for the zip,
+    as measured in Session 7c.
+  - The root README: crux-finder no longer marked in development; *Developing* points at the
+    backlog, and at `docs/spec/` only while a round is in progress.
+- **`CLAUDE.md`** points at each plugin's README as its skill's user guide.
+- **The round's close.**
+  - `ARCHITECTURE.md` read cold against the code, by the session and by a second, independent
+    reader that checked every Built part, the invariants' *Enforced by*, the testing strategy,
+    *Packaging*, *Known debt* and the baseline. Every other claim held. Fixed:
+    - the GitHub lines in *Context* and *Packaging*, which said adding the marketplace waits
+      for a push: it is not yet checked by hand;
+    - *crux-finder* Built, which said the bars wait on the next cycle;
+    - the eleventh row's bullet in *The eval harness*, which named Session 8 as still to come;
+    - *The contract*'s `SKILL.md` fields, which left out the itinerary skill's `compatibility`;
+    - *Layout*'s "copies the plugin folder, unread", where `run.py` reads `plugin.json`;
+    - *The data layer*'s ten gold files "committed together", one changed in review before any
+      result;
+    - *verify*'s missing-tool message, which ends `: <error>`;
+    - the one path into `docs/spec/`, the audit's, in *travel-itinerary-builder*.
+
+    A sentence under the file's opening says the round's spec files, cited throughout, are in
+    git history from the close; the Decided parts and the *Decision log* keep their wording.
+    The baseline is current.
+  - `docs/BACKLOG.md`: installing from GitHub now names crux-finder 1.0.0; *Directions* gains
+    what would move it and common ground, from the fourth cycle's reviews; *Decided against*
+    gains the example report.
+- **Amendments:**
+  - **No example report in crux-finder's README,** where the block has one: amended at plan
+    time, with the user, who also amended decision 19.
+  - **A change to `checks.py` and its tests,** which the block does not name: amended at plan
+    time, with the user, answering the handoff's open question.
+  - **The itinerary README's claude.ai line** names the Plugins page too, so both READMEs read
+    alike: the session's own finding. A README is not a shipped file, so no version.
+- **Measured:** `claude` 2.1.330; git 2.50.1's `diff --quiet -I<regex>` exits 0 on the version
+  line's change alone and 1 with a regex that does not match it, and `:(exclude)` leaves the rest
+  of the folder unchanged; after the bump `checks.py` prints every bar met, the "as it stands"
+  row 20 / 20 and the smoke test 3 / 3, exit 0; `verify` 23 s.
+- **Falsified:**
+  - `-I` dropped from the `SKILL.md` diff: the version-line-only test failed alone.
+  - `-I` applied to the whole folder: the reference-line test failed alone.
+
+    The file was copied aside and back.
+- **Numbers:** 206 unit tests (+3, all in `test_crux_finder_checks.py`), 0 skipped; 6 `verify`
+  stages; 13 Python files (±0); 2 skill folders, 2 plugins, 2 marketplace entries (±0); 10
+  cases; `results/` unchanged; `checks.py` 0 problems, exit 0.

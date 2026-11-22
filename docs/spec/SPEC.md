@@ -79,6 +79,9 @@ it belongs to.
 19. **Where the READMEs live:** each plugin has `plugins/<skill>/README.md` (crux-finder's holds
     what PDD B, *Distribution* puts in the root README); the root README lists the skills and
     links each one.
+    **Amended 2026-11-22 by the user:** crux-finder's README holds no example report, where PDD B,
+    *Distribution* has one; it keeps the install steps per target and the eval results table.
+    Chosen at the start of Session 8.
 20. **crux-finder 1.0.0 is tagged `crux-finder--v1.0.0`,** the form `claude plugin tag` creates,
     so the tag says which skill it marks. Tagging and pushing the tag are each asked on their
     own.

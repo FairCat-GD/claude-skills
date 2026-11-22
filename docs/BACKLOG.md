@@ -35,7 +35,7 @@ Checks that need a person at the machine. Each has an automated check covering m
 these are the parts only a person can see.
 
 - **Installing from GitHub** (travel-itinerary-builder, 1.1.0 since Session 3's push;
-  crux-finder 0.1.0 since Session 4's push): run
+  crux-finder 1.0.0 since Session 8's push): run
   `/plugin marketplace add FairCat-GD/claude-skills`, then
   `/plugin install travel-itinerary-builder@faircat-skills` and
   `/plugin install crux-finder@faircat-skills` in Claude Code, and open each plugin's `homepage`
@@ -53,7 +53,12 @@ these are the parts only a person can see.
 
 ## Directions
 
-None yet.
+- **crux-finder: what would move it, and common ground kept to what each party said.** The
+  fourth eval cycle met every bar, and the owner's reviews still noted, below any bar: *what
+  would move it* leaving out a record the gold names, or giving a calculation where gold names a
+  measurement (the orchard and kiln cases), or no near dated check (the solar case); and
+  common-ground lines widening what a party said (five cases). No bar measures either; a later
+  round could add one, with cases, before changing the skill for it.
 
 ## Decided against
 
@@ -69,5 +74,7 @@ None yet.
   covers a codebase this small (round 1 intake).
 - Taking the itinerary skill's example city off the owner's term list, or a per-repository
   hygiene exception for it: the skill's examples change instead (round 1 intake).
+- An example report in crux-finder's README: the owner left it out, amending decision 19
+  (round 1, Session 8).
 - Moving the eval tooling's floor off Python 3.10: it is PDD B's floor, and running on it is
   what proves it. Raised by the plan review; the owner may revisit it.

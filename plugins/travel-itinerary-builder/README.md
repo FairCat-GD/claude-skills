@@ -71,7 +71,7 @@ git clone https://github.com/FairCat-GD/claude-skills.git
 - **Codex:** copy the folder to `~/.agents/skills/` (for you) or `.agents/skills/` (for one
   repository). Start it as `$travel-itinerary-builder` or by asking, as above.
 - **claude.ai:** zip the folder, so the zip holds the folder at its root, and upload the zip as a
-  custom skill.
+  custom skill on claude.ai's Plugins page (*Add*, then *Upload plugin*).
 
   ```bash
   cd claude-skills/plugins/travel-itinerary-builder/skills

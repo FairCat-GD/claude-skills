@@ -10,7 +10,7 @@ Ready-to-use Agent Skills that give Claude new superpowers. Browse the collectio
 
 **Reasoning**
 
-- [crux-finder](./plugins/crux-finder/README.md) *(in development)* — Untangles an argument that keeps going in circles: finds the one claim both sides hinge on, and what would settle it, without taking sides.
+- [crux-finder](./plugins/crux-finder/README.md) — Untangles an argument that keeps going in circles: finds the one claim both sides hinge on, and what would settle it, without taking sides.
 
 *More coming as I build them.*
 
@@ -45,7 +45,8 @@ needs the network the first time, while uv's cache is empty. `plugins` runs
 
 How the repository is built is in [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md), the way work is
 done in [docs/DEVELOPMENT-WORKFLOW.md](./docs/DEVELOPMENT-WORKFLOW.md), the standing rules in
-[CLAUDE.md](./CLAUDE.md), and the round in progress in [docs/spec/](./docs/spec/).
+[CLAUDE.md](./CLAUDE.md), and what is named but not planned in
+[docs/BACKLOG.md](./docs/BACKLOG.md). A round in progress keeps its plan in `docs/spec/`.
 
 ## License
 

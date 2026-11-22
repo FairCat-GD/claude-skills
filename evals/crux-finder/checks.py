@@ -21,6 +21,8 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 # Relative to the root, as git names them.
 EVALS = "evals/crux-finder"
 SKILL_FOLDER = "plugins/crux-finder/skills/crux-finder"
+# SKILL.md's metadata.version line, the one line of the skill folder a release changes.
+VERSION_LINE = r'^  version: "[0-9.]+"$'
 LENGTH = 400
 # Each steelman within 25% of the other: the longer at most 5/4 of the shorter.
 SYMMETRY = Fraction(5, 4)
@@ -243,6 +245,16 @@ def _unchanged_since(root: Path, commit: str, path: str) -> bool:
     return _git(root, "diff", "--quiet", commit, "--", path).returncode == 0
 
 
+def _skill_unchanged_since(root: Path, commit: str) -> bool:
+    """Whether the skill folder, in the working tree, is as it was in the commit, its version
+    line aside: a change to SKILL.md's metadata.version alone is a release, not a change to the
+    skill, so a run on the commit before it ran the skill as it stands."""
+    skill = f"{SKILL_FOLDER}/SKILL.md"
+    rest = _git(root, "diff", "--quiet", commit, "--", SKILL_FOLDER, f":(exclude){skill}")
+    own = _git(root, "diff", "--quiet", f"-I{VERSION_LINE}", commit, "--", skill)
+    return rest.returncode == 0 and own.returncode == 0
+
+
 def _in_commit(root: Path, commit: str, path: str) -> bool:
     return _git(root, "cat-file", "-e", f"{commit}:{path}").returncode == 0
 
@@ -437,7 +449,7 @@ def _recorded(check: str, runs: list[Output], key: str) -> Row:
 
 def _as_it_stands(root: Path, runs: list[Output]) -> int:
     commits = {run.header.get("commit") for run in runs} - {None, ""}
-    current = {commit for commit in commits if _unchanged_since(root, commit, SKILL_FOLDER)}
+    current = {commit for commit in commits if _skill_unchanged_since(root, commit)}
     return sum(run.header.get("commit") in current for run in runs)
 
 

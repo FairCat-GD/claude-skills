@@ -570,6 +570,42 @@ def test_runs_on_a_skill_changed_since_are_not_on_the_skill_as_it_stands(root: P
     assert (row.passed, row.met) == (0, False)
 
 
+_VERSIONED = '---\nname: crux-finder\nmetadata:\n  version: "0.4.0"\n---\nThe procedure.\n'
+
+
+def _versioned_cycle(root: Path) -> None:
+    # A skill with a version line in SKILL.md and a version-shaped line in a reference.
+    _write(root, f"{checks.SKILL_FOLDER}/SKILL.md", _VERSIONED)
+    _write(root, f"{checks.SKILL_FOLDER}/references/procedure.md", '  version: "0.4.0"\n')
+    _commit(root)
+    cycle(root)
+
+
+def test_a_change_to_the_version_line_alone_leaves_the_skill_as_it_stands(root: Path) -> None:
+    _versioned_cycle(root)
+    _write(root, f"{checks.SKILL_FOLDER}/SKILL.md", _VERSIONED.replace("0.4.0", "1.0.0"))
+    _commit(root)
+    row = _row(root, "Runs on the skill")
+    assert (row.passed, row.met) == (20, True)
+
+
+def test_the_version_line_with_another_change_is_a_changed_skill(root: Path) -> None:
+    _versioned_cycle(root)
+    changed = _VERSIONED.replace("0.4.0", "1.0.0").replace("procedure", "procedure, changed")
+    _write(root, f"{checks.SKILL_FOLDER}/SKILL.md", changed)
+    _commit(root)
+    row = _row(root, "Runs on the skill")
+    assert (row.passed, row.met) == (0, False)
+
+
+def test_a_version_shaped_line_outside_skill_md_is_a_changed_skill(root: Path) -> None:
+    _versioned_cycle(root)
+    _write(root, f"{checks.SKILL_FOLDER}/references/procedure.md", '  version: "1.0.0"\n')
+    _commit(root)
+    row = _row(root, "Runs on the skill")
+    assert (row.passed, row.met) == (0, False)
+
+
 def test_the_smoke_test_needs_three_of_three(root: Path) -> None:
     cycle(root, cases=3)
     for case in ("case-00", "case-01", "case-02"):

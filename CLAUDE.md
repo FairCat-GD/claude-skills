@@ -9,6 +9,11 @@ Each skill also works as a plain skill folder in Codex, claude.ai and any agent 
 (`travel-itinerary-builder`, `crux-finder`) never change once published, because people install
 by them.
 
+**Each plugin's `README.md` is its skill's user guide;** there is no `docs/USER-GUIDE.md`. It
+says what the skill does, what it needs on each target and how to install it, and crux-finder's
+holds its eval results. A session that changes what a user sees, how a skill installs, or a
+number a README states keeps that README true.
+
 **Read `docs/ARCHITECTURE.md`'s overview, invariants and baseline, and the sections your
 session's block names, before changing anything.** It describes how the repository is built:
 the layout, the contract between marketplace, plugin and skill, the stack and its pins, the

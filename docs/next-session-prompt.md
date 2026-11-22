@@ -1,65 +1,37 @@
-Read everything Session 8's block names: `SPEC.md`, `PDD.md`, `REVIEW-2026-11-17.md` and
-`docs/spec/SESSIONS.md` in full; `ARCHITECTURE.md` in full; `CLAUDE.md`; `DEVELOPMENT-WORKFLOW.md`
-*Rounds* (*Close*) and *Git*, with *The session cycle*. Then the previous block's done-note
-(7c), then this file, and do Session 8: the release and the round's close. 8 covers:
-- `plugins/crux-finder/README.md` (decision 19): install per target, one example report taken
-  verbatim from the results, the eval results table;
-- the root README: crux-finder no longer marked in development;
-- crux-finder 1.0.0 (decisions 20, 23): the version fields and the changelog entry, only if
-  decision 23's conditions hold;
-- the round's close: `ARCHITECTURE.md` read cold against the code, `CLAUDE.md` pointed at the
-  plugin READMEs, anything open moved to `docs/BACKLOG.md`, then after the review the separate
-  `docs: close round 1` commit;
-- asked at the start: the tag `crux-finder--v1.0.0`, and any push, each on its own.
+No round is in progress. Read CLAUDE.md, *The session cycle* in docs/DEVELOPMENT-WORKFLOW.md,
+docs/ARCHITECTURE.md's overview, invariants and baseline, then this file; then the sections of
+docs/ARCHITECTURE.md the request touches, and any a block will point at. The next session is
+an **intake**: write the user's request down verbatim, ask what it leaves open,
+and plan the round in `docs/spec/`, a Read line in every block (see
+`docs/DEVELOPMENT-WORKFLOW.md`, *Rounds*).
 
-Release crux-finder 1.0.0.
+## State you need that is not in the docs
 
-## State you need that is not in the specs
-
-- **Round 1 is a home for many skills**: Sessions 0–7c are done; 8 remains, the round's last.
-- **Push status.** `origin/main` holds everything through Session 7c: its commit ("eval:
-  crux-finder 0.4.0 meets every pass bar in the fourth cycle and passes the claude.ai smoke
-  test") and its `review:` commit ("review: the handoff leaves the README's example to the
-  owner, the claude.ai rows' reader recorded, and the testing strategy's claude.ai row"),
-  pushed with the owner's yes. Nothing installable changed: crux-finder stays at 0.4.0.
-- **Decision 23's conditions, as 7c left them:**
-  - **Every pass bar met** by Session 7c's cycle on crux-finder 0.4.0, commit `b187824`:
-    crux 20/20, type 18/20, stability 9/10, quotes 20/20, symmetry 18/18, length 18/18,
-    people 20/20, gate 2/2, no conflict 2/2, gold order 10/10, as it stands 20/20.
-  - **The claude.ai smoke test passed,** 3/3, on the same skill (Fable 5.2 at High effort).
-  - **No change to the skill's instructions or references since that run:** check it against
-    git (`git log b187824.. -- plugins/crux-finder/skills/crux-finder/`, which should list
-    nothing until 1.0.0's version fields move). The version fields are the one change decision
-    23 allows, and `metadata.version` sits in `SKILL.md`. `checks.py`'s last row, "Runs on the
-    skill as it stands", is `_as_it_stands`, which runs `git diff --quiet <commit> --
-    plugins/crux-finder/skills/crux-finder` for each run's commit: any change in the folder,
-    the version line included, makes it 0 / 20 and `checks.py` exit 1. How the release reads
-    that row after the bump (as decision 23 allows, or with a change to the check) is the
-    owner's call: ask, do not guess.
-- **`uv run evals/crux-finder/checks.py`** prints `checks: 10 case(s), 0 problem(s); every pass
-  bar met`, exit 0, with the smoke test's row 3 / 3.
-- **The results** in `evals/crux-finder/results/<id>/`: `run-1.md`, `run-2.md` and `review.md`
-  for each case, plus `claude-ai.md` for `empirical-studio-kiln`, `one-sided-games-night` and
-  `no-conflict-quiz-team`. The README's example report must be one of them, verbatim (block's
-  Watch for), and the results table is 7c's summary table in its done-note.
-- **claude.ai:** the upload was deleted after the smoke test and no synced `crux-finder` loads
-  in Claude Code. claude.ai now takes uploads on its Plugins page (*Add*, *Upload plugin*),
-  which accepts a skill's `.zip`; it listed crux-finder as a plugin with version "v1". The
-  READMEs still say "upload the zip as a custom skill", which is still what it does; whether to
-  name the page is Session 8's README work.
-- **Baseline** (ARCHITECTURE's table): `verify` green with 6 stages, about 25 s; 203 unit tests
-  passed, 0 skipped; 13 Python files; 2 skill folders, 2 plugins, 2 marketplace entries;
-  `claude` 2.1.330; `checks.py` as above.
-- **Not done:** installing from GitHub, for both skills, is not yet checked by a person
-  (`docs/BACKLOG.md`).
+- **crux-finder 1.0.0 is released,** tagged `crux-finder--v1.0.0` as the round's last act;
+  travel-itinerary-builder stays at 1.1.0, untagged. Round 1 (a home for many skills: Sessions
+  0–8, with 7a, 7b and 7c inserted for the eval cycles) is closed. Its spec files are deleted;
+  the last done-note is in `docs/spec/SESSIONS.md` as of the review commit before the close
+  (`<sha>`, filled in by the close).
+- **Push status:** `origin/main` holds everything through Session 7c. Session 8's release
+  commit, its `review:` commit and the close wait for the push the owner approved at the start
+  of Session 8; the tag and its own push come after it.
+- **Open items live in `docs/BACKLOG.md`**, including what this round added there: a second
+  real eval case, the Framing-or-Value line between two golds, a case with the agent as a party,
+  running either skill on Codex or another agent, installing from GitHub by hand, the itinerary
+  skill on its other targets and its fallbacks, and the direction on crux-finder's *what would
+  move it* and common ground.
+- **Baseline** (ARCHITECTURE's table, crux-finder 1.0.0 and travel-itinerary-builder 1.1.0):
+  `verify` green with 6 stages, about 25 s; 206 unit tests passed, 0 skipped; 13 Python files;
+  2 skill folders, 2 plugins, 2 marketplace entries; `claude` 2.1.330; `checks.py` on Session
+  7c's results, read on 1.0.0: `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0.
 
 ## Watch for
 
-- **Decision 23 is a gate, not a formality:** any edit under
-  `plugins/crux-finder/skills/crux-finder/` besides the version fields needs a new cycle first.
-  README and CHANGELOG are outside the skill folder.
-- **The tag comes last,** after the review, the close and any approved push (*Git*), and each
-  is asked on its own.
-- **The real excerpt holds the era's racial terms,** and its reports quote them verbatim; that
-  was known and accepted when the case was chosen. Which case's report the README shows is the
-  owner's choice: ask, with a recommendation.
+- **`checks.py` sets aside `SKILL.md`'s version line, and nothing else.** A release that only
+  moves the version keeps "Runs on the skill as it stands" met; any other change in the skill
+  folder turns it red until a new cycle runs on the skill as it stands, starting with the old
+  results removed, since `run.py` skips a file that exists.
+- **crux-finder's README carries the fourth cycle's table.** A new cycle on a changed skill
+  replaces `results/`, so the README's *How it was tested* and its table move with it.
+- **The type bar has no slack:** the piano case's two Value runs use both of its misses
+  (ARCHITECTURE's *Known debt*), so any skill change must keep every other case on type.

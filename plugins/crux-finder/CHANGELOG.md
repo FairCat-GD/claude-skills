@@ -5,6 +5,16 @@ All notable changes to crux-finder are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.0] — 2026-11-22
+
+The first stable release. In the fourth full test of the skill, ten disagreements run twice
+each and every report read, it met every measure set for it, and on claude.ai it gave the
+expected answer for all three disagreements tried there.
+
+### Changed
+
+- **No change in behaviour from 0.4.0.** 1.0.0 is the same skill, released as stable.
+
 ## [0.4.0] — 2026-11-22
 
 Still in development: the changes below come from the third full test of the skill, ten
@@ -90,6 +100,8 @@ before 1.0.0.
 - **The full breakdown on request.** Ask for the claim map to see every claim each side makes,
   and how they depend on each other.
 
+[Unreleased]: https://github.com/FairCat-GD/claude-skills/compare/crux-finder--v1.0.0...HEAD
+[1.0.0]: https://github.com/FairCat-GD/claude-skills/releases/tag/crux-finder--v1.0.0
 [0.4.0]: https://github.com/FairCat-GD/claude-skills/commit/4d0d7980c5900a224cae124827ee7bc8ea25d953
 [0.3.0]: https://github.com/FairCat-GD/claude-skills/commit/522a2cf5cba66e2575ba53e03a318736b7e3bfc6
 [0.2.0]: https://github.com/FairCat-GD/claude-skills/commit/c52b303881d3ad90dd4c6167644af1cccba61a07

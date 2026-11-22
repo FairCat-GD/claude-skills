@@ -3,7 +3,7 @@ name: crux-finder
 description: "Find the crux of a disagreement: the smallest claim two positions hinge on. Use when the user shares two positions, a debate or a transcript and asks where people really disagree, why an argument goes in circles, or what would change someone's mind."
 license: MIT
 metadata:
-  version: "0.4.0"
+  version: "1.0.0"
 ---
 
 # Crux Finder
