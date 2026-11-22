@@ -17,6 +17,11 @@ up, it moves out of this file.
   owner had no dispute to write up, so a fictional transcript took its place. A real one, from
   the owner or another public-domain source, joins as a new case with its gold committed
   before any of its results.
+- **crux-finder: the Framing-or-Value line between two golds.** `framing-piano-lessons` (gold
+  Framing) and `value-theatre-season` (gold Value) have the same shape, and no general tie-break
+  found in Session 7 separates them. The owner decides whether either gold should change; a gold
+  changed after its results exist fails the gold order, so the case would start over under a new
+  id.
 - **Running either skill on Codex or another agent.** Their install steps are documented; no
   session runs them. Left out at the round 1 intake.
 

@@ -86,10 +86,11 @@ side makes and the other never touches is neither common ground nor in conflict.
 Pair the claims that cannot both be true (facts, forecasts) or cannot both be accepted (values,
 meanings). Each pair names the claim at issue, X.
 
-Each claim in a pair is stated by its own party, in words or close paraphrase. A premise you
-inferred, or a point one party never touches, is in no pair, however much the other side's case
-rests on it: when one side argues from such a point and the other never answers it, the conflict
-is the stated claim it supports. Silence is not disagreement, as it is not agreement (step 4).
+Each claim in a pair is stated by its own party, in words or close paraphrase, or is a premise
+you inferred (step 2's `[inferred]`) that the other party's words contradict directly. A point one
+party never touches is in no pair, however much the other side's case rests on it: when one side
+argues from such a point and the other never answers it, the conflict is the stated claim it
+supports. Silence is not disagreement, as it is not agreement (step 4).
 
 An apparent conflict that dissolves once a shared word is split into its two meanings, or once
 two questions are told apart, leaving both parties agreeing on everything else, is not a
@@ -108,9 +109,12 @@ A conclusion changes when its party could no longer reach it on the reasons they
 - **Yes for one:** a crux for that party.
 - **No for both:** drop it from the report.
 
-**Rank** double cruxes first, then by depth: a claim other conflicts depend on, by step 3's
-dependencies, outranks the claims that depend on it. The **primary crux** is the deepest double
-crux, else the deepest single crux. The next two by the same ranking are the **secondary
+**Rank** double cruxes first; then a pair of stated claims above a pair holding an inferred
+premise, since a crux the parties themselves argue is the one they would recognise; then by
+depth: a claim other conflicts depend on, by step 3's dependencies, outranks the claims that
+depend on it. The **primary crux** is the first by that ranking: the deepest stated double crux,
+else the deepest double crux with an inferred premise, else the deepest single crux in the same
+order. The next two by the same ranking are the **secondary
 cruxes**; report no more than two. If two cruxes rank equal, report one as primary, put the
 other first among the secondary cruxes, and say in Confidence that the two are close.
 

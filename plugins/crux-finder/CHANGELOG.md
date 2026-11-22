@@ -12,14 +12,13 @@ disagreements run twice each and every report read.
 
 ### Changed
 
-- **Shorter reports.** Each part of the report has a word budget, so a report now comes in
-  around 350 words, inside the 400 it promises, where most ran to 420–590.
-- **The crux is something both sides actually say.** A point only one side raises, or one you
-  have to infer, is no longer reported as the crux or as a secondary crux; nor is a side "not
-  addressed". Common ground lists only what both accept.
+- **Shorter reports.** Each part of the report has a word budget, aiming at about 350 words so
+  the report keeps inside the 400 it promises; in the test, most ran to between 416 and 591.
+- **The crux is something both sides actually argue.** A point only one side raises is no longer
+  reported as the crux or as a secondary crux, and a crux both sides state comes before one that
+  rests on an unstated premise. Common ground lists only what both accept.
 - **Clearer crux types.** A dispute over what has happened is a question of fact, even when both
-  sides draw forecasts from it. Two sides who accept each other's facts but judge the decision
-  by different tests are answering different questions, not weighing the same values.
+  sides draw forecasts from it or word it in the future tense.
 
 ### Fixed
 
@@ -54,4 +53,5 @@ before 1.0.0.
 - **The full breakdown on request.** Ask for the claim map to see every claim each side makes,
   and how they depend on each other.
 
+[0.2.0]: https://github.com/FairCat-GD/claude-skills/commit/c52b303881d3ad90dd4c6167644af1cccba61a07
 [0.1.0]: https://github.com/FairCat-GD/claude-skills/commit/352a3835dca5f9bf0527cfc74a6d92403756ab2a

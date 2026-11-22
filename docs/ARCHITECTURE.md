@@ -277,9 +277,9 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   write up and asked the session to write a serious one; being fictional, it is a synthetic
   case, with no `license:`. A second real case is in `docs/BACKLOG.md`.
 - **Amended mid-Session 7, with the owner** (2026-11-22): how one cycle's review was made. The
-  owner reviewed the first case in the chat; for the other nine, at the owner's request, an
-  agent drafted each run's fields and note against gold.md and its note, and the owner confirmed
-  every row before `review.md` recorded it. `review.md` holds the owner's answers either way. Each
+  owner reviewed the first case in the chat; for the other nine, at the owner's request, each
+  run's fields and note were drafted for the owner against gold.md and its note, and the owner
+  confirmed every row before `review.md` recorded it. `review.md` holds the owner's answers either way. Each
   cycle's session asks at its start how its review is made.
 - **Machine identifiers, never renamed:** the marketplace name `faircat-skills`; the plugin
   and skill names `travel-itinerary-builder` and `crux-finder`; the case ids once results exist.
@@ -540,12 +540,15 @@ general, none fitted to one case):
   to 4 sentences), Common ground at most three lines, each crux field one sentence of about 25
   words, a secondary crux only where each party states a side, *Not actually in dispute* at most
   two lines and never a repeat of Common ground, Confidence one sentence.
-- **A conflict pair is two stated claims:** a premise inferred, or a point one party never
-  touches, is in no pair, so it cannot be the crux.
-- **Two type tie-breaks:** Empirical or Predictive by what would settle it, so a dispute over a
-  record both read differently is Empirical even when each draws a forecast from it; Framing
-  when each side grants the other's facts and judges the decision by a test of its own, Value
-  when both weigh the same goods in a choice that cannot serve both.
+- **A conflict pair is two claims the parties argue:** each stated by its party, or an inferred
+  premise the other party's words contradict directly; a point one party never touches is in no
+  pair. A pair of stated claims ranks above one holding an inferred premise, after double cruxes
+  and before depth.
+- **Empirical or Predictive by what would settle it,** in the order of questions and in the
+  tie-break alike: a dispute over a record both read differently is Empirical even when each
+  draws a forecast from it or words it in the future tense. The Framing-or-Value tie-break stays
+  as 0.1.0 had it: no general wording separated the piano case's gold from the theatre case's
+  (*Known debt*).
 - **Quotation marks** only around text copied verbatim from the input, capitals included: never
   the skill's own words, a question it poses or a label.
 - **The no-conflict exit** reports a Framing crux only where taking up the other's question would
@@ -719,7 +722,12 @@ installed the same way in Session 4 (`claude plugin details crux-finder` listed 
 
 ## Known debt, deliberately deferred
 
-None yet.
+- **crux-finder's Framing-or-Value line.** `framing-piano-lessons` (gold Framing) and
+  `value-theatre-season` (gold Value) have the same shape: each side states what the decision
+  is for and grants the other's facts. A rule that sent the first to Framing would send the
+  second there too, so the tie-break stays as 0.1.0 had it and both piano runs may miss on type,
+  which the type bar's 18/20 allows. The owner's call whether either gold should change
+  (`docs/BACKLOG.md`).
 
 ## Baseline
 
@@ -760,7 +768,7 @@ finding.
   recommended (decision 21), with the debate excerpt. Mid-session, with no dispute of their own
   to write up, the owner asked for a serious fictional one, so the real set holds one case.
 - 2026-11-22, Session 7: *The data layer* gains that each cycle replaces the results, and how
-  Session 7's review was made, an agent's draft confirmed row by row by the owner; *crux-finder*
-  gains 0.2.0's section budget, conflict pairs of stated claims, two type tie-breaks, quotation
+  Session 7's review was made, a draft confirmed row by row by the owner; *crux-finder*
+  gains 0.2.0's section budget, conflict pairs and their ranking, the Empirical-or-Predictive rule, quotation
   marks and the no-conflict exit. The owner settled the first at the start of Session 7, the
   second mid-session, and the rest from the cycle's results, each as the session proposed.

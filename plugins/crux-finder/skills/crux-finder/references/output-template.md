@@ -75,9 +75,9 @@ High | Medium | Low, with the reason.
   step 8). For a Value crux, the trade-off, with no resolution. Name the evidence or the
   forecast; do not list every check that would go into it.
 - **Secondary cruxes.** At most two, one line each, with the primary crux's fields in the same
-  order. Each needs a side from each party, stated in the input: a point one party never
-  addresses is no crux, so never write that a side is not addressed, or give it an `[inferred]`
-  side. With none, the section says `None.`
+  order. Each needs a side from each party, as procedure step 5 has it: a point one party never
+  addresses is no crux, so never write that a side is not addressed, or invent one for a party
+  whose words never touch the point. With none, the section says `None.`
 
   ```markdown
   - **Crux for A · Predictive**: <the crux sentence> A holds: …; B holds: …; if accepted: …; what would move it: …

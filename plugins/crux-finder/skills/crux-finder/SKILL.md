@@ -59,17 +59,17 @@ their results reach the report.
 4. **Common ground.** List the claims both parties accept, explicitly or by clear implication.
    A claim only one party makes is not common ground.
 5. **Conflict set.** Pair the claims that cannot both be true, or cannot both be accepted. Each
-   claim in a pair is stated by its own party, in words or close paraphrase: a premise you
-   inferred, or a point one party never touches, is in no pair, however much the other side's
-   case rests on it.
+   claim in a pair is stated by its own party, in words or close paraphrase, or is a premise you
+   inferred that the other party's words contradict directly. A point one party never touches is
+   in no pair, however much the other side's case rests on it.
 6. **Crux test.** For each conflicting claim X, ask: if A adopted B's view of X, would A's
    conclusion change? Then the reverse.
    - Yes for both: a double crux.
    - Yes for one: a crux for that party.
    - No for both: drop it from the report.
-   - Rank double cruxes first, then by depth: a claim other conflicts depend on outranks them.
-     The primary crux is the deepest double crux, else the deepest single crux. At most two
-     more are reported, as secondary cruxes.
+   - Rank double cruxes first; then a pair of stated claims above one holding an inferred
+     premise; then by depth: a claim other conflicts depend on outranks them. The primary crux
+     is the first by that ranking. At most two more are reported, as secondary cruxes.
 7. **Classify** each reported crux by `references/crux-types.md`:
    - Empirical: a checkable present or past fact.
    - Predictive: a claim about future outcomes.
@@ -98,9 +98,9 @@ Write it in the exact format of `references/output-template.md`:
 - **Every heading stays,** in the template's order; a section with nothing in it says `None.`
 - **Each field of a crux is one sentence of about 25 words:** A holds, B holds, If A accepted
   (both directions in one sentence), and What would move it.
-- **A secondary crux needs a side from each party,** stated in the input. A point one party
-  never addresses is no crux: never write that a side is not addressed, or give it an
-  `[inferred]` side.
+- **A secondary crux needs a side from each party,** as step 5 has it. A point one party never
+  addresses is no crux: never write that a side is not addressed, or invent one for a party whose
+  words never touch the point.
 - **Not actually in dispute** lists only apparent disagreements that dissolve under a definition
   or a reframing. It never repeats Common ground; with none, it says `None.`
 - **The report ends at Confidence.** Nothing follows it: no summary, no closing note. The report

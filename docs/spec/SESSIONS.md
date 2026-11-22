@@ -1113,10 +1113,10 @@ harness*; the done-notes of Sessions 5 and 6.
   *Testing strategy*; the baseline's `checks.py` row; a *Decision log* line); the plugin's
   `CHANGELOG.md`; this file's 7a block and row.
 - **Amendments:**
-  - **The review of nine cases was drafted by an agent and confirmed by the owner,** where the
-    block has the owner record every judgement: after the first case the owner asked for an
-    agent to evaluate the rest, and chose, among the session's options, a draft confirmed row
-    by row over a draft recorded as it stood. The owner confirmed all eighteen rows unchanged.
+  - **The review of nine cases was drafted for the owner and confirmed by the owner,** where the
+    block has the owner record every judgement: after the first case the owner asked for the
+    rest to be evaluated in a draft, and chose, among the session's options, a draft confirmed
+    row by row over a draft recorded as it stood. The owner confirmed all eighteen rows unchanged.
     `review.md` records the owner's answers; the bars of a cycle that met them would rest on
     that confirmation. Added mid-session by the user.
   - **The Framing-or-Value tie-break's example is the reference's own shed,** where the session
@@ -1133,6 +1133,30 @@ harness*; the done-notes of Sessions 5 and 6.
 - **Numbers:** 203 unit tests (±0), 0 skipped; 6 `verify` stages, about 21 s; 13 Python files
   (±0); 2 skill folders, 2 plugins, 2 marketplace entries (±0); 10 cases; 20 runs and 10
   reviews in `results/` (+30 files); `checks.py` 21 problems, exit 1.
+- **Review (`/code-review high`), 6 findings: 6 fixed and 0 skipped.** The user asked for every
+  finding fixed; one fix the user chose among two (below).
+  - **The new Framing-or-Value rule also fit the two Value cases that passed:** each side in
+    `value-theatre-season` and `transcript-father-care` grants the other's facts and judges by
+    its own good. No general wording separated `framing-piano-lessons` (gold Framing) from
+    `value-theatre-season` (gold Value), so the user chose 0.1.0's tie-break back over keeping
+    the new one; the piano case may miss on type again, within the bar's two misses. *Known
+    debt* and `docs/BACKLOG.md`. This undoes the amendment above on the rule's example.
+  - **The order of questions still sent any claim about what will happen to Predictive,** ahead
+    of the new tie-break: step 4 now asks for an outcome no record yet could settle, and points
+    at the tie-break.
+  - **Pairs of stated claims only shut out a crux on an unstated premise:** an inferred premise
+    the other party's words contradict directly is in a pair again, and a pair of stated claims
+    ranks above it, after double cruxes and before depth, so the solar case's stated payback
+    still comes first. The secondary-crux rule in `SKILL.md` and the template follows step 5.
+  - **The changelog promised about 350 words** from two spot-check runs, and gave 0.1.0's range
+    as 420–590: it now says the report aims at about 350, and the range is 416–591 as measured.
+    Its lines on the crux and the types follow the fixes above.
+  - **The changelog had no `[0.2.0]` link:** added, to the feat commit.
+  - **The docs credited a tool with drafting the review:** they now describe the method, a draft
+    made for the owner and confirmed row by row, here, in `ARCHITECTURE.md` and in the handoff.
+  - **Falsified:** no new check. The fixes are the skill's text; no run measured them, and 7a's
+    cycle is the measure.
+  - **Numbers after the review:** unchanged; `SKILL.md` 152 lines.
 
 ---
 
@@ -1159,9 +1183,10 @@ layer*, *The eval harness*; the done-notes of Sessions 6 and 7.
   *crux-finder* Built part and *The data layer*'s results, with the cycle's numbers; the
   baseline's `checks.py` row.
 - **Confirms:** none.
-- **Ask at the start of 7a:** how the review is made. *Recommended:* as Session 7's ended: a
-  fresh agent drafts each run's fields and note against gold.md and its note, and the owner
-  confirms or corrects every row before `review.md` records it.
+- **Ask at the start of 7a:** how the review is made. *Recommended:* as Session 7's ended: each
+  run's fields and note drafted for the owner against gold.md and its note, by a reader that
+  sees no earlier verdict, and the owner confirms or corrects every row before `review.md`
+  records it.
 
 **Gates:**
 - `uv run scripts/verify.py`, green.

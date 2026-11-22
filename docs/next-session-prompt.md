@@ -18,8 +18,8 @@ Release 0.3.0 only when the cycle changes the skill.
 
 - **Round 1 is a home for many skills**: Sessions 0–7 are done; 7a, inserted in Session 7, and 8
   remain.
-- **Push status.** `origin/main` holds everything through Session 6. Session 7's commits are
-  local until the owner says yes to a push; a push makes crux-finder 0.2.0 installable.
+- **Push status.** `origin/main` holds everything through Session 7: its commit and its
+  `review:` commit, pushed with the owner's yes, so crux-finder 0.2.0 is installable.
 - **What Session 7 left that 7a builds on:**
   - **Session 7's results** in `evals/crux-finder/results/<id>/`: `run-1.md`, `run-2.md` and
     `review.md` for each case, run on 0.1.0 at commit `a04f10d`. A new cycle replaces them
@@ -29,15 +29,17 @@ Release 0.3.0 only when the cycle changes the skill.
   - **`uv run evals/crux-finder/checks.py`** prints 21 problems (the old cycle's length and quote
     misses) and `pass bars not met: Type matches gold, Quotes verbatim, Length ≤ 400 words, Runs
     on the skill as it stands (decision 22)`, exit 1, until the old results are removed.
-  - **crux-finder 0.2.0** changed for Session 7's misses: a budget per section, conflict pairs of
-    stated claims, two type tie-breaks in `crux-types.md`, quotation marks for verbatim text
-    only, the no-conflict test, nothing after Confidence.
+  - **crux-finder 0.2.0** changed for Session 7's misses: a budget per section; conflict pairs of
+    claims the parties argue, stated pairs ranked above inferred ones; Empirical or Predictive
+    by what would settle it, in `crux-types.md`; quotation marks for verbatim text only; the
+    no-conflict test; nothing after Confidence. The Framing-or-Value tie-break is 0.1.0's, so
+    `framing-piano-lessons` may miss on type again (*Known debt*).
   - **The review's rules for two cases** (*The data layer*): record `gate_fired` on every output
     of `one-sided-games-night` and `no_conflict_reported` on every output of
     `no-conflict-quiz-team`; each gold.md's note, below its frontmatter, says what else counts.
 - **How Session 7's review went:** the owner reviewed the first case in the chat, then asked for
-  an agent to evaluate the rest; an agent drafted each run's fields and note against gold.md and
-  its note into a scratch file, and the owner confirmed all eighteen rows before they were
+  the rest to be drafted; each run's fields and note were drafted for the owner against gold.md
+  and its note in a scratch file, and the owner confirmed all eighteen rows before they were
   recorded. Show the owner each case's gold beside its runs either way.
 - **Where 0.1.0 missed, to watch in 0.2.0's runs:** type on `framing-piano-lessons` (Value for
   Framing), `predictive-hall-solar` (Empirical, with an inferred premise as its crux) and

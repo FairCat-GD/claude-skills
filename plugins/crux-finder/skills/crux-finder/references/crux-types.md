@@ -22,7 +22,9 @@ Ask these in order, and take the first yes:
    → **Definitional.**
 3. **If both parties agreed on every fact and every forecast, would they still disagree?**
    → **Value.**
-4. **Is the claim about what will happen?** → **Predictive.**
+4. **Is it an outcome still to come, which no record yet could settle?** → **Predictive.** A
+   claim about what has happened stays Empirical however it is worded: see *Empirical or
+   Predictive* below.
 5. **Otherwise:** a present or past fact that records, data or a measurement could check.
    → **Empirical.**
 
@@ -43,12 +45,7 @@ Ask these in order, and take the first yes:
   disputes (that the path is dangerous), that fact is the deeper crux, and it is Empirical or
   Predictive. A Value crux is what is left when the facts are shared.
 - **Framing or Value:** in a Value crux both sides answer the same question and weigh its goods
-  differently; in a Framing crux they answer different questions. Ask what each side says the
-  decision should be judged by. When each grants the other's facts and judges the decision by a
-  test of its own (in the shed example, what the garden can pay for, or what it needs), each
-  answer can be true at once, and the dispute is over which test applies: Framing. It is Value
-  when both sides judge by the same goods and differ on how much each weighs, in a choice that
-  cannot serve both (one sum, one slot, one job this year).
+  differently; in a Framing crux they answer different questions.
 
 ## Examples
 
