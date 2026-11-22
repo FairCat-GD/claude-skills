@@ -11,10 +11,12 @@ and plan the round in `docs/spec/`, a Read line in every block (see
   travel-itinerary-builder stays at 1.1.0, untagged. Round 1 (a home for many skills: Sessions
   0–8, with 7a, 7b and 7c inserted for the eval cycles) is closed. Its spec files are deleted;
   the last done-note is in `docs/spec/SESSIONS.md` as of the review commit before the close
-  (`<sha>`, filled in by the close).
-- **Push status:** `origin/main` holds everything through Session 7c. Session 8's release
-  commit, its `review:` commit and the close wait for the push the owner approved at the start
-  of Session 8; the tag and its own push come after it.
+  (`db2e2e8`).
+- **Push status:** `origin/main` holds everything through round 1's close: Session 8's commit
+  ("feat: crux-finder 1.0.0, its README's test results, and the round's docs read against the
+  code"), its `review:` commit and `docs: close round 1`, pushed with the owner's yes, which
+  makes crux-finder 1.0.0 the version installed from `faircat-skills`. The tag
+  `crux-finder--v1.0.0` marks the close commit and is pushed on its own yes. Nothing waits.
 - **Open items live in `docs/BACKLOG.md`**, including what this round added there: a second
   real eval case, the Framing-or-Value line between two golds, a case with the agent as a party,
   running either skill on Codex or another agent, installing from GitHub by hand, the itinerary
