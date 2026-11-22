@@ -2,34 +2,32 @@
 case: value-theatre-season
 run: 2
 model: claude-opus-5-5
-claude: 2.1.329
-skill_version: 0.2.0
-commit: 9cae03b0a232ccc334ba4fb8bc6515f14b8689c1
-date: 2026-11-22T11:02:33Z
+claude: 2.1.330
+skill_version: 0.3.0
+commit: 5a26a12479351eec7c6a1bf97499e79c5215d6cf
+date: 2026-11-22T11:40:47Z
 skill_calls: crux-finder:crux-finder
 denials: 0
-cost_usd: 0.16772600000000001
+cost_usd: 0.1909384
 ---
 
 ## Crux report
 
-**A, strongest form:** The farce has sold out twice, and the box office expects about 900 tickets again. Full houses keep the regular audience coming back and give the cast the experience of a packed room. The group exists to stage shows people want to see.
-
-**B, strongest form:** Both plays would cover their costs, so money is not the issue, even though the farce would sell about twice as many tickets. No one else will give a new local writer a full production. Staging new writing is what the group is for.
+**A, strongest form:** The slot should go to the farce. It sold out twice and is expected to sell about 900 tickets; full houses keep the regular audience returning and give the cast a packed room. The group exists to stage what people want to see.
+**B, strongest form:** The slot should go to the workshop writer's new play. Both would cover costs, so money is not the issue. No one else will give a new local writer a full production, and staging new writing is what the group is for.
 
 ### Common ground
 - The farce would sell about 900 tickets and the new play about 450.
-- Either play would cover its costs, so money does not decide this.
-- There is one slot, so only one play can go in it.
+- There is one slot, so only one of the two plays can go in it.
 
 ### The crux
 **Double crux · Value**
-> Both sides accept the sales and cost figures, so the question is whether this slot should go to the play more people will come to see, or to a new local writer who would not otherwise get a full production.
+> Whether the group's last slot should serve the larger expected audience or give a new local writer a full production.
 
-- A holds: the group's main purpose is to stage the shows its audience wants, and 900 tickets against 450 shows which one that is.
-- B holds: the group's main purpose is to give new writing a stage, which matters most when no one else will produce the writer.
-- If A accepted B's view here: A would pick the new play, because the figures that favour the farce would no longer decide it. If B accepted A's view, B would pick the farce, because it serves about twice the audience.
-- What would move it: this comes down to a trade-off, with no answer in the facts. One side is a larger audience and packed houses for the regulars and cast. The other is the only full production a new local writer is likely to get.
+- A holds: The group exists to stage the shows people want to see, and a farce that sells out serves that best.
+- B holds: The group's purpose is staging new writing that no one else will produce, and that outweighs a smaller audience.
+- If A accepted B's view here: A would back the new play; if B accepted A's, B would back the farce.
+- What would move it: The trade-off: about 450 more seats filled and a packed room, against a full production for a writer who would otherwise get none.
 
 ### Secondary cruxes
 None.
@@ -38,4 +36,4 @@ None.
 None.
 
 ### Confidence
-High: both sides accept the same figures and say plainly what they think the group is for, and that is the only point where they differ.
+High: both state their reasons directly, accept the same figures and costs, and differ only on what the group is for.

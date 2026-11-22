@@ -21,6 +21,7 @@ Versions are per skill (`SPEC.md` decision 3): the column names the skill a sess
 | 7 | One eval cycle, then the claude.ai smoke test once the bars are met (build order 6–7) | 21, 22, 23 | crux-finder **0.2.0**, when the cycle changes the skill |
 | 7a | The second eval cycle, on 0.2.0, then the claude.ai smoke test once the bars are met (inserted in Session 7) | 21, 22, 23 | crux-finder **0.3.0**, when the cycle changes the skill |
 | 7b | The third eval cycle, on 0.3.0, then the claude.ai smoke test once the bars are met (inserted in Session 7a) | 21, 22, 23 | crux-finder **0.4.0**, when the cycle changes the skill |
+| 7c | The fourth eval cycle, on 0.4.0, then the claude.ai smoke test once the bars are met (inserted in Session 7b) | 21, 22, 23 | crux-finder **0.5.0**, when the cycle changes the skill |
 | 8 | READMEs, `ARCHITECTURE.md` read cold, the release, close the round (build order 8) | 11, 19, 20, 23, 29 | crux-finder **1.0.0**, tagged `crux-finder--v1.0.0` |
 
 **The owner at the keyboard**, by session: approving the replacement examples (1); a by-hand
@@ -1353,6 +1354,138 @@ layer*, *The eval harness*; the done-notes of Sessions 7 and 7a.
 - **Length on `real-lincoln-douglas`,** and whether the tighter caps cost the bars 0.2.0 met:
   symmetry, with steelmen of at most 45 words, and crux and type with shorter fields.
 - **Twenty real runs:** the eval runner is the exclusive resource, and the cost is the owner's.
+
+**Done (2026-11-22, 0.4.0).**
+- **Decided with the user:**
+  - **The review** (the block's Ask), as recommended: as Session 7a's, for the cycle's runs and
+    for any claude.ai replies alike. The user confirmed all twenty rows unchanged.
+  - **The claude.ai upload would be deleted after the smoke test;** no smoke test ran (below).
+  - **The changes for 0.4.0,** each the session's recommendation of two: a party's stated
+    condition ranked first among double cruxes, over keeping the ranking and leaving the solar
+    gold to the owner; and quotations checked letter for letter in the skill, over folding a
+    first letter's case in the harness.
+  - **Session 7c,** inserted as a step of the approved plan (below); its block's text is the
+    session's, first seen by the user in the review.
+- **The cycle** (`claude-opus-5-5`, 0.3.0, commit `5a26a12`; `claude` 2.1.329 for the first
+  fifteen runs, 2.1.330 for the last five, the CLI having updated itself mid-cycle): Session 7a's
+  30 result files removed first; `run.py --runs 2` wrote all 20 runs in 8 min 30 s for $3.81
+  ($0.09 to $0.41 a run), each calling `crux-finder:crux-finder`, 0 denials, no failure. Both
+  one-sided runs asked for B's own words; the other 18 were reports.
+- **The review,** ten `review.md`: the user's answers, every row confirmed from the draft. The
+  reader's opening summary miscounted the quiz runs as crux misses; its rows, which the user
+  confirmed, have them as matches.
+- **The summary table** (`checks.py`, before the skill changed; 1 problem, a quotation):
+
+  | Check | Pass bar | Result | Met |
+  |---|---|---|---|
+  | Crux matches gold | ≥ 16 / 20 runs | 18 / 20 | yes |
+  | Type matches gold | ≥ 18 / 20 runs | 16 / 20 | **no** |
+  | Stability: same primary crux in both runs | ≥ 8 / 10 cases | 10 / 10 | yes |
+  | Quotes verbatim | all runs | 19 / 20 | **no** |
+  | Steelman symmetry | all reports | 18 / 18 | yes |
+  | Length ≤ 400 words | all reports | 18 / 18 | yes |
+  | people_statement no | all runs | 20 / 20 | yes |
+  | One-sided gate fires | all runs that record it | 2 / 2 | yes |
+  | No-conflict case reports no conflict or a Framing crux | all runs that record it | 2 / 2 | yes |
+  | Gold order + approved_by | all cases | 10 / 10 | yes |
+  | Runs on the skill as it stands (decision 22) | all runs | 20 / 20 | yes |
+
+  After the change the last row reads 0 / 20, as decision 22 means it to. The claude.ai smoke
+  test waits on a cycle that meets every bar.
+- **What the reviews and checks showed:**
+  - **Length:** 0.3.0's caps held: 191 to 348 words (0.2.0: 283 to 488), the debate excerpt at
+    336 and 348. Most crux fields ran 23 to 30 words against their cap of 22, and one secondary
+    crux section 53 against 50, with every report inside 400.
+  - **Symmetry:** every pair within 25%, one steelman at 47 against its cap of 45.
+  - **Type and crux:** both `predictive-hall-solar` runs took the hall's share of its own
+    output, which the ten-year payback depends on, as the primary crux, typed Empirical, with
+    gold's payback a secondary crux: step 6 ranks the deeper of two stated double cruxes first,
+    and B's stated condition (they would vote for the panels if they paid back in ten years)
+    weighed nothing in the ranking. 0.2.0's runs matched here; 0.1.0's missed the same way.
+    Both piano runs read as Value, the *Known debt*: with it, any other type miss breaks the
+    bar.
+  - **Quotes:** `predictive-hall-solar` run 1 opened a line with a quotation and capitalised
+    its first letter, which the input has in lower case.
+  - **The reader's notes, below any bar:** what would move it left out the pitch fee invoices
+    gold names (both orchard runs) or gave a calculation for a measurement (kiln run 2);
+    common-ground lines that widened what a party said (kiln, quiz, solar, excerpt and theatre
+    runs).
+- **crux-finder 0.4.0,** in `SKILL.md` (164 lines), `procedure.md` and `output-template.md`: in
+  step 6's ranking, a claim a party says outright would change their conclusion comes first
+  among double cruxes, before stated pairs and depth, with a deeper claim under it free to be a
+  secondary crux; the check before sending compares each quotation letter for letter, its first
+  letter included, and the template says a quotation opening a line keeps the input's lower case
+  or the line is reworded. `plugin.json` and `metadata.version` 0.4.0; the changelog entry; the
+  README's two version lines, the second of which still said 0.1.0.
+- **Docs:** `ARCHITECTURE.md` (*Context*'s measured line; *The data layer* Decided, 7b's review,
+  and Built, the latest cycle; *crux-finder* Decided and Built, with the cycle's numbers;
+  *Testing strategy*; *Packaging*'s untagged version; *Known debt*; the baseline's `checks.py`
+  row; a *Decision log* line); the plugin's `CHANGELOG.md` and `README.md`; `docs/BACKLOG.md`;
+  this file's 7c block and row.
+- **Amendments:**
+  - **No smoke test, and no *Packaging* change after an upload:** a bar was missed, so the block's
+    other branch ran.
+- **Measured:**
+  - **The spot check** (0.4.0, uncommitted, through `run.py`'s `run_once`, a fictional dispute
+    with the solar case's shape in the scratchpad, nothing under `evals/`): 277 and 323 words;
+    steelmen 43/40 and 40/48; the condition B states as the primary double crux in both, typed
+    Predictive, the deeper claim under it a secondary crux in one; no quotation in either, so the
+    quotation rule is unmeasured; 0 denials; $0.40. A check of the change, not a cycle: no bar
+    counts from it.
+  - **No synced claude.ai copy** of crux-finder at the start, so `run.py` ran; no upload this
+    session.
+- **Falsified:** no new check.
+- **Numbers:** 203 unit tests (±0), 0 skipped; 6 `verify` stages, about 24 s; 13 Python files
+  (±0); 2 skill folders, 2 plugins, 2 marketplace entries (±0); 10 cases; 20 runs and 10
+  reviews in `results/` (±0 files, all replaced); `checks.py` 1 problem, exit 1.
+
+---
+
+## 7c: The fourth eval cycle and the smoke test
+
+Inserted in Session 7b, 2026-11-22, with the owner (decision 22): Session 7b's cycle on 0.3.0
+met length and every bar but type (16/20: the solar case's primary crux one step under gold's,
+in both runs, beside the piano case's known debt) and quotes (19/20: a capital added at the
+start of a line), and the skill changed to 0.4.0 for them.
+
+**Read:** `SPEC.md` decisions 21, 22, 23; `PDD.md` B, *Runner*, *claude.ai smoke test*,
+*Review*, *Deterministic checks*, *Pass bars*; `ARCHITECTURE.md` *crux-finder*, *The data
+layer*, *The eval harness*; the done-notes of Sessions 7a and 7b.
+
+- **One cycle on 0.4.0** (decision 22): Session 7b's result files removed first, since `run.py`
+  skips a file that exists; then `run.py --runs 2` over the ten cases, `checks.py`, the owner's
+  review of every run into `review.md`, and the summary table against the pass bars.
+- **A bar missed:** the skill is changed for what the reviews show, crux-finder `0.5.0` is cut,
+  the results are recorded, and 7d is inserted with the owner.
+- **Every bar met, with the skill as it stands:** the claude.ai smoke test (PDD B, *claude.ai
+  smoke test*) on `empirical-studio-kiln`, `one-sided-games-night` and `no-conflict-quiz-team`:
+  the owner uploads the zip and runs each in a fresh chat; the outputs go to
+  `results/<id>/claude-ai.md`, through the same checks and review; the owner deletes the upload
+  afterwards unless they decide otherwise. A smoke test that calls for a skill change is a
+  missed bar.
+- **Docs.** The plugin's `CHANGELOG.md`, when a version is cut; `ARCHITECTURE.md`'s
+  *crux-finder* Built part and *The data layer*'s results, with the cycle's numbers; the
+  baseline's `checks.py` row; *Packaging*, after an upload.
+- **Confirms:** none.
+- **Ask at the start of 7c:** how the review is made. *Recommended:* as Session 7b's: each run's
+  fields and note drafted by a fresh reader that sees only each case's input, gold.md and its
+  note, and the two runs, and the owner confirms or corrects every row before `review.md`
+  records it; the same for the claude.ai replies.
+
+**Gates:**
+- `uv run scripts/verify.py`, green.
+- `checks.py`'s summary table, recorded in the done-note against every pass bar.
+
+**Watch for:**
+- **The owner's answers are what `review.md` records.** The session never fills `crux_match`,
+  `type_match` or `people_statement` from its own judgement.
+- **Bars count only from a cycle run on the skill as it stands** (decision 22).
+- **Type has no slack:** the piano case's two Value runs use both of the bar's misses, so every
+  other case must match on type. Watch whether the stated-condition rule moves a primary crux
+  that matched before (the orchard, kiln and excerpt cases), and quotations at the start of a
+  line.
+- **Twenty real runs:** the eval runner is the exclusive resource, and the cost is the owner's.
+  The CLI updates itself; each run's header records its version.
 
 ---
 

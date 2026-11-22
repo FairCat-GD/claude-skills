@@ -3,39 +3,37 @@ case: definitional-vintage-rail
 run: 2
 model: claude-opus-5-5
 claude: 2.1.329
-skill_version: 0.2.0
-commit: 9cae03b0a232ccc334ba4fb8bc6515f14b8689c1
-date: 2026-11-22T10:55:03Z
+skill_version: 0.3.0
+commit: 5a26a12479351eec7c6a1bf97499e79c5215d6cf
+date: 2026-11-22T11:33:14Z
 skill_calls: crux-finder:crux-finder
 denials: 0
-cost_usd: 0.18169760000000001
+cost_usd: 0.19617400000000002
 ---
 
 ## Crux report
 
-**A, strongest form:** The jacket was made in 1996, as its label and care tag show, so it counts as vintage under the common twenty-year rule. Most second-hand sellers use that rule, and customers expect it when they see the sign. On the vintage rail it would sell at a higher price, which helps the shop [inferred].
-
-**B, strongest form:** On this shop's rail, vintage means made before 1980. The rail was set up for that, and the customers who know it rely on that line. The jacket really is from 1996 and would sell anywhere, but it falls outside that line and belongs on the ordinary rail.
+**A, strongest form:** The jacket belongs on the vintage rail. It dates from 1996, and vintage means at least twenty years old, as most second-hand sellers use it and as customers expect from the sign. It would sell there at the rail's higher price.
+**B, strongest form:** The jacket belongs on the ordinary rail. On this shop's rail, vintage means made before 1980: the rail was set up for older pieces people come looking for, and its regular customers trust that line. A 1996 jacket is simply second-hand.
 
 ### Common ground
 - The jacket was made in 1996.
 - It would probably sell on either rail.
-- The vintage rail should hold whatever "vintage" properly covers; the only question is where the line falls.
 
 ### The crux
 **Double crux · Definitional**
-> Whether "vintage" on the shop's rail means at least twenty years old or made before 1980.
+> Whether the shop's vintage rail should mean items at least twenty years old or items made before 1980.
 
-- A holds: the rail should use the twenty-year meaning that most second-hand sellers use, which makes a 1996 jacket vintage.
-- B holds: the rail was set up for pieces made before 1980, and that cutoff is what the rail means, so a 1996 jacket does not qualify.
-- If A accepted B's view here: A would agree the jacket goes on the ordinary rail; if B accepted A's: B would move it to the vintage rail.
-- What would move it: replace the shared word with two labelled terms, *vintage-20* (at least twenty years old) and *vintage-pre-1980* (made before 1980), and have each say which one the rail's sign should mean.
+- A holds: Vintage means at least twenty years old. Most second-hand sellers use it that way, and customers expect it from the sign.
+- B holds: On this rail, vintage means made before 1980. The rail was set up for that line, and its customers trust it.
+- If A accepted B's view here: The jacket would go on the ordinary rail. If B accepted A's view, it would go on the vintage rail.
+- What would move it: Use two labelled terms, market-vintage (twenty or more years old) and rail-vintage (made before 1980), then name the one the sign uses.
 
 ### Secondary cruxes
-- **Double crux · Empirical**: What the shop's own customers take the vintage sign to promise. A holds: customers expect the twenty-year meaning; B holds: regular customers trust the pre-1980 line; if accepted: either side's case for its meaning would lose its customer footing; what would move it: ask the rail's regular buyers, or look at what they buy and ask about, to see which cutoff they assume.
+- **Double crux · Empirical**: What the rail's shoppers take the sign to mean. A holds: twenty or more years old. B holds: made before 1980. If accepted: either placement could shift. What would move it: ask the rail's regular shoppers.
 
 ### Not actually in dispute
 None.
 
 ### Confidence
-High: both agree on the jacket's date and that it would sell, so the only thing they disagree about is which meaning of the word the rail uses.
+High: each side states its definition outright, and they agree on every fact about the jacket.

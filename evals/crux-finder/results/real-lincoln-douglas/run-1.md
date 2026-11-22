@@ -3,40 +3,39 @@ case: real-lincoln-douglas
 run: 1
 model: claude-opus-5-5
 claude: 2.1.329
-skill_version: 0.2.0
-commit: 9cae03b0a232ccc334ba4fb8bc6515f14b8689c1
-date: 2026-11-22T11:00:14Z
+skill_version: 0.3.0
+commit: 5a26a12479351eec7c6a1bf97499e79c5215d6cf
+date: 2026-11-22T11:38:20Z
 skill_calls: crux-finder:crux-finder
 denials: 0
-cost_usd: 0.250685
+cost_usd: 0.21460139999999997
 ---
 
 ## Crux report
 
-**A (Douglas), strongest form:** The framers built a Union of free and slave States and left each State in charge of its local institutions, slavery included. That arrangement has lasted seventy years and can last. Requiring every State to become one thing would overturn the framers' design, and in 1787 it would have made slavery national.
+**A (Douglas), strongest form:** The Union can endure half slave and half free, as the framers made it. They left each state sovereign over local institutions, slavery included, because different climates need different laws. Demanding uniformity is revolutionary and, in 1787, would have nationalized slavery.
 
-**B (Lincoln), strongest form:** Local differences of soil and climate hold the Union together, but slavery has always divided it. The founders restricted its spread and ended the slave trade, so the public believed it was dying out. A new basis now looks to its perpetuity, and peace requires arresting its spread again.
+**B (Lincoln), strongest form:** Local variety binds the Union, but slavery has always divided it, and will. The framers restricted its spread and ended the slave trade, so the public believed it was dying. A new basis aiming at perpetuity reopened the crisis; arresting its spread restores peace.
 
 ### Common ground
-- The Union has lasted some seventy to eighty years with some States slave and some free.
-- Different local institutions suited to soil, climate and production are legitimate and do not threaten the Union.
-- What the founders did is the right standard to appeal to.
+- Free and slave states have coexisted for roughly seventy to eighty years.
+- Different laws suited to different soil and climate are legitimate.
+- The framers' arrangement is the right standard to return to.
 
 ### The crux
 **Double crux · Empirical**
-> Whether the founders' arrangement, under which the Union lasted, left slavery wholly to each State, or also restricted its spread so that it was expected to die out.
+> Whether the framers left slavery to each state as a lasting local matter, or limited its spread expecting it to end.
 
-- A holds: the founders left each State "perfectly free to do as it pleased on the subject of slavery," as one of the reserved rights of the States.
-- B holds: the founders restricted slavery from new Territories and cut off the slave trade, so the public mind believed it was "in the course of ultimate extinction."
-- If A accepted B's view here: A's appeal to the fathers would support restricting slavery's spread, and A's charge that this is revolutionary would fail; if B accepted A's: B's claim that a new basis broke the founders' settlement would lose its ground.
-- What would move it: the founding-era record, meaning the Northwest Ordinance, the slave-trade ban, the Convention and ratification debates, and the framers' letters, read for whether limiting slavery's spread was deliberate policy.
+- A holds: The framers left each state perfectly free on slavery, and that arrangement is why the divided Union has lasted.
+- B holds: The framers kept slavery out of new territories and cut off the slave trade, and belief in its extinction kept peace.
+- If A accepted B's view here: A's appeal to the framers would favour restriction; if B accepted A's, B's historical case falls.
+- What would move it: The Northwest Ordinance, the slave-trade ban, and the framers' own recorded statements on slavery's expected future.
 
 ### Secondary cruxes
-- **Double crux · Predictive**: Whether a Union of slave and free States can stay at peace if slavery's spread is not restricted. A holds: it can endure on the founders' principles, as it has; B holds: there will be no peace until its spread is arrested or it becomes lawful everywhere; if accepted: A would have reason to adopt B's doctrine, and B would have reason to drop it; what would move it: a dated forecast, such as whether the slavery question produces a national crisis within ten years if spread goes unrestricted.
+- **Double crux · Predictive**: Whether slavery, left where it now stands, will keep dividing the Union. A holds: it can endure divided, as before; B holds: it will divide while it stays in its current position; if accepted: each side's policy reverses; what would move it: whether sectional conflict over slavery eases by 1868.
 
 ### Not actually in dispute
-- Uniformity: B denies wanting all institutions to be the same and accepts local variety, so the disagreement narrows to slavery alone.
-- Slavery within existing States: B says it "might be let alone" there, and A defends each State's power within its own limits.
+- Uniformity: A reads B as demanding uniform institutions; B wants uniformity on slavery alone and praises other local variety.
 
 ### Confidence
-Medium: both sides state the crux directly, but what the founders intended is partly a matter of interpretation that the records may not settle cleanly.
+Medium: both passages are excerpts, and Douglas's does not directly address the territorial restrictions Lincoln cites.

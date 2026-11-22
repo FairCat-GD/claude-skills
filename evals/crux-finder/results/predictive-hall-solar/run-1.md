@@ -3,38 +3,39 @@ case: predictive-hall-solar
 run: 1
 model: claude-opus-5-5
 claude: 2.1.329
-skill_version: 0.2.0
-commit: 9cae03b0a232ccc334ba4fb8bc6515f14b8689c1
-date: 2026-11-22T10:58:56Z
+skill_version: 0.3.0
+commit: 5a26a12479351eec7c6a1bf97499e79c5215d6cf
+date: 2026-11-22T11:37:10Z
 skill_calls: crux-finder:crux-finder
 denials: 0
-cost_usd: 0.204471
+cost_usd: 0.1930336
 ---
 
 ## Crux report
 
-**A, strongest form:** The hall's £6,000 share must pay back within ten years, and it will. The hall is busy on weekday daytimes, when panels generate, so every unit they make is a unit it need not buy. At current electricity prices, savings pass £6,000 well inside ten years.
-**B, strongest form:** The hall's £6,000 share must pay back within ten years, and it won't. Panels produce most in summer, when the playgroup and art class break up and the hall is quietest, so much output is exported, which earns very little. Ten-year savings fall short of £6,000.
+**A, strongest form:** The panels should go up this year. The hall's £6,000 share must pay for itself within ten years, and it will. The hall is used every weekday daytime, so each unit generated replaces a unit bought at today's high prices.
+
+**B, strongest form:** The panels should not go up on this case. Most output comes in summer, when the playgroup and art class break up and the hall is quietest. Units exported earn little, so ten-year savings will fall short of £6,000.
 
 ### Common ground
 - The quote is £9,000, the grant covers a third, and the hall pays £6,000.
 - An improvement this size must pay for itself within ten years.
-- The hall is busy in the daytime during term.
+- The hall is busy in the daytime.
 
 ### The crux
-**Double crux · Predictive**
-> Whether the panels' savings over ten years will reach the hall's £6,000 share of the cost.
+**Double crux · Empirical**
+> How much of the panels' yearly output would be used in the hall, and how much would go back to the grid.
 
-- A holds: the savings will pass £6,000 well inside ten years, because the hall's daytime use will absorb what the panels make.
-- B holds: the savings will fall short of £6,000, because much of the summer output will be exported for little return.
-- If A accepted B's view here: under the agreed ten-year rule, A would no longer back the panels; if B accepted A's, B has said they would vote for them.
-- What would move it: a ten-year savings forecast that both accept before the vote. It should cover expected monthly generation, the hall's monthly use and the export rate.
+- A holds: Daytime use is steady enough that nearly every unit generated replaces a unit the hall would otherwise buy.
+- B holds: Most output arrives in summer, when the hall is quietest, so much of it is exported for little return.
+- If A accepted B's view here: A's payback case would fail; if B accepted A's, B would vote for the panels.
+- What would move it: The hall's past meter readings and booking diary, set against a month-by-month generation estimate for this roof.
 
 ### Secondary cruxes
-- **Double crux · Empirical**: Whether the hall uses enough electricity in summer daytimes to absorb most of what the panels would make. A holds: the units the panels make replace units the hall would buy; B holds: summer output arrives when the hall is quiet and is mostly exported; if accepted: this decides which savings figure each side's estimate starts from; what would move it: the hall's past bills or half-hourly meter data for summer weekdays, set against the installer's monthly generation estimate.
+- **Double crux · Predictive**: Whether ten-year savings will reach £6,000. A holds: well inside ten years; B holds: they won't; if accepted: either vote flips; what would move it: payback model from hall data, checked against bills after two years.
 
 ### Not actually in dispute
-- Whether the hall is busy in the daytime: B accepts it for term time. The gap is only about the summer weeks when groups break up.
+- "Busy in the daytime" holds in term time. B's point is about the summer breaks, so the two claims don't contradict each other.
 
 ### Confidence
-High: both accept the ten-year rule, and B says outright that agreeing on the savings figure would change their vote.
+High: both apply the same ten-year test, and B says outright, "If I thought they would, I would vote for the panels."

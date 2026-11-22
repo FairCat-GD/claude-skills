@@ -1,14 +1,14 @@
 # Review: predictive-hall-solar
 
 ## run-1
-- crux_match: yes
-- type_match: yes
+- crux_match: no
+- type_match: no
 - people_statement: no
-- note: The crux is whether ten-year savings will reach the hall's £6,000 share, nearly gold's wording. "What would move it" is a forecast agreed before the vote with no date both could check, which falls short of gold's dated check.
+- note: The primary crux, typed Empirical, is how much of the output the hall would use itself rather than export. That sits one step under gold's claim, which is whether the savings reach £6,000 within ten years. Gold's crux appears only as a secondary Predictive crux, and its "what would move it" (checking against bills after two years) comes close to gold's dated forecast.
 
 ## run-2
-- crux_match: yes
-- type_match: yes
+- crux_match: no
+- type_match: no
 - people_statement: no
 - same_crux_as_run_1: yes
-- note: The crux is whether enough output is used in the hall, rather than exported, for savings to reach £6,000 in ten years. This is the payback claim with its mechanism added, so it matches. The dated first-year £600 check fits gold.
+- note: Same primary crux as run 1 (the self-use share, particularly in summer, typed Empirical), which is a premise of gold's payback claim, not the claim itself. Gold's ten-year savings crux is again only secondary, and its "what would move it" is a payback model, with no dated check. The common-ground line "busy in the daytime during term" adds a qualifier neither party stated.

@@ -5,6 +5,27 @@ All notable changes to crux-finder are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.4.0] — 2026-11-22
+
+Still in development: the changes below come from the third full test of the skill, ten
+disagreements run twice each and every report read. Every report kept within 400 words, with
+both sides the same length. Two measures were missed: on one disagreement both runs picked a
+point one step under the one the two sides argue, and one report quoted words with a capital
+the original did not have.
+
+### Changed
+
+- **The crux is the point a side says would change their mind.** When one side says outright
+  that they would agree if they came to think otherwise on a point, that point comes first as
+  the crux, even where a deeper point feeds into it; the deeper point can still appear as a
+  secondary crux.
+
+### Fixed
+
+- **Quotations keep the original's capitals at the start of a line.** A quotation that opens a
+  line or a sentence is checked letter for letter, its first letter included; where the
+  original has it in lower case, the line is reworded rather than the quotation capitalised.
+
 ## [0.3.0] — 2026-11-22
 
 Still in development: the change below comes from the second full test of the skill, ten

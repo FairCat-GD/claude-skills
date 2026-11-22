@@ -112,12 +112,15 @@ A conclusion changes when its party could no longer reach it on the reasons they
 - **Yes for one:** a crux for that party.
 - **No for both:** drop it from the report.
 
-**Rank** double cruxes first; then a pair of stated claims above a pair holding an inferred
-premise, since a crux the parties themselves argue is the one they would recognise; then by
-depth: a claim other conflicts depend on, by step 3's dependencies, outranks the claims that
-depend on it. The **primary crux** is the first by that ranking: the deepest stated double crux,
-else the deepest double crux with an inferred premise, else the deepest single crux in the same
-order. The next two by the same ranking are the **secondary
+**Rank** double cruxes first; then a claim a party says outright would change their conclusion
+(if they came to think X, they would agree, vote or pay) above the rest, since that party has
+named their own crux, even where a deeper claim feeds it; then a pair of stated claims above a
+pair holding an inferred premise, since a crux the parties themselves argue is the one they
+would recognise; then by depth: a claim other conflicts depend on, by step 3's dependencies,
+outranks the claims that depend on it. A deeper claim under a party's named condition can be a
+secondary crux. The **primary crux** is the first by that ranking: a double crux a party names
+as what would change their conclusion, else the deepest stated double crux, else the deepest
+double crux with an inferred premise, else a single crux in the same order. The next two by the same ranking are the **secondary
 cruxes**; report no more than two. If two cruxes rank equal, report one as primary, put the
 other first among the secondary cruxes, and say in Confidence that the two are close.
 

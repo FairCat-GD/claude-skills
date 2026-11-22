@@ -3,7 +3,7 @@
 Untangles an argument that keeps going in circles: finds the one claim both sides hinge on, and
 what would settle it, without taking sides.
 
-**In development.** Version 0.3.0 works end to end; its behaviour may still change before 1.0.0.
+**In development.** Version 0.4.0 works end to end; its behaviour may still change before 1.0.0.
 
 ## What it does
 
@@ -76,7 +76,7 @@ git clone https://github.com/FairCat-GD/claude-skills.git
 
 ## Version
 
-0.1.0, in development. What changed in each version is in [CHANGELOG.md](./CHANGELOG.md).
+0.4.0, in development. What changed in each version is in [CHANGELOG.md](./CHANGELOG.md).
 
 ## License
 

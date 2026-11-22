@@ -4,11 +4,11 @@
 - crux_match: yes
 - type_match: no
 - people_statement: no
-- note: The crux is whether progress or dislike should decide if she continues, which sets enjoyment against learning and matches gold. But it is typed Value, not Framing. It also adds "peace at home", which goes slightly beyond what A said.
+- note: The primary crux is whether her progress or her dislike of lessons should count for more. It sets enjoyment against progress, so it matches under gold's note, but it is typed Value where gold is Framing. "What would move it" names a trade-off and offers no resolution, instead of stating the two questions separately as gold asks.
 
 ## run-2
 - crux_match: yes
 - type_match: no
 - people_statement: no
 - same_crux_as_run_1: yes
-- note: The crux asks whether continuing should turn on her enjoyment or her progress, which matches gold's wording closely. Typed Value; gold requires Framing and counts Value as no. There is no verdict, and "what would move it" offers no resolution.
+- note: Same crux as run 1 (whether progress outweighs her not enjoying it), again typed Value instead of Framing. Its "what would move it" also weighs a trade-off instead of separating "does she look forward to it?" from "is she learning?".

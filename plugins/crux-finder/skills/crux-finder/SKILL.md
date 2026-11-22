@@ -3,7 +3,7 @@ name: crux-finder
 description: "Find the crux of a disagreement: the smallest claim two positions hinge on. Use when the user shares two positions, a debate or a transcript and asks where people really disagree, why an argument goes in circles, or what would change someone's mind."
 license: MIT
 metadata:
-  version: "0.3.0"
+  version: "0.4.0"
 ---
 
 # Crux Finder
@@ -68,9 +68,11 @@ their results reach the report.
    - Yes for both: a double crux.
    - Yes for one: a crux for that party.
    - No for both: drop it from the report.
-   - Rank double cruxes first; then a pair of stated claims above one holding an inferred
-     premise; then by depth: a claim other conflicts depend on outranks them. The primary crux
-     is the first by that ranking. At most two more are reported, as secondary cruxes.
+   - Rank double cruxes first; then a claim a party says outright would change their
+     conclusion (if they came to think X, they would agree) above the rest; then a pair of
+     stated claims above one holding an inferred premise; then by depth: a claim other
+     conflicts depend on outranks them. The primary crux is the first by that ranking. At most
+     two more are reported, as secondary cruxes.
 7. **Classify** each reported crux by `references/crux-types.md`:
    - Empirical: a checkable present or past fact.
    - Predictive: a claim about future outcomes.
@@ -131,7 +133,10 @@ your own words, a question you pose, a section's label, or a label of this skill
    report,** from its first line to the end of Confidence; if it is still over 400 words, cut
    the secondary cruxes and *Not actually in dispute* first, then the rest. Never drop a field
    of the primary crux.
-3. **Every pair of quotation marks,** against the input: verbatim, or no quotation marks.
+3. **Every pair of quotation marks,** against the input, letter for letter: verbatim, or no
+   quotation marks. The first letter is checked too: a quotation that opens a line or a
+   sentence keeps the input's lower case, or the line is reworded so the quotation does not
+   open it.
 
 ## Guardrails
 

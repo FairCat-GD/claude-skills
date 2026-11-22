@@ -3,39 +3,38 @@ case: predictive-hall-solar
 run: 2
 model: claude-opus-5-5
 claude: 2.1.329
-skill_version: 0.2.0
-commit: 9cae03b0a232ccc334ba4fb8bc6515f14b8689c1
-date: 2026-11-22T10:59:24Z
+skill_version: 0.3.0
+commit: 5a26a12479351eec7c6a1bf97499e79c5215d6cf
+date: 2026-11-22T11:37:38Z
 skill_calls: crux-finder:crux-finder
 denials: 0
-cost_usd: 0.18342760000000002
+cost_usd: 0.41180059999999996
 ---
 
 ## Crux report
 
-**A, strongest form:** The panels cost the hall £6,000 after the grant, and must repay that within ten years. The hall is busy in the daytime, when panels generate, so most of their output replaces electricity bought at today's high prices [inferred]. Those avoided purchases will exceed £6,000 well inside ten years.
-
-**B, strongest form:** The cost, grant and ten-year rule are agreed. But generation peaks in summer, when the playgroup and art class break up and the hall is quietest. So much of the output is exported, which earns very little. Ten years of savings will therefore fall short of £6,000.
+**A, strongest form:** The hall should install the panels this year. After the grant it pays £6,000, and the savings will pass that inside ten years, because the hall is busy in the daytime and, at current prices, every unit generated is a unit not bought.
+**B, strongest form:** The hall should not install the panels. Most of their output comes in summer, when the playgroup and art class break up and the hall is quietest. Power sent back to the grid earns little, so ten-year savings will fall short of £6,000.
 
 ### Common ground
 - The quote is £9,000, the grant covers a third, and the hall pays £6,000.
-- An improvement this size must pay for itself within ten years.
-- The hall is busy in the daytime.
+- The ten-year payback rule decides the vote.
+- The hall is busy in the daytime during term.
 
 ### The crux
-**Double crux · Predictive**
-> Whether enough of the panels' output will be used in the hall, rather than exported, for the savings to reach £6,000 within ten years.
+**Double crux · Empirical**
+> How much of the panels' output, particularly in summer, the hall would use itself rather than send to the grid.
 
-- A holds: the hall's daytime use means most of what the panels make replaces bought electricity, so the savings will pass £6,000 well inside ten years.
-- B holds: output peaks in summer when the hall is quietest, so much of it is exported for little return, and the savings will fall short.
-- If A accepted B's view here: A would no longer meet the ten-year rule A has agreed to and would drop the case for this year; if B accepted A's: B says they would vote for the panels.
-- What would move it: before deciding, set the installer's month-by-month generation estimate against the hall's own meter readings. If the panels go in, check whether bills fall by at least £600 in the first full year.
+- A holds: The hall's daytime use means almost every unit the panels make replaces electricity the hall would otherwise buy.
+- B holds: Much of the output arrives in quiet summer weeks, goes to the grid and earns very little.
+- If A accepted B's view here: The savings would fall short and A's case for installing would fail; if B accepted A's, B says they would vote yes.
+- What would move it: A year of the hall's half-hourly meter data, compared month by month with a generation estimate for this roof and the export rate.
 
 ### Secondary cruxes
-None.
+- **Double crux · Predictive**: Whether ten-year savings will reach £6,000. A holds: well inside ten years; B holds: they won't; if accepted: each would switch; what would move it: a payback model using the measured self-use share.
 
 ### Not actually in dispute
-- How busy the hall is in the daytime: both agree it is busy. The open question is how busy it is during the summer break, when the panels make the most electricity.
+- The hall being busy in the daytime: both accept this for term time. The dispute is only about the summer weeks.
 
 ### Confidence
-High: both of them say their vote depends on whether the savings reach £6,000 in ten years, and the only thing they disagree about is how much of the output the hall will use itself.
+High: B says outright they would vote yes if the savings would pay back, and the savings figure depends on the self-use share.

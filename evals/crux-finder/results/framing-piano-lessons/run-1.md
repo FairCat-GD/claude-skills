@@ -3,39 +3,38 @@ case: framing-piano-lessons
 run: 1
 model: claude-opus-5-5
 claude: 2.1.329
-skill_version: 0.2.0
-commit: 9cae03b0a232ccc334ba4fb8bc6515f14b8689c1
-date: 2026-11-22T10:56:50Z
+skill_version: 0.3.0
+commit: 5a26a12479351eec7c6a1bf97499e79c5215d6cf
+date: 2026-11-22T11:35:06Z
 skill_calls: crux-finder:crux-finder
 denials: 0
-cost_usd: 0.181415
+cost_usd: 0.1783438
 ---
 
 ## Crux report
 
-**A, strongest form:** She should stop at the end of this term. She dreads Tuesday lessons, argues about practice every night and told her teacher she hates it. Her progress is real, but an after-school activity should be one a child looks forward to, and this is not.
+**A, strongest form:** She should stop at the end of this term. She dreads Tuesday lessons, argues about practising every night and has told her teacher she hates it. She has clearly learned, but a child should look forward to her after-school activities.
 
-**B, strongest form:** She should carry on. In a year she went from barely reading music to playing whole pieces with both hands and passing Grade 2 with a merit. She dislikes practising, but lessons exist for learning, she is learning fast, and stopping now would waste that progress.
+**B, strongest form:** She should carry on. In a year she has gone from barely reading music to playing whole pieces with both hands, and she passed Grade 2 with a merit. She dislikes practising, but lessons are for learning, and stopping would waste that progress.
 
 ### Common ground
-- She has learned a great deal and is progressing.
-- She does not enjoy the lessons or the practice.
-- The question is whether she continues after this term [inferred].
+- She has made real progress at the piano over the past year.
+- She does not enjoy the lessons or the practising.
 
 ### The crux
 **Double crux · Value**
-> Given that both accept she is progressing and she dislikes it, which of those two facts should decide whether she continues.
+> Whether her quick progress or her strong dislike of the lessons should count for more in deciding whether she carries on.
 
-- A holds: Whether a child looks forward to an after-school activity should decide it, and real progress does not outweigh steady dread and conflict.
-- B holds: Since "lessons are for learning", fast progress should decide it, and dislike of practising is not a reason to stop.
-- If A accepted B's view here: A would keep her in lessons despite the complaints; if B accepted A's, B would let her stop despite the progress.
-- What would move it: Nothing factual. The choice is between her present enjoyment and peace at home on one side and the skill she is building fast on the other.
+- A holds: An after-school activity a child dreads should stop, even when she is clearly learning from it.
+- B holds: Lessons are for learning, so quick progress is reason to continue even though she does not enjoy them.
+- If A accepted B's view here: A would keep her in lessons; if B accepted A's, B would let her stop this term.
+- What would move it: The trade-off is a skill she is building quickly against her dread of the lessons; no resolution is offered.
 
 ### Secondary cruxes
 None.
 
 ### Not actually in dispute
-- Whether she is learning and whether she enjoys it. Each parent explicitly grants the other's point ("she plainly has"; "she doesn't"). Their conclusions differ only because they weight these two facts differently.
+None.
 
 ### Confidence
-High: each parent openly grants the other's factual point, so the disagreement left is about which good should count for more.
+High: each parent openly accepts the other's facts, so all that is left is how to weigh progress against enjoyment.

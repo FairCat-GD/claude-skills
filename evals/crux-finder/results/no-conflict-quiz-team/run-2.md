@@ -3,40 +3,34 @@ case: no-conflict-quiz-team
 run: 2
 model: claude-opus-5-5
 claude: 2.1.329
-skill_version: 0.2.0
-commit: 9cae03b0a232ccc334ba4fb8bc6515f14b8689c1
-date: 2026-11-22T10:58:06Z
+skill_version: 0.3.0
+commit: 5a26a12479351eec7c6a1bf97499e79c5215d6cf
+date: 2026-11-22T11:36:20Z
 skill_calls: crux-finder:crux-finder
 denials: 0
-cost_usd: 0.1650592
+cost_usd: 0.1770184
 ---
 
 ## Crux report
 
-**A, strongest form:** Without a fifth player, any absence leaves the team playing with three, and it lost both such matches this season. A reserve who plays only when one of the four can't attend would stop holidays and late shifts from costing points.
+**A, strongest form:** The team should register a fifth player as a reserve. Twice this season one member was away, the team played with three, and lost both times. A reserve who plays only when one of the four is absent would stop absences costing points.
 
-**B, strongest form:** The four have played together for three seasons, know each other's strengths, and are second in the league. That line-up should play every match it can, with no one dropped and no one rotated out so another player gets a game.
+**B, strongest form:** The four should play every match they can. They have played together for three seasons, know each other's strengths, and are second in the league with this line-up. No one should be dropped or rotated out, and whenever all four are available, all four play.
 
 ### Common ground
-- When all four can attend, the four of them play.
-- The current four are the team's core line-up.
-- The team wants to win matches and stay high in the league.
+- The four current members are the team's core line-up.
+- On nights when all four can attend, all four play.
+- Points matter, and the team wants to keep winning them.
 
 ### The crux
 **No crux**
-> A's proposal covers only nights when one of the four is absent, and B's position covers only nights when all four can play, so both can hold at once.
-
-- A holds: the team should register a reserve who plays only on nights when one of the four can't make it.
-- B holds: whenever all four can make it, the four should play, with no one dropped or rotated out.
-- If A accepted B's view here: A's proposal would stand, since it already keeps the four together when all can attend; if B accepted A's: B's conclusion would stand, since a reserve would never take a full-strength night.
-- What would move it: nothing is in conflict. Both rules can go into one team policy: the four play whenever they can, and the reserve plays only when one of them can't.
+> A's reserve would play only when one of the four is absent, and B asks only that all four play whenever all can attend.
 
 ### Secondary cruxes
 None.
 
 ### Not actually in dispute
-- Signing a reserve against B's point that the four should play every match they can: under A's terms, the reserve plays only in matches one of the four would miss anyway.
-- Rotation: B rejects rotating players so someone else gets a game, and A's proposal includes no rotation.
+- Whether signing a reserve means dropping or rotating a member: A's reserve plays only on nights when one of the four cannot attend.
 
 ### Confidence
-High: as written, A's reserve plays only when one of the four is absent, and B's text says nothing about nights when one of the four is absent, so neither text contradicts the other.
+High: both positions are in their authors' own words, and neither makes a claim that the other's words contradict.

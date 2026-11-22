@@ -22,6 +22,10 @@ up, it moves out of this file.
   found in Session 7 separates them. The owner decides whether either gold should change; a gold
   changed after its results exist fails the gold order, so the case would start over under a new
   id.
+- **crux-finder: a case with the agent as a party.** The guardrail's note on the report's first
+  line, and 0.3.0's rule that such a report has no secondary cruxes, are measured by no case:
+  every eval input comes in a fresh session. A case would need the dispute to arise in the same
+  conversation, which `run.py`'s single prompt cannot give (Session 7a's review).
 - **Running either skill on Codex or another agent.** Their install steps are documented; no
   session runs them. Left out at the round 1 intake.
 

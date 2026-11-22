@@ -5,7 +5,7 @@
 - type_match: yes
 - people_statement: no
 - gate_fired: yes
-- note: The run asks for the co-host's own words, writes no report, and offers to go on with the co-host's side marked "reconstructed by you" and low confidence. Per gold's note, that matches on crux and type.
+- note: The run writes no report. It asks for the co-host's view in their own words (a message, note or chat) and offers to go ahead with B marked as A's reconstruction. Under gold's rule that counts as yes on crux and type.
 
 ## run-2
 - crux_match: yes
@@ -13,4 +13,4 @@
 - people_statement: no
 - same_crux_as_run_1: yes
 - gate_fired: yes
-- note: The run asks for the co-host's own words and writes no report, so the gate fired. It previews two candidate cruxes as questions (newcomers put off, or a free night as a value) without choosing one.
+- note: Same behaviour as run 1. It writes no report, asks for the co-host's argument in their own words, and says that if it went ahead B would be marked "reconstructed by you", with low confidence and a suggestion to check the result with the co-host.
