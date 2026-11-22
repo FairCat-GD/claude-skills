@@ -19,9 +19,10 @@ Release 0.5.0 only when the cycle changes the skill.
 
 - **Round 1 is a home for many skills**: Sessions 0–7b are done; 7c, inserted in Session 7b, and
   8 remain.
-- **Push status.** `origin/main` holds everything through Session 7a. Session 7b's commit and
-  its `review:` commit are local until the owner approves a push; once pushed, crux-finder 0.4.0
-  is installable.
+- **Push status.** `origin/main` holds everything through Session 7b: its commit (`4d0d798`)
+  and its `review:` commit ("review: crux-finder's type tie-breaks yield to a named condition,
+  quotations keep either case, and 4 smaller"), pushed with the owner's yes, so crux-finder
+  0.4.0 is installable.
 - **What Session 7b left that 7c builds on:**
   - **Session 7b's results** in `evals/crux-finder/results/<id>/`: `run-1.md`, `run-2.md` and
     `review.md` for each case, run on 0.3.0 at commit `5a26a12`. A new cycle replaces them:
@@ -35,8 +36,12 @@ Release 0.5.0 only when the cycle changes the skill.
   - **crux-finder 0.4.0** changed for type and quotes: a claim a party says outright would
     change their conclusion ranks first among double cruxes, before stated pairs and depth (both
     solar runs had ranked the deeper self-use share first, typed Empirical); each quotation is
-    checked letter for letter, its first letter included. The spot check measured the first on
-    a fictional input of the solar case's shape; no run has measured the quotation rule.
+    checked letter for letter, its first letter included, capital or lower case. The review
+    then had `crux-types.md`'s two tie-breaks (the record under two forecasts, the fact under a
+    weighting) yield to a claim a party names, and recorded the departure from PDD B's step 6
+    beside `SPEC.md` decision 21. The spot check measured the ranking, before the tie-break fix,
+    on a fictional input of the solar case's shape; no run has measured the quotation rule or
+    the tie-break fix.
   - **The review's rules for two cases** (*The data layer*): record `gate_fired` on every output
     of `one-sided-games-night` and `no_conflict_reported` on every output of
     `no-conflict-quiz-team`; each gold.md's note, below its frontmatter, says what else counts.

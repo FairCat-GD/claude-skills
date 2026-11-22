@@ -11,8 +11,9 @@ what would settle it, without taking sides.
   transcript of the two (a chat log, a thread, an email chain).
 - **Restates each side at its strongest,** in a few sentences, using only what the input says,
   and with the same care and length for both.
-- **Lists what both sides already accept,** then finds the crux: the smallest claim that, seen
-  the other way, would change a side's conclusion.
+- **Lists what both sides already accept,** then finds the crux: the claim that, seen the
+  other way, would change a side's conclusion, starting from any point a side says outright
+  would change its mind.
 - **Names the kind of disagreement** (a fact, a forecast, a word used two ways, a difference in
   values, or two sides answering different questions) and **what would move it:** the evidence
   to look at, a forecast with a date, two clearer words, the trade-off named, or the two

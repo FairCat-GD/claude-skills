@@ -86,6 +86,11 @@ it belongs to.
     the session that builds it asks the owner at its start, with a recommended answer; no session
     fills a gap by itself. The known gaps are written into Sessions 5 and 6 as *Ask at the
     start*.
+    **Amended 2026-11-22 by the user:** PDD B, *Procedure*, step 6's ranking is not carried
+    unchanged. Chosen from the eval cycles' results, a pair of stated claims ranks above one
+    holding an inferred premise (Session 7, crux-finder 0.2.0), and a claim a party says outright
+    would change their conclusion ranks first among double cruxes (Session 7b, 0.4.0), each
+    before depth (§3).
 22. **One eval cycle per session.** A cycle is the 20 runs and the owner's review of each. A
     cycle that misses a pass bar ends its session with the skill changed, its version bumped and
     the results recorded; the next cycle is an inserted session (7a, 7b…), added with the owner.
@@ -140,6 +145,7 @@ an account rename.
 | B, *Distribution*, Claude Code | `/plugin marketplace add <owner>/crux-finder`, `/plugin install crux-finder@crux-finder` | `/plugin marketplace add FairCat-GD/claude-skills`, `/plugin install crux-finder@faircat-skills` | decision 10 |
 | B, *Distribution*, README | The root README: install steps per target, one example report, the eval results table | `plugins/crux-finder/README.md`; the root README lists the skills | decision 19 |
 | B, *Build order* 8 | CI, README, public release | README, release | decision 4 |
+| B, *Procedure*, step 6 | Rank double cruxes first, then by depth; the primary crux is the deepest double crux, else the deepest single crux | Double cruxes first; then a claim a party says outright would change their conclusion (0.4.0); then a pair of stated claims above one holding an inferred premise (0.2.0); then by depth | decision 21, amended; `ARCHITECTURE.md`, *crux-finder* |
 | B, *Evals*, *Runner* and *Deterministic checks* | Checks and bars as written | As written, where buildable; each known gap asked at the start of Session 5 or 6 | decision 21 |
 | A, item 3 | "Review if any updates … are needed" | The review is `REVIEW-2026-11-17.md`; every finding is scope | decisions 8, 16 |
 

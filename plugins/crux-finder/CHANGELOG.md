@@ -9,22 +9,22 @@ All notable changes to crux-finder are documented here. The format follows
 
 Still in development: the changes below come from the third full test of the skill, ten
 disagreements run twice each and every report read. Every report kept within 400 words, with
-both sides the same length. Two measures were missed: on one disagreement both runs picked a
+both sides close in length. Two measures were missed: on one disagreement both runs picked a
 point one step under the one the two sides argue, and one report quoted words with a capital
 the original did not have.
 
 ### Changed
 
-- **The crux is the point a side says would change their mind.** When one side says outright
-  that they would agree if they came to think otherwise on a point, that point comes first as
-  the crux, even where a deeper point feeds into it; the deeper point can still appear as a
-  secondary crux.
+- **The crux is the point a side says would change their mind.** When both sides dispute a
+  point and one says outright that they would agree if they came to think otherwise on it, that
+  point comes first as the crux, even where a deeper point feeds into it; the deeper point can
+  still appear as a secondary crux.
 
 ### Fixed
 
-- **Quotations keep the original's capitals at the start of a line.** A quotation that opens a
-  line or a sentence is checked letter for letter, its first letter included; where the
-  original has it in lower case, the line is reworded rather than the quotation capitalised.
+- **Quotations keep the original's capitals.** A quotation is checked letter for letter, its
+  first letter included, wherever it falls in a sentence; where the original's capital or lower
+  case reads wrong there, the line is reworded rather than the quotation changed.
 
 ## [0.3.0] — 2026-11-22
 
@@ -90,6 +90,7 @@ before 1.0.0.
 - **The full breakdown on request.** Ask for the claim map to see every claim each side makes,
   and how they depend on each other.
 
+[0.4.0]: https://github.com/FairCat-GD/claude-skills/commit/4d0d7980c5900a224cae124827ee7bc8ea25d953
 [0.3.0]: https://github.com/FairCat-GD/claude-skills/commit/522a2cf5cba66e2575ba53e03a318736b7e3bfc6
 [0.2.0]: https://github.com/FairCat-GD/claude-skills/commit/c52b303881d3ad90dd4c6167644af1cccba61a07
 [0.1.0]: https://github.com/FairCat-GD/claude-skills/commit/352a3835dca5f9bf0527cfc74a6d92403756ab2a

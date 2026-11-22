@@ -36,14 +36,18 @@ Ask these in order, and take the first yes:
   Predictive. When the sides read what has happened differently (a history, or figures each
   reads its own way) and each forecast follows from its reading, the crux is that record, and
   it is Empirical: word its sentence in the past or present. When they agree on the record and
-  differ only on what will follow from it, the crux is Predictive.
+  differ only on what will follow from it, the crux is Predictive. Where a party names the
+  forecast itself as what would change their conclusion (step 6's ranking), the forecast stays
+  the crux and is Predictive; the record under it can be a secondary crux.
 - **Definitional, or not in dispute at all:** split the word into two labelled terms. If both
   parties then agree on both terms and each conclusion still stands, the disagreement dissolves:
   it goes under *Not actually in dispute*. It is a Definitional crux only when a conclusion
   still turns on which meaning applies.
 - **Value or a fact underneath it:** when one side's weighting rests on a fact the other
   disputes (that the path is dangerous), that fact is the deeper crux, and it is Empirical or
-  Predictive. A Value crux is what is left when the facts are shared.
+  Predictive. A Value crux is what is left when the facts are shared. Here too, a claim a party
+  names as what would change their conclusion stays the crux (step 6's ranking), and the deeper
+  fact can be a secondary crux.
 - **Framing or Value:** in a Value crux both sides answer the same question and weigh its goods
   differently; in a Framing crux they answer different questions.
 

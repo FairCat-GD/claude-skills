@@ -98,9 +98,9 @@ High | Medium | Low, with the reason.
 - **An empty section** keeps its heading and says `None.`
 - **Quotation marks** hold only text copied verbatim from the input, its capitals included:
   never your own words, a question you pose, a section's label, or one of this template's
-  labels, such as reconstructed by A. A quotation that opens a line or a sentence keeps the
-  input's first letter as it is; where the input has it in lower case, reword the line so the
-  quotation does not open it.
+  labels, such as reconstructed by A. A quotation keeps the input's first letter as it is,
+  capital or lower case, wherever it falls in your sentence; where that reads wrong, reword the
+  line around the quotation rather than change the letter.
 - **The end.** The report is the whole answer to the user's question. Nothing follows
   Confidence: no short answer, no summary, no closing note.
 

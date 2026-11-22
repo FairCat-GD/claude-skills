@@ -1438,6 +1438,30 @@ layer*, *The eval harness*; the done-notes of Sessions 7 and 7a.
 - **Numbers:** 203 unit tests (±0), 0 skipped; 6 `verify` stages, about 24 s; 13 Python files
   (±0); 2 skill folders, 2 plugins, 2 marketplace entries (±0); 10 cases; 20 runs and 10
   reviews in `results/` (±0 files, all replaced); `checks.py` 1 problem, exit 1.
+- **Review (`/code-review high`), 6 findings: 6 fixed and 0 skipped.** The user asked for every
+  finding fixed.
+  - **`crux-types.md`'s tie-breaks still undid the new ranking:** Empirical-or-Predictive made
+    the record under two forecasts the crux, and Value-or-fact the fact under a weighting, and
+    the types are read after the ranking, so a solar-shaped input could fall back to the deeper
+    claim. Both now say a claim a party names as what would change their conclusion stays the
+    crux, the deeper one free to be secondary. The spot check ran before this fix; 7c's cycle
+    measures it.
+  - **The quotation check covered one direction:** `SKILL.md` and the template now keep the
+    input's first letter, capital or lower case, wherever the quotation falls, and reword the
+    line around it.
+  - **"The smallest claim"** in `SKILL.md`'s opening and the README's description no longer
+    matched the ranking: `SKILL.md` adds a sentence on a named claim coming first, and the
+    README's line says so; the frontmatter description stays PDD B's.
+  - **The departure from PDD B's step 6 was in no `SPEC.md` record:** decision 21 gains an
+    *Amended by the user* note and §3 a row, covering 0.2.0's stated pairs and 0.4.0's named
+    condition.
+  - **The baseline's heading named `claude` 2.1.329:** it names 2.1.330.
+  - **The changelog overstated the ranking and the symmetry:** the named point comes first when
+    both sides dispute it, and the sides were close in length, not the same. The `[0.4.0]` link
+    is added too.
+  - **Falsified:** no new check. The fixes are the skill's text and the docs; no run measured
+    them.
+  - **Numbers after the review:** unchanged; `SKILL.md` 166 lines.
 
 ---
 

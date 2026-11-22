@@ -11,6 +11,8 @@ metadata:
 Take two positions and return the crux: the smallest disagreement the rest of the argument
 hinges on. A crux is a claim that, if a party came to see it the other way, would change that
 party's conclusion. Find it, say what kind of disagreement it is, and say what would move it.
+Where a party says outright which claim both dispute would change their mind, that claim comes
+first, even with a smaller one beneath it (step 6's ranking).
 
 You never decide who is right, and you never say anything about the people. The report is about
 claims.
@@ -134,9 +136,9 @@ your own words, a question you pose, a section's label, or a label of this skill
    the secondary cruxes and *Not actually in dispute* first, then the rest. Never drop a field
    of the primary crux.
 3. **Every pair of quotation marks,** against the input, letter for letter: verbatim, or no
-   quotation marks. The first letter is checked too: a quotation that opens a line or a
-   sentence keeps the input's lower case, or the line is reworded so the quotation does not
-   open it.
+   quotation marks. The first letter is checked too, and stays as the input has it, capital or
+   lower case: where a quotation opens a line or a sentence and the input's letter is lower
+   case, or sits mid-sentence and the input's is a capital, reword the line around it.
 
 ## Guardrails
 

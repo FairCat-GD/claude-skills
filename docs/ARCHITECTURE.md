@@ -582,12 +582,14 @@ Settled 2026-11-22, with the owner, for 0.4.0, from what Session 7b's cycle show
 quotes missed):
 - **A claim a party says outright would change their conclusion ranks first among double
   cruxes,** before stated pairs and depth, since the input then names its own crux; a deeper
-  claim under it can be a secondary crux. PDD B's "deepest double crux" still orders the rest.
-- **A quotation is checked letter for letter, its first letter included:** one that opens a line
-  or a sentence keeps the input's lower case, or the line is reworded. The harness's quoted-span
-  rule stays as it is.
+  claim under it can be a secondary crux, and the type tie-breaks that send a forecast or a
+  weighting down to the record or fact under it yield to it. PDD B's "deepest double crux"
+  still orders the rest (`SPEC.md` decision 21, amended).
+- **A quotation is checked letter for letter, its first letter included:** it keeps the input's
+  capital or lower case wherever it falls, and the line is reworded around it. The harness's
+  quoted-span rule stays as it is.
 
-**Built.** Version 0.4.0 (2026-11-22), in `plugins/crux-finder/`. `SKILL.md` (164 lines) holds
+**Built.** Version 0.4.0 (2026-11-22), in `plugins/crux-finder/`. `SKILL.md` (166 lines) holds
 PDD B's frontmatter, its description word for word, plus `metadata.version`; the Inputs table,
 steps 1–9 in brief, the report's rules and the check before sending, and the seven guardrails.
 `references/procedure.md` defines each step in full; `crux-types.md` gives the five types, the
@@ -789,7 +791,7 @@ installed the same way in Session 4 (`claude plugin details crux-finder` listed 
 
 ## Baseline
 
-Measured 2026-11-22 with Python 3.10.20, uv 0.12.3, ruff 0.17.5, pytest 9.2.0, `claude` 2.1.329
+Measured 2026-11-22 with Python 3.10.20, uv 0.12.3, ruff 0.17.5, pytest 9.2.0, `claude` 2.1.330
 and the validator at `83021e2`. The heading carries no version because the repository has none
 of its own: each skill has its own version.
 
@@ -839,4 +841,5 @@ finding.
   *crux-finder* gains 0.4.0's ranking of a party's stated condition first among double cruxes,
   and quotations checked letter for letter, the first letter included. The owner settled the
   first at the start of Session 7b, and the rest from the cycle's results, each as the session
-  recommended.
+  recommended. In the session's review the owner had the type tie-breaks yield to the new
+  ranking and recorded the departure from PDD B's step 6 beside `SPEC.md` decision 21.
