@@ -79,8 +79,9 @@ The skill was tested on ten disagreements, each with an answer the maintainer wr
 any run: one for each kind of crux, a second question of fact, one where only one side speaks,
 one where the two positions don't conflict, a message thread between two siblings, and two
 passages from the first Lincoln–Douglas debate of 1858. Each ran twice, in a fresh Claude Code
-session with nothing else loaded, and the maintainer read every report against that answer.
-Three of them were also run once each on claude.ai. The last full test ran on 0.4.0, with
+session that loaded none of the user's settings, plugins, memory or files, only Claude Code's
+own. Every report was reviewed against that answer, and the maintainer confirmed or corrected
+each judgement. Three of the disagreements were also run once each on claude.ai. The last full test ran on 0.4.0, with
 Claude Opus 5.5 in Claude Code 2.1.330 and Claude Fable 5.2 on claude.ai; 1.0.0 is 0.4.0 with
 only its version number changed.
 

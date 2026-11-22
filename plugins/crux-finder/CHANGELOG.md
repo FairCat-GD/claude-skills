@@ -8,7 +8,7 @@ All notable changes to crux-finder are documented here. The format follows
 ## [1.0.0] — 2026-11-22
 
 The first stable release. In the fourth full test of the skill, ten disagreements run twice
-each and every report read, it met every measure set for it, and on claude.ai it gave the
+each and every report reviewed, it met every measure set for it, and on claude.ai it gave the
 expected answer for all three disagreements tried there.
 
 ### Changed

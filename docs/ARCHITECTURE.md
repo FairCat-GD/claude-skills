@@ -776,9 +776,13 @@ Decisions made here, each with its why:
 - **An eleventh row, beyond PDD B's ten bars,** "Runs on the skill as it stands": every run's
   `commit` has the skill folder as it is now, `SKILL.md`'s `metadata.version` line aside. That is
   decision 22's condition with decision 23's one allowed change, so a release that moves only the
-  version keeps the row met. `VERSION_LINE` is ignored, by `git diff -I`, in `SKILL.md` alone,
-  so a version-shaped line changed anywhere else in the folder still counts. The row came with
-  the plan the owner approved.
+  version keeps the row met. The rest of the folder is compared by `git diff --quiet`, and
+  `SKILL.md` as the commit holds it (`git show`) against the working tree's, each with
+  `without_version` leaving out the one `version:` line inside the frontmatter's `metadata:`
+  block, in any form the `skills` stage reads (quoted or not, any indent, any value). A
+  version-shaped line anywhere else, in `SKILL.md`'s body or in a reference, still counts as a
+  change. It needs no git option newer than `show` and `diff`. The row came with the plan the
+  owner approved.
 
 ## Testing strategy — five layers, and what each cannot see
 
@@ -858,7 +862,7 @@ of its own: each skill has its own version.
 | Check | Expected |
 |---|---|
 | `uv run scripts/verify.py` | green: 6 stages (`skills`, `plugins`, `format`, `lint`, `tests`, `hygiene`), about 25 s with uv's cache warm, most of it the eval tooling's git fixtures |
-| Unit tests (`tests`) | 206 passed, 0 skipped: 73 in `test_crux_finder_checks.py`, 45 in `test_hygiene.py`, 35 in `test_check_skills.py`, 22 in `test_crux_finder_run.py`, 19 in `test_check_plugins.py`, 10 in `test_verify.py`, 2 in `test_evals_stdlib.py` |
+| Unit tests (`tests`) | 208 passed, 0 skipped: 75 in `test_crux_finder_checks.py`, 45 in `test_hygiene.py`, 35 in `test_check_skills.py`, 22 in `test_crux_finder_run.py`, 19 in `test_check_plugins.py`, 10 in `test_verify.py`, 2 in `test_evals_stdlib.py` |
 | `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
 | Python files (`ruff format --check .`) | 13 |
 | Skills and plugins | 2 skill folders, 2 plugins, 2 marketplace entries |

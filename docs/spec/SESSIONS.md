@@ -1705,3 +1705,21 @@ layer*, *The eval harness*; the done-notes of Sessions 7a and 7b.
 - **Numbers:** 206 unit tests (+3, all in `test_crux_finder_checks.py`), 0 skipped; 6 `verify`
   stages; 13 Python files (±0); 2 skill folders, 2 plugins, 2 marketplace entries (±0); 10
   cases; `results/` unchanged; `checks.py` 0 problems, exit 0.
+- **Review (`/code-review high`), 5 findings: 5 fixed and 0 skipped.** The user asked for every
+  finding fixed.
+  - **The version-line rule now reads the frontmatter.** `git diff -I` ignored a version-shaped
+    line anywhere in `SKILL.md`, its body included; it needed git 2.30 or newer, and an older git
+    turned the row red with no reason given; and its pattern took only a quoted value of digits
+    and dots, where the `skills` stage reads any. `checks.py`'s `without_version` now leaves out
+    only the `version:` line inside the frontmatter's `metadata:` block, in any form, and
+    `_skill_unchanged_since` compares `SKILL.md` from `git show` with the working tree's through
+    it, so no newer git option is needed. `VERSION_LINE` is gone.
+  - **The README's method, as it was:** each run loaded none of the user's settings, plugins,
+    memory or files, only Claude Code's own, where it said nothing else loaded; and every report
+    was reviewed with each judgement confirmed or corrected by the maintainer, where it said the
+    maintainer read every report. The 1.0.0 changelog entry says "reviewed" too.
+  - **Falsified:** `without_version` returning the text whole failed the version-only and
+    any-form tests; stripping every version-shaped line failed the body-line test; the pattern
+    narrowed back to quoted digits failed the any-form test. Each was copied aside and back.
+  - **Numbers after the review:** 208 unit tests (+2, both in `test_crux_finder_checks.py`), 0
+    skipped; `checks.py` 0 problems, every bar met, exit 0; the rest unchanged.

@@ -21,7 +21,7 @@ and plan the round in `docs/spec/`, a Read line in every block (see
   skill on its other targets and its fallbacks, and the direction on crux-finder's *what would
   move it* and common ground.
 - **Baseline** (ARCHITECTURE's table, crux-finder 1.0.0 and travel-itinerary-builder 1.1.0):
-  `verify` green with 6 stages, about 25 s; 206 unit tests passed, 0 skipped; 13 Python files;
+  `verify` green with 6 stages, about 25 s; 208 unit tests passed, 0 skipped; 13 Python files;
   2 skill folders, 2 plugins, 2 marketplace entries; `claude` 2.1.330; `checks.py` on Session
   7c's results, read on 1.0.0: `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0.
 

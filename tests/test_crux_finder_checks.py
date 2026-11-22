@@ -598,6 +598,25 @@ def test_the_version_line_with_another_change_is_a_changed_skill(root: Path) -> 
     assert (row.passed, row.met) == (0, False)
 
 
+def test_the_version_line_in_any_form_the_skills_stage_reads_is_set_aside(root: Path) -> None:
+    _versioned_cycle(root)
+    unquoted = _VERSIONED.replace('  version: "0.4.0"', "    version: 1.1.0-rc.1")
+    _write(root, f"{checks.SKILL_FOLDER}/SKILL.md", unquoted)
+    _commit(root)
+    row = _row(root, "Runs on the skill")
+    assert (row.passed, row.met) == (20, True)
+
+
+def test_a_version_shaped_line_in_skill_md_s_body_is_a_changed_skill(root: Path) -> None:
+    _write(root, f"{checks.SKILL_FOLDER}/SKILL.md", _VERSIONED + '  version: "0.4.0"\n')
+    _commit(root)
+    cycle(root)
+    _write(root, f"{checks.SKILL_FOLDER}/SKILL.md", _VERSIONED + '  version: "1.0.0"\n')
+    _commit(root)
+    row = _row(root, "Runs on the skill")
+    assert (row.passed, row.met) == (0, False)
+
+
 def test_a_version_shaped_line_outside_skill_md_is_a_changed_skill(root: Path) -> None:
     _versioned_cycle(root)
     _write(root, f"{checks.SKILL_FOLDER}/references/procedure.md", '  version: "1.0.0"\n')

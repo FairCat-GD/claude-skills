@@ -21,8 +21,6 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 # Relative to the root, as git names them.
 EVALS = "evals/crux-finder"
 SKILL_FOLDER = "plugins/crux-finder/skills/crux-finder"
-# SKILL.md's metadata.version line, the one line of the skill folder a release changes.
-VERSION_LINE = r'^  version: "[0-9.]+"$'
 LENGTH = 400
 # Each steelman within 25% of the other: the longer at most 5/4 of the shorter.
 SYMMETRY = Fraction(5, 4)
@@ -35,6 +33,8 @@ FIELDS = (*REQUIRED, STABILITY, *OPTIONAL)
 SMOKE_CASES = 3
 
 _RUN = re.compile(r"run-([1-9][0-9]*)\.md")
+# A `version:` key indented under `metadata:`, with any value, quoted or not.
+_VERSION = re.compile(r"[ \t]+version:[ \t]*\S.*")
 _REPORT = re.compile(r"^## Crux report[ \t]*$", re.MULTILINE)
 _STEELMAN = re.compile(r"\*\*([AB])(?: \([^)\n]*\))?, strongest form:\*\*[ \t]*(.*)")
 _CRUX_LABEL = re.compile(r"\*\*(?:(?:Double crux|Crux for [AB]) · [^*\n]+|No crux)\*\*")
@@ -245,14 +245,40 @@ def _unchanged_since(root: Path, commit: str, path: str) -> bool:
     return _git(root, "diff", "--quiet", commit, "--", path).returncode == 0
 
 
+def without_version(text: str) -> str:
+    """SKILL.md with its frontmatter's metadata.version line left out, the one line of the skill
+    folder a release changes; a text with no such line is returned as it is."""
+    lines = text.split("\n")
+    if lines[0].rstrip() != "---":
+        return text
+    in_metadata = False
+    for index, line in enumerate(lines[1:], start=1):
+        bare = line.rstrip("\r")
+        if bare.rstrip() == "---":
+            break
+        if bare[:1] and not bare[:1].isspace():
+            in_metadata = bare.rstrip() == "metadata:"
+        elif in_metadata and _VERSION.fullmatch(bare):
+            return "\n".join(lines[:index] + lines[index + 1 :])
+    return text
+
+
 def _skill_unchanged_since(root: Path, commit: str) -> bool:
-    """Whether the skill folder, in the working tree, is as it was in the commit, its version
-    line aside: a change to SKILL.md's metadata.version alone is a release, not a change to the
-    skill, so a run on the commit before it ran the skill as it stands."""
+    """Whether the skill folder, in the working tree, is as it was in the commit, SKILL.md's
+    metadata.version aside: a change to it alone is a release, not a change to the skill, so a
+    run on the commit before it ran the skill as it stands."""
     skill = f"{SKILL_FOLDER}/SKILL.md"
     rest = _git(root, "diff", "--quiet", commit, "--", SKILL_FOLDER, f":(exclude){skill}")
-    own = _git(root, "diff", "--quiet", f"-I{VERSION_LINE}", commit, "--", skill)
-    return rest.returncode == 0 and own.returncode == 0
+    then = _git(root, "show", f"{commit}:{skill}")
+    try:
+        now = (root / skill).read_text(encoding="utf-8")
+    except OSError:
+        return False
+    return (
+        rest.returncode == 0
+        and then.returncode == 0
+        and without_version(then.stdout) == without_version(now)
+    )
 
 
 def _in_commit(root: Path, commit: str, path: str) -> bool:
