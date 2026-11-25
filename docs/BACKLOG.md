@@ -71,8 +71,15 @@ these are the parts only a person can see.
   fourth eval cycle met every bar, and the owner's reviews still noted, below any bar: *what
   would move it* leaving out a record the gold names, or giving a calculation where gold names a
   measurement (the orchard and kiln cases), or no near dated check (the solar case); and
-  common-ground lines widening what a party said (five cases). No bar measures either; a later
-  round could add one, with cases, before changing the skill for it.
+  common-ground lines widening what a party said (five cases). Session E3's cycle on the shared
+  engine noted the same. No bar measures either; a later round could add one, with cases, before
+  changing the skill for it.
+- **crux-finder: the people grader's false fails, and the judge's reasons.** In Session E3 the
+  judge failed `no-statement-about-people` on three reports (kiln, piano and solar, run 1) in
+  which the fresh reader and the owner found no statement about either party; the owner
+  overruled all three. The engine keeps only the votes (`judge votes: FAIL FAIL FAIL`), so
+  nothing shows what the judge objected to. If later cycles repeat it, the grader's wording or
+  the judge could change; a grader changed means its case starts over.
 
 ## Decided against
 

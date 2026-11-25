@@ -359,9 +359,11 @@ def _added_in(root: Path) -> dict[str, str]:
     return added
 
 
-def _tracked(root: Path) -> frozenset[str]:
-    """Every file under results/ that git has, committed or staged."""
-    return _lines(_git(root, "ls-files", "--", f"{EVALS}/results").stdout)
+def _committed(root: Path) -> frozenset[str]:
+    """Every file under results/ that HEAD holds."""
+    return _lines(
+        _git(root, "ls-tree", "-r", "--name-only", "HEAD", "--", f"{EVALS}/results").stdout
+    )
 
 
 def gold_order(
@@ -371,12 +373,15 @@ def gold_order(
     present: list[str],
     snapshot: Callable[[str], Snapshot],
     added: dict[str, str],
-    tracked: frozenset[str],
+    committed: frozenset[str],
 ) -> list[str]:
     """Invariant 7: gold.md committed before every result present now, and unchanged since.
 
-    Each file now under results/<id>/ counts from the commit that added it, its latest adding
-    for a file removed and added again, so a retired cycle kept in history never counts."""
+    Each file HEAD holds under results/<id>/ counts from the commit that added it, its latest
+    adding for a file removed and added again, so a retired cycle kept in history never counts.
+    A file not yet committed has no adding of its own: any adding its path has in history is a
+    retired cycle's, so it is not reckoned from history. The commit that adds it will follow
+    HEAD, which must hold gold, and gold must have no uncommitted change, both checked here."""
     gold = f"{EVALS}/cases/{case}/gold.md"
     head = snapshot("HEAD")
     if head.held is None or gold not in head.held:
@@ -384,9 +389,11 @@ def gold_order(
     problems: list[str] = []
     by_adding: dict[str, list[str]] = {}
     for path in present:
+        if path not in committed:
+            continue
         if path in added:
             by_adding.setdefault(added[path], []).append(path.rsplit("/", 1)[-1])
-        elif path in tracked and _git(root, "cat-file", "-e", f"HEAD:{path}").returncode == 0:
+        else:
             # Committed, yet no commit adds it: the order cannot be reckoned, so it is no pass.
             problems.append(f"{gold}: no commit adds {path}, so its order cannot be checked")
     for commit, names in by_adding.items():
@@ -809,7 +816,7 @@ def _check_case(
     report: Report,
     snapshot: Callable[[str], Snapshot],
     added: dict[str, str],
-    tracked: frozenset[str],
+    committed: frozenset[str],
 ) -> tuple[list[Output], list[Output], bool]:
     """One case's runs and claude.ai reply, its problems added to the report, and whether the
     case itself is sound: gold, its order, the prompt and the graders as each run had them."""
@@ -840,7 +847,7 @@ def _check_case(
     runs = [o for o in outputs if o.number is not None]
     present = [_where(root, path) for path in files if path.is_file()]
     problems += _gold_fields(root, case)
-    problems += gold_order(root, case, outputs, present, snapshot, added, tracked)
+    problems += gold_order(root, case, outputs, present, snapshot, added, committed)
     problems += case_as_run(root, case, runs, snapshot)
     report.problems += problems
     return runs, [o for o in outputs if o.number is None], not problems
@@ -864,10 +871,10 @@ def check(root: Path) -> Report:
     runs: list[Output] = []
     claude_ai: list[Output] = []
     sound: dict[str, bool] = {}
-    snapshot, added, tracked = _snapshots(root), _added_in(root), _tracked(root)
+    snapshot, added, committed = _snapshots(root), _added_in(root), _committed(root)
     for case in ids:
         case_runs, case_claude_ai, sound[case] = _check_case(
-            root, case, report, snapshot, added, tracked
+            root, case, report, snapshot, added, committed
         )
         runs += case_runs
         claude_ai += case_claude_ai

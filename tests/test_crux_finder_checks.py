@@ -564,6 +564,25 @@ def test_gold_changed_after_retired_results_and_before_the_present_ones_passes(
     assert _problems(root) == []
 
 
+@pytest.mark.parametrize("staged", [False, True])
+def test_a_new_result_not_yet_committed_is_not_reckoned_from_a_retired_one(
+    root: Path, staged: bool
+) -> None:
+    # A cycle committed, then retired; the gold changes; a new cycle's files, at the retired
+    # ones' paths, are written and not yet committed, as they are while the owner reads them.
+    _one(root)
+    _commit(root)
+    for name in ("run-1.md", "verdicts-1.md"):
+        (root / EVALS / "results/ferry" / name).unlink()
+    _commit(root)
+    _write(root, f"{EVALS}/cases/ferry/gold.md", GOLD.replace("nine", "ten"))
+    commit = _commit(root)
+    _run(root, "ferry", 1, reply(), commit)
+    if staged:
+        _git(root, "add", f"{EVALS}/results")
+    assert _problems(root, "gold.md") == []
+
+
 def test_a_retired_result_never_counts_however_old(root: Path) -> None:
     # A file added before the gold and removed since leaves no mark on the order.
     _write(root, f"{EVALS}/results/ferry/run-1.md", "an early result\n")
@@ -581,12 +600,12 @@ def test_a_committed_result_that_no_commit_adds_is_a_problem(root: Path) -> None
     added = checks._added_in(root)
     present = [f"{EVALS}/results/ferry/run-1.md"]
     snapshot = checks._snapshots(root)
-    tracked = checks._tracked(root)
-    problems = checks.gold_order(root, "ferry", [], present, snapshot, {}, tracked)
+    committed = checks._committed(root)
+    problems = checks.gold_order(root, "ferry", [], present, snapshot, {}, committed)
     assert problems == [
         f"{EVALS}/cases/ferry/gold.md: no commit adds {present[0]}, so its order cannot be checked"
     ]
-    assert checks.gold_order(root, "ferry", [], present, snapshot, added, tracked) == []
+    assert checks.gold_order(root, "ferry", [], present, snapshot, added, committed) == []
 
 
 def test_a_renamed_result_is_logged_as_added_under_its_new_name(root: Path) -> None:

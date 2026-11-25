@@ -648,6 +648,98 @@ layer*, *crux-finder* (its eval cycles), *Known debt*; E2's done-note; crux-find
 - **`run.py`'s successor skips a run whose file exists:** a cycle on a changed skill starts by
   removing the old results.
 
+**Done (2026-11-25, no release).**
+- **Decided with the user:**
+  - **The ceiling** (the block's Ask): `--max-cost-usd 10`, as recommended, against an estimate
+    of about $6.
+  - **How the owner's reading is made** (the handoff's Ask), as recommended: a fresh reader that
+    sees each case's prompt, gold.md and its note, the graders and each run's reply, never a
+    verdict, drafts a verdict for every grader of every run, the stability call and a note; the
+    session sets it beside the engine's verdicts and names every disagreement; the owner
+    confirms or corrects every line. The one run per case is run 1, fixed before any result.
+  - **At a stop, mid-session:** fix `checks.py`'s gold order here rather than leave it to the
+    backlog (Amendments).
+- **The cycle** (1.0.0 from `3a97160`, `claude` 2.1.330, `claude-opus-5-5`, judge
+  `claude-sonnet-5-5`): `uv run evals/run.py crux-finder --runs 2 --max-cost-usd 10` wrote all
+  20 runs in one engine call, exit 0, in 3 min 16 s, for $4.97 ($4.39 for the runs, $0.13 to
+  $0.30 each; $0.58 for the judging). Every run called `crux-finder:crux-finder` and read the
+  references (37 reads), with no denied or failed call, 3 to 6 turns, no error. No machine path
+  in any result, and no kept folder left under `/private/tmp`.
+- **The owner's reading:** the reader, reading no verdict, agreed with the engine on 61 of 64
+  verdicts. The three it disputed were `no-statement-about-people` on run 1 of the kiln, piano
+  and solar cases, which the judge failed by 2, 3 and 3 votes of 3 with no reason recorded (the
+  engine keeps only the votes). The owner confirmed every drafted line: a `pass` overruling
+  each of the three, a `fail` confirming both piano type verdicts, `same_crux_as_run_1: yes` in
+  all ten cases, and a note on every run. Ten `review.md`, seven new and three after their
+  `## claude-ai` section.
+- **The summary table** (`checks.py`, 0 problems, exit 0, 3 of 64 verdicts overruled), beside
+  Session 7c's (0.4.0, the retired runner, the owner's review of every run):
+
+  | Check | Pass bar | 7c | E3 | Met |
+  |---|---|---|---|---|
+  | Crux matches gold | ≥ 16 / 20 runs | 20 / 20 | 20 / 20 | yes |
+  | Type matches gold | ≥ 18 / 20 runs | 18 / 20 | 18 / 20 | yes |
+  | Stability: same primary crux in both runs | ≥ 8 / 10 cases | 9 / 10 | 10 / 10 | yes |
+  | Quotes verbatim | all runs | 20 / 20 | 20 / 20 | yes |
+  | Steelman symmetry | all reports | 18 / 18 | 18 / 18 | yes |
+  | Length ≤ 400 words | all reports | 18 / 18 | 18 / 18 | yes |
+  | No statement about people (7c: people_statement no) | all runs | 20 / 20 | 20 / 20 | yes |
+  | One-sided gate fires | all runs with its grader | 2 / 2 | 2 / 2 | yes |
+  | No-conflict case reports no conflict or a Framing crux | all runs with its grader | 2 / 2 | 2 / 2 | yes |
+  | Gold order + approved_by + graders as run (7c: without graders) | all cases | 10 / 10 | 10 / 10 | yes |
+  | Runs on the skill as it stands (decision 22) | all runs | 20 / 20 | 20 / 20 | yes |
+  | claude.ai smoke test | 3 / 3 cases | 3 / 3 | 3 / 3 | yes |
+
+- **What the results showed:**
+  - **Type and crux:** every case but the piano lessons matched gold on both; both piano runs
+    read as Value again, the *Known debt*, the bar's two allowed misses. Solar took the ten-year
+    payback in both runs, the kiln and orchard their record cruxes, the father's care the wish
+    set against the risk, not the excluded carers question.
+  - **Stability:** 10/10, where 7c's was 9/10: both debate runs took the founders' policy, one
+    of the two cruxes gold accepts, with the local-variety-or-division question a secondary crux.
+  - **Length and symmetry:** 194 to 354 words (7c: 194 to 358), the excerpt at 354 and 351;
+    every steelman pair within 25%, the widest 46/39.
+  - **Quotes:** two runs quoted the input (vintage run 2, solar run 1), every span verbatim.
+  - **The owner's notes, below any bar,** as 7c's: what would move it leaving out a record gold
+    names (the pitch fee invoices in both orchard runs, the supplier's readings in both kiln
+    runs) or setting its own figure for a dated check (both solar runs); common-ground lines
+    that widen what a party said (quiz, kiln, excerpt).
+- **No version:** no shipped file changed.
+- **Docs:**
+  - crux-finder's README: *How it was tested* rewritten for the engine and the reading, with
+    this cycle's table.
+  - `ARCHITECTURE.md`:
+    - *Overview* Built;
+    - invariant 7's *Enforced by*;
+    - *The data layer* (Decided: the reading; Built: the results present);
+    - *crux-finder* Built: the first cycle on the engine;
+    - *The eval harness* Built: gold order, a decision on uncommitted results, the runner's
+      first cycle;
+    - *Testing strategy*, *Known debt*, the baseline, a *Decision log* line.
+  - `docs/BACKLOG.md`: the people grader's false fails and the judge's missing reasons; the
+    review notes' direction extended to this cycle.
+- **Amendments:**
+  - **`checks.py` changed, where the plan had no code:** before the reading, it reported the
+    debate case's gold as changed since its new, uncommitted `run-1.md` and `run-2.md`, which it
+    reckoned from round 1's adding of the same paths (`c52b303`), before Session E2 gave that
+    gold its `source:` and `license:`. It now reckons from history only the files HEAD holds;
+    an uncommitted one follows HEAD, whose gold and its lack of uncommitted change were already
+    checked. It never gave a false pass. Decided with the user at a stop, with one test added.
+- **Measured:** the cycle's cost, time and calls (above); `claude` 2.1.330 before and after.
+- **Checked by hand:** the reader's report lists only the case files and `run-N.md` it read; no
+  `/Users/`, `/var/folders` or `/private/` path in `results/`.
+- **Falsified:** the new reckoning put back as it was (an uncommitted file reckoned from the
+  latest adding of its path): only the new test failed, in both its forms (uncommitted, and
+  staged), and all 119 passed once restored. A coarser break, dropping the guard alone, failed
+  44 tests, since every uncommitted file then read as committed with no adding.
+- **Numbers:**
+  - 303 unit tests (+2, the new test's two forms), 0 skipped; 119 in
+    `test_crux_finder_checks.py`;
+  - 6 `verify` stages; 15 Python files (±0);
+  - 3 skill folders, 3 plugins, 3 marketplace entries (±0);
+  - `results/`: +40 run and verdicts files, +7 `review.md`, 3 extended;
+  - `checks.py`: `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0.
+
 ---
 
 ## P2: provenance-tracer's cases
