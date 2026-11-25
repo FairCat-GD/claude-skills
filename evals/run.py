@@ -55,7 +55,9 @@ GRACE_SECONDS = 600
 # engine; none is needed, since the CLI signs in with its own stored login.
 _STRIPPED = re.compile(r"(CLAUDE|ANTHROPIC_)")
 _AGENT_TOOLS = ("Agent", "Task")
-_REFUSED = re.compile(r"denied by your permission settings|has been denied")
+# The engine's own wording for a refused read of the eval folder; a page that says it denied
+# access is a failed call, not a refusal.
+_REFUSED = re.compile(r"denied by your permission settings")
 # The argument each tool's line shows; any other tool shows its whole input as one-line JSON.
 _ARGUMENT = {
     "WebSearch": "query",
@@ -210,7 +212,8 @@ def engine_command(plugin: Path, out: Path, runs: int, ceiling: float, tools: tu
         "--runs",
         str(runs),
         "--max-cost-usd",
-        f"{ceiling:.2f}",
+        # Rounded down to the cent, so a call is never given more than is left.
+        f"{math.floor(ceiling * 100) / 100:.2f}",
         "--output-dir",
         str(out),
         *(["--allow-tools", *tools] if tools else []),
@@ -260,6 +263,12 @@ def _run_engine(command: list[str], cwd: Path, runs: int) -> tuple[int | None, s
         return None, f"stopped after {seconds} s\n{stderr}"
 
 
+# A path ends where no character of a name follows it, so `/a/b` never matches inside `/a/bc`
+# or `/a/b-old`; in the dashed form of a path, `-` separates folders and so ends a name too.
+_PATH_END = r"(?![\w.-])"
+_DASHED_END = r"(?![\w.])"
+
+
 class Scrubber:
     """Replaces the machine paths a run's text may hold with placeholders, longest first."""
 
@@ -268,24 +277,28 @@ class Scrubber:
         for path, placeholder in places:
             for form in _forms(path):
                 pairs.setdefault(form, placeholder)
-        self.pairs = sorted(pairs.items(), key=lambda pair: len(pair[0]), reverse=True)
+        self.pairs = [
+            (re.compile(re.escape(form) + _PATH_END), placeholder)
+            for form, placeholder in sorted(pairs.items(), key=lambda p: len(p[0]), reverse=True)
+        ]
         home_text = str(home)
-        self.home_forms = {
-            home_text,
-            home_text.replace("/", "-"),
-            quote(home_text, safe=""),
-            home_text.replace("/", "\\/"),
-        }
+        self.home_forms = [
+            re.compile(re.escape(home_text) + _PATH_END),
+            re.compile(re.escape(home_text.replace("/", "-")) + _DASHED_END),
+            re.compile(re.escape(quote(home_text, safe="")) + _PATH_END),
+            re.compile(re.escape(home_text.replace("/", "\\/")) + _PATH_END),
+        ]
 
     def __call__(self, text: str) -> str:
         for form, placeholder in self.pairs:
-            text = text.replace(form, placeholder)
+            # The placeholders hold no backslash, so each is its own replacement text.
+            text = form.sub(placeholder, text)
         return text
 
     def leftover(self, text: str) -> str | None:
         """A machine path the replacement missed: the home folder in any form, or a temp folder."""
         for form in self.home_forms:
-            if form in text:
+            if form.search(text):
                 return "the home folder"
         if re.search(r"/(?:private/)?var/folders/", text):
             return "a temporary folder"
@@ -562,11 +575,12 @@ def run_group(
         try:
             data = json.loads((out / "aggregate-result.json").read_text(encoding="utf-8"))
         except (OSError, ValueError):
+            # What it spent is unknown, so it is taken to have spent its whole ceiling.
             _say(f"no result from the engine (exit {code}): {stderr.strip()[-800:]}")
-            return False, 0.0
+            return False, ceiling
         if not isinstance(data, dict):
             _say("the engine's result is not an object")
-            return False, 0.0
+            return False, ceiling
         cases = {c.get("name"): c for c in data.get("cases") or [] if isinstance(c, dict)}
         sandboxes = [
             sandbox
@@ -601,12 +615,16 @@ def _write_group(
     if data.get("schemaVersion") != SCHEMA_VERSION:
         _say(f"a result of schema {data.get('schemaVersion')!r}, not {SCHEMA_VERSION}")
         return False
-    extra = sorted(map(str, set(cases) - set(missing)))
-    if extra:
-        _say(f"the engine ran case(s) it was not given: {', '.join(extra)}")
-        return False
     results = _results_folder(request)
     complete = True
+    extra = sorted(map(str, set(cases) - set(missing)))
+    if extra:
+        # Nothing is written for them; the cases that came back under their own names still are.
+        _say(
+            f"the engine ran case(s) it was not given: {', '.join(extra)}; nothing written for "
+            "them (a prompt.md whose name: differs from its folder is named so)"
+        )
+        complete = False
     for case_id, numbers in sorted(missing.items()):
         case = cases.get(case_id)
         if case is None:
@@ -629,7 +647,7 @@ def _write_group(
                     plugin=plugin,
                     folder=folder,
                 )
-            except RuntimeError as reason:
+            except (RuntimeError, ValueError, TypeError) as reason:
                 _say(f"{case_id}: a run not written: {reason}")
                 continue
             target = results / case_id / f"run-{number}.md"

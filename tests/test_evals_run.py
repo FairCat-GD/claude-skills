@@ -116,10 +116,12 @@ def one(case, number, mode):
         result.update(score=0, graders=[], error="API Error: 529 overloaded")
     if mode == "aborted":
         result["aborted"] = {"server": "notes", "tool": "find", "reason": "budget"}
+    if mode == "badcost":
+        result["costUsd"] = "n/a"
     return result
 
 def write(cases, partial=None):
-    data = {"schemaVersion": 2 if "schema" in modes.values() else 1, "claudeVersion": "9.9.9",
+    data = {"schemaVersion": 2 if "schema" in present else 1, "claudeVersion": "9.9.9",
             "costUsd": cost, "partial": partial is not None, "cases": cases}
     if partial:
         data["partialReason"] = partial
@@ -127,9 +129,10 @@ def write(cases, partial=None):
     (out / "aggregate-result.json").write_text(json.dumps(data))
 
 names = sorted(p.name for p in evals.iterdir())
-if "nostart" in modes.values():
+present = {modes.get(name, "ok") for name in names}
+if "nostart" in present:
     sys.exit(1)
-if "hang" in modes.values():
+if "hang" in present:
     def stop(*_):
         write([{"name": names[0], "graders": [{"name": "crux", "type": "llm"}],
                 "arms": {"with": [one(names[0], 1, "ok")]}}], "terminated")
@@ -144,13 +147,14 @@ for name in names:
         code = 1
         continue
     count = 1 if mode == "partial" else runs
-    cases.append({"name": name, "graders": [{"name": "crux", "type": "llm"},
+    named = f"crux-{name}" if mode == "renamed" else name
+    cases.append({"name": named, "graders": [{"name": "crux", "type": "llm"},
                   {"name": "said", "type": "regex"}],
                   "arms": {"with": [one(name, n, mode) for n in range(1, count + 1)]}})
     code = 1 if mode == "api" else code
-if "extra" in modes.values():
+if "extra" in present:
     cases.append({"name": "gale", "graders": [], "arms": {"with": []}})
-partial = "cost_ceiling" if "partial" in modes.values() else None
+partial = "cost_ceiling" if "partial" in present else None
 write(cases, partial)
 sys.exit(2 if partial else code)
 """
@@ -415,6 +419,7 @@ def test_a_graded_run_is_written_whatever_its_score(
         ("breach", "not isolated: plugin kite-weather loaded"),
         ("leak", "still names the home folder"),
         ("notrace", "trace was not kept"),
+        ("badcost", "could not convert string to float"),
     ],
 )
 def test_a_run_that_failed_is_not_written(
@@ -442,14 +447,26 @@ def test_a_case_that_did_not_load_writes_nothing_for_it(
     assert "ferry: did not load" in capsys.readouterr().out
 
 
-@pytest.mark.parametrize(("mode", "why"), [("schema", "schema 2"), ("extra", "not given: gale")])
-def test_a_result_the_runner_cannot_trust_writes_nothing(
-    root: Path, mode: str, why: str, monkeypatch: pytest.MonkeyPatch, capsys
+def test_a_result_of_another_schema_writes_nothing(
+    root: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    _modes(monkeypatch, ferry="schema")
+    assert _main("--runs", "1") == 1
+    assert not _results(root).exists()
+    assert "schema 2" in capsys.readouterr().out
+    assert list((root.parent / "sandboxes").iterdir()) == []
+
+
+@pytest.mark.parametrize("mode", ["extra", "renamed"])
+def test_a_case_the_runner_did_not_send_costs_only_itself(
+    root: Path, mode: str, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
     _modes(monkeypatch, ferry=mode)
     assert _main("--runs", "1") == 1
-    assert not _results(root).exists()
-    assert why in capsys.readouterr().out
+    out = capsys.readouterr().out
+    assert "not given: " + ("gale" if mode == "extra" else "crux-ferry") in out
+    assert (_results(root) / "harbour" / "run-1.md").exists()
+    assert (_results(root) / "ferry" / "run-1.md").exists() == (mode == "extra")
     assert list((root.parent / "sandboxes").iterdir()) == []
 
 
@@ -510,6 +527,21 @@ def test_the_ceiling_is_shared_across_calls(root: Path, monkeypatch: pytest.Monk
     monkeypatch.setenv("STUB_COST", "3")
     assert run.main([SKILL, "--max-cost-usd", "4", "--runs", "2"]) == 0
     assert [_flag(e["argv"], "--max-cost-usd") for e in _log(root)] == ["4.00", "1.00"]
+
+
+def test_a_call_with_no_result_is_taken_to_have_spent_its_ceiling(
+    root: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    _write(_results(root) / "ferry" / "run-1.md", "done\n")
+    _modes(monkeypatch, harbour="nostart")
+    assert run.main([SKILL, "--max-cost-usd", "10", "--runs", "2"]) == 1
+    assert len(_log(root)) == 1
+    assert "the ceiling is spent; not run: ferry" in capsys.readouterr().out
+
+
+def test_the_ceiling_is_rounded_down_to_the_cent(tmp_path: Path) -> None:
+    command = run.engine_command(tmp_path, tmp_path, 1, 4.996, ())
+    assert command[command.index("--max-cost-usd") + 1] == "4.99"
 
 
 def test_a_spent_ceiling_runs_no_further_call(
@@ -604,6 +636,38 @@ def test_isolation_breaches_reads_the_whole_start_event(tmp_path: Path) -> None:
         "memory at /elsewhere/memory",
         "folder /elsewhere opened",
     ]
+
+
+def test_a_page_that_denies_access_is_a_failed_call_not_a_refused_one() -> None:
+    use = {"type": "tool_use", "id": "f1", "name": "WebFetch", "input": {"url": "https://x.test"}}
+    events = [
+        {"type": "assistant", "message": {"content": [use]}},
+        {
+            "type": "user",
+            "message": {
+                "content": [
+                    {
+                        "type": "tool_result",
+                        "tool_use_id": "f1",
+                        "is_error": True,
+                        "content": "Access to this page has been denied.",
+                    }
+                ]
+            },
+        },
+    ]
+    assert [c.line() for c in run.tool_calls(events)] == ["- WebFetch (error): https://x.test"]
+
+
+def test_a_path_is_replaced_only_where_it_ends() -> None:
+    # Fictional paths outside any temporary folder, so only the home folder's forms are in play.
+    home, repo = Path("/srv/accounts/max"), Path("/srv/work/skills")
+    scrub = run.Scrubber([(repo, "<repo>"), (home, "~")], home)
+    assert scrub(f"{repo}/a {repo}-old/a {home}well/b {home}") == (
+        f"<repo>/a {repo}-old/a {home}well/b ~"
+    )
+    assert scrub.leftover(f"{home}well/b") is None
+    assert scrub.leftover("-srv-accounts-max-Documents") == "the home folder"
 
 
 def test_the_scrubber_replaces_longest_first_and_finds_what_it_missed(tmp_path: Path) -> None:

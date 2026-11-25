@@ -1144,9 +1144,13 @@ crux-finder's cases move onto it in Session E2.
   --output-dir <temporary> [--allow-tools <the skill's tools>]`. stdin is closed, and the
   environment has no `CLAUDE*` or `ANTHROPIC_*` variable.
 - **Reading** `aggregate-result.json`:
-  - anything but `schemaVersion` 1, or a case it did not send, writes nothing;
+  - anything but `schemaVersion` 1 writes nothing;
+  - a case it did not send is named and nothing is written for it, while the cases that came
+    back under their own names are written: a `prompt.md` whose `name:` differs from its folder
+    costs only its own case;
   - a case that did not come back did not load;
-  - each run is written or not by the rule above.
+  - each run is written or not by the rule above, and a value the runner cannot read (a cost
+    that is not a number, a line break in a grader's name) skips that run, never the command.
 
   The isolation check reads the run's start event:
   - the model;
@@ -1175,24 +1179,27 @@ Decisions made here, each with its why:
   own caps allow. It catches only an engine that hangs, which is then terminated and its partial
   result read.
 - **The ceiling is the command's:** each call gets what the calls before it left, by their
-  reported cost, and a call is not made with less than a cent. A timed-out run reports $0
-  (*Context*), so the ceiling can under-count it.
+  reported cost, rounded down to the cent, and a call is not made with less than a cent. A call
+  that leaves no result is taken to have spent its whole ceiling, since what it spent is unknown,
+  so no later call runs. A timed-out run reports $0 (*Context*), so the ceiling can under-count
+  it.
 - **The scrubber** replaces, longest first, in each path's given and resolved forms (macOS
-  `/private`):
+  `/private`), a path only where it ends, so `/a/b` is never taken inside `/a/bc` or `/a/b-old`:
   - the run's workspace → `<workspace>`;
   - the plugin's copy → `<plugin>`;
   - the temporary folder and the run's kept folder → `<temp>`;
   - the repository root → `<repo>`;
   - the home folder → `~`.
 
-  It covers the reply, every call's argument and every verdict field. A run whose text still
+  It covers the reply, every call's argument, the run's error and each verdict's explanation; a
+  verdict's other fields are the engine's names and numbers. A run whose text still
   holds the home folder (plain, dashed as a project-folder name, percent-encoded or
   JSON-escaped) or a `/var/folders` path is not written. `CLAUDE.md` keeps machine paths out of
   the repository, and the hygiene stage cannot see one.
 - **A call is `(denied)`** when a `permission_denied` event or the result's denials name it, or
-  its error says it was denied by the permission settings, which is how a read of the eval folder
-  is refused. It is `(error)` when it failed otherwise, so a fetch that failed shows as the run saw
-  it.
+  its error holds the engine's own words, "denied by your permission settings", which is how a
+  read of the eval folder is refused. It is `(error)` when it failed otherwise, a page that says
+  it denied access included, so a fetch that failed shows as the run saw it.
 - **The judge's evidence is not kept:** for a judge of the reply it is the reply, already in
   `run-N.md`, and for a judge of the trace it is raw trace, which no result holds (EE 4).
 
@@ -1300,7 +1307,7 @@ of its own: each skill has its own version.
 | Check | Expected |
 |---|---|
 | `uv run scripts/verify.py` | green: 6 stages (`skills`, `plugins`, `format`, `lint`, `tests`, `hygiene`), about 32 s with uv's cache warm, most of it the eval tooling's git fixtures |
-| Unit tests (`tests`) | 275 passed, 0 skipped: 75 in `test_crux_finder_checks.py`, 45 in `test_hygiene.py`, 45 in `test_evals_run.py`, 36 in `test_check_skills.py`, 22 in `test_crux_finder_run.py`, 20 in `test_check_plugins.py`, 18 in `test_evals_shared.py`, 10 in `test_verify.py`, 4 in `test_evals_stdlib.py` |
+| Unit tests (`tests`) | 281 passed, 0 skipped: 75 in `test_crux_finder_checks.py`, 51 in `test_evals_run.py`, 45 in `test_hygiene.py`, 36 in `test_check_skills.py`, 22 in `test_crux_finder_run.py`, 20 in `test_check_plugins.py`, 18 in `test_evals_shared.py`, 10 in `test_verify.py`, 4 in `test_evals_stdlib.py` |
 | `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
 | Python files (`ruff format --check .`) | 17 |
 | Skills and plugins | 3 skill folders, 3 plugins, 3 marketplace entries |

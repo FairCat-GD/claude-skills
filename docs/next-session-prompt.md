@@ -80,7 +80,7 @@ E2 cuts no version unless a shipped file changes.
     ran.
 - **Baseline** (ARCHITECTURE's table):
   - `verify` green with 6 stages, about 32 s;
-  - 275 unit tests passed, 0 skipped;
+  - 281 unit tests passed, 0 skipped;
   - 17 Python files;
   - 3 skill folders, 3 plugins, 3 marketplace entries;
   - `claude` 2.1.330;

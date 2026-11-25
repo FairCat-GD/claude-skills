@@ -401,6 +401,27 @@ docs, `https://code.claude.com/docs/en/plugin-evals.md`, and `claude plugin eval
   - 17 Python files (+4);
   - 3 skill folders, 3 plugins, 3 marketplace entries;
   - crux-finder's `checks.py` unchanged: 10 cases, every bar met.
+- **Review (`/code-review high`), 7 findings: 7 fixed and 0 skipped.** The owner chose to fix
+  all seven.
+  - **A page that says it denied access is a failed call, not a refused one.** Only the engine's
+    own words, "denied by your permission settings", mark an error result `(denied)`; a site's
+    block page had been read as a permission refusal.
+  - **A case the runner did not send costs only itself.** The cases that came back under their
+    own names are written. The stray name is reported, with a `prompt.md` whose `name:` differs
+    from its folder as the likely cause. Before, one renamed case discarded a whole paid call.
+  - **A value the runner cannot read skips that run,** never the command: a cost that is not a
+    number, or a line break in a grader's name, had ended it with a traceback.
+  - **A path is replaced only where it ends,** so `…/claude-skills` is never taken inside
+    `…/claude-skills-old`; the home folder's leftover check keeps the same boundary.
+  - **The ceiling is rounded down to the cent,** never up past what is left.
+  - **A call that leaves no result is taken to have spent its whole ceiling,** so no later call
+    in the command runs on money that may already be gone.
+  - **`ARCHITECTURE.md` said every verdict field is scrubbed;** it is the explanation, with the
+    reply, the calls and the run's error.
+  - **Falsified:** each of the six code fixes undone in turn failed its own new test: the denial
+    wording, a stray or renamed case, a cost that is not a number, a sibling path, a ceiling of
+    4.996, a call with no result.
+  - **Numbers after the review:** 281 unit tests (+6), 0 skipped; the other counts unchanged.
 
 ---
 
