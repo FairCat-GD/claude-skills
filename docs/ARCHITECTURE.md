@@ -146,6 +146,11 @@ in `evals/crux-finder/cases/`, with the latest cycle's results in `evals/crux-fi
     denied under `--permission-prompts none`.
   - **The references** were read with Read, or with one shell `cat`, inside the `--add-dir`
     folder.
+  - **One read went outside both folders, and was not denied.** A run whose fetch returned a long
+    PDF read two files from its own session's tool-results folder, under `~/.claude/projects/`,
+    where the CLI had saved that output, even with `--no-session-persistence`. Session 5 recorded
+    reads outside the run's folders as denied; this folder is the run's own output, but E1's
+    isolation measurement must check it.
 
 Measured at intake, 2026-11-17, and again in Session 2, 2026-11-18: `claude` 2.1.326; uv 0.12.3;
 Python 3.10.20 installed through uv. In Session 4, 2026-11-20: `claude` 2.1.328. In Session 5,
@@ -811,7 +816,7 @@ never whether it is true.
 
 **Built.** Version 0.1.0 (2026-11-25), in `plugins/provenance-tracer/`, in crux-finder's shape.
 
-- **`SKILL.md`** (181 lines). Its frontmatter: `name`, the spec's description word for word in
+- **`SKILL.md`** (185 lines). Its frontmatter: `name`, the spec's description word for word in
   double quotes (it holds a colon), `license: MIT` and `metadata.version`. Its body:
   - what to read and when;
   - the need for web tools;
@@ -845,10 +850,12 @@ Every example in the references is invented and marked so. None is a spec eval c
 
 Decisions made here, each with its why:
 - **No web search or no page fetch: say so and stop.** A trace from memory would break *opened
-  sources only*, and search without fetch leaves nothing that can be opened.
+  sources only*, and search without fetch leaves nothing that can be opened. Each may come as a
+  tool, a deferred tool or a subagent, and the skill looks for every form first, since a headless
+  Claude Code run has WebFetch only through a subagent (*Context*).
 - **A private-person claim gets no tool call of any kind,** and the refusal does not repeat the
   name: the spec's "do not search", read so that nothing about the person leaves the
-  conversation.
+  conversation. The refusal carries no search note, since nothing is searched.
 - **Several claims share one question message** with the personal-chain questions for the claim
   picked. That keeps the spec's "at most one question message per trace" when both apply.
 - **The report's grammar, fixed for P2's graders and P3's checks:**
@@ -857,7 +864,11 @@ Decisions made here, each with its why:
     linked only if its fetch was tried;
   - the tier on every node, not only the root as the template shows;
   - titles in italics, so quotation marks hold only quotes;
-  - the assumptions block above the heading, so the template's lines keep their order.
+  - the assumptions block above the heading, so the template's lines keep their order;
+  - untraced claims listed in the assumptions without quotation marks, so quotation marks hold
+    only the heading's claim, the *Your version* line and sources' quotes;
+  - every status finding under *Status of the root*, the root's Primary first and any other
+    Primary's finding naming its source, since the template has no other place for status.
 
   The template's two `**Roots:**` lines stay as the spec wrote them: a label regex anchors on
   `**Roots:** <value> · **Grounding:**`.

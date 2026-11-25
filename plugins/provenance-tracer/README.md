@@ -83,7 +83,9 @@ It runs no code and installs nothing: it is instructions and references only.
 - **claude.ai:**
   - skills need *Code execution and file creation* turned on (Settings → Capabilities), though
     this one runs no code;
-  - the chat needs web search on.
+  - the chat needs web search on;
+  - it also needs to open the pages it finds. Whether claude.ai offers that with web search alone
+    is not yet checked; without it, the skill says so and stops.
 - **Other agents:** any agent that loads a skill's `SKILL.md` and can search the web and open
   pages.
 

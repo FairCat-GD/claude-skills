@@ -16,11 +16,10 @@ E1 cuts no version.
 
 - **Round 2 is provenance-tracer, and one eval engine for every skill:** P1 is done; E1, E2,
   E3, P2, P3, P4 and P5 remain.
-- **P1 is committed locally, not pushed.** `origin/main` holds everything through the intake's
-  review commit ("review: gold order reckoned from the results present now, crux-finder's
-  prompts free of the no-reply line, and 4 smaller"). A push makes provenance-tracer 0.1.0
-  installable; it needs the owner's yes. When that push is approved, `docs/BACKLOG.md`'s
-  *Installing from GitHub* gains provenance-tracer.
+- **Push status:** `origin/main` holds everything through P1's review commit ("review: page
+  fetch found in any form before the skill stops, no search note on a refusal, and 5 smaller"),
+  pushed with the owner's yes, so provenance-tracer 0.1.0 is installable from GitHub;
+  `docs/BACKLOG.md`'s *Installing from GitHub* names it. Nothing waits.
 - **What P1 left that E1 builds on:**
   - `plugins/provenance-tracer/` at 0.1.0, the third marketplace entry, in `PUBLISHED` and
     `LIMITS`. No case or result exists for it; P2 writes them.
@@ -34,6 +33,10 @@ E1 cuts no version.
     found among subagent events, which P3's "every chain URL in one of the run's fetches" needs.
   - **What a run should not do:** under `--permission-prompts none`, one Bash call, a local PDF
     text extraction, was denied, and no web call was.
+  - **A read outside the run's folders was allowed:** one run read its own session's tool-results
+    files under `~/.claude/projects/`, where the CLI saved a long fetch, despite
+    `--no-session-persistence` (*Context*, Built). E1's isolation measurement checks whether an
+    engine run can read beyond that folder.
 - **Decisions written down nowhere else, for P2 and P3:**
   - **The no-reply line** the P1 runs used, for P2's `append_system_prompt` to reuse word for
     word: `No reply is possible in this run: the user cannot answer questions.`

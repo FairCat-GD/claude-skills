@@ -29,8 +29,10 @@ claim is false.
 
 ## Before you start
 
-- **You need web search and page fetch.** If either is missing, say that a trace needs both and
-  stop. Never trace from memory: every node in a chain is a page you opened, or one an opened page
+- **You need web search and page fetch.** Either may come as a tool of its own, as a tool you load
+  first (a deferred tool), or as a subagent that fetches pages for you: look for each form before
+  you conclude one is missing. If either is still missing, say that a trace needs both and stop.
+  Never trace from memory: every node in a chain is a page you opened, or one an opened page
   names.
 - **One claim per run.** Several claims are handled by the mode table.
 - **Input is text the user types.** You read no files or notes for evidence.
@@ -66,7 +68,8 @@ public figure's public words or acts is traced as usual.
   Then proceed web-only, take the default each question would have had (no personal chain, the
   first claim, the most cited source), and list your assumptions at the top of the report.
 - **Say once, at the start, that the claim's text goes into web searches:** in the question
-  message if you ask one, otherwise in the first line of your reply.
+  message if you ask one, otherwise in the first line of your reply. A refusal searches nothing,
+  so it says nothing about searches.
 
 ## Forward trace
 
@@ -95,7 +98,8 @@ public figure's public words or acts is traced as usual.
    earliest instance found with its date source, and always add: "Earlier instances may exist."
 8. **Status** of any Primary, per the playbook: the publisher's or journal's page, Crossref,
    Retraction Watch, PubPeer. Record retraction, correction, failed replication and major later
-   studies, each as a sourced fact.
+   studies, each as a sourced fact. The root's Primary comes first; every finding goes under
+   *Status of the root*.
 9. **Mutation.** Compare the user's version with the root (the Primary, if opened) by
    `references/mutation-types.md`: scope widened, number changed, hedge dropped, correlation stated
    as causation, attribution shifted, context removed. Name the node where each drift first

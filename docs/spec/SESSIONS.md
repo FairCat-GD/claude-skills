@@ -215,6 +215,30 @@ invariants 2–4 and 8, *Context*, *The contract between the layers*, *verify*,
   - 13 Python files (±0);
   - 3 skill folders, 3 plugins, 3 marketplace entries (+1 each);
   - crux-finder's `checks.py` unchanged: 10 cases, every bar met.
+- **Review (`/code-review high`), 7 findings: 7 fixed and 0 skipped.** The owner chose to fix
+  all seven. The skill's fixes join 0.1.0, which is not yet published.
+  - **A headless run has WebFetch only through a subagent,** so the rule to stop without page
+    fetch could fire wrongly. `SKILL.md` now names the forms fetch may take (a tool, a deferred
+    tool, a subagent) and has the skill look for each first.
+  - **The search note was the first line of every reply,** the refusal included. It now leads only
+    a reply that leads to a search; the refusal says nothing about searches.
+  - **Status checks of a non-root Primary had nowhere to go.** The root's Primary is checked first,
+    and every finding goes under *Status of the root*, one about another Primary naming it.
+  - **Untraced claims were quoted in the assumptions block,** where P3's quote rule would count
+    them. They are listed without quotation marks.
+  - **`ARCHITECTURE.md`'s *Context* left out a read outside the run's folders:** one run read its
+    own tool-results files under `~/.claude/projects/`, not denied. Recorded, and named in the
+    handoff for E1's isolation measurement.
+  - **The changelog had no link references;** `[0.1.0]` now links the session commit.
+  - **claude.ai's page fetch was assumed.** The README says it is not yet checked, and
+    `docs/BACKLOG.md` names it for P5's smoke test.
+  - **Not rerun:** the three hand-tries ran on the skill before these wording fixes. The first
+    two fixes change no behaviour the runs showed (each run found its fetch tool, and the refusal
+    carried no note); P3's cycle runs on the skill as it now stands.
+  - **Numbers after the review:** 210 unit tests, 0 skipped; `SKILL.md` 185 lines; the other
+    counts unchanged.
+  - **Pushed** with the owner's yes, with this commit; `docs/BACKLOG.md`'s *Installing from
+    GitHub* gained provenance-tracer in it.
 
 ---
 

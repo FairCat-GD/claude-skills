@@ -42,17 +42,21 @@ Checks that need a person at the machine. Each has an automated check covering m
 these are the parts only a person can see.
 
 - **Installing from GitHub** (travel-itinerary-builder, 1.1.0 since Session 3's push;
-  crux-finder 1.0.0 since Session 8's push): run
+  crux-finder 1.0.0 since Session 8's push; provenance-tracer 0.1.0 since Session P1's push): run
   `/plugin marketplace add FairCat-GD/claude-skills`, then
-  `/plugin install travel-itinerary-builder@faircat-skills` and
-  `/plugin install crux-finder@faircat-skills` in Claude Code, and open each plugin's `homepage`
-  link. The `plugins` stage validates the manifests, and Sessions 2 and 4 installed the same
-  marketplace from this folder.
+  `/plugin install travel-itinerary-builder@faircat-skills`,
+  `/plugin install crux-finder@faircat-skills` and
+  `/plugin install provenance-tracer@faircat-skills` in Claude Code, and open each plugin's
+  `homepage` link. The `plugins` stage validates the manifests, and Sessions 2, 4 and P1
+  installed the same marketplace from this folder.
 
 - **travel-itinerary-builder 1.1.0 on Codex, claude.ai and other agents.** Session 3's run
   was in Claude Code only. On claude.ai, check that the upload accepts the `compatibility`
   field and that the PDF is offered for download. The `skills` stage validates the folder
   against the specification.
+- **provenance-tracer on claude.ai: page fetch.** The skill stops without page fetch, and its
+  README asks only for web search on claude.ai. Whether a claude.ai chat with web search on can
+  also open pages is checked in P5's smoke test. Named by Session P1's review.
 - **The itinerary skill's fallbacks:** the interview asked in chat with no question tool, and
   the plan delivered in chat where WeasyPrint can't run. Session 3 measured the PDF build's
   own fallbacks (offline fonts, PyMuPDF page images); these two paths need an agent without the

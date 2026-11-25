@@ -73,7 +73,8 @@ _Tiers describe position in the chain, not reliability. "No primary found" means
   failed replication, a major later study. With checks run and nothing found, one bullet naming
   the checks: `- No retraction, correction or failed replication found (journal page, Crossref,
   Retraction Watch, PubPeer).` With no Primary root, `- No primary found, so there was no status
-  to check.`
+  to check.` A status found for another Primary in the chain goes here too, after the root's,
+  its bullet starting with that source's name.
 - **Cold trails.** Each node that states the claim and cites nothing, other than the root (the
   rule in `labels.md`), linked, with its year. With none, `None.`
 - **Confidence** in the trace, not in the claim: `High`, `Medium` or `Low`, then the reason in one
@@ -102,8 +103,9 @@ _Tiers describe position in the chain, not reliability. "No primary found" means
 
 ## The search note
 
-The first line of your reply, unless you asked a question that carried it, or the assumptions
-block below carries it:
+The first line of a reply that leads to a search: a report, or a question sent before one. It is
+left out where the question you asked carried it, or the assumptions block below carries it. The
+refusal never carries it, since nothing is searched.
 
 ````markdown
 The claim's text goes into web searches; no name of anyone who told you about it does.
@@ -120,10 +122,13 @@ order. Its first bullet is the search note; then one bullet per default you took
 **Assumptions** (no reply is possible, so I asked nothing):
 - The claim's text goes into web searches.
 - No personal chain: traced from the web alone.
-- Several claims were given; this report traces the first. Not traced: "<claim 2>", "<claim 3>".
+- Several claims were given; this report traces the first. Not traced: <claim 2>; <claim 3>.
 
 ## Provenance: "<claim>"
 ````
+
+The untraced claims are listed in the user's words without quotation marks, so quotation marks in
+the report keep to its heading, the *Your version* line and the sources' quotes.
 
 In reverse mode, the bullets name the source chosen among several (`the most cited of <n>
 matches`), and the other matches.

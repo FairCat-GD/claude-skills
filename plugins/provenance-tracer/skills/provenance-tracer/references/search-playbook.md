@@ -100,8 +100,10 @@ topic. A page's "last updated" date is not its first date.
 
 ## Status of a Primary
 
-For each Primary in the chain, opened or not, check what happened to it after publication. Each
-check is a fetch within the budget, and each finding is reported as a sourced fact, linked.
+Check the root's Primary first, opened or not: its status is what the *Origin* modifiers judge.
+Then, while the fetch budget allows, any other Primary in the chain. Each check is a fetch within
+the budget, and each finding is reported under *Status of the root* as a sourced fact, linked; a
+finding about another Primary names that source at the start of its bullet.
 
 1. **The publisher's or journal's page** for the work: notices of retraction, correction or
    concern are usually linked from it.
