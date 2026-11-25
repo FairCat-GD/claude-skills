@@ -348,8 +348,9 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
     for provenance-tracer, the expected labels, the authoring date and the facts it must
     report, each checked on the web at authoring; `approved_by` in both; `source:` and
     `license:` where the input has them. The graders are drawn from it and approved by the
-    owner before they are committed. Every case but one-question cases tells the run no reply
-    is possible.
+    owner before they are committed. Every provenance-tracer case but the one that tests a
+    question tells the run no reply is possible; crux-finder's prompts carry no such line, as
+    round 1's runs had none and its one-sided case must be free to ask.
   - **A result** is `results/<id>/run-N.md`: a header (the case, the run, the model, the CLI's
     version, the skill's version, the commit, the date, the cost), the run's tool calls one per
     line (the tool and its query or URL), then the final reply as the run gave it; beside it,
@@ -360,7 +361,11 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
     recorded is asked at the start of Session E2.
   - **crux-finder's ten case ids stay.** Its `real-lincoln-douglas` gold gains its input's
     `source:` and `license:` in E2, after round 1's results are retired and before any new
-    one; its three claude.ai replies and their `review.md` stay.
+    one; its three claude.ai replies stay, their cases' `review.md` cut to the `## claude-ai`
+    section.
+  - **Gold order** is reckoned from the first commit of the results present now, never from a
+    results folder's whole history, which keeps retired cycles; a case's graders are unchanged
+    since each `run-N.md`'s commit, a check that does not apply to `claude-ai.md`.
 - **Machine identifiers, never renamed:** the marketplace name `faircat-skills`; the plugin
   and skill names `travel-itinerary-builder`, `crux-finder` and, from Session P1,
   `provenance-tracer`; the case ids once results exist.
@@ -811,8 +816,9 @@ gap:
 
 **Amended at the round 2 intake, with the owner** (2026-11-25): one engine for every skill,
 `claude plugin eval` (*Context*), from Session E2 on for crux-finder; what is above about
-quotes, words, symmetry, length, a question, gold order and the skill as it stands still holds
-for crux-finder, read from the new results.
+quotes, words, symmetry, length, a question and the skill as it stands still holds for
+crux-finder, read from the new results, and gold order too, reckoned from the results present
+now (*The data layer*).
 - **One runner, shared,** under `evals/`, standard library only (invariant 5, whose test lets
   a file under `evals/` import shared code there). Given a skill, it refuses while the plugin
   has uncommitted changes, records the commit, the skill's and the CLI's versions, runs the

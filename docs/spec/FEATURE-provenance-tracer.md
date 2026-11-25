@@ -228,7 +228,8 @@ are in `FEATURE-eval-engine.md`.
    misattributed quote, the retracted study's author), and its private-person case names an
    invented neighbour. Both are allowed in eval cases, and so in the committed replies and the
    README's tables that follow from them. `CLAUDE.md`'s fixtures line gains "or a public claim
-   about a public figure". A word in a reply that is on the owner's term list is asked about,
+   about a public figure", and allows an invented person in a fictional case's results. A word
+   in a reply that is on the owner's term list is asked about,
    never trimmed silently.
 4. **A claude.ai smoke test** ends the round: three cases (one forward case, the reverse case,
    the private-person case), run by the session in the owner's Chrome at the owner's word, with

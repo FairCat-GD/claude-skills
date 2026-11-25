@@ -72,8 +72,8 @@ invariants 2–4 and 8, *Context*, *The contract between the layers*, *verify*,
   triggered, the web tools' names as the run used them, the number of searches and fetches,
   the labels and footer, and whether it asked a question.
 - **Docs.**
-  - `CLAUDE.md`: the skill's name beside the others; invariant 4 as `ARCHITECTURE.md` now
-    states it.
+  - `CLAUDE.md`: the skill's name beside the others (invariant 4 already names it, from the
+    intake).
   - `ARCHITECTURE.md`: *provenance-tracer*'s Built part; *Overview*, *Layout and boundaries*,
     *The contract between the layers* and *Packaging*'s Built parts; invariant 4's *Enforced
     by*; *verify*'s `LIMITS`; the baseline.
@@ -182,7 +182,9 @@ layer*, *The eval harness*, *crux-finder* (Decided), *Known debt*; E1's done-not
 `evals/crux-finder/checks.py`, `tests/test_crux_finder_checks.py`.
 
 - **The ten cases** (EE 7): for each, a `prompt.md` holding the input's body unchanged, with
-  the frontmatter E1 measured to be needed (`allowed_tools`, the no-reply line); and graders
+  the frontmatter E1 measured to be needed (`allowed_tools`), and no line saying no reply is
+  possible: round 1's runs had none, and the one-sided case's gold needs the skill free to ask
+  for the other side's own words; and graders
   drawn from its `gold.md` and its note: crux, type and *no statement about people*, plus the
   gate and no-conflict rules where gold has them. The session drafts each grader; the owner
   approves every one before it is committed.
@@ -190,15 +192,20 @@ layer*, *The eval harness*, *crux-finder* (Decided), *Known debt*; E1's done-not
   and `license:` lines of its `input.md`. That case has no claude.ai reply, and its old results
   go in this commit, so its gold precedes every result it will have.
 - **The new checks** (EE 3–8), in `evals/crux-finder/checks.py`, rewritten on the shared code E1
-  left: gold's fields and `approved_by`; the gold order, and graders unchanged since each run's
-  commit; the pass bars from the verdicts and the owner's corrections; quotes, symmetry and
+  left: gold's fields and `approved_by`; the gold order, reckoned from the first commit of the
+  results present now (each file's adding commit, the earliest of them), never from the
+  folder's whole history, which still holds round 1's retired results; graders unchanged since
+  each `run-N.md`'s commit, which does not apply to `claude-ai.md`, older than every grader;
+  the pass bars from the verdicts and the owner's corrections; quotes, symmetry and
   length from each `run-N.md`; stability from the owner's record; the claude.ai rows from
   `claude-ai.md` and its `review.md`; *Runs on the skill as it stands*. Its tests rewritten
   with it.
 - **Retired in this commit,** so no checks ever read results they were not written for:
-  `evals/crux-finder/run.py` and its tests; each `input.md`; every `run-N.md` and `review.md`
-  of round 1's cycle, kept in git. The three `claude-ai.md` replies and their `review.md` stay
-  (EE 7, 8). `checks.py` then reports no cycle yet.
+  `evals/crux-finder/run.py` and its tests; each `input.md`; every `run-N.md` of round 1's
+  cycle, and the `review.md` of each case with no claude.ai reply, kept in git. The three
+  `claude-ai.md` replies stay (EE 7, 8), and their cases' `review.md` is cut to its
+  `## claude-ai` section, since it also holds sections for the retired runs. `checks.py` then
+  reports no cycle yet.
 - **Amended at intake, while writing this plan:** the approved plan retired the old harness in
   E3, with the new results. Moving the real case's `source:` and `license:` into its gold
   needs the old results gone before that gold changes, or the gold order fails; so the old
@@ -207,7 +214,8 @@ layer*, *The eval harness*, *crux-finder* (Decided), *Known debt*; E1's done-not
   - crux-finder's README: *How it was tested* keeps the fourth cycle's table, and says the
     reports and reviews are in the repository's history; E3 replaces it.
   - `CLAUDE.md`: *Commands* (the old runner's line removed, `checks.py`'s line as it now is);
-    invariants 6 and 7 as `ARCHITECTURE.md` now states them.
+    invariant 7's wording if the gold order's reckoning needs it (invariant 6 is reworded from
+    the intake).
   - `ARCHITECTURE.md`: *The data layer*'s and *The eval harness*'s Built parts; invariants 6
     and 7's *Enforced by*; *Testing strategy*; the baseline, whose `checks.py` row now reads no
     cycle yet.
@@ -222,8 +230,10 @@ layer*, *The eval harness*, *crux-finder* (Decided), *Known debt*; E1's done-not
 
 **Gates:**
 - `uv run scripts/verify.py`, green, with these tests: every check above, each falsified,
-  including a gold changed after its results, a grader changed after a run's commit, a
-  correction counted over a verdict, and a quote not in the prompt.
+  including a gold changed after its results, a gold changed after retired results and before
+  the present ones (which passes), a grader changed after a run's commit, a grader newer than a
+  `claude-ai.md` (which passes), a correction counted over a verdict, and a quote not in the
+  prompt.
 - `uv run evals/crux-finder/checks.py` reports ten cases, no cycle yet, the claude.ai rows
   3 / 3, and exit 0.
 - The engine loads all ten cases (one cheap run of one case, nothing committed).

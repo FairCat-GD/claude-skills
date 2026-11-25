@@ -52,8 +52,9 @@ amended at this intake; these are the decisions as the owner gave them.
 3. **`gold.md` stays, one per case:** the answer the owner approved, in flat `key: value` lines
    (`approved_by`, the authoring date, and `source:` and `license:` where the input has them),
    which a `checks.py` reads with no YAML library. The graders are drawn from it. It is
-   committed before any of the case's results, the graders are unchanged since each run's
-   commit, and the runner never opens or copies it.
+   committed before any of the case's results present now (a retired cycle's, kept in git, do
+   not count), the graders are unchanged since each run's commit, and the runner never opens
+   or copies it.
 4. **What a cycle commits:** for each run, `results/<id>/run-N.md`, as crux-finder's are today: a
    header (the case, the run, the model, the CLI's version, the skill's version, the commit, the
    date, the cost), the run's tool calls one per line (the tool and its query or URL), then the
@@ -68,7 +69,8 @@ amended at this intake; these are the decisions as the owner gave them.
    counted is asked at the start of E2. *Recommended:* one line per correction in the case's
    `review.md`, which `checks.py` counts over the grader's verdict.
 7. **crux-finder on the new engine:**
-   - its ten case ids stay, and each input's body becomes its `prompt.md` unchanged;
+   - its ten case ids stay, and each input's body becomes its `prompt.md` unchanged, with no
+     line saying no reply is possible, as round 1's runs had none;
    - crux, type and *no statement about people* become `llm` and `regex` graders drawn from
      each `gold.md`, approved by the owner before they are committed;
    - stability is the owner's: they compare the two runs' crux sentences of each case;
@@ -79,8 +81,9 @@ amended at this intake; these are the decisions as the owner gave them.
      `source:` and `license:` into its gold must precede its first result (invariant 7);
    - a fresh cycle on the new engine, and the README's *How it was tested* and its table
      rewritten from it;
-   - the three claude.ai replies of round 1's smoke test stay, with their `review.md`, since
-     the skill they ran is unchanged;
+   - the three claude.ai replies of round 1's smoke test stay, with their verdicts (each
+     case's `review.md` cut to its `## claude-ai` section), since the skill they ran is
+     unchanged;
    - its version moves only if its shipped files change.
 8. **A claude.ai reply is judged by the owner,** recorded in that case's `review.md`, for both
    skills, since the engine cannot grade a reply it did not run.

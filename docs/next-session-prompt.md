@@ -18,8 +18,10 @@ Release provenance-tracer 0.1.0.
 - **Round 2 is provenance-tracer, and one eval engine for every skill:** the intake is done;
   P1, E1, E2, E3, P2, P3, P4 and P5 remain. P1 is the round's first session, so there is no
   previous done-note to read.
-- **The intake is committed locally, not pushed.** `origin/main` holds everything through
-  `docs: close round 1`.
+- **Push status:** `origin/main` holds everything through the intake's review commit
+  ("review: gold order reckoned from the results present now, crux-finder's prompts free of
+  the no-reply line, and 4 smaller"), pushed with the owner's yes. No skill's version moved, so
+  nothing installed from `faircat-skills` changes. Nothing waits.
 - **What P1 builds on:**
   - `.claude-plugin/marketplace.json` lists two plugins, each `{"name", "source"}`; the new
     entry follows them.
@@ -29,10 +31,16 @@ Release provenance-tracer 0.1.0.
   - `plugins/crux-finder/` is the shape to copy: `plugin.json` with `name`, `version`,
     `description`, `author`, `homepage`, `license`; `SKILL.md` naming each reference by its
     path, which the `skills` stage requires.
-- **Decisions written down nowhere else:** the intake moved the retirement of crux-finder's old
-  eval harness from E3 to E2 while writing the plan, so the real debate case's gold can gain
-  its `source:` and `license:` before any new result (E2's block says why). The spec's file is
-  copied byte for byte into `FEATURE-provenance-tracer.md`; nothing else holds it.
+- **The plan changed after the owner approved it:** the intake moved the retirement of
+  crux-finder's old eval harness from E3 to E2 while writing the plan, so the real debate
+  case's gold can gain its `source:` and `license:` before any new result; E2's block and
+  `FEATURE-eval-engine.md` decision 7 record it.
+- **The spec lives only in the repository's copy:** `FEATURE-provenance-tracer.md` holds the
+  owner's file byte for byte.
+- **The intake's review** fixed the gold order's reckoning (from the results present now),
+  kept crux-finder's prompts free of the no-reply line, cut the three claude.ai cases'
+  `review.md` to their claude.ai section, allowed an invented person in a fictional case's
+  results, and reworded `CLAUDE.md`'s invariants 4 and 6 to match `ARCHITECTURE.md`.
 - **Baseline** (ARCHITECTURE's table, crux-finder 1.0.0 and travel-itinerary-builder 1.1.0):
   `verify` green with 6 stages, about 25 s; 208 unit tests passed, 0 skipped; 13 Python files;
   2 skill folders, 2 plugins, 2 marketplace entries; `claude` 2.1.330; `checks.py`:

@@ -58,9 +58,11 @@ them) and anything still open moves to `docs/BACKLOG.md`. **State lives in
 2. A skill's names agree everywhere, and every plugin is listed in the marketplace (the
    `plugins` stage).
 3. A skill's version is the same in `plugin.json` and `metadata.version` (the `skills` stage).
-4. crux-finder ships no scripts and needs no network or dependencies (the `skills` stage).
+4. crux-finder and provenance-tracer ship no scripts, and crux-finder needs no network or
+   dependencies (the `skills` stage).
 5. Everything under `evals/` imports the standard library only (a test).
-6. Neither the eval runner nor the session under test reads `gold.md` (a test; the run's
+6. Neither the eval runner nor the session under test reads `gold.md`, and the session under
+   test reads no grader; a shared runner copies graders unopened (a test; the run's
    isolation).
 7. Each `gold.md` is committed before any of its results, and names who approved it
    (`checks.py`).
@@ -89,7 +91,8 @@ follows these rules:
   Codex, claude.ai or the `claude` CLI as targets or tools is fine.
 - **Fixtures are fictional.** Eval inputs are fictional, public domain, written and
   anonymized by the owner, or a public claim about a public figure. A public figure such a
-  case names may be named in its results and in a README's test table; a private person never.
+  case names may be named in its results and in a README's test table, and an invented person
+  a fictional case names, in its results; a real private person never.
 - **Done-notes and handoffs never name the owner's own data.**
 - **Unsure whether something is public? Ask the owner before writing it.** A word they call
   private goes on the term list.
