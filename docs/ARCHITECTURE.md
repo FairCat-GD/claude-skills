@@ -41,9 +41,9 @@ outside the shipped folders; from round 2 every skill's run on one engine, `clau
 eval`, through one runner (*The eval harness*). The tooling proves the repository is sound and
 ships nowhere.
 
-**Built.** The marketplace, `.claude-plugin/marketplace.json`, lists two plugins,
-`plugins/travel-itinerary-builder/` and `plugins/crux-finder/`, each with its skill folder at
-`plugins/<skill>/skills/<skill>/`. The tooling:
+**Built.** The marketplace, `.claude-plugin/marketplace.json`, lists three plugins,
+`plugins/travel-itinerary-builder/`, `plugins/crux-finder/` and `plugins/provenance-tracer/`,
+each with its skill folder at `plugins/<skill>/skills/<skill>/`. The tooling:
 `scripts/verify.py`, `scripts/hygiene.py`, `scripts/check_skills.py`, `scripts/check_plugins.py`
 and `tests/`. The evals: `evals/crux-finder/run.py` and `checks.py`, and crux-finder's ten cases
 in `evals/crux-finder/cases/`, with the latest cycle's results in `evals/crux-finder/results/`.
@@ -133,13 +133,26 @@ in `evals/crux-finder/cases/`, with the latest cycle's results in `evals/crux-fi
   button under a reply gives its Markdown as `text/plain`, which the session read by wrapping
   the page's clipboard calls. *Delete* in the plugin's menu removed it after a "can't be
   undone" prompt, and a `claude` start after that listed no `crux-finder` skill.
+- **`claude -p` with the web tools,** measured in Session P1 on provenance-tracer: Session 5's
+  isolation flags and `CLAUDE_CODE_DISABLE_AUTO_MEMORY=1`, plus `--allowedTools WebSearch
+  WebFetch`, the plugin given in place by `--plugin-dir` and `--add-dir`, from an empty folder in
+  a temporary directory. The start event listed the plugin and Claude Code's built-ins only, no
+  MCP server, the `default` mode and no memory paths.
+  - **WebSearch** is among the session's tools, deferred: each run loaded it with ToolSearch
+    (`select:WebSearch`) before its first search.
+  - **WebFetch** is not among the main session's tools. Every fetch ran inside a built-in
+    `web-fetch` subagent (the Agent tool), as a WebFetch call in the subagent's events.
+  - **Permissions:** no web call was denied. One Bash call, a local PDF text extraction, was
+    denied under `--permission-prompts none`.
+  - **The references** were read with Read, or with one shell `cat`, inside the `--add-dir`
+    folder.
 
 Measured at intake, 2026-11-17, and again in Session 2, 2026-11-18: `claude` 2.1.326; uv 0.12.3;
 Python 3.10.20 installed through uv. In Session 4, 2026-11-20: `claude` 2.1.328. In Session 5,
 2026-11-20, Session 7, 2026-11-21, and Session 7a, 2026-11-22: `claude` 2.1.329. In Session 7b,
 2026-11-22: 2.1.329 at the start, and 2.1.330 from the cycle's sixteenth run, the CLI having
 updated itself mid-cycle. In Session 7c, 2026-11-22: 2.1.330 throughout. In Session 8,
-2026-11-22: 2.1.330.
+2026-11-22: 2.1.330. In Session P1, 2026-11-25: 2.1.330.
 
 ## Stack and pins
 
@@ -195,10 +208,10 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   - `verify` never runs the evals.
 
 **Built.**
-- `.claude-plugin/marketplace.json`, and two plugins, each with `.claude-plugin/plugin.json`,
+- `.claude-plugin/marketplace.json`, and three plugins, each with `.claude-plugin/plugin.json`,
   `README.md`, `CHANGELOG.md` and its skill folder: `plugins/travel-itinerary-builder/`
-  (`SKILL.md` and four files under `references/`) and `plugins/crux-finder/` (`SKILL.md` and
-  three).
+  (`SKILL.md` and four files under `references/`), `plugins/crux-finder/` (`SKILL.md` and
+  three) and `plugins/provenance-tracer/` (`SKILL.md` and four).
 - `scripts/` holds `verify.py`, `hygiene.py`, `check_skills.py` and `check_plugins.py`, all
   standard library only. The two checks are named for their stages with a `check_` prefix, so
   neither reads as the `plugins/` folder on the import path.
@@ -240,8 +253,10 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
    search and page fetch, and nothing else). Amended at the round 2 intake, with the owner
    (2026-11-25), adding provenance-tracer. *Enforced by* the `skills` stage
    (`scripts/check_skills.py`): crux-finder's row in `LIMITS`
-   forbids a `scripts/` folder and any file but `SKILL.md` and Markdown under `references/`. Needing no network or dependencies is held by the last read of
-   each diff. provenance-tracer's row: not yet, Session P1.
+   forbids a `scripts/` folder and any file but `SKILL.md` and Markdown under `references/`, and
+   provenance-tracer's row the same, each `Limits(lines=300, scripts=False)`, held by
+   `tests/test_check_skills.py`. crux-finder needing no network or dependencies is held by the
+   last read of each diff.
 5. **Everything under `evals/` imports the standard library only.** *Why:* PDD B, *Scope*.
    *Enforced by* `tests/test_evals_stdlib.py`: every import in every Python file under `evals/`,
    read with `ast`, names a module in `sys.stdlib_module_names`.
@@ -263,7 +278,7 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
    skill's name. *Why:* people install by them, and a rename strands their install. *Enforced
    by* the `plugins` stage, against the published names in `scripts/check_plugins.py`
    (`MARKETPLACE` and `PUBLISHED`); a plugin's skill folder takes its name, so the same check
-   holds the skill's.
+   holds the skill's. `tests/test_check_plugins.py` holds `PUBLISHED` to the three names.
 9. **Nothing private enters the repository.** *Why:* the repository is public, and history
    cannot be cleaned without a rewrite. *Enforced by* the hygiene stage of `verify`
    (`scripts/hygiene.py`): the owner's term list against every file, path and commit message,
@@ -286,8 +301,8 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   name, and `homepage`, the plugin's README on GitHub; no keywords.
 
 **Built.**
-- The marketplace's two entries are `{"name": "<skill>", "source": "./plugins/<skill>"}`, for
-  `travel-itinerary-builder` and `crux-finder`. They carry no description, so a plugin's
+- The marketplace's three entries are `{"name": "<skill>", "source": "./plugins/<skill>"}`, for
+  `travel-itinerary-builder`, `crux-finder` and `provenance-tracer`. They carry no description, so a plugin's
   description is set once, in its `plugin.json`, and `claude plugin validate --strict` accepts
   it so.
 - The marketplace's own description, under `metadata`, is the root README's first sentence. The
@@ -424,9 +439,9 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
 alone by name, then a summary; `--message <draft>` gives `hygiene` the drafted commit message.
 One command serves every commit, docs only or not.
 - **`skills`:** the Agent Skills validator on every skill folder; `SKILL.md` under 500 lines,
-  and under each skill's own lower limit where it has one (crux-finder: 300); every file under
-  `references/` linked from `SKILL.md`; `metadata.version` equal to the plugin's version;
-  crux-finder has no `scripts/` folder. The per-skill limits are one table in the stage.
+  and under each skill's own lower limit where it has one (crux-finder and provenance-tracer:
+  300); every file under `references/` linked from `SKILL.md`; `metadata.version` equal to the
+  plugin's version; crux-finder and provenance-tracer have no `scripts/` folder. The per-skill limits are one table in the stage.
 - **`plugins`:** `claude plugin validate` on the marketplace root and on each plugin; every
   plugin folder listed; each entry name equal to its manifest name; every published name
   present.
@@ -493,8 +508,8 @@ Decisions made here, each with its why:
   frontmatter, with strictyaml.
 - **`LIMITS` is one table, a row per skill,** each row a `Limits` of `lines` and `scripts`,
   whose defaults are what the specification allows. A skill's own limits then read in one
-  place, as the per-skill limits are one table in the Decided part. Its one row is
-  crux-finder's: `Limits(lines=300, scripts=False)`.
+  place, as the per-skill limits are one table in the Decided part. Its two rows, crux-finder's
+  and provenance-tracer's, are each `Limits(lines=300, scripts=False)`.
 - **Folder discovery lives in `check_plugins.py`;** `check_skills.py` and `verify` import it, so
   the stages and their checks never disagree on what a skill or plugin folder is. A dot folder
   is neither.
@@ -773,15 +788,105 @@ never whether it is true.
   Code, never naming hearsay; the guardrails (no verdict in the report's own voice, opened
   sources only, honest nulls, the claim text in searches said once, no private person's name in
   a search, at most one quote per source, under 15 words).
-- **Asking the user:** how the skill tells that no reply is possible is asked at the start of
-  Session P1. Every eval case but the one that tests a question says so in its system prompt.
+- **Asking the user** (settled at the start of Session P1, with the owner, 2026-11-25): the skill
+  assumes a person is there to answer, unless the prompt or the system prompt says no reply is
+  possible, or it runs as a subagent or a scheduled task; then it never asks, proceeds web-only,
+  takes each question's default and lists its assumptions at the top. Every eval case but the one
+  that tests a question says so in its system prompt.
+- **Roots** (settled at the start of Session P1, with the owner, 2026-11-25, where the spec's step
+  7 and its *Cold trails* disagree): a root cites nothing earlier and originates the claim, its
+  own data, study, document, speech or text, or, where no chain reaches such an origin, it is the
+  earliest instance found. Any other node that states the claim and cites nothing is a cold trail:
+  counted as a retelling, never a root. Independent means two or more such origins. Read so, the
+  spec's six labelled cases give the labels it expects.
+- **Two rules added mid-Session P1, with the owner** (2026-11-25), after the first three
+  hand-tries: the report is the whole answer, with nothing after its last line (both reports had
+  added a closing summary); and all 6 opening queries are run before judging whether to add more
+  (the forward run had stopped at 3).
 - **Versions:** 0.1.0 when built (P1), a minor bump per change an eval cycle calls for, 1.0.0
   once a cycle meets every bar on the skill as it stands, tagged
   `provenance-tracer--v1.0.0`.
 - **Out of scope:** the notes-vault mode, truth verdicts, more than one claim per run, claims
   about private individuals (`docs/BACKLOG.md`, the last by design).
 
-**Built.** Not yet: Session P1 (the skill), P2 and P3 (its cases and first cycle).
+**Built.** Version 0.1.0 (2026-11-25), in `plugins/provenance-tracer/`, in crux-finder's shape.
+
+- **`SKILL.md`** (181 lines). Its frontmatter: `name`, the spec's description word for word in
+  double quotes (it holds a colon), `license: MIT` and `metadata.version`. Its body:
+  - what to read and when;
+  - the need for web tools;
+  - the spec's mode table, its private-person row checked first;
+  - asking the user;
+  - the forward trace's eleven steps and the reverse trace's five, with the spec's numbers;
+  - the labels table;
+  - the report's rules;
+  - the guardrails;
+  - a check before sending.
+- **`references/labels.md`:** tiers, the roots rule, counting retellings, both axes, the
+  modifiers and the label line.
+- **`references/mutation-types.md`:** the six drifts and "other", and where a drift first
+  appears.
+- **`references/search-playbook.md`:**
+  - what never goes into a query;
+  - the six query families;
+  - the budgets and stop rules;
+  - opening, following and dating a page (the Wayback Machine's capture index for an archive
+    date);
+  - the status checks;
+  - reverse mode.
+- **`references/output-template.md`:**
+  - the spec's forward template verbatim;
+  - how to fill it in;
+  - the search note, the assumptions block, the question, the refusal;
+  - the reverse report;
+  - saving a report.
+
+Every example in the references is invented and marked so. None is a spec eval case.
+
+Decisions made here, each with its why:
+- **No web search or no page fetch: say so and stop.** A trace from memory would break *opened
+  sources only*, and search without fetch leaves nothing that can be opened.
+- **A private-person claim gets no tool call of any kind,** and the refusal does not repeat the
+  name: the spec's "do not search", read so that nothing about the person leaves the
+  conversation.
+- **Several claims share one question message** with the personal-chain questions for the claim
+  picked. That keeps the spec's "at most one question message per trace" when both apply.
+- **The report's grammar, fixed for P2's graders and P3's checks:**
+  - modifiers after the Grounding value, each after ` · `, in the spec's order;
+  - every node linked to the URL exactly as passed to the fetch tool, and a `(not opened)` node
+    linked only if its fetch was tried;
+  - the tier on every node, not only the root as the template shows;
+  - titles in italics, so quotation marks hold only quotes;
+  - the assumptions block above the heading, so the template's lines keep their order.
+
+  The template's two `**Roots:**` lines stay as the spec wrote them: a label regex anchors on
+  `**Roots:** <value> · **Grounding:**`.
+- **The reverse report is as the spec lists it:** the source and status first, then *What it
+  found*, *Popular versions* and the beliefs table if asked, with no labels, Confidence or footer.
+  The footer speaks of tiers and labels, which a reverse report does not carry.
+- **Confidence is in the trace, not the claim:** High, Medium or Low by what was opened and how
+  each date is known.
+
+**Tried by hand** (Session P1, `claude` 2.1.330, `claude-opus-5-5`, as *Context* describes,
+each run with a system-prompt line saying no reply is possible). Three inputs: a quote
+misattributed to a famous scientist, a 1999 psychology paper named for a reverse trace, and a
+claim about an invented coworker.
+- **The first three runs:**
+  - the forward and reverse runs triggered the skill and gave reports in the template's shapes,
+    each followed by a closing summary;
+  - the forward run made 3 searches;
+  - the private-person prompt, worded "Where did this come from?", did not trigger the skill. The
+    model declined to search on its own.
+- **After the two rules above and a reworded prompt,** all three triggered the skill:
+  - **forward:** 6 searches and 7 fetches; Echo · No primary found · Mutated · Misattributed; the
+    count and earliest-instance lines; ended at the footer;
+  - **reverse:** 3 searches and 13 fetches; the status checks; ended at *Popular versions*;
+  - **private person:** no tool call but the Skill tool; the refusal, without the name.
+- **In every run:** nothing asked, the assumptions block where a report was written, and no web
+  call denied.
+- **Spend:** six runs, $2.67.
+
+**Not yet:** the cases (P2) and the first cycle (P3).
 
 ## The eval harness
 
@@ -928,7 +1033,8 @@ Built: Validators (the `skills` and `plugins` stages), Unit (`tests/test_verify.
 and Hygiene. Evals: the tooling (`run.py`, `checks.py`) and crux-finder's ten cases; the first
 cycle ran in Session 7, on crux-finder 0.1.0, the second in Session 7a, on 0.2.0, the third
 in Session 7b, on 0.3.0, and the fourth in Session 7c, on 0.4.0, which met every bar and was
-followed by the claude.ai smoke test on three cases.
+followed by the claude.ai smoke test on three cases. provenance-tracer has no eval set yet (P2,
+P3); its first version was tried by hand, headless and installed (Session P1).
 
 ## Packaging
 
@@ -957,6 +1063,18 @@ Session 7c the 0.4.0 zip (`zip -r -X crux-finder.zip crux-finder -x '*.DS_Store'
 outside the repository: `SKILL.md` and the three references) was uploaded on claude.ai's Plugins
 page, run on the smoke test's three cases, and deleted (*Context*).
 
+provenance-tracer, the third plugin, in Session P1:
+- **Installed from this folder:**
+  - `claude plugin marketplace add ./`;
+  - `claude plugin install provenance-tracer@faircat-skills`;
+  - `claude plugin details provenance-tracer` listed its one skill at 0.1.0, about 78 tokens
+    always on and 3.6k on invoke;
+  - `claude plugin marketplace remove faircat-skills` removed both; neither list shows them.
+- **Its claude.ai zip** (`zip -r -X provenance-tracer.zip provenance-tracer -x '*.DS_Store'`, made
+  outside the repository) holds the folder at its root: `SKILL.md` and the four references. It
+  is not uploaded until P5.
+- **Untagged.** It joins the install from GitHub once pushed.
+
 ## Deliberate decisions
 
 **Decided.**
@@ -979,17 +1097,17 @@ page, run on the smoke test's three cases, and deleted (*Context*).
 
 ## Baseline
 
-Measured 2026-11-22 with Python 3.10.20, uv 0.12.3, ruff 0.17.5, pytest 9.2.0, `claude` 2.1.330
+Measured 2026-11-25 with Python 3.10.20, uv 0.12.3, ruff 0.17.5, pytest 9.2.0, `claude` 2.1.330
 and the validator at `83021e2`. The heading carries no version because the repository has none
 of its own: each skill has its own version.
 
 | Check | Expected |
 |---|---|
 | `uv run scripts/verify.py` | green: 6 stages (`skills`, `plugins`, `format`, `lint`, `tests`, `hygiene`), about 25 s with uv's cache warm, most of it the eval tooling's git fixtures |
-| Unit tests (`tests`) | 208 passed, 0 skipped: 75 in `test_crux_finder_checks.py`, 45 in `test_hygiene.py`, 35 in `test_check_skills.py`, 22 in `test_crux_finder_run.py`, 19 in `test_check_plugins.py`, 10 in `test_verify.py`, 2 in `test_evals_stdlib.py` |
+| Unit tests (`tests`) | 210 passed, 0 skipped: 75 in `test_crux_finder_checks.py`, 45 in `test_hygiene.py`, 36 in `test_check_skills.py`, 22 in `test_crux_finder_run.py`, 20 in `test_check_plugins.py`, 10 in `test_verify.py`, 2 in `test_evals_stdlib.py` |
 | `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
 | Python files (`ruff format --check .`) | 13 |
-| Skills and plugins | 2 skill folders, 2 plugins, 2 marketplace entries |
+| Skills and plugins | 3 skill folders, 3 plugins, 3 marketplace entries |
 | `uv run evals/crux-finder/checks.py` | Session 7c's cycle and smoke test on 0.4.0, read on 1.0.0, whose skill differs only in its version line: `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0, the "as it stands" row 20 / 20 and the smoke test's row 3 / 3 |
 
 A documentation or refactoring change should not move any of these. If one moves, that is the
@@ -1047,3 +1165,13 @@ finding.
   invariant 6 covers the graders; *Packaging* names provenance-tracer's tag. The owner settled
   each at the intake: the engine for crux-finder too, asking for one layout for every skill;
   what a cycle commits, after the plan review showed the engine's JSON holds no whole reply.
+- 2026-11-25, Session P1: *provenance-tracer* gains how the skill tells that no reply is
+  possible, and the roots rule, where the spec's step 7 and its *Cold trails* disagree. The owner
+  settled both at the start of Session P1, as the session recommended, the second after the plan's
+  adversarial review found the disagreement.
+- 2026-11-25, Session P1: *verify*'s Decided limits name provenance-tracer beside crux-finder
+  (under 300 lines, no `scripts/` folder), as decision PT 10 settled at the round 2 intake. Amended
+  at plan time, with the owner, since the block named only *verify*'s Built part.
+- 2026-11-25, Session P1: *provenance-tracer* gains two rules: nothing follows the report, and all
+  6 opening queries run before judging whether to add more. The owner settled both mid-session,
+  after the first three hand-tries ended in a closing summary and stopped at 3 searches.

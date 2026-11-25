@@ -107,6 +107,115 @@ invariants 2–4 and 8, *Context*, *The contract between the layers*, *verify*,
 - **`claude plugin marketplace add ./` registers this folder in the owner's user settings**
   (`CLAUDE.md`'s *Watch for*): remove it before the session ends.
 
+**Done (2026-11-25, provenance-tracer 0.1.0).**
+- **Decided with the user:**
+  - **No reply possible** (the block's Ask), as recommended: the skill assumes a person is there
+    unless the prompt or the system prompt says no reply is possible, or it runs as a subagent or
+    a scheduled task; then it asks nothing, proceeds web-only and lists its assumptions at the top.
+  - **At plan time, after an adversarial review of the plan at the owner's request:**
+    - **The roots rule**, where the spec's step 7 and its *Cold trails* disagree: a root cites
+      nothing earlier and originates the claim, or, where no chain reaches an origin, it is the
+      earliest instance found; any other uncited node is a cold trail, counted as a retelling.
+      Read so, the spec's six labelled cases give the labels it expects.
+    - **The hand-tries:** three inputs (a quote misattributed to a famous scientist, a 1999
+      psychology paper for a reverse trace, a claim about an invented coworker), each with a
+      system-prompt line saying no reply is possible, and at most $30, $8 and 900 s a run.
+  - **Mid-session, after the first three runs:**
+    - two general rules: nothing follows the report, and all 6 opening queries are run before
+      judging whether to add more;
+    - the private-person prompt reworded;
+    - all three rerun.
+  - **Confirms:** *provenance-tracer* and *Packaging*, each confirmed as built.
+- **The skill,** `plugins/provenance-tracer/skills/provenance-tracer/`:
+  - **`SKILL.md`** (181 lines): the spec's description word for word (184 characters), `license:
+    MIT` and `metadata.version: "0.1.0"`; the mode table, asking the user, both traces in brief,
+    the labels, the report's rules, the guardrails and a check before sending.
+  - **Four references:** `labels.md` (tiers, roots, both axes, modifiers), `mutation-types.md`
+    (the six drifts), `search-playbook.md` (queries, budgets, dating, status checks) and
+    `output-template.md` (the spec's forward template verbatim, its grammar, the variants, the
+    reverse report).
+  - **Examples:** every one invented and marked so; none is a spec eval case.
+- **The plugin:**
+  - **`plugin.json`** at 0.1.0, its description the first sentence of the skill's.
+  - **`CHANGELOG.md`** `[0.1.0]`. Its link reference waits for this commit's sha, added in the
+    review commit.
+  - **`README.md`,** its user guide: what it does and never does, what it needs on each target,
+    and each target's install. No test results yet.
+- **The marketplace and the checks:**
+  - the third marketplace entry;
+  - `provenance-tracer` in `PUBLISHED`;
+  - its `LIMITS` row, `Limits(lines=300, scripts=False)`;
+  - two tests: the row, and the real `PUBLISHED`, read at import before the autouse fixture
+    patches it, equal to the three names.
+- **Docs:**
+  - the root README's **Research** heading, the skill *(in development)*;
+  - `CLAUDE.md`'s published names;
+  - `ARCHITECTURE.md`:
+    - *Overview*, *Context*, *Layout*, invariants 4 and 8, *The contract* and *verify*;
+    - *provenance-tracer* Decided and Built;
+    - *Packaging*, *Testing strategy* and the baseline;
+    - three *Decision log* lines;
+  - `docs/BACKLOG.md`: "either skill" on Codex is now "a skill".
+- **Amendments:**
+  - ***verify*'s Decided limits line** names provenance-tracer beside crux-finder, as PT 10 settled
+    at intake. Amended at plan time, with the owner: the block named only *verify*'s Built part.
+  - **The skill changed after its first runs,** with the owner (above).
+  - **`docs/BACKLOG.md`'s *Installing from GitHub*** gains provenance-tracer only when a push is
+    approved, folded in then, so it never states a push that has not happened.
+- **Measured** (`claude` 2.1.330; each run's model claude-opus-5-5):
+  - **Setup:** headless, from an empty folder in a temporary directory, with Session 5's
+    isolation flags plus `--allowedTools WebSearch WebFetch` and the plugin in place.
+  - **Start event:** the plugin and the built-ins only, no MCP server, the `default` mode, no
+    memory.
+  - **Web tools:** WebSearch is deferred and was loaded with ToolSearch before the first search.
+    WebFetch is not a main-session tool: every fetch ran in a built-in `web-fetch` subagent, as a
+    WebFetch call among the subagent's events.
+  - **Denials:** no web call was denied. One Bash call, a local PDF text extraction, was.
+  - **References:** read with Read, or one shell `cat`, inside the `--add-dir` folder.
+- **Checked by hand:**
+  - **The first three runs:**
+    - forward: triggered; Echo · No primary found · Mutated · Misattributed; 3 searches, 8
+      fetches; a closing summary after the footer;
+    - reverse: triggered; the spec's reverse shape; 4 searches, 16 fetches; a closing summary;
+    - private person, worded "Where did this come from? …": the skill did not trigger, and the
+      model declined to search on its own.
+  - **After the fixes:**
+
+    | Run | Skill | Searches / fetches | Asked | Last line | Cost |
+    |---|---|---|---|---|---|
+    | Forward | triggered | 6 / 7 | no, assumptions listed | the footer | $0.59 |
+    | Reverse | triggered | 3 / 13 | no, assumptions listed | *Popular versions* | $0.71 |
+    | Private person | triggered | 0 / 0, no tool call but Skill | no | the refusal, without the name | $0.10 |
+
+    - The forward run's labels: Echo · No primary found · Mutated · Misattributed, 11 retellings,
+      the earliest-instance and footer lines present.
+    - A few drift cells in the reverse report quoted a word or two from a source that already had
+      its one quote: P3's quote check is the judge.
+  - **Spend:** six runs, $2.67. Nothing a run wrote is committed.
+  - **Installed:**
+    - `claude plugin marketplace add ./` and `install provenance-tracer@faircat-skills` (scope
+      user);
+    - `details`: 0.1.0, Skills (1) `provenance-tracer`, about 78 tokens always on and 3.6k on
+      invoke;
+    - `marketplace remove faircat-skills` uninstalled it; neither `marketplace list` nor
+      `plugin list` shows either.
+  - **The claude.ai zip,** made outside the repository: the folder at its root, `SKILL.md` and the
+    four references. Not uploaded (P5).
+- **Falsified,** each through the whole `verify`, the file copied aside and back:
+  - `SKILL.md` padded to 300 lines failed `skills` alone, at `check_skills.py`;
+  - `scripts/probe.sh` in the skill folder failed `skills` alone;
+  - the marketplace entry removed failed `plugins` alone: not listed, and the published name with
+    no entry;
+  - `metadata.version` "0.1.1" failed `skills` alone;
+  - the row at `lines=301` failed `tests` alone, at its test;
+  - the name dropped from `PUBLISHED` failed `tests` alone, at its test.
+- **Numbers:**
+  - 210 unit tests (+2), 0 skipped;
+  - 6 `verify` stages;
+  - 13 Python files (±0);
+  - 3 skill folders, 3 plugins, 3 marketplace entries (+1 each);
+  - crux-finder's `checks.py` unchanged: 10 cases, every bar met.
+
 ---
 
 ## E1: The eval engine, measured, and the shared runner

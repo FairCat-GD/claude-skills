@@ -26,7 +26,7 @@ up, it moves out of this file.
   line, and 0.3.0's rule that such a report has no secondary cruxes, are measured by no case:
   every eval input comes in a fresh session. A case would need the dispute to arise in the same
   conversation, which `run.py`'s single prompt cannot give (Session 7a's review).
-- **Running either skill on Codex or another agent.** Their install steps are documented; no
+- **Running a skill on Codex or another agent.** Each skill's install steps are documented; no
   session runs them. Left out at the round 1 intake.
 - **provenance-tracer: a notes-vault mode.** An optional path to a notes folder as an extra
   source of evidence; the owner's spec parks it until the first version's evals pass. Left out

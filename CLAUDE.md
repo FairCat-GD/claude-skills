@@ -6,8 +6,8 @@ its `.claude-plugin/plugin.json`, `README.md` and `CHANGELOG.md`; and
 `plugins/<skill>/skills/<skill>/` is the skill folder that ships, `SKILL.md` and `references/`.
 Each skill also works as a plain skill folder in Codex, claude.ai and any agent that loads
 `SKILL.md`. The marketplace name and each plugin's and skill's name
-(`travel-itinerary-builder`, `crux-finder`) never change once published, because people install
-by them.
+(`travel-itinerary-builder`, `crux-finder`, `provenance-tracer`) never change once published,
+because people install by them.
 
 **Each plugin's `README.md` is its skill's user guide;** there is no `docs/USER-GUIDE.md`. It
 says what the skill does, what it needs on each target and how to install it, and crux-finder's

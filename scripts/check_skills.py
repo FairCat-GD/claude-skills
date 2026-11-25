@@ -35,6 +35,7 @@ class Limits(NamedTuple):
 LIMITS: dict[str, Limits] = {
     # A short SKILL.md, and instructions and references only (invariant 4).
     "crux-finder": Limits(lines=300, scripts=False),
+    "provenance-tracer": Limits(lines=300, scripts=False),
 }
 # A path into references/ as SKILL.md names it, in a Markdown link or in backticks: at the start
 # of a word or after `./`, never inside a URL or a longer word such as cross-references/.

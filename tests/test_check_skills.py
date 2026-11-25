@@ -170,6 +170,12 @@ def test_crux_finders_row_holds_its_limits() -> None:
     assert check_skills.LIMITS["crux-finder"] == check_skills.Limits(lines=300, scripts=False)
 
 
+def test_provenance_tracers_row_holds_its_limits() -> None:
+    # Invariant 4: provenance-tracer ships no scripts; its SKILL.md stays under 300 lines.
+    expected = check_skills.Limits(lines=300, scripts=False)
+    assert check_skills.LIMITS["provenance-tracer"] == expected
+
+
 def test_a_metadata_version_unlike_the_plugins_fails(tmp_path: Path) -> None:
     _skill(tmp_path, plugin_version="0.3.1")
     assert check_skills.check(tmp_path) == [

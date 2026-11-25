@@ -12,6 +12,10 @@ Ready-to-use Agent Skills that give Claude new superpowers. Browse the collectio
 
 - [crux-finder](./plugins/crux-finder/README.md) — Untangles an argument that keeps going in circles: finds the one claim both sides hinge on, and what would settle it, without taking sides.
 
+**Research**
+
+- [provenance-tracer](./plugins/provenance-tracer/README.md) *(in development)* — Follows a claim back to where it came from: the earliest instance it can find, the chain of retellings that carried it to you, and how it changed on the way.
+
 *More coming as I build them.*
 
 ## Installing

@@ -7,6 +7,9 @@ import check_plugins
 
 NAME = "tide-tables"
 SOURCE = f"./plugins/{NAME}"
+# The real published names, read at import, before the fixture below puts a fictional one in
+# their place for every test.
+REAL_PUBLISHED = check_plugins.PUBLISHED
 
 
 @pytest.fixture(autouse=True)
@@ -63,6 +66,11 @@ def test_a_published_name_missing_fails(tmp_path: Path, monkeypatch: pytest.Monk
     assert check_plugins.check(tmp_path) == [
         "published plugin kite-weather: no marketplace entry; a published name is never removed"
     ]
+
+
+def test_the_published_names_hold_every_skill() -> None:
+    # Invariant 8: each published plugin's name stays in the marketplace for good.
+    assert REAL_PUBLISHED == ("travel-itinerary-builder", "crux-finder", "provenance-tracer")
 
 
 def test_a_plugin_folder_missing_from_the_marketplace_fails(tmp_path: Path) -> None:

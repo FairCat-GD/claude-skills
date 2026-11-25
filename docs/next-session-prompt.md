@@ -1,59 +1,70 @@
-Read docs/spec/FEATURE-provenance-tracer.md (decisions PT 1–3, 6, 9–12, and the spec's *Scope*,
-*Repo placement*, *SKILL.md frontmatter*, *Mode selection*, *Asking the user*, *Forward trace*,
-*Reverse trace*, *Labels*, *Output format*, *Guardrails* and *Distribution*); docs/ARCHITECTURE.md
-invariants 2–4 and 8, *Context*, *The contract between the layers*, *verify*,
-*provenance-tracer*, *Packaging*; plugins/crux-finder/ as the pattern; then CLAUDE.md, *The
-session cycle* in docs/DEVELOPMENT-WORKFLOW.md, docs/ARCHITECTURE.md's overview, invariants and
-baseline, docs/spec/SESSIONS.md's header and your block, then this file, and do Session P1:
-provenance-tracer, the skill. P1 covers:
-- the plugin and its skill folder, `SKILL.md` and four references, from the owner's spec;
-- its marketplace entry, published name and `LIMITS` row, with their tests;
-- its README, CHANGELOG, and the root README;
-- three headless traces and an install from this folder, tried by hand.
+Read docs/spec/FEATURE-eval-engine.md in full; docs/ARCHITECTURE.md invariants 5 and 6, *Context*,
+*Layout and boundaries*, *The eval harness*, *The data layer*, *Testing strategy*; the engine's
+docs, `https://code.claude.com/docs/en/plugin-evals.md`, and `claude plugin eval --help`;
+`evals/crux-finder/run.py`, `tests/test_crux_finder_run.py`, `tests/test_evals_stdlib.py`; then
+CLAUDE.md, *The session cycle* in docs/DEVELOPMENT-WORKFLOW.md, docs/ARCHITECTURE.md's overview,
+invariants and baseline, docs/spec/SESSIONS.md's header, your block and P1's done-note, then this
+file, and do Session E1: the eval engine, measured, and the shared runner. E1 covers:
+- the engine measured first, each measurement a stop if it fails;
+- the shared runner under `evals/`, standard library only, and its tests against a stub;
+- invariant 5's test allowing shared code under `evals/`;
+- crux-finder's tooling untouched.
 
-Release provenance-tracer 0.1.0.
+E1 cuts no version.
 
 ## State you need that is not in the specs
 
-- **Round 2 is provenance-tracer, and one eval engine for every skill:** the intake is done;
-  P1, E1, E2, E3, P2, P3, P4 and P5 remain. P1 is the round's first session, so there is no
-  previous done-note to read.
-- **Push status:** `origin/main` holds everything through the intake's review commit
-  ("review: gold order reckoned from the results present now, crux-finder's prompts free of
-  the no-reply line, and 4 smaller"), pushed with the owner's yes. No skill's version moved, so
-  nothing installed from `faircat-skills` changes. Nothing waits.
-- **What P1 builds on:**
-  - `.claude-plugin/marketplace.json` lists two plugins, each `{"name", "source"}`; the new
-    entry follows them.
-  - `scripts/check_plugins.py`'s `PUBLISHED` names the two published plugins;
-    `scripts/check_skills.py`'s `LIMITS` has crux-finder's row alone,
-    `Limits(lines=300, scripts=False)`, and `tests/test_check_skills.py` asserts that row.
-  - `plugins/crux-finder/` is the shape to copy: `plugin.json` with `name`, `version`,
-    `description`, `author`, `homepage`, `license`; `SKILL.md` naming each reference by its
-    path, which the `skills` stage requires.
-- **The plan changed after the owner approved it:** the intake moved the retirement of
-  crux-finder's old eval harness from E3 to E2 while writing the plan, so the real debate
-  case's gold can gain its `source:` and `license:` before any new result; E2's block and
-  `FEATURE-eval-engine.md` decision 7 record it.
-- **The spec lives only in the repository's copy:** `FEATURE-provenance-tracer.md` holds the
-  owner's file byte for byte.
-- **The intake's review** fixed the gold order's reckoning (from the results present now),
-  kept crux-finder's prompts free of the no-reply line, cut the three claude.ai cases'
-  `review.md` to their claude.ai section, allowed an invented person in a fictional case's
-  results, and reworded `CLAUDE.md`'s invariants 4 and 6 to match `ARCHITECTURE.md`.
-- **Baseline** (ARCHITECTURE's table, crux-finder 1.0.0 and travel-itinerary-builder 1.1.0):
-  `verify` green with 6 stages, about 25 s; 208 unit tests passed, 0 skipped; 13 Python files;
-  2 skill folders, 2 plugins, 2 marketplace entries; `claude` 2.1.330; `checks.py`:
-  `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0. P1 moves the skill, plugin
-  and marketplace counts to 3 and adds tests.
-- **Not done:** nothing was measured of `claude plugin eval`; its facts in the spec files come
-  from its docs and are E1's to measure.
+- **Round 2 is provenance-tracer, and one eval engine for every skill:** P1 is done; E1, E2,
+  E3, P2, P3, P4 and P5 remain.
+- **P1 is committed locally, not pushed.** `origin/main` holds everything through the intake's
+  review commit ("review: gold order reckoned from the results present now, crux-finder's
+  prompts free of the no-reply line, and 4 smaller"). A push makes provenance-tracer 0.1.0
+  installable; it needs the owner's yes. When that push is approved, `docs/BACKLOG.md`'s
+  *Installing from GitHub* gains provenance-tracer.
+- **What P1 left that E1 builds on:**
+  - `plugins/provenance-tracer/` at 0.1.0, the third marketplace entry, in `PUBLISHED` and
+    `LIMITS`. No case or result exists for it; P2 writes them.
+  - **The web tools in a headless run** (*Context*, Built, measured with `claude` 2.1.330):
+    - WebSearch is a deferred tool, loaded with ToolSearch before the first search;
+    - WebFetch is not among the main session's tools: every fetch ran inside a built-in
+      `web-fetch` subagent, as a WebFetch call in that subagent's events.
+
+    E1's measurement of `--allow-tools WebSearch WebFetch` and of what a run calls its tools
+    should check whether the engine's run behaves the same. If it does, a trace's fetches are
+    found among subagent events, which P3's "every chain URL in one of the run's fetches" needs.
+  - **What a run should not do:** under `--permission-prompts none`, one Bash call, a local PDF
+    text extraction, was denied, and no web call was.
+- **Decisions written down nowhere else, for P2 and P3:**
+  - **The no-reply line** the P1 runs used, for P2's `append_system_prompt` to reuse word for
+    word: `No reply is possible in this run: the user cannot answer questions.`
+  - **The label line** is the first line under `## Provenance:`. A regex anchors on
+    `**Roots:** <value> · **Grounding:**`, since the template's third line, the count line, also
+    starts with `**Roots:**`.
+  - **The footer** closes forward reports only. The reverse report, the refusal and a question
+    carry none, so the spec's "footer lines present, every run" grader means every forward
+    report.
+- **Decided parts of `ARCHITECTURE.md` changed since the plan was written** (each logged):
+  - *provenance-tracer*: how the skill tells no reply is possible, the roots rule, and two rules
+    from P1's runs (nothing after the report; all 6 opening queries);
+  - *verify*: provenance-tracer's limits beside crux-finder's.
+
+  None changes a later block.
+- **Baseline** (ARCHITECTURE's table, provenance-tracer 0.1.0, crux-finder 1.0.0,
+  travel-itinerary-builder 1.1.0):
+  - `verify` green with 6 stages, about 27 s;
+  - 210 unit tests passed, 0 skipped;
+  - 13 Python files;
+  - 3 skill folders, 3 plugins, 3 marketplace entries;
+  - `claude` 2.1.330;
+  - `checks.py`: `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0.
+- **Not done:** nothing of `claude plugin eval` has been measured yet; that is E1's first step.
 
 ## Watch for
 
-- **The skill's description is the spec's, word for word** (184 characters).
-- **`SKILL.md` keeps `metadata.version`,** against the spec's frontmatter line (PT 1).
-- **The headless runs need the web tools allowed** and start from an empty temporary folder,
-  so they load neither this repository's `CLAUDE.md` nor the owner's settings, as round 1's
-  Session 4 ran crux-finder (*Context*, Built).
-- **The private-person run must make no web search;** record it from the run's own tool calls.
+- **The measurements' spend is the block's Ask:** ask before the first engine call, with
+  `--max-cost-usd` on each.
+- **`--no-publish` on every engine call,** measurements included: the engine publishes its
+  report to claude.ai by default.
+- **The engine writes `results/` inside the plugin unless `--output-dir` is given,** which would
+  also make the runner refuse on uncommitted plugin changes.
+- **A throwaway case lives in a temporary folder, never in the repository,** and is fictional.

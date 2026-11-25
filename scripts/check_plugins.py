@@ -17,7 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 # People install by these names, so none is ever renamed or removed.
 MARKETPLACE = "faircat-skills"
-PUBLISHED = ("travel-itinerary-builder", "crux-finder")
+PUBLISHED = ("travel-itinerary-builder", "crux-finder", "provenance-tracer")
 _SOURCE = "./plugins/"
 
 
