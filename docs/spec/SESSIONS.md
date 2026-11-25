@@ -305,6 +305,103 @@ docs, `https://code.claude.com/docs/en/plugin-evals.md`, and `claude plugin eval
 - **Measured facts change with the CLI,** which is not pinned: record its version with every
   measurement.
 
+**Done (2026-11-25, no release).**
+- **Decided with the user:**
+  - **The spend (the block's Ask):** at most $5 for the measurements; $1.35 was spent, on 21 runs.
+  - **At plan time:** after an adversarial review of the plan at the owner's request, the judge
+    is pinned to the measured default's full id, written into every result, and E2 asks again.
+    The amendments below came with the plan.
+  - **At a stop after M2,** both measured: cases run from a temporary copy, not in place.
+  - **At a stop after M6:** five behaviours unlike the engine's docs, each recorded in *Context*,
+    and the session went on.
+  - **Confirms:** *Context* and *The eval harness*, both confirmed.
+- **The engine, measured** (`claude` 2.1.330, `claude-opus-5-5`), on a fictional plugin and cases
+  in a temporary folder laid out as this repository; *Context* has every finding.
+  - **Isolation:** the eval folder (gold, graders) was denied to every run, and every path outside
+    the workspace too. The skill's references can be read when a case lists `Read`. None of the
+    owner's plugins, synced skills, MCP servers or memory loaded.
+  - **What a run leaves:** each run's whole reply, every tool call (a subagent's included) and its
+    start event are in its trace, kept only with `--keep-temp`. The result file joins it by
+    `tracePath` and holds no reply.
+  - **The judge** is `claude-haiku-5-5`, shown the whole of a 1,756-word reply.
+  - **The web tools:** WebSearch and WebFetch were called in the main session.
+  - **Failures:** a turn-cap or timeout run is still graded.
+- **The shared runner,** `evals/run.py`:
+  - **the command:** `uv run evals/run.py <skill> --runs N --max-cost-usd USD [--case <id> …]
+    [--trial <folder>]`;
+  - **before anything is spent,** the refusals, on the plugin and on the cases;
+  - **the missing runs,** grouped into one engine call per count;
+  - **the copy,** without `gold.md`, with the fixed flags and a clean environment;
+  - **the per-run isolation check** from the trace's start event;
+  - **the write rule;**
+  - **the scrubber;**
+  - **`run-N.md` and `verdicts-N.md`;**
+  - **the cleanup** of the engine's kept folders.
+
+  *The eval harness* has each decision with its why.
+- **The shared code,** `evals/shared.py`: the frontmatter reader, and the writers and readers of
+  both result files (*The data layer*).
+- **Invariant 5's test:** `shared` may be imported, nothing else of `evals/` may be, and a file
+  under `evals/` named like a standard-library module is a finding.
+- **Tests:** `tests/test_evals_run.py`, against a stub engine in the measured shapes, and
+  `tests/test_evals_shared.py`. `pyproject.toml`'s pytest path and ruff's sources gain `evals`.
+- **Docs:**
+  - `CLAUDE.md`: the shared runner's command, the exclusive resources, the trap of calling the
+    engine directly, and the synced-upload line;
+  - `ARCHITECTURE.md`:
+    - *Overview*, *Context* and *Layout*;
+    - invariants 5 and 6;
+    - *The data layer*'s new formats;
+    - *The eval harness* (Decided amendments, and the runner as Built);
+    - *Testing strategy*, *Known debt* and the baseline;
+    - a *Decision log* line;
+  - `docs/BACKLOG.md`: an API error's shape, unmeasured.
+- **Amendments:**
+  - **Five, at plan time, with the owner,** by approving the plan:
+    - the judge pinned;
+    - the reply as the run gave it, machine paths aside;
+    - the runner refuses on uncommitted cases too, and has a trial mode for gate runs;
+    - a run the engine graded is written even with a turn-cap or timeout error;
+    - `--max-cost-usd` is required and covers the whole command.
+  - **E3 and P4 gain an Ask** for the cycle's ceiling, which the runner now requires; P3 had one.
+  - **E2's and P2's gate runs** use `--trial`, so nothing a trial writes lands where a cycle would
+    skip it.
+- **Measured:** as above, with `claude` 2.1.330. Every call was launched from inside a Claude Code
+  desktop session, with each `CLAUDE*` and `ANTHROPIC_*` variable removed; `claude auth status`
+  showed the CLI's own claude.ai login without them.
+- **Checked by hand:** the runner end to end with the real engine, on the fictional plugin.
+  - **The run:** 2 cases × 2 runs, four at once in under 6 s, $0.24. Each `run-N.md` holds its
+    header, the Skill call, the Read of `<plugin>/skills/…/token.md` and the reply; each
+    `verdicts-N.md` holds the judge's three votes.
+  - **The rerun:** the same command again made no engine call.
+  - **Refusal and trial:** with an uncommitted grader, the runner refused, and a trial ran into
+    its own folder with the new grader.
+  - **Clean results:** a grep found no home folder, `/var/folders` or temporary path in the
+    results.
+  - **Nothing left behind:** no kept folder was left, and the owner's config gained no entry.
+- **Falsified,** each break through the runner's tests, each failing at its own test, each file
+  restored:
+  - **the runner's flags:** `--no-publish`, `--keep-temp` or `--threshold 0` dropped; the
+    environment not stripped;
+  - **gold.md and the refusals:** `gold.md` copied; the refusal on the plugin, on the cases, or on
+    a trial inside the repository removed;
+  - **writing:** an ungraded run written; existing runs overwritten;
+  - **paths and isolation:** the scrubber, its leftover check, or the isolation check removed;
+  - **the results:** the shared ceiling, the partial flag, the schema check or the extra-case
+    check ignored; kept folders not removed; the hung engine not stopped;
+  - **the trace:** denials or subagents not marked; any folder above a `tracePath` taken for a
+    kept one;
+  - **the formats:** the reply split at the last `## Reply`;
+  - **invariant 5:** `shared` refused, any import accepted, shadowing allowed.
+
+  One break, `--no-publish` dropped, also ran through the whole `verify`: `tests` alone failed.
+- **Numbers:**
+  - 275 unit tests (+65), 0 skipped;
+  - 6 `verify` stages, about 32 s;
+  - 17 Python files (+4);
+  - 3 skill folders, 3 plugins, 3 marketplace entries;
+  - crux-finder's `checks.py` unchanged: 10 cases, every bar met.
+
 ---
 
 ## E2: crux-finder's cases on the new engine
@@ -395,6 +492,8 @@ layer*, *crux-finder* (its eval cycles), *Known debt*; E2's done-note; crux-find
 - **A missed bar is a stop.** The owner decides whether a grader or the skill is at fault. A
   grader changed means its case starts over; a skill changed means a version and another cycle
   (an inserted E3a).
+- **Ask at the start of E3:** the cycle's cost ceiling, `--max-cost-usd`, which the shared runner
+  requires. Amended in Session E1.
 - **Docs.**
   - crux-finder's README: *How it was tested* and its table, rewritten for the new engine and
     method.
@@ -496,6 +595,8 @@ EE 4–6, 9; `ARCHITECTURE.md` invariants 5–7, *The eval harness*, *The data l
   `SESSIONS.md` and the handoff, and the versions after it shift.
 - **Docs.** `ARCHITECTURE.md`: *provenance-tracer*, Decided for what the owner settled and
   Built for the cycle; the baseline. The plugin's README where what it does changed.
+- **Ask at the start of P4:** the cycle's cost ceiling, `--max-cost-usd`, which the shared runner
+  requires. Amended in Session E1.
 
 **Gates:**
 - `uv run scripts/verify.py`, green.

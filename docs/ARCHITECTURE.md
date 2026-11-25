@@ -46,7 +46,9 @@ ships nowhere.
 each with its skill folder at `plugins/<skill>/skills/<skill>/`. The tooling:
 `scripts/verify.py`, `scripts/hygiene.py`, `scripts/check_skills.py`, `scripts/check_plugins.py`
 and `tests/`. The evals: `evals/crux-finder/run.py` and `checks.py`, and crux-finder's ten cases
-in `evals/crux-finder/cases/`, with the latest cycle's results in `evals/crux-finder/results/`.
+in `evals/crux-finder/cases/`, with the latest cycle's results in `evals/crux-finder/results/`;
+and the shared runner, `evals/run.py`, with the result formats it writes, `evals/shared.py`
+(Session E1), which runs no skill's cases yet: crux-finder's move onto it in Session E2.
 
 ## Context
 
@@ -62,9 +64,9 @@ in `evals/crux-finder/cases/`, with the latest cycle's results in `evals/crux-fi
   isolated non-interactive sessions and scores them with its own graders (`regex`, `tool_used`,
   `tool_order`, `file_exists`, `llm`, `baseline`). It reads cases only from a folder inside the
   plugin, it publishes its report to claude.ai unless told not to, and exit 1 means any case
-  scored below its threshold. Read from its docs at intake and not yet measured; Session E1
-  measures it before anything is built on it, and a measured behaviour unlike the docs is a
-  stop. Part of the unpinned CLI, so each session that runs it records the CLI's version.
+  scored below its threshold. Read from its docs at intake and measured in Session E1 (Built,
+  below); a measured behaviour unlike the docs is a stop. Part of the unpinned CLI, so each
+  session that runs it records the CLI's version.
 - **The web,** for provenance-tracer's runs: web search and page fetch, live, so a cycle's
   replies differ for reasons outside the skill, and a case's expected facts carry the date they
   were checked.
@@ -149,15 +151,68 @@ in `evals/crux-finder/cases/`, with the latest cycle's results in `evals/crux-fi
   - **One read went outside both folders, and was not denied.** A run whose fetch returned a long
     PDF read two files from its own session's tool-results folder, under `~/.claude/projects/`,
     where the CLI had saved that output, even with `--no-session-persistence`. Session 5 recorded
-    reads outside the run's folders as denied; this folder is the run's own output, but E1's
-    isolation measurement must check it.
+    reads outside the run's folders as denied; this folder is the run's own output. Under the
+    engine, below, a run's own files are in its own temporary home.
+- **`claude plugin eval`, measured in Session E1** (2026-11-25, `claude` 2.1.330,
+  `claude-opus-5-5`): a fictional plugin and cases in a temporary folder laid out as this
+  repository, with a space in its path: 21 runs for $1.35, 16 measuring and 5 through the
+  finished runner. Every call was launched from inside a Claude Code desktop session with each
+  `CLAUDE*` and `ANTHROPIC_*` variable removed; the CLI signed in with its own claude.ai login.
+  - **Isolation:** each run is a `claude -p` child in a temporary home. Its start event listed the
+    plugin under test and Claude Code's built-ins only, un-namespaced built-in skills, no MCP
+    server, the `dontAsk` permission mode, a memory folder inside its own temporary home (empty),
+    and no added folder. None of the owner's user plugins, synced claude.ai skills or memory
+    loaded. The same held from a copy of the plugin and in place.
+  - **Reads:** the workspace starts empty. The plugin's folder can be read, a skill's references
+    included, but only when the case lists `Read` in `allowed_tools`, which the docs call
+    pre-approved; `Skill` fires unlisted. The eval folder, `gold.md` and the graders included,
+    was denied by absolute and by relative path ("a directory that is denied by your permission
+    settings"). Every other path outside the workspace was denied under `dontAsk`: the root
+    `CLAUDE.md`, an earlier result, a file elsewhere.
+  - **What a run leaves:** `aggregate-result.json` in `--output-dir`, the same document `--json`
+    writes, holds no reply. Per run, it holds:
+    - its score, turns, cost, judge cost, duration, start time and `error`;
+    - `tracePath` and `skippedPaidGraders`;
+    - each grader's verdict, explanation and `scored`, and an `llm` grader's three votes and the
+      text it was shown.
+
+    The reply, every tool call and the start event are in the run's trace,
+    `<kept folder>/out/trace.jsonl`, in `claude -p`'s stream-json shape. A subagent's calls carry
+    the `Agent` call's id as `parent_tool_use_id`; a denial is a `permission_denied` event, or an
+    error result for the eval folder. The trace is deleted unless `--keep-temp`. A kept folder is
+    `/private/tmp/e-*` whatever `TMPDIR` says, read-only, with a part sealed at mode 000.
+  - **Cases:** an unknown key in `prompt.md` fails that case alone, named on stderr, and the call
+    exits 1. Two keys the docs do not list, `artifact_publish` and `growthbook_overrides`, are
+    accepted. A `gold.md` beside `prompt.md` is ignored. `--case` takes no brace glob, and a
+    repeated one keeps the last.
+  - **In place:** cases under `evals/<skill>/cases/` load with the repository root as target,
+    `--eval-dir evals/<skill>/cases` and `plugins: ["../../../../plugins/<skill>"]`. A `plugins:`
+    path must stay inside the folder the engine runs against, a "containment root" the docs do
+    not describe; any narrower target refuses it.
+  - **The judge:** `claude-haiku-5-5` by default, three votes per `llm` grader. It was shown the
+    whole of a 1,756-word reply. Its explanation is the votes alone.
+  - **The web tools:** `--allow-tools WebSearch WebFetch` grants both. Each is deferred, loaded
+    with ToolSearch, and called in the main session, unlike P1's `claude -p` runs, where every
+    fetch ran in a `web-fetch` subagent. `tool_used` counts a subagent's call. Listing ToolSearch
+    in `allowed_tools` prints "not granted", though the tool is always there.
+  - **Failures:**
+    - a run that hits `max_turns` or its timeout is still graded, with `error` set; a timed-out
+      run has no reply and reports $0, though it spent tokens;
+    - a low score has `error` null;
+    - under `--threshold 0`, none of these makes the exit code non-zero;
+    - an API error was not provoked; the docs give it no grader results and `error` set.
+  - **Time:** a short run took 1 to 18 s; four at once, 18 s for the slowest. `runsPerCase` reads
+    3 under `--runs 1`, though one run ran.
+  - **Side effects:** nothing was written in the mock repository. The owner's `~/.claude.json`
+    project table and `~/.claude/` gained no entry, `--trust-plugin` included. `--debug-file` is
+    a top-level option, refused after `plugin eval`.
 
 Measured at intake, 2026-11-17, and again in Session 2, 2026-11-18: `claude` 2.1.326; uv 0.12.3;
 Python 3.10.20 installed through uv. In Session 4, 2026-11-20: `claude` 2.1.328. In Session 5,
 2026-11-20, Session 7, 2026-11-21, and Session 7a, 2026-11-22: `claude` 2.1.329. In Session 7b,
 2026-11-22: 2.1.329 at the start, and 2.1.330 from the cycle's sixteenth run, the CLI having
 updated itself mid-cycle. In Session 7c, 2026-11-22: 2.1.330 throughout. In Session 8,
-2026-11-22: 2.1.330. In Session P1, 2026-11-25: 2.1.330.
+2026-11-22: 2.1.330. In Session P1, 2026-11-25: 2.1.330. In Session E1, 2026-11-25: 2.1.330.
 
 ## Stack and pins
 
@@ -222,10 +277,15 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   neither reads as the `plugins/` folder on the import path.
 - `tests/` holds `test_verify.py`, `test_hygiene.py`, `test_check_skills.py`,
   `test_check_plugins.py`, `test_crux_finder_run.py`, `test_crux_finder_checks.py`,
-  `test_evals_stdlib.py` and `fixtures/terms.txt`, a term list of three fictional words. The
-  check tests build fictional plugin trees in a temporary folder. The tests import the scripts
-  through pytest's `pythonpath`, and the eval scripts by their paths, since a folder named
-  `crux-finder` is no package and each skill's evals will have a `run.py` of its own.
+  `test_evals_run.py`, `test_evals_shared.py`, `test_evals_stdlib.py` and `fixtures/terms.txt`, a
+  term list of three fictional words. The check tests build fictional plugin trees in a temporary
+  folder. The tests import the scripts through pytest's `pythonpath`, which holds `scripts/` and
+  `evals/`, and the eval runners by their paths under names of their own, since a folder named
+  `crux-finder` is no package and two files are named `run.py`.
+- `evals/` holds the shared runner, `run.py`, and the code every skill's eval tooling shares,
+  `shared.py`, both standard library only (*The eval harness*). The runner reaches a skill only
+  through the CLI: it copies the plugin folder, without reading the skill's files, to where the
+  engine can load it.
 - `evals/crux-finder/` holds `run.py` and `checks.py`, standard library only, and `cases/`, the
   ten cases (*The data layer*), and `results/`, the latest cycle's. `run.py` reaches the skill only
   through the CLI: it copies the plugin folder, without reading the skill's files, to where the
@@ -264,7 +324,9 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
    last read of each diff.
 5. **Everything under `evals/` imports the standard library only.** *Why:* PDD B, *Scope*.
    *Enforced by* `tests/test_evals_stdlib.py`: every import in every Python file under `evals/`,
-   read with `ast`, names a module in `sys.stdlib_module_names`.
+   read with `ast`, names a module in `sys.stdlib_module_names` or `shared`, the shared code at
+   `evals/shared.py`; and no Python file under `evals/` is named like a standard-library module,
+   which its script's folder, first on the path, would put in that module's place.
 6. **Neither the runner nor the session under test reads `gold.md`.** *Why:* a run that sees the
    answer proves nothing. *Enforced by* `tests/test_crux_finder_run.py`, which runs `run.py`
    against a stub with an audit hook on every file it opens and gold.md made unreadable; and by
@@ -272,8 +334,13 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
    start event, before anything is written (*The eval harness*). **Amended at the round 2
    intake, with the owner** (2026-11-25), for the shared runner: the session under test reads
    neither `gold.md` nor a case's graders, and the runner never opens `gold.md` and copies the
-   graders unopened. *Enforced by,* for the shared runner: not yet, Session E1; whether each
-   run's isolation can still be checked on every run is measured there.
+   graders unopened. *Enforced by,* for the shared runner: `tests/test_evals_run.py`, which runs
+   `evals/run.py` against a stub engine with an audit hook on every file it opens and gold.md made
+   unreadable, and checks that the engine is given each case's `prompt.md` and graders byte for
+   byte and no `gold.md`, which the runner leaves out of its copy by name; and by each run's
+   isolation, measured in Session E1 (*Context*: the eval folder, graders included, is denied to
+   every run) and checked on every run from the start event in its trace, before its files are
+   written (*The eval harness*).
 7. **Each `gold.md` is committed before any file under its `results/<id>/`, and names who
    approved it.** *Why:* gold written after the results could be fitted to them. *Enforced by*
    `evals/crux-finder/checks.py`, from git: gold.md committed, in the parent of the first commit
@@ -434,6 +501,23 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   written by the session; the header is optional and is left out of the checks. An output's
   leading block is its header only when it closes and holds `key: value` lines alone, so a
   reply that opens with a `---` rule is checked whole.
+- **The shared runner's formats** (Session E1), the ones crux-finder's results take from Session
+  E2 and provenance-tracer's from P3, written by `evals/run.py` and read with `evals/shared.py`:
+  - **`run-N.md`:** frontmatter of `case`, `run`, `model`, `claude`, `skill_version`, `commit`,
+    `date`, `cost_usd`, `duration_s`, `turns` and `error` (`none`, or the engine's error for a run
+    it still graded). Then `## Tool calls`, one `- <Tool>: <argument>` line per call in the
+    trace's order, or `none`. The argument is the query, URL, skill, path or subagent type, and
+    any other tool's input as one-line JSON. A call inside a subagent adds `(in <type>)`, and a
+    refused or failed one adds `(denied)` or `(error)`. Then `## Reply` and the final reply as
+    the run gave it, with a last newline added where it has none. The reader takes the first
+    `## Reply` line as the runner's, so a reply that holds one reads back whole.
+  - **`verdicts-N.md`:** frontmatter of `case`, `run`, `score`, `judge_model` and
+    `judge_cost_usd`. Then a `## <grader>` section per grader, each of `- type:`, `- verdict:`
+    (`pass` or `fail`), `- scored:` (`yes` or `no`), `- weight:`, `- votes:` (an `llm` judge's
+    three, as `pass pass fail`, else `none`) and `- explanation:`. Its name does not start with
+    `run-`, so no pattern for runs takes it in.
+  - In both, every machine path is a placeholder (*The eval harness*), and a line break inside a
+    value is written as `\n`.
 - **`review.md`** is `# Review: <id>`, then a `## run-N` or `## claude-ai` section per output,
   each of `- field: value` lines, one per field, values in lower case. A line of any other shape
   is a problem, so a note stays on one line.
@@ -957,8 +1041,28 @@ now (*The data layer*).
   every run, and every chain URL among the run's fetches.
 - **A claude.ai reply** is judged by the owner in `review.md`, for both skills.
 
+**Amended in Session E1, with the owner** (2026-11-25), the engine measured (*Context*):
+- **Cases run from a temporary copy,** not in place: the plugin, and each chosen case under the
+  copy's `evals/` without its `gold.md`. In place loaded too, but it rests on a rule the docs do
+  not give, and one call cannot select several cases; the copy is the docs' own layout and never
+  hands `gold.md` to the engine. A `prompt.md` carries no `plugins:` line.
+- **The judge is pinned** to `claude-haiku-5-5`, the measured default, written into every result;
+  Session E2 asks again once crux-finder's graders exist.
+- **The runner refuses while the cases have uncommitted changes too,** since a run's `commit` must
+  hold the graders it ran with; `--trial` writes to a folder outside the repository instead, for a
+  gate's trial run, and is not refused on the cases.
+- **A run the engine graded is written,** whatever its score, even one that hit its turn cap or
+  timed out, with the engine's error in its header: that is the skill's result. A run with no
+  grader results, an aborted one, one whose judges were skipped or one that fails the isolation
+  check is not written, and a later call runs it again.
+- **`--max-cost-usd` is required** and covers the whole command, every engine call in it.
+- **The reply as the run gave it, machine paths aside:** a path is replaced by a placeholder, since
+  `CLAUDE.md` keeps every home-directory path out of the repository.
+- **Isolation is checked on every run,** from the start event in its trace, as `run.py` checks
+  crux-finder's today.
+
 **Built.** `evals/crux-finder/run.py` and `evals/crux-finder/checks.py`, both standard library
-only, on Python 3.10.
+only, on Python 3.10, and the shared runner, `evals/run.py`, with `evals/shared.py` (below).
 
 `run.py --runs N [--case <id> …]`:
 - **Before anything is spent,** it reads every chosen case's input.md (missing, an unclosed
@@ -1019,6 +1123,79 @@ Decisions made here, each with its why:
   change. It needs no git option newer than `show` and `diff`. The row came with the plan the
   owner approved.
 
+**The shared runner** (Session E1), `uv run evals/run.py <skill> --runs N --max-cost-usd USD
+[--case <id> …] [--trial <folder>]`. It has run only on a fictional plugin in a temporary folder;
+crux-finder's cases move onto it in Session E2.
+- **Before anything is spent,** it exits 2 on any of these, with no engine call:
+  - a skill not in `SKILLS`, a table of each skill's web tools (crux-finder none,
+    provenance-tracer `WebSearch` and `WebFetch`);
+  - no plugin folder, no cases, an unknown `--case`, or a case folder with no `prompt.md`, whose
+    existence alone it checks, never opening a case;
+  - uncommitted changes under `plugins/<skill>/`, or under `evals/<skill>/cases/` except in a
+    trial;
+  - a trial folder inside the repository;
+  - a `plugin.json` with no version.
+- **Missing runs:** for each case, the numbers 1 to N with no `run-N.md`. Cases missing the same
+  count share one engine call; with nothing missing it spends nothing.
+- **Each call** runs in a new temporary folder holding the plugin's copy, with each chosen case
+  under the copy's `evals/` and `gold.md` left out by name. The command is `claude plugin eval
+  <copy> --model claude-opus-5-5 --judge-model claude-haiku-5-5 --ablation none --no-publish
+  --trust-plugin --keep-temp --threshold 0 --concurrency 4 --runs <missing> --max-cost-usd <left>
+  --output-dir <temporary> [--allow-tools <the skill's tools>]`. stdin is closed, and the
+  environment has no `CLAUDE*` or `ANTHROPIC_*` variable.
+- **Reading** `aggregate-result.json`:
+  - anything but `schemaVersion` 1, or a case it did not send, writes nothing;
+  - a case that did not come back did not load;
+  - each run is written or not by the rule above.
+
+  The isolation check reads the run's start event:
+  - the model;
+  - the copy as the only plugin not built in, and `<skill>:<skill>` with no other namespaced
+    skill and no bare one;
+  - no MCP server, the `dontAsk` mode, no memory folder outside the run's own, and no added
+    folder.
+- **Writing:** `verdicts-N.md`, then `run-N.md`, each through a hidden `.partial` file and a
+  rename, with N the case's next missing number. An orphan verdicts file is replaced.
+- **The exit code** is 0 when every missing run was written, else 1, with earlier files kept. The
+  temporary folder and every kept run folder are removed.
+
+Decisions made here, each with its why:
+- **`--threshold 0`,** so a low score never sets the exit code and exit 1 means a run or a case
+  failed; the results are read either way, since a run the engine still graded can carry an
+  error under exit 0.
+- **`--keep-temp`,** since each run's trace is the only place its reply and tool calls are. The
+  runner unlocks and removes each kept folder, found from its `tracePath` and named as the
+  engine names it (`e-*`), so no other folder is ever taken for one, once the call's results
+  are read. A call that writes no result leaves its kept folders behind, since nothing
+  names them (*Known debt*).
+- **The environment without `CLAUDE*` or `ANTHROPIC_*`,** since a launching Claude Code session's
+  variables (its model, its effort, its entry point) would reach the engine, and the CLI signs in
+  with its own login without them.
+- **A wall-clock cap per call** of 3,600 s per round of four runs, plus 600, the most the engine's
+  own caps allow. It catches only an engine that hangs, which is then terminated and its partial
+  result read.
+- **The ceiling is the command's:** each call gets what the calls before it left, by their
+  reported cost, and a call is not made with less than a cent. A timed-out run reports $0
+  (*Context*), so the ceiling can under-count it.
+- **The scrubber** replaces, longest first, in each path's given and resolved forms (macOS
+  `/private`):
+  - the run's workspace → `<workspace>`;
+  - the plugin's copy → `<plugin>`;
+  - the temporary folder and the run's kept folder → `<temp>`;
+  - the repository root → `<repo>`;
+  - the home folder → `~`.
+
+  It covers the reply, every call's argument and every verdict field. A run whose text still
+  holds the home folder (plain, dashed as a project-folder name, percent-encoded or
+  JSON-escaped) or a `/var/folders` path is not written. `CLAUDE.md` keeps machine paths out of
+  the repository, and the hygiene stage cannot see one.
+- **A call is `(denied)`** when a `permission_denied` event or the result's denials name it, or
+  its error says it was denied by the permission settings, which is how a read of the eval folder
+  is refused. It is `(error)` when it failed otherwise, so a fetch that failed shows as the run saw
+  it.
+- **The judge's evidence is not kept:** for a judge of the reply it is the reply, already in
+  `run-N.md`, and for a judge of the trace it is raw trace, which no result holds (EE 4).
+
 ## Testing strategy — five layers, and what each cannot see
 
 **Decided.** **`verify`** runs named stages, each failing on its own and runnable alone by name,
@@ -1040,8 +1217,11 @@ owner reading every failed verdict and one run per case (*The eval harness*).
 
 Built: Validators (the `skills` and `plugins` stages), Unit (`tests/test_verify.py`,
 `tests/test_hygiene.py`, `tests/test_check_skills.py`, `tests/test_check_plugins.py`,
-`tests/test_crux_finder_run.py`, `tests/test_crux_finder_checks.py`, `tests/test_evals_stdlib.py`)
-and Hygiene. Evals: the tooling (`run.py`, `checks.py`) and crux-finder's ten cases; the first
+`tests/test_crux_finder_run.py`, `tests/test_crux_finder_checks.py`, `tests/test_evals_run.py`,
+`tests/test_evals_shared.py`, `tests/test_evals_stdlib.py`) and Hygiene. The shared runner's tests
+run it against a stub engine whose result file and traces copy the shapes measured in Session E1;
+the runner itself ran end to end on a fictional plugin only, in that session. Evals: the
+tooling (`run.py`, `checks.py`) and crux-finder's ten cases; the first
 cycle ran in Session 7, on crux-finder 0.1.0, the second in Session 7a, on 0.2.0, the third
 in Session 7b, on 0.3.0, and the fourth in Session 7c, on 0.4.0, which met every bar and was
 followed by the claude.ai smoke test on three cases. provenance-tracer has no eval set yet (P2,
@@ -1105,6 +1285,11 @@ provenance-tracer, the third plugin, in Session P1:
   which the type bar's 18/20 allows. They did in Sessions 7a, 7b and 7c, so every other case
   must match on type for the bar to hold; in 7c every other case did. The owner's call whether
   either gold should change (`docs/BACKLOG.md`).
+- **The shared runner can leave kept run folders behind.** When the engine writes no result (it
+  crashed, or was killed before it could), nothing names the folders it kept, under
+  `/private/tmp/e-*`, and the runner leaves them. They hold a run's temporary home and its
+  trace. Sweeping every `e-*` folder at the start would remove another session's, so they are
+  removed by hand: `chmod -R u+rwx`, then delete.
 
 ## Baseline
 
@@ -1114,10 +1299,10 @@ of its own: each skill has its own version.
 
 | Check | Expected |
 |---|---|
-| `uv run scripts/verify.py` | green: 6 stages (`skills`, `plugins`, `format`, `lint`, `tests`, `hygiene`), about 25 s with uv's cache warm, most of it the eval tooling's git fixtures |
-| Unit tests (`tests`) | 210 passed, 0 skipped: 75 in `test_crux_finder_checks.py`, 45 in `test_hygiene.py`, 36 in `test_check_skills.py`, 22 in `test_crux_finder_run.py`, 20 in `test_check_plugins.py`, 10 in `test_verify.py`, 2 in `test_evals_stdlib.py` |
+| `uv run scripts/verify.py` | green: 6 stages (`skills`, `plugins`, `format`, `lint`, `tests`, `hygiene`), about 32 s with uv's cache warm, most of it the eval tooling's git fixtures |
+| Unit tests (`tests`) | 275 passed, 0 skipped: 75 in `test_crux_finder_checks.py`, 45 in `test_hygiene.py`, 45 in `test_evals_run.py`, 36 in `test_check_skills.py`, 22 in `test_crux_finder_run.py`, 20 in `test_check_plugins.py`, 18 in `test_evals_shared.py`, 10 in `test_verify.py`, 4 in `test_evals_stdlib.py` |
 | `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
-| Python files (`ruff format --check .`) | 13 |
+| Python files (`ruff format --check .`) | 17 |
 | Skills and plugins | 3 skill folders, 3 plugins, 3 marketplace entries |
 | `uv run evals/crux-finder/checks.py` | Session 7c's cycle and smoke test on 0.4.0, read on 1.0.0, whose skill differs only in its version line: `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0, the "as it stands" row 20 / 20 and the smoke test's row 3 / 3 |
 
@@ -1186,3 +1371,15 @@ finding.
 - 2026-11-25, Session P1: *provenance-tracer* gains two rules: nothing follows the report, and all
   6 opening queries run before judging whether to add more. The owner settled both mid-session,
   after the first three hand-tries ended in a closing summary and stopped at 3 searches.
+- 2026-11-25, Session E1: *Context* records the engine as measured, and the owner confirmed it and
+  *The eval harness*. *The eval harness* gains:
+  - cases run from a temporary copy rather than in place;
+  - the judge pinned;
+  - the refusal on uncommitted cases, and a trial mode;
+  - graded runs written whatever their error;
+  - a required ceiling for the whole command;
+  - machine paths replaced in the reply;
+  - isolation checked on every run.
+
+  The owner settled the copy at a stop, once both were measured, and the judge after the plan's
+  adversarial review; the rest came with the plan the owner approved.

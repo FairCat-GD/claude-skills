@@ -57,6 +57,9 @@ these are the parts only a person can see.
 - **provenance-tracer on claude.ai: page fetch.** The skill stops without page fetch, and its
   README asks only for web search on claude.ai. Whether a claude.ai chat with web search on can
   also open pages is checked in P5's smoke test. Named by Session P1's review.
+- **The engine's result for an API error.** Session E1 could not provoke one. The shared runner
+  writes nothing for a run with no grader results, as the engine's docs describe an API error,
+  and its tests use that shape. The first rate limit or overload in a real cycle shows it.
 - **The itinerary skill's fallbacks:** the interview asked in chat with no question tool, and
   the plan delivered in chat where WeasyPrint can't run. Session 3 measured the PDF build's
   own fallbacks (offline fonts, PyMuPDF page images); these two paths need an agent without the
