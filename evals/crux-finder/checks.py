@@ -313,8 +313,10 @@ class Snapshot:
     changed: frozenset[str]
 
 
-def _lines(text: str) -> frozenset[str]:
-    return frozenset(line for line in text.split("\n") if line)
+def _names(text: str) -> frozenset[str]:
+    """Paths as git prints them with -z: separated by NUL and never quoted, so a name with a
+    non-ASCII letter reads as the folder holds it."""
+    return frozenset(name for name in text.split("\0") if name)
 
 
 def _snapshots(root: Path) -> Callable[[str], Snapshot]:
@@ -324,12 +326,14 @@ def _snapshots(root: Path) -> Callable[[str], Snapshot]:
 
     def snapshot(commit: str) -> Snapshot:
         if commit not in cache:
-            listed = _git(root, "ls-tree", "-r", "--name-only", commit, "--", folder)
+            listed = _git(root, "ls-tree", "-z", "-r", "--name-only", commit, "--", folder)
             if listed.returncode != 0:
                 cache[commit] = Snapshot(None, frozenset())
             else:
-                changed = _git(root, "diff", "--no-renames", "--name-only", commit, "--", folder)
-                cache[commit] = Snapshot(_lines(listed.stdout), _lines(changed.stdout))
+                changed = _git(
+                    root, "diff", "-z", "--no-renames", "--name-only", commit, "--", folder
+                )
+                cache[commit] = Snapshot(_names(listed.stdout), _names(changed.stdout))
         return cache[commit]
 
     return snapshot
@@ -337,10 +341,12 @@ def _snapshots(root: Path) -> Callable[[str], Snapshot]:
 
 def _added_in(root: Path) -> dict[str, str]:
     """Each file ever added under results/, by the latest commit that added it. Without
-    `--no-renames` a file renamed there is logged as renamed, never as added."""
+    `--no-renames` a file renamed there is logged as renamed, never as added. With -z each
+    commit's line is `%x01` and its hash, and each name follows a NUL, unquoted."""
     log = _git(
         root,
         "log",
+        "-z",
         "--no-renames",
         "--diff-filter=A",
         "--format=%x01%H",
@@ -349,20 +355,24 @@ def _added_in(root: Path) -> dict[str, str]:
         f"{EVALS}/results",
     )
     added: dict[str, str] = {}
-    commit = ""
-    for line in log.stdout.split("\n"):
-        if line.startswith("\x01"):
-            commit = line[1:]
-        elif line:
+    commit, first = "", False
+    for token in log.stdout.split("\0"):
+        if token.startswith("\x01"):
+            commit, first = token[1:], True
+            continue
+        if first:
+            # git puts one newline between a commit's line and its first name.
+            token, first = token.removeprefix("\n"), False
+        if token:
             # The log runs newest first, so the first commit seen is the latest adding.
-            added.setdefault(line, commit)
+            added.setdefault(token, commit)
     return added
 
 
 def _committed(root: Path) -> frozenset[str]:
     """Every file under results/ that HEAD holds."""
-    return _lines(
-        _git(root, "ls-tree", "-r", "--name-only", "HEAD", "--", f"{EVALS}/results").stdout
+    return _names(
+        _git(root, "ls-tree", "-z", "-r", "--name-only", "HEAD", "--", f"{EVALS}/results").stdout
     )
 
 

@@ -703,7 +703,7 @@ layer*, *crux-finder* (its eval cycles), *Known debt*; E2's done-note; crux-find
   - **The owner's notes, below any bar,** as 7c's: what would move it leaving out a record gold
     names (the pitch fee invoices in both orchard runs, the supplier's readings in both kiln
     runs) or setting its own figure for a dated check (both solar runs); common-ground lines
-    that widen what a party said (quiz, kiln, excerpt).
+    that widen what a party said (quiz, excerpt), and a not-in-dispute line that does (kiln).
 - **No version:** no shipped file changed.
 - **Docs:**
   - crux-finder's README: *How it was tested* rewritten for the engine and the reading, with
@@ -739,6 +739,29 @@ layer*, *crux-finder* (its eval cycles), *Known debt*; E2's done-note; crux-find
   - 3 skill folders, 3 plugins, 3 marketplace entries (±0);
   - `results/`: +40 run and verdicts files, +7 `review.md`, 3 extended;
   - `checks.py`: `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0.
+- **Review (`/code-review high`), 5 findings: 5 fixed and 0 skipped.** The user asked for
+  every finding fixed.
+  - **A result path git would quote skipped the gold order** (older than this session, which
+    copied the pattern into one more call): `git ls-tree`, `git diff --name-only` and `git log
+    --name-only` print a name with a non-ASCII letter quoted and escaped, so it matched no
+    folder, and its gold read as uncommitted and its results as never added. All four calls in
+    `checks.py` now take `-z` and split on NUL; the log's one newline after each commit line is
+    the only one stripped. One test, a case whose id has a non-ASCII letter.
+  - **The handoff set a rule nobody decided,** that P3's `checks.py` reckon gold order as
+    crux-finder's now does. It now says what crux-finder's does and leaves P3's to P3 and the
+    owner.
+  - **The README said "report" where the one-sided case writes none:** each reply was graded,
+    and one full reply per case read.
+  - ***The eval harness* misdated the false problem:** the decision now says the gold changed
+    in E2 and the false problem showed in E3's uncommitted cycle.
+  - **This done-note put the kiln's widening under common ground;** it was in its
+    *Not actually in dispute* line.
+  - **Falsified:** each of the four git calls put back in its old form, without `-z` and split
+    on newlines, one at a time: each failed only the new test, and all 120 passed once restored.
+    Dropping `-z` alone, keeping the NUL split, failed 5 to 54 tests, since the names then ran
+    together, so it was not taken as the falsification.
+  - **Numbers after the review:** 304 unit tests (+1), 0 skipped, 120 in
+    `test_crux_finder_checks.py`; the other counts unchanged; `checks.py` 0 problems, exit 0.
 
 ---
 

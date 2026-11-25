@@ -1209,13 +1209,18 @@ Decisions made here, each with its why:
 - **Each commit's view of the case folders is read once** (`git ls-tree -r` and `git diff
   --name-only` over `cases/`), and every adding commit in one `git log` over `results/`, since a
   cycle's runs share one commit: a check costs a handful of git calls, not several per file.
+- **Every path is read from git with `-z`,** NUL-separated and never quoted (Session E3's
+  review), since git otherwise prints a name with a non-ASCII letter quoted and escaped: it
+  would match no folder, so its gold would read as uncommitted and its results as never added.
 - **Git reports a rename as a removal and an adding** (`--no-renames`, in the log and the diff),
   since a file renamed under `results/` is otherwise never logged as added and would have no
   commit to reckon its gold order from.
 - **A run file that cannot be read is one problem,** not also a missing commit and header.
 - **A result not yet committed is not reckoned from history** (Session E3): any adding its path
-  has is a retired cycle's, which would hold the new file to a gold that has changed since, as
-  the debate excerpt's did in Session E2, while the owner reads a cycle before its commit. The
+  has is a retired cycle's, which would hold the new file to a gold that has changed since. The
+  debate excerpt's gold changed in Session E2, after round 1's adding of its run files, and
+  Session E3's uncommitted cycle at the same paths read as a false gold-order problem until this
+  rule. The
   commit that adds it follows HEAD, which must hold gold, with no uncommitted change; once it is
   committed, its own adding counts. HEAD's files under `results/` are read once (`git ls-tree`).
 - **The verdicts are read by grader name,** so a grader's file name is its bar, and a grader no
@@ -1422,7 +1427,7 @@ of its own: each skill has its own version.
 | Check | Expected |
 |---|---|
 | `uv run scripts/verify.py` | green: 6 stages (`skills`, `plugins`, `format`, `lint`, `tests`, `hygiene`), about 27 s with uv's cache warm, most of it the eval tooling's git fixtures |
-| Unit tests (`tests`) | 303 passed, 0 skipped: 119 in `test_crux_finder_checks.py`, 51 in `test_evals_run.py`, 45 in `test_hygiene.py`, 36 in `test_check_skills.py`, 20 in `test_check_plugins.py`, 18 in `test_evals_shared.py`, 10 in `test_verify.py`, 4 in `test_evals_stdlib.py` |
+| Unit tests (`tests`) | 304 passed, 0 skipped: 120 in `test_crux_finder_checks.py`, 51 in `test_evals_run.py`, 45 in `test_hygiene.py`, 36 in `test_check_skills.py`, 20 in `test_check_plugins.py`, 18 in `test_evals_shared.py`, 10 in `test_verify.py`, 4 in `test_evals_stdlib.py` |
 | `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
 | Python files (`ruff format --check .`) | 15 |
 | Skills and plugins | 3 skill folders, 3 plugins, 3 marketplace entries |

@@ -583,6 +583,23 @@ def test_a_new_result_not_yet_committed_is_not_reckoned_from_a_retired_one(
     assert _problems(root, "gold.md") == []
 
 
+def test_a_case_whose_path_git_would_quote_keeps_its_gold_order(root: Path) -> None:
+    # Without -z, git prints a path with a non-ASCII letter quoted and escaped, so it would
+    # match no folder: gold would read as uncommitted, and its results as never added.
+    case = "f\u00e4rja"
+    _case(root, case)
+    commit = _commit(root)
+    _run(root, case, 1, reply(), commit)
+    added = _commit(root)
+    assert _problems(root) == []
+    _write(root, f"{EVALS}/cases/{case}/gold.md", GOLD.replace("nine", "ten"))
+    _commit(root)
+    problems = _problems(root, "gold.md")
+    gold = f"{EVALS}/cases/{case}/gold.md"
+    assert f"{gold}: changed since run-1.md, verdicts-1.md, added in {added[:12]}" in problems
+    assert f"{gold}: changed since commit {commit[:12]}, which run-1 ran on" in problems
+
+
 def test_a_retired_result_never_counts_however_old(root: Path) -> None:
     # A file added before the gold and removed since leaves no mark on the order.
     _write(root, f"{EVALS}/results/ferry/run-1.md", "an early result\n")

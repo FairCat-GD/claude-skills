@@ -80,10 +80,10 @@ any run: one for each kind of crux, a second question of fact, one where only on
 one where the two positions don't conflict, a message thread between two siblings, and two
 passages from the first Lincoln–Douglas debate of 1858. Each ran twice through `claude plugin
 eval`, in a fresh Claude Code session in a temporary home that loaded none of the user's
-settings, plugins, memory or files, only the skill and Claude Code's own. Each report was graded
+settings, plugins, memory or files, only the skill and Claude Code's own. Each reply was graded
 against that answer by graders drawn from it and approved by the maintainer, with Claude Sonnet
 5.5 as judge, and checked for verbatim quotes, balanced steelmen and length. The maintainer read
-every failed verdict, one full report per case, and the primary crux of both runs side by side,
+every failed verdict, one full reply per case, and the primary crux of both runs side by side,
 and confirmed or overruled each failed verdict. Three of the disagreements were also run once
 each on claude.ai. The last full test ran on 1.0.0, with Claude Opus 5.5 in Claude Code 2.1.330;
 the claude.ai test ran on 0.4.0, with Claude Fable 5.2, and 1.0.0 is 0.4.0 with only its version
