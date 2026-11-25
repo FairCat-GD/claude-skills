@@ -28,6 +28,13 @@ up, it moves out of this file.
   conversation, which `run.py`'s single prompt cannot give (Session 7a's review).
 - **Running either skill on Codex or another agent.** Their install steps are documented; no
   session runs them. Left out at the round 1 intake.
+- **provenance-tracer: a notes-vault mode.** An optional path to a notes folder as an extra
+  source of evidence; the owner's spec parks it until the first version's evals pass. Left out
+  at the round 2 intake.
+- **provenance-tracer: truth verdicts.** The skill reports where a claim came from, never
+  whether it is true; out of scope in the spec, and a guardrail. Left out at the round 2 intake.
+- **provenance-tracer: more than one claim per run.** The skill asks the user to pick one, or
+  traces the first when no reply is possible. Left out at the round 2 intake.
 
 ## Not yet checked by hand
 

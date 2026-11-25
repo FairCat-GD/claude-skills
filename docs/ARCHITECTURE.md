@@ -11,7 +11,9 @@ decided and *Enforced by* is built; the debt and the baseline are built only.
 Round 1's spec files, cited throughout (`SPEC.md` and its numbered decisions, `PDD.md` as PDD B,
 the audit `REVIEW-2026-11-17.md`, and `SESSIONS.md`'s blocks and done-notes), were deleted from
 `docs/spec/` when the round closed; git history keeps them, as of the review commit before
-`docs: close round 1`.
+`docs: close round 1`. Round 2's, `FEATURE-provenance-tracer.md` and `FEATURE-eval-engine.md`
+with their `SESSIONS.md`, are in `docs/spec/` while the round runs; what they decided about how
+the repository is built is stated here in full.
 
 ## Overview
 
@@ -24,7 +26,8 @@ plugins      plugins/<skill>/                     plugin.json, README.md, CHANGE
    │
 skills       plugins/<skill>/skills/<skill>/      SKILL.md + references/ — what ships
                          ▲
-evals        evals/<skill>/                       cases, results, run.py, checks.py
+evals        evals/<skill>/                       cases, results, checks.py
+             evals/                               one shared runner over `claude plugin eval`
                          (drives a skill only through the claude CLI)
 
 tooling      scripts/verify.py, scripts/hygiene.py, tests/     never shipped
@@ -34,7 +37,9 @@ The repository is a Claude Code plugin marketplace that holds many Agent Skills,
 skill. A skill folder is the product: it is what Claude Code loads from the plugin, what Codex
 and other agents copy, and what claude.ai receives as a zip. The plugin wraps it with a
 manifest, a README that is its user guide, and a changelog. The evals are a skill's harness,
-outside the shipped folders. The tooling proves the repository is sound and ships nowhere.
+outside the shipped folders; from round 2 every skill's run on one engine, `claude plugin
+eval`, through one runner (*The eval harness*). The tooling proves the repository is sound and
+ships nowhere.
 
 **Built.** The marketplace, `.claude-plugin/marketplace.json`, lists two plugins,
 `plugins/travel-itinerary-builder/` and `plugins/crux-finder/`, each with its skill folder at
@@ -52,6 +57,17 @@ in `evals/crux-finder/cases/`, with the latest cycle's results in `evals/crux-fi
   `marketplace remove` are used by hand. `claude -p` runs a skill headless for the evals. It
   needs the owner's sign-in for `-p`; it is not pinned, so each session that uses it records
   its version.
+- **`claude plugin eval`** (settled at the round 2 intake, 2026-11-25), the eval engine for
+  every skill from round 2: it runs a plugin's cases, each a `prompt.md` and its graders, in
+  isolated non-interactive sessions and scores them with its own graders (`regex`, `tool_used`,
+  `tool_order`, `file_exists`, `llm`, `baseline`). It reads cases only from a folder inside the
+  plugin, it publishes its report to claude.ai unless told not to, and exit 1 means any case
+  scored below its threshold. Read from its docs at intake and not yet measured; Session E1
+  measures it before anything is built on it, and a measured behaviour unlike the docs is a
+  stop. Part of the unpinned CLI, so each session that runs it records the CLI's version.
+- **The web,** for provenance-tracer's runs: web search and page fetch, live, so a cycle's
+  replies differ for reasons outside the skill, and a case's expected facts carry the date they
+  were checked.
 - **uv and uvx.** uv runs every script and test on the pinned Python; uvx runs the Agent Skills
   validator on its own interpreter. A cold cache needs the network.
 - **The Agent Skills validator** (`skills-ref`, from the `agentskills/agentskills` repository),
@@ -161,6 +177,12 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   - `plugins/<skill>/skills/<skill>/`: the skill folder, `SKILL.md` and `references/`.
   - `evals/<skill>/`: `cases/<id>/` (`input.md`, `gold.md`), `results/<id>/` (`run-N.md`,
     `claude-ai.md`, `review.md`), `run.py`, `checks.py`.
+    **Amended at the round 2 intake, with the owner** (2026-11-25), from Session E2 on:
+    `cases/<id>/` holds `prompt.md`, its graders and `gold.md`; `results/<id>/` holds
+    `run-N.md`, each run's grader verdicts, and `claude-ai.md` and `review.md` where they
+    apply; `checks.py`, one per skill. One runner under `evals/`, shared by every skill,
+    replaces each skill's `run.py`; its file name and the shared code's are Session E1's.
+    Nothing under `plugins/` holds a case.
   - `scripts/`: `verify.py`, `hygiene.py`.
   - `tests/`: tests of the scripts and of each skill's eval tooling; `tests/fixtures/`.
   - `docs/`: the workflow's documents.
@@ -213,10 +235,13 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
 3. **A skill's version is the same in its `plugin.json` and its `metadata.version`.** *Why:* the
    copy and zip targets show only the second. *Enforced by* the `skills` stage
    (`scripts/check_skills.py`).
-4. **crux-finder ships no scripts and needs no network or dependencies.** *Why:* PDD B,
-   *Scope*. *Enforced by* the `skills` stage (`scripts/check_skills.py`): crux-finder's row in `LIMITS`
+4. **crux-finder and provenance-tracer ship no scripts, and crux-finder needs no network or
+   dependencies.** *Why:* PDD B, *Scope*, and provenance-tracer's spec, *Scope* (it needs web
+   search and page fetch, and nothing else). Amended at the round 2 intake, with the owner
+   (2026-11-25), adding provenance-tracer. *Enforced by* the `skills` stage
+   (`scripts/check_skills.py`): crux-finder's row in `LIMITS`
    forbids a `scripts/` folder and any file but `SKILL.md` and Markdown under `references/`. Needing no network or dependencies is held by the last read of
-   each diff.
+   each diff. provenance-tracer's row: not yet, Session P1.
 5. **Everything under `evals/` imports the standard library only.** *Why:* PDD B, *Scope*.
    *Enforced by* `tests/test_evals_stdlib.py`: every import in every Python file under `evals/`,
    read with `ast`, names a module in `sys.stdlib_module_names`.
@@ -224,7 +249,11 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
    answer proves nothing. *Enforced by* `tests/test_crux_finder_run.py`, which runs `run.py`
    against a stub with an audit hook on every file it opens and gold.md made unreadable; and by
    each run's isolation, measured in Session 5 (*Context*) and checked on every run from its
-   start event, before anything is written (*The eval harness*).
+   start event, before anything is written (*The eval harness*). **Amended at the round 2
+   intake, with the owner** (2026-11-25), for the shared runner: the session under test reads
+   neither `gold.md` nor a case's graders, and the runner never opens `gold.md` and copies the
+   graders unopened. *Enforced by,* for the shared runner: not yet, Session E1; whether each
+   run's isolation can still be checked on every run is measured there.
 7. **Each `gold.md` is committed before any file under its `results/<id>/`, and names who
    approved it.** *Why:* gold written after the results could be fitted to them. *Enforced by*
    `evals/crux-finder/checks.py`, from git: gold.md committed, in the parent of the first commit
@@ -310,8 +339,31 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   Session 7a's, for the cycle's runs and for any claude.ai replies alike.
 - **Settled at the start of Session 7c, with the owner** (2026-11-22): its review was made as
   Session 7b's, for the cycle's runs and the claude.ai replies alike.
+- **Amended at the round 2 intake, with the owner** (2026-11-25), for both skills, from Session
+  E2 on (crux-finder) and P2 on (provenance-tracer); until E2, crux-finder's formats are as
+  above:
+  - **A case** is `prompt.md` (the engine's frontmatter, then the prompt: for crux-finder, the
+    input's body unchanged), its graders, and `gold.md`. `gold.md` is the answer the owner
+    approved, in flat `key: value` lines read with no YAML library: crux-finder's four fields;
+    for provenance-tracer, the expected labels, the authoring date and the facts it must
+    report, each checked on the web at authoring; `approved_by` in both; `source:` and
+    `license:` where the input has them. The graders are drawn from it and approved by the
+    owner before they are committed. Every case but one-question cases tells the run no reply
+    is possible.
+  - **A result** is `results/<id>/run-N.md`: a header (the case, the run, the model, the CLI's
+    version, the skill's version, the commit, the date, the cost), the run's tool calls one per
+    line (the tool and its query or URL), then the final reply as the run gave it; beside it,
+    the run's grader verdicts, every machine path removed. Never a raw trace, the engine's
+    HTML report or its JSON. `claude-ai.md` stays as it is, judged by the owner in `review.md`.
+  - **The review:** the graders and the skill's `checks.py` decide; each cycle, the owner reads
+    every failed verdict and one run per case, and crux-finder's stability; how a correction is
+    recorded is asked at the start of Session E2.
+  - **crux-finder's ten case ids stay.** Its `real-lincoln-douglas` gold gains its input's
+    `source:` and `license:` in E2, after round 1's results are retired and before any new
+    one; its three claude.ai replies and their `review.md` stay.
 - **Machine identifiers, never renamed:** the marketplace name `faircat-skills`; the plugin
-  and skill names `travel-itinerary-builder` and `crux-finder`; the case ids once results exist.
+  and skill names `travel-itinerary-builder`, `crux-finder` and, from Session P1,
+  `provenance-tracer`; the case ids once results exist.
 
 **Built** (the formats, the ten cases and the latest cycle's results).
 - **A case's frontmatter** is read as one `key: value` per line, a quoted value unquoted, with
@@ -691,6 +743,41 @@ words, with a meter on the kiln's circuit as what would move it; `one-sided-game
 for the co-host's own words and wrote no report; `no-conflict-quiz-team` reported **No crux** in
 186 words. All three matched gold on crux and type and passed every check: 3/3.
 
+## provenance-tracer
+
+**Decided** (the round 2 intake, 2026-11-25, from the owner's spec, `provenance-tracer-spec.md`
+v2). A claim the user types is traced through its retellings to the earliest instance found,
+and the report shows how it changed on the way; a reverse mode starts from one named source and
+reports what it found, its status, and what it supports. It reports where a claim came from,
+never whether it is true.
+- **Targets:** Claude Code and claude.ai with web search on; Codex and other agents documented
+  only. Needs web search and page fetch; no file or notes access, no scripts (invariant 4).
+- **The skill folder:** `SKILL.md` under 300 lines (the trigger, mode selection, asking the
+  user, both procedures in brief, the labels' axes, the guardrails) and four references:
+  `labels.md` (both label axes, modifiers and tiers), `mutation-types.md` (the kinds of drift),
+  `search-playbook.md` (query patterns, stop rules, status checks), `output-template.md`.
+- **Frontmatter:** `name`, the spec's `description` word for word (184 characters, under
+  claude.ai's 200), `license: MIT` and `metadata.version`, which overrides the spec's three
+  fields because invariant 3 needs it and claude.ai accepted it in round 1.
+- **The contract the spec fixes,** carried as written: the mode table; at most one question
+  message per trace, none in a non-interactive run, whose assumptions head the report; the
+  forward trace's eleven steps, with 6 queries to start and at most 14 more, at most 6 hops per
+  branch and 25 fetches per trace, every page used opened, never a snippet; tiers (Primary only
+  if opened); the two label axes, Roots and Grounding, one value each, and the five modifiers;
+  the report's template and its two footer lines; a saved report only when asked, in Claude
+  Code, never naming hearsay; the guardrails (no verdict in the report's own voice, opened
+  sources only, honest nulls, the claim text in searches said once, no private person's name in
+  a search, at most one quote per source, under 15 words).
+- **Asking the user:** how the skill tells that no reply is possible is asked at the start of
+  Session P1. Every eval case but the one that tests a question says so in its system prompt.
+- **Versions:** 0.1.0 when built (P1), a minor bump per change an eval cycle calls for, 1.0.0
+  once a cycle meets every bar on the skill as it stands, tagged
+  `provenance-tracer--v1.0.0`.
+- **Out of scope:** the notes-vault mode, truth verdicts, more than one claim per run, claims
+  about private individuals (`docs/BACKLOG.md`, the last by design).
+
+**Built.** Not yet: Session P1 (the skill), P2 and P3 (its cases and first cycle).
+
 ## The eval harness
 
 **Decided.** PDD B, *Evals*, under `evals/crux-finder/`: ten cases, two runs each through
@@ -721,6 +808,32 @@ gap:
   stands when the skill folder is as it was in the run's commit, a change to `SKILL.md`'s
   `metadata.version` line alone aside, since that is the one change decision 23 allows a
   release.
+
+**Amended at the round 2 intake, with the owner** (2026-11-25): one engine for every skill,
+`claude plugin eval` (*Context*), from Session E2 on for crux-finder; what is above about
+quotes, words, symmetry, length, a question, gold order and the skill as it stands still holds
+for crux-finder, read from the new results.
+- **One runner, shared,** under `evals/`, standard library only (invariant 5, whose test lets
+  a file under `evals/` import shared code there). Given a skill, it refuses while the plugin
+  has uncommitted changes, records the commit, the skill's and the CLI's versions, runs the
+  engine on that skill's cases, and writes the results (*The data layer*). It skips a run whose
+  file exists. It runs cases in place, or, if Session E1 measures that the engine cannot, from
+  a temporary copy of the plugin and the cases; either way no case is under `plugins/`.
+- **Its fixed choices:** the model `claude-opus-5-5`; no baseline arm (`--ablation none`);
+  never published (`--no-publish`); `--trust-plugin` for this repository's own plugin only;
+  results written outside the plugin (`--output-dir`); the web tools a skill's cases need,
+  granted with `--allow-tools`; up to four runs at once (`--concurrency 4`), and still one
+  cycle at a time. A run's failure is read from the results, not the exit code.
+- **Isolation,** as before: none of the owner's settings, plugins, synced skills, MCP servers
+  or memory, and no read of `gold.md` or the graders. Session E1 measures it, and whether it
+  can be checked on every run; losing that per-run check is the owner's call.
+- **Graders and checks:** the engine's graders judge what they can express; each skill's
+  `checks.py` judges the rest from the committed results and git: gold's fields and order,
+  the graders unchanged since each run's commit, the owner's corrections, and the pass bars.
+  crux-finder: two runs per case, round 1's bars, stability judged by the owner.
+  provenance-tracer: three runs per case, a case passing at 2 of 3, the spec's hard checks on
+  every run, and every chain URL among the run's fetches.
+- **A claude.ai reply** is judged by the owner in `review.md`, for both skills.
 
 **Built.** `evals/crux-finder/run.py` and `evals/crux-finder/checks.py`, both standard library
 only, on Python 3.10.
@@ -789,6 +902,9 @@ Decisions made here, each with its why:
 **Decided.** **`verify`** runs named stages, each failing on its own and runnable alone by name,
 then a summary: `skills`, `plugins`, `format`, `lint`, `tests`, then `hygiene`. It is green
 before every commit. The harness is each skill's eval set. The commands are in `CLAUDE.md`.
+From round 2 (amended at its intake, 2026-11-25), every skill's eval set runs on `claude plugin
+eval` through one shared runner, judged by its graders and the skill's `checks.py`, with the
+owner reading every failed verdict and one run per case (*The eval harness*).
 
 **Built.**
 
@@ -817,7 +933,9 @@ followed by the claude.ai smoke test on three cases.
 - **claude.ai:** a zip with the skill folder at its root, uploaded as a custom skill.
 - **Other agents:** the skill folder copied into the agent's skills directory.
 - **Releases:** a skill's version moves in its own session; crux-finder 1.0.0 is tagged
-  `crux-finder--v1.0.0`. Pushes and tags are each the owner's yes.
+  `crux-finder--v1.0.0`, and provenance-tracer's 1.0.0 will be tagged
+  `provenance-tracer--v1.0.0` (settled at the round 2 intake, 2026-11-25). Pushes and tags are
+  each the owner's yes.
 
 **Built.** The marketplace, checked locally: `claude plugin marketplace add ./` and
 `claude plugin install travel-itinerary-builder@faircat-skills` installed it, and
@@ -913,3 +1031,13 @@ finding.
 - 2026-11-22, Session 8: *The eval harness* gains that a change to `SKILL.md`'s
   `metadata.version` line alone leaves a run on the skill as it stands. The owner settled it at
   the start of Session 8, as the session recommended.
+- 2026-11-25, round 2 intake: a new section, *provenance-tracer*, from the owner's spec, with
+  `metadata.version` kept against the spec's three fields; invariant 4 extended to it;
+  *Context* gains `claude plugin eval` and the live web; *Layout and boundaries*, *The data
+  layer*, *The eval harness* and *Testing strategy* move every skill's evals onto that engine
+  through one shared runner at the root, instead of crux-finder's own `run.py` and the owner's
+  review of every run, with `gold.md` kept, each run's reply and tool calls committed, the
+  owner reading failed verdicts and one run per case, and four runs at once instead of one;
+  invariant 6 covers the graders; *Packaging* names provenance-tracer's tag. The owner settled
+  each at the intake: the engine for crux-finder too, asking for one layout for every skill;
+  what a cycle commits, after the plan review showed the engine's JSON holds no whole reply.

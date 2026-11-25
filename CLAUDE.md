@@ -87,8 +87,9 @@ follows these rules:
 - **No AI attribution:** no co-author trailers, no lines saying a tool generated the work, no
   AI session links, no AI credited as author, co-author or addressee. Naming Claude Code,
   Codex, claude.ai or the `claude` CLI as targets or tools is fine.
-- **Fixtures are fictional.** Eval inputs are fictional, public domain, or written and
-  anonymized by the owner.
+- **Fixtures are fictional.** Eval inputs are fictional, public domain, written and
+  anonymized by the owner, or a public claim about a public figure. A public figure such a
+  case names may be named in its results and in a README's test table; a private person never.
 - **Done-notes and handoffs never name the owner's own data.**
 - **Unsure whether something is public? Ask the owner before writing it.** A word they call
   private goes on the term list.
