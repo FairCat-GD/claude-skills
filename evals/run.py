@@ -32,9 +32,10 @@ import shared
 ROOT = Path(__file__).resolve().parent.parent
 # Named here and written into every result, so that cycles compare.
 MODEL = "claude-opus-5-5"
-# The engine's default judge, measured with claude 2.1.330, pinned so a change of judge is a
+# The judge of every llm grader, the owner's choice over the engine's default (claude-haiku-5-5)
+# for its reading of paraphrase; pinned and written into every result, so a change of judge is a
 # visible decision rather than a new release of the alias.
-JUDGE_MODEL = "claude-haiku-5-5"
+JUDGE_MODEL = "claude-sonnet-5-5"
 CONCURRENCY = 4
 # The tools each skill's cases need beyond the engine's read-only set, granted with --allow-tools.
 SKILLS: dict[str, tuple[str, ...]] = {

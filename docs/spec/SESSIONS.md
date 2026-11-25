@@ -497,6 +497,109 @@ layer*, *The eval harness*, *crux-finder* (Decided), *Known debt*; E1's done-not
 - **Three gold files must not change** (`empirical-studio-kiln`, `one-sided-games-night`,
   `no-conflict-quiz-team`): their claude.ai replies are results.
 
+**Done (2026-11-25, no release).**
+- **Decided with the user:**
+  - **The block's three Asks, at the start:**
+    - **Corrections:** a line per failed verdict in `review.md`, `fail` confirming and `pass`
+      overruling, counted over the engine's verdict; a failed verdict with no line is a problem.
+    - **Graders:** type by its label (a regex), except where gold ties type to more than the
+      label; crux, people and the gate as `llm` graders quoting gold.
+    - **The judge:** `claude-sonnet-5-5`. The session recommended keeping `claude-haiku-5-5`; the
+      owner chose the stronger reader.
+  - **Mid-session, the graders:** the owner had a second model (Fable) review the 32 drafts
+    before approving them. It found nothing misquoted and twelve points: seven wording fixes the
+    session applied, and four rules gold left open, which the owner settled as the session
+    recommended:
+    - a favourable statement about a party counts as a statement about people;
+    - a **No crux** report fails crux where gold gives a crux;
+    - in the debate excerpt, a match outranks the excluded "endure half slave and half free"
+      crux when one sentence holds both;
+    - in the one-sided case, a reply with no `## Crux report` heading and no `### The crux`
+      section writes no report.
+
+    The owner approved all 32 after the fixes.
+  - **Confirms:** *The data layer* and *The eval harness*, confirmed with the plan.
+- **The ten cases** in the engine's format:
+  - each `input.md` moved to `prompt.md` with `git mv`, body unchanged, frontmatter
+    `allowed_tools: [Skill, Read]`, `max_turns: 20`, `timeout_seconds: 900`;
+  - 32 graders: `crux`, `type` and `no-statement-about-people` in every case, `gate` in the
+    one-sided case and `no-conflict` in the no-conflict case; 9 regex and 23 `llm`;
+  - `real-lincoln-douglas/gold.md` gained its input's `source:` and `license:`, byte for byte.
+    No other gold changed.
+- **The judge pin** in `evals/run.py`: `claude-sonnet-5-5`.
+- **`evals/crux-finder/checks.py`,** rewritten on `evals/shared.py`:
+  - per case, the prompt, the grader set and gold's fields;
+  - gold order from the results present now, each file counted from its latest adding;
+  - the case as each run had it, prompt and graders;
+  - each run and its verdicts;
+  - `review.md`'s run sections and the owner's lines;
+  - the bars over each run's effective verdict;
+  - the claude.ai smoke row;
+  - "no cycle yet" when only claude.ai replies are present.
+- **Retired,** in this commit: `evals/crux-finder/run.py`, `tests/test_crux_finder_run.py`, round
+  1's twenty `run-N.md`, and the `review.md` of the seven cases with no claude.ai reply. The three
+  `claude-ai.md` stay, their `review.md` cut to `## claude-ai`.
+- **Tests:** `tests/test_crux_finder_checks.py` rewritten: the pure functions' tests carried
+  over, and the new checks on a fictional repository whose results `shared` writes.
+- **Docs:**
+  - crux-finder's README: the last sentence of *How it was tested* says where the reports are.
+  - `CLAUDE.md`: invariants 6 and 7, *Commands*, *Exclusive resources*, the synced-upload line.
+  - `ARCHITECTURE.md`:
+    - *Overview*, *Context* (E2's measurements), *Layout*;
+    - invariants 6 and 7;
+    - *The data layer* (Decided: the corrections; Built: the cases, prompts, graders, gold and
+      `review.md`);
+    - *The eval harness* (Decided: the three Asks and the four rules; Built: `checks.py`);
+    - *Testing strategy*, the baseline, a *Decision log* line.
+- **Amendments:**
+  - **The case as it ran includes `prompt.md`,** not only the graders, since quotes are checked
+    against the prompt as it is now. It came with the plan the owner approved.
+  - **The per-case row is "Gold order + approved_by + graders as run",** since it now counts a
+    case whose graders changed since a run as unsound. It came with the plan.
+- **Measured** (`claude` 2.1.330, $0.22 in all):
+  - **Loading, $0:** the engine reads every `prompt.md` before it filters by `--case`. A call
+    naming no case loaded all ten with no error. A copy with an unknown key in one prompt named
+    that case. A grader is not read at load: an unknown grader type passed it.
+  - **One trial run** of `empirical-studio-kiln` through the runner (`--trial`, outside the
+    repository): $0.21 for the run and $0.013 for the judge, 5 turns, 32 s. The skill fired and
+    read the template and the types. `crux` and `no-statement-about-people` passed 3/3 votes and
+    the `type` regex matched. No kept folder was left, and the trial folder was deleted.
+- **Checked by hand:**
+  - **The regexes against round 1:** every `regex` grader compiled by JavaScript and run on round
+    1's 23 outputs before they were retired. All 22 verdicts with an owner's field agreed, both
+    piano runs failing as Value. The no-conflict patterns failed on other labels and passed a
+    Framing label.
+  - **`checks.py` on round 1's results before retiring them:** every old `run-N.md` reported
+    unreadable in the new format, and the debate gold's change was caught against its present
+    results.
+  - **The three golds** with claude.ai replies are unchanged against HEAD.
+- **Falsified:** each of `checks.py`'s new checks broken in turn, the whole test file run each
+  time, and each break failing at its own test (30 breaks, the file restored after):
+  - **the case:** quotes against the prompt's body, not the whole file; the three graders
+    present; no grader that no bar reads;
+  - **gold order:** a file counted from its latest adding (the retired-results tests); gold
+    before each adding; gold unchanged since; no uncommitted gold; gold in each output's commit;
+  - **the case as it ran:** the prompt unchanged; graders added or removed; graders changed;
+    graders in the commit; a claude.ai reply not held to the graders;
+  - **verdicts:** `verdicts-N.md` present; none without a run; one for each grader; none for
+    another;
+  - **review.md:** a line for each failed verdict; the owner's line counted over the verdict;
+    stability from run 2; none on run 1; a note; pass or fail; no unknown field;
+  - **runs and bars:** a run's header names its place; "no cycle yet" on the smoke test; the
+    people, crux and type bars from the effective verdict; every results entry read.
+
+  `tests/test_evals_stdlib.py`'s guard now names the runner, the shared code and `checks.py`
+  instead of counting four files, since the old runner is gone; with `checks.py` moved away it
+  failed.
+- **Numbers:**
+  - 299 unit tests (+18: −75 and −22 retired, +115 new), 0 skipped;
+  - 6 `verify` stages, about 27 s, down from 32: each `check()` reads the case folders once per
+    commit, seven git calls for a cycle in place of about 130;
+  - 15 Python files (−2);
+  - 3 skill folders, 3 plugins, 3 marketplace entries;
+  - `checks.py`: `checks: 10 case(s), 0 problem(s); no cycle yet, so the cycle's bars are not
+    counted; the claude.ai smoke test met`, exit 0, the smoke row 3 / 3.
+
 ---
 
 ## E3: crux-finder's first cycle on the new engine

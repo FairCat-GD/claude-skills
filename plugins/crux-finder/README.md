@@ -104,8 +104,9 @@ only its version number changed.
 either person. Both runs of the one-sided case asked for the other side's own words and wrote
 no report, so 18 reports count for symmetry and length. Both misses on type are the two runs of
 one case whose answer is two sides answering different questions, which both runs read as a
-difference in values; the bar allows two. The cases, every report and the maintainer's reviews
-are kept in this repository.
+difference in values; the bar allows two. The cases, the three claude.ai replies and the
+maintainer's reviews of them are kept in this repository; the twenty Claude Code reports of that
+test and their reviews are in its history.
 
 ## Version
 

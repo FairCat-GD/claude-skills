@@ -62,10 +62,9 @@ them) and anything still open moves to `docs/BACKLOG.md`. **State lives in
    dependencies (the `skills` stage).
 5. Everything under `evals/` imports the standard library only (a test).
 6. Neither the eval runner nor the session under test reads `gold.md`, and the session under
-   test reads no grader; a shared runner copies graders unopened (a test; the run's
-   isolation).
-7. Each `gold.md` is committed before any of its results, and names who approved it
-   (`checks.py`).
+   test reads no grader; the runner copies graders unopened (a test; the run's isolation).
+7. Each `gold.md` is committed before any of its results present now, and names who approved
+   it (`checks.py`).
 8. Published names are never renamed (the `plugins` stage).
 9. Nothing private enters the repository (the hygiene stage).
 
@@ -115,15 +114,14 @@ rest of this list.
 | `uv run pytest tests/test_hygiene.py -k <name>` | One test file, or the tests whose names match |
 | `uv run scripts/check_skills.py` and `uv run scripts/check_plugins.py` | The `skills` and `plugins` stages' own checks alone, without the validators |
 | `claude plugin validate --strict <path>` | The CLI's check of the marketplace (`.`) or of one plugin (`plugins/<skill>`), as the `plugins` stage runs it |
-| `uv run evals/crux-finder/run.py --runs N [--case <id> …]` | crux-finder's own runner until E2: one isolated `claude -p` session per case per run, into `results/<id>/run-N.md`. Skips a run whose file exists; refuses while `plugins/crux-finder/` has uncommitted changes. Spends real model runs: only where a block names it |
 | `uv run evals/run.py <skill> --runs N --max-cost-usd USD [--case <id> …] [--trial <folder>]` | The shared runner over `claude plugin eval`: the plugin and the chosen cases copied to a temporary folder without `gold.md`, up to four runs at once, into `evals/<skill>/results/<id>/run-N.md` and `verdicts-N.md`. Skips a run whose file exists; refuses while `plugins/<skill>/` or `evals/<skill>/cases/` has uncommitted changes; `--trial` writes to a folder outside the repository instead, for a gate's trial run. The ceiling covers the whole command. Spends real model runs: only where a block names it |
-| `uv run evals/crux-finder/checks.py` | crux-finder's deterministic checks (gold order, `approved_by`, quotes, symmetry, length, `review.md`) and the summary table against the pass bars |
+| `uv run evals/crux-finder/checks.py` | crux-finder's checks on the runner's results: gold's fields and order, each run's prompt and graders as it ran, its verdicts with the owner's lines in `review.md` counted over them, quotes, symmetry and length; then the summary table against the pass bars |
 
 No test reads the owner's term list or touches the real hygiene stamp, `results/` or `cases/`.
 
-**Exclusive resources:** the eval runners (they write `results/` and spend real model runs; one
-cycle at a time, the shared runner up to four runs at once) and the owner's claude.ai account. A
-parallel part never runs them; the session's integration does.
+**Exclusive resources:** the eval runner (it writes `results/` and spends real model runs; one
+cycle at a time, up to four runs at once) and the owner's claude.ai account. A parallel part
+never runs them; the session's integration does.
 
 ## Git
 
@@ -159,7 +157,7 @@ check, a script or a pin makes it impossible.
   prints the CLI's version first: compare it with the baseline's, fix what the warning names,
   and ask the owner before dropping `--strict`.
 - **A skill uploaded to claude.ai syncs into every Claude Code session** as
-  `anthropic-skills:<skill>`, beside the plugin's copy. Both runners refuse a run where it loads,
+  `anthropic-skills:<skill>`, beside the plugin's copy. The runner refuses a run where it loads,
   from the run's start event; after a smoke test, delete the upload unless the owner keeps it.
 - **`claude plugin eval` called directly publishes its report to claude.ai and writes `results/`
   inside the plugin.** Use `evals/run.py`, or pass `--no-publish` and an `--output-dir` outside

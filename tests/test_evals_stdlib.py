@@ -37,9 +37,9 @@ def outside_the_standard_library(folder: Path) -> list[str]:
 
 
 def test_everything_under_evals_imports_the_standard_library_only() -> None:
-    files = sorted(EVALS.rglob("*.py"))
-    assert len(files) >= 4
-    assert (EVALS / "shared.py").is_file()
+    # The scan is not vacuous: the runner, the shared code and a skill's checks are all in it.
+    files = set(EVALS.rglob("*.py"))
+    assert {EVALS / "run.py", EVALS / "shared.py", EVALS / "crux-finder" / "checks.py"} <= files
     assert outside_the_standard_library(EVALS) == []
 
 
