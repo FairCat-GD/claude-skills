@@ -17,8 +17,9 @@ E2 cuts no version unless a shipped file changes.
 
 - **Round 2 is provenance-tracer, and one eval engine for every skill:** P1 and E1 are done; E2,
   E3, P2, P3, P4 and P5 remain.
-- **Push status:** `origin/main` holds everything through P1's review commit. E1's commits are
-  local and wait for the next approved push; nothing in them changes what installs.
+- **Push status:** `origin/main` holds everything through E1's review commit ("review: a page
+  that denies access is a failed call, a renamed case costs only itself, and 5 smaller"), pushed
+  with the owner's yes; nothing in E1 changes what installs. This note's own commit follows it.
 - **What E1 left that E2 builds on:**
   - **The shared runner,** `uv run evals/run.py crux-finder --runs 2 --max-cost-usd <usd>
     [--case <id> …] [--trial <folder>]`. crux-finder's row in `SKILLS` grants no tools.
