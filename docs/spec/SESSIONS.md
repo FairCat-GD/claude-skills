@@ -599,6 +599,18 @@ layer*, *The eval harness*, *crux-finder* (Decided), *Known debt*; E1's done-not
   - 3 skill folders, 3 plugins, 3 marketplace entries;
   - `checks.py`: `checks: 10 case(s), 0 problem(s); no cycle yet, so the cycle's bars are not
     counted; the claude.ai smoke test met`, exit 0, the smoke row 3 / 3.
+- **Review (`/code-review high`), 2 findings: 2 fixed and 0 skipped.** The owner chose to fix
+  both.
+  - **A result file renamed under `results/` escaped the gold order:** git logs a rename as a
+    rename, never as an adding, so the renamed file had no commit to reckon from and was skipped.
+    Reproduced in a scratch repository. The log and the diff now take `--no-renames`, and a
+    committed result that no commit adds is a problem rather than a pass.
+  - **A run file that could not be read was reported twice,** as unreadable and as lacking its
+    commit. The header is checked only once the file is read.
+  - **Falsified:** `--no-renames` dropped from the log, the unattributed-result problem removed,
+    and the read guard dropped, each failing at its own new or tightened test.
+  - **Numbers after the review:** 301 unit tests (+2: three added, one that proved nothing
+    dropped), 0 skipped; the other counts unchanged.
 
 ---
 

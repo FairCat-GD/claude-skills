@@ -328,7 +328,7 @@ def _snapshots(root: Path) -> Callable[[str], Snapshot]:
             if listed.returncode != 0:
                 cache[commit] = Snapshot(None, frozenset())
             else:
-                changed = _git(root, "diff", "--name-only", commit, "--", folder)
+                changed = _git(root, "diff", "--no-renames", "--name-only", commit, "--", folder)
                 cache[commit] = Snapshot(_lines(listed.stdout), _lines(changed.stdout))
         return cache[commit]
 
@@ -336,9 +336,17 @@ def _snapshots(root: Path) -> Callable[[str], Snapshot]:
 
 
 def _added_in(root: Path) -> dict[str, str]:
-    """Each file ever added under results/, by the latest commit that added it."""
+    """Each file ever added under results/, by the latest commit that added it. Without
+    `--no-renames` a file renamed there is logged as renamed, never as added."""
     log = _git(
-        root, "log", "--diff-filter=A", "--format=%x01%H", "--name-only", "--", f"{EVALS}/results"
+        root,
+        "log",
+        "--no-renames",
+        "--diff-filter=A",
+        "--format=%x01%H",
+        "--name-only",
+        "--",
+        f"{EVALS}/results",
     )
     added: dict[str, str] = {}
     commit = ""
@@ -351,6 +359,11 @@ def _added_in(root: Path) -> dict[str, str]:
     return added
 
 
+def _tracked(root: Path) -> frozenset[str]:
+    """Every file under results/ that git has, committed or staged."""
+    return _lines(_git(root, "ls-files", "--", f"{EVALS}/results").stdout)
+
+
 def gold_order(
     root: Path,
     case: str,
@@ -358,6 +371,7 @@ def gold_order(
     present: list[str],
     snapshot: Callable[[str], Snapshot],
     added: dict[str, str],
+    tracked: frozenset[str],
 ) -> list[str]:
     """Invariant 7: gold.md committed before every result present now, and unchanged since.
 
@@ -367,11 +381,14 @@ def gold_order(
     head = snapshot("HEAD")
     if head.held is None or gold not in head.held:
         return [f"{gold}: not committed"]
-    problems = []
+    problems: list[str] = []
     by_adding: dict[str, list[str]] = {}
     for path in present:
         if path in added:
             by_adding.setdefault(added[path], []).append(path.rsplit("/", 1)[-1])
+        elif path in tracked and _git(root, "cat-file", "-e", f"HEAD:{path}").returncode == 0:
+            # Committed, yet no commit adds it: the order cannot be reckoned, so it is no pass.
+            problems.append(f"{gold}: no commit adds {path}, so its order cannot be checked")
     for commit, names in by_adding.items():
         which = f"{', '.join(names)}, added in {commit[:12]}"
         before = snapshot(f"{commit}^")
@@ -556,15 +573,16 @@ def _read_run(
     problems = []
     try:
         run = shared.read_run(path.read_text(encoding="utf-8"))
-        header, reply = run.header, run.reply
+        header, reply, read = run.header, run.reply, True
     except (OSError, ValueError) as error:
-        header, reply = {}, ""
+        header, reply, read = {}, "", False
         problems.append(f"{where}: cannot be read ({error})")
     found, judged = _judge_reply(where, reply, source)
     output = Output(case, f"run-{number}", where, header, **found)
-    if not header.get("commit"):
+    # A file that cannot be read has one problem, not one for each header field it lacks.
+    if read and not header.get("commit"):
         problems.append(f"{where}: no commit in its header; the runner writes one")
-    if header and (header.get("case") != case or header.get("run") != str(number)):
+    if read and (header.get("case") != case or header.get("run") != str(number)):
         problems.append(
             f"{where}: its header names case {header.get('case')!r}, run {header.get('run')!r}"
         )
@@ -791,6 +809,7 @@ def _check_case(
     report: Report,
     snapshot: Callable[[str], Snapshot],
     added: dict[str, str],
+    tracked: frozenset[str],
 ) -> tuple[list[Output], list[Output], bool]:
     """One case's runs and claude.ai reply, its problems added to the report, and whether the
     case itself is sound: gold, its order, the prompt and the graders as each run had them."""
@@ -821,7 +840,7 @@ def _check_case(
     runs = [o for o in outputs if o.number is not None]
     present = [_where(root, path) for path in files if path.is_file()]
     problems += _gold_fields(root, case)
-    problems += gold_order(root, case, outputs, present, snapshot, added)
+    problems += gold_order(root, case, outputs, present, snapshot, added, tracked)
     problems += case_as_run(root, case, runs, snapshot)
     report.problems += problems
     return runs, [o for o in outputs if o.number is None], not problems
@@ -845,9 +864,11 @@ def check(root: Path) -> Report:
     runs: list[Output] = []
     claude_ai: list[Output] = []
     sound: dict[str, bool] = {}
-    snapshot, added = _snapshots(root), _added_in(root)
+    snapshot, added, tracked = _snapshots(root), _added_in(root), _tracked(root)
     for case in ids:
-        case_runs, case_claude_ai, sound[case] = _check_case(root, case, report, snapshot, added)
+        case_runs, case_claude_ai, sound[case] = _check_case(
+            root, case, report, snapshot, added, tracked
+        )
         runs += case_runs
         claude_ai += case_claude_ai
     report.runs = len(runs)

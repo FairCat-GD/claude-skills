@@ -381,7 +381,8 @@ def test_a_runs_header_names_its_commit_and_its_place(
 def test_a_run_that_cannot_be_read_is_a_problem_not_a_crash(root: Path) -> None:
     _one(root)
     _write(root, f"{EVALS}/results/ferry/run-1.md", "---\ncase: ferry\n---\n\nJust text.\n")
-    problems = _problems(root, "run-1.md: cannot be read")
+    # One problem for one cause: not also its missing commit or its header's fields.
+    problems = _problems(root, "run-1.md")
     assert problems == [
         f"{EVALS}/results/ferry/run-1.md: cannot be read (no '## Tool calls' after the header)"
     ]
@@ -572,6 +573,28 @@ def test_a_retired_result_never_counts_however_old(root: Path) -> None:
     _one(root)
     _commit(root)
     assert _problems(root) == []
+
+
+def test_a_committed_result_that_no_commit_adds_is_a_problem(root: Path) -> None:
+    _one(root)
+    _commit(root)
+    added = checks._added_in(root)
+    present = [f"{EVALS}/results/ferry/run-1.md"]
+    snapshot = checks._snapshots(root)
+    tracked = checks._tracked(root)
+    problems = checks.gold_order(root, "ferry", [], present, snapshot, {}, tracked)
+    assert problems == [
+        f"{EVALS}/cases/ferry/gold.md: no commit adds {present[0]}, so its order cannot be checked"
+    ]
+    assert checks.gold_order(root, "ferry", [], present, snapshot, added, tracked) == []
+
+
+def test_a_renamed_result_is_logged_as_added_under_its_new_name(root: Path) -> None:
+    _one(root)
+    _commit(root)
+    _git(root, "mv", f"{EVALS}/results/ferry/run-1.md", f"{EVALS}/results/ferry/run-2.md")
+    renamed = _commit(root)
+    assert checks._added_in(root)[f"{EVALS}/results/ferry/run-2.md"] == renamed
 
 
 def test_gold_with_uncommitted_changes_while_results_exist_fails(root: Path) -> None:

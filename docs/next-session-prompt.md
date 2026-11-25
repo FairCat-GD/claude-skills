@@ -16,8 +16,9 @@ E3 cuts no version unless a shipped file changes.
 
 - **Round 2 is provenance-tracer, and one eval engine for every skill:** P1, E1 and E2 are done;
   E3, P2, P3, P4 and P5 remain.
-- **Push status:** `origin/main` holds everything through E1's handoff commit (`a4bca98`). E2's
-  commits are local until the owner approves a push; nothing in E2 changes what installs.
+- **Push status:** `origin/main` holds everything through E2's review commit ("review: a renamed
+  result keeps its gold order, and an unreadable run is one problem"), pushed with the owner's
+  yes; nothing in E2 changes what installs.
 - **What E2 left that E3 runs:**
   - **The command:** `uv run evals/run.py crux-finder --runs 2 --max-cost-usd <usd>`. A run's
     file is skipped if it exists, so a stopped cycle resumes by running the same command.
@@ -44,7 +45,7 @@ E3 cuts no version unless a shipped file changes.
   owner. Under EE 5 the graders decide; E3 asks how the owner's reading is made.
 - **The comparison table:** Session 7c's is in crux-finder's README, *How it was tested*, and in
   git (`docs/spec/SESSIONS.md` of round 1, as of the review commit before `docs: close round 1`).
-- **Baseline** (ARCHITECTURE's table): `verify` green with 6 stages; 299 unit tests passed, 0
+- **Baseline** (ARCHITECTURE's table): `verify` green with 6 stages; 301 unit tests passed, 0
   skipped; 15 Python files; 3 skill folders, 3 plugins, 3 marketplace entries; `claude`
   2.1.330; `checks.py`: `checks: 10 case(s), 0 problem(s); no cycle yet, so the cycle's bars are
   not counted; the claude.ai smoke test met`, exit 0.

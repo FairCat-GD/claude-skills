@@ -354,8 +354,9 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
    round 2 intake (*The data layer*): a retired cycle stays in history, and its files never
    count. *Enforced by* `evals/crux-finder/checks.py`, from git: gold.md committed; in the parent
    of the commit that added each file now under `results/<id>/` (its latest adding, for a file
-   removed and added again) and unchanged since; in the commit each output names and unchanged
-   since; with no uncommitted change while results exist; and with a non-empty `approved_by`.
+   removed and added again, a rename counted as an adding) and unchanged since, a committed
+   file no commit adds being a problem; in the commit each output names and unchanged since;
+   with no uncommitted change while results exist; and with a non-empty `approved_by`.
 8. **Published names are never renamed:** the marketplace `faircat-skills`, and each plugin's and
    skill's name. *Why:* people install by them, and a rename strands their install. *Enforced
    by* the `plugins` stage, against the published names in `scripts/check_plugins.py`
@@ -1149,8 +1150,8 @@ every bar met; otherwise 1.
   non-empty.
 - **Gold order** (invariant 7), from the results present now: gold in HEAD; for each file now
   under `results/<id>/` that git has, the commit that last added it, whose parent holds gold,
-  unchanged since; gold in each output's `commit`, unchanged since; no uncommitted change while
-  results exist.
+  unchanged since, and a committed file that no commit adds is a problem; gold in each output's
+  `commit`, unchanged since; no uncommitted change while results exist.
 - **The case as it ran:** for each `run-N.md`'s `commit`, the case's `prompt.md` and graders in
   that commit, the same grader files as now, and neither changed since. A `claude-ai.md`, older
   than every grader, is not held to it.
@@ -1181,6 +1182,10 @@ Decisions made here, each with its why:
 - **Each commit's view of the case folders is read once** (`git ls-tree -r` and `git diff
   --name-only` over `cases/`), and every adding commit in one `git log` over `results/`, since a
   cycle's runs share one commit: a check costs a handful of git calls, not several per file.
+- **Git reports a rename as a removal and an adding** (`--no-renames`, in the log and the diff),
+  since a file renamed under `results/` is otherwise never logged as added and would have no
+  commit to reckon its gold order from.
+- **A run file that cannot be read is one problem,** not also a missing commit and header.
 - **The verdicts are read by grader name,** so a grader's file name is its bar, and a grader no
   bar reads is a problem rather than a verdict counted nowhere.
 - **A sentence's last mark just inside the closing quotation mark is not part of the quote,**
@@ -1383,7 +1388,7 @@ of its own: each skill has its own version.
 | Check | Expected |
 |---|---|
 | `uv run scripts/verify.py` | green: 6 stages (`skills`, `plugins`, `format`, `lint`, `tests`, `hygiene`), about 27 s with uv's cache warm, most of it the eval tooling's git fixtures |
-| Unit tests (`tests`) | 299 passed, 0 skipped: 115 in `test_crux_finder_checks.py`, 51 in `test_evals_run.py`, 45 in `test_hygiene.py`, 36 in `test_check_skills.py`, 20 in `test_check_plugins.py`, 18 in `test_evals_shared.py`, 10 in `test_verify.py`, 4 in `test_evals_stdlib.py` |
+| Unit tests (`tests`) | 301 passed, 0 skipped: 117 in `test_crux_finder_checks.py`, 51 in `test_evals_run.py`, 45 in `test_hygiene.py`, 36 in `test_check_skills.py`, 20 in `test_check_plugins.py`, 18 in `test_evals_shared.py`, 10 in `test_verify.py`, 4 in `test_evals_stdlib.py` |
 | `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
 | Python files (`ruff format --check .`) | 15 |
 | Skills and plugins | 3 skill folders, 3 plugins, 3 marketplace entries |
