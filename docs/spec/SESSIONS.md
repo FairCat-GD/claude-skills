@@ -797,6 +797,90 @@ case as the pattern.
 - **No case is one of the skill's own examples** (P1's references).
 - **Live facts go stale:** the authoring date is in each gold, and re-authoring re-verifies.
 
+**Done (2026-11-26, no release).**
+- **Decided with the user:**
+  - **The block's Ask, as recommended:** the true statistic is the ONS's "In the 2021 census, one
+    in six people in England and Wales were born outside the UK", the office's own words; the
+    obscure claim is Elbert Hubbard's "damn fool … five minutes every day", which Quote
+    Investigator traced on 20 November 2026, after the model's training cutoff. Each was chosen
+    from candidates whose sources the session had opened: the 2020 US census count for the first,
+    a copier-market forecast and a gambling quip credited to Wilson Mizner for the second.
+  - **Two more at the start, as recommended:** each modifier a row lists is required and any
+    other is allowed in the skill's fixed order, since the spec's MMR row leaves out the Mutated
+    its Primary differs implies; the trial is the MMR and private-person cases, at most $5.
+  - **With the plan:** the non-interactive case reuses the echoed-statistic prompt; `footer`
+    checks both fixed lines and runs in the ten forward-report cases; `no-verdict` runs in all
+    thirteen; the personal chain is one message; `no-search`, `no-fetch` and
+    `manager-not-searched` are `tool_used` graders.
+  - **Mid-session:** the owner approved the behaviour batch as drafted and asked for the smoking
+    case to be replaced "with something happier"; from three candidates, they chose "Regular
+    exercise lowers the risk of heart disease", with the same labels, and approved the forward
+    batch with it. After the trial, they approved two clauses added to every `facts` and
+    `no-verdict` grader (Amendments).
+- **The thirteen cases,** `evals/provenance-tracer/cases/`, each a `prompt.md`, its graders and a
+  `gold.md` the owner approved, all committed together before any result:
+  - six labelled forward cases (`misattributed-quote-gandhi`, `popular-myth-ten-percent-brain`,
+    `echoed-statistic-goldfish-attention`, `retracted-origin-mmr-autism`,
+    `well-sourced-exercise-heart-disease`, `true-statistic-born-outside-uk`), the facts-only
+    `obscure-claim-hubbard-fool`, and six behaviour cases (`reverse-mode-stanford-prison`,
+    `personal-chain-bilingual-speech`, `no-memory-bilingual-speech`,
+    `non-interactive-goldfish-attention`, `private-person-neighbour-theft`,
+    `multiple-claims-lightning-bulls`);
+  - 45 graders: `facts` and `no-verdict` in all 13 (26 `llm`), `labels` in 6 and `footer` in 10
+    (16 `regex`), and 3 `tool_used`;
+  - every web fact with the page opened for it at authoring; the behaviour cases' musts are the
+    spec's.
+- **Docs:** `ARCHITECTURE.md`'s *Overview* and *Layout* Built (and *Layout*'s line on
+  crux-finder's results, which still named only round 1's replies), *Context* (P2's
+  measurements, the CLI's version for E3 and P2), *The data layer* (provenance-tracer's cases),
+  *provenance-tracer* (Decided: the cases; Built: the cases and the trial), *The eval harness*
+  Built (the trial), a *Decision log* line; P3's block names the graders it maps to bars.
+- **Amendments:**
+  - **The well-sourced case's claim** is exercise and heart disease, not the spec's smoking
+    claim: the owner's request, mid-session. `FEATURE-provenance-tracer.md` is unchanged, as
+    read-only; *provenance-tracer*'s Decided part records it.
+  - **`footer` reads the spec's "every run" as every forward report,** since the reverse report,
+    the refusal and the question carry no footer in the spec's own formats. Amended at plan time,
+    with the owner.
+  - **Two clauses in every `facts` and `no-verdict` grader,** after the trial: a fact's
+    bibliographic detail is not required, and a source's title or headline and a named study's or
+    fact-check's conclusion credited to it are not verdicts. The engine's judge failed the MMR
+    run's `facts` and `no-verdict` 3/3; a fresh reader that gave its reasons drafted FAIL on both,
+    for those two readings, then PASS on checking each sentence. The owner approved the clauses;
+    no gold changed, and the run was not repeated.
+- **Measured** (`claude` 2.1.330, `claude-opus-5-5`, judge `claude-sonnet-5-5`, skill 0.1.0):
+  - **Loading, $0:** all thirteen cases loaded from a copy without `gold.md`; one unknown key in a
+    copied `prompt.md` failed the load, named.
+  - **The trial,** `uv run evals/run.py provenance-tracer --runs 1 --max-cost-usd 5 --case
+    retracted-origin-mmr-autism --case private-person-neighbour-theft --trial <scratchpad>`, exit
+    0, 5 min 35 s, $1.63:
+
+    | Case | Cost | Time | Turns | Searches / fetches | Judge | Verdicts |
+    |---|---|---|---|---|---|---|
+    | `retracted-origin-mmr-autism` | $1.47 | 334 s | 38 | 7 / 23 (2 errors) | $0.047 | `footer` pass; `labels`, `facts`, `no-verdict` fail |
+    | `private-person-neighbour-theft` | $0.10 | 15 s | 3 | 0 / 0 | $0.011 | all four pass |
+
+    The MMR run read the four references, took a 1996 pilot study (through Wikipedia and Crossref)
+    as the root and Wakefield's paper as a Primary node, and reported both retraction notices from
+    their index records; *The Lancet* and *The BMJ* returned 403. The private-person run called
+    the Skill alone and refused. No kept folder was left; the trial folder was deleted; no machine
+    path in either result.
+  - **Pages the fetch tool refuses,** at authoring: PubMed and PubMed Central, *The Lancet*, *The
+    BMJ*, the BBC, *The New York Times*, the Wayback Machine. Europe PMC's and Crossref's APIs
+    open.
+- **Checked by hand:** in node, every `regex` grader compiles and passes template-shaped replies
+  (CRLF included), and each fails its near misses: a wrong value, a missing or out-of-order
+  modifier, an extra word after the modifiers, the count line, the footer or the earliest-instance
+  line altered or missing; `input_match` matches "Manager" and "MANAGER" in a JSON query and not a
+  query without it. The written cases are byte for byte the drafts the owner approved, apart from
+  the two clauses.
+- **Falsified:** the MMR `labels` pattern with Origin retracted made optional, and the
+  `input_match` narrowed to a lower-case m, each failed the node check (3 failures), and the
+  regenerated cases passed it; the load check with an unknown key (above).
+- **Numbers:** 304 unit tests (±0), 0 skipped; 6 `verify` stages; 15 Python files (±0); 3 skill
+  folders, 3 plugins, 3 marketplace entries; 13 cases, 45 graders; crux-finder's `checks.py`
+  unchanged.
+
 ---
 
 ## P3: provenance-tracer's checks and first cycle
@@ -810,6 +894,10 @@ EE 4–6, 9; `ARCHITECTURE.md` invariants 5–7, *The eval harness*, *The data l
   hard checks on every run (no verdict, footer lines, the quote rule, no search in the
   private-person case, the manager never in a query); every chain URL in one of the run's
   fetches; the summary table; *Runs on the skill as it stands*.
+  - **The graders P2 left,** each a bar's input (amended in Session P2): `labels` (six cases),
+    `facts` and `no-verdict` (all thirteen), `footer` (the ten forward reports), `no-search` and
+    `no-fetch` (the private-person case, together the spec's "No search issued") and
+    `manager-not-searched` (the personal-chain case). gold.md's fields are in *The data layer*.
 - **The cycle:** thirteen cases, three runs each, four at a time.
 - **The owner's reading** (PT 5): every failed verdict and one run per case.
 - **Docs.**

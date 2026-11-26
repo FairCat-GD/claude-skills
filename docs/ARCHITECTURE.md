@@ -49,7 +49,8 @@ and `tests/`. The evals: the shared runner, `evals/run.py`, with the result form
 `evals/shared.py` (Session E1); crux-finder's ten cases in `evals/crux-finder/cases/`, each a
 `prompt.md`, its graders and `gold.md`, and its `checks.py` (Session E2); and
 `evals/crux-finder/results/`, which holds crux-finder's first cycle on the runner (Session E3)
-and the three claude.ai replies of round 1's smoke test.
+and the three claude.ai replies of round 1's smoke test; and provenance-tracer's thirteen cases
+in `evals/provenance-tracer/cases/`, in the same shape (Session P2), with no results yet.
 
 ## Context
 
@@ -217,6 +218,17 @@ and the three claude.ai replies of round 1's smoke test.
     the types with `Read`, in 5 turns and 32 s, for $0.21; the `claude-sonnet-5-5` judge cost
     $0.013 for two `llm` graders of three votes each, and the `regex` grader's explanation is the
     pattern it matched.
+- **`claude plugin eval` on provenance-tracer's cases, measured in Session P2** (2026-11-26,
+  `claude` 2.1.330), $1.63 in all:
+  - **Loading, $0:** a copy of the plugin with all thirteen cases, `gold.md` left out, and a
+    `--case` that matched none: no case failed to load, `append_system_prompt` included; the same
+    copy with an unknown key in one `prompt.md` ended "Couldn't load 1 case file".
+  - **Two trial runs** through the runner (*provenance-tracer*, Built): WebSearch and WebFetch
+    were loaded with one ToolSearch and called in the main session, with no subagent; `tool_used`
+    with `min: 0, max: 0` passed a run that called neither; `tool_used` reports its count
+    (`WebSearch called 0x (expected 0..0)`).
+  - **Fetches:** *The Lancet* and *The BMJ* answered 403, which the engine records as a call that
+    returned, not an error; two news pages failed as errors.
 
 Measured at intake, 2026-11-17, and again in Session 2, 2026-11-18: `claude` 2.1.326; uv 0.12.3;
 Python 3.10.20 installed through uv. In Session 4, 2026-11-20: `claude` 2.1.328. In Session 5,
@@ -224,7 +236,8 @@ Python 3.10.20 installed through uv. In Session 4, 2026-11-20: `claude` 2.1.328.
 2026-11-22: 2.1.329 at the start, and 2.1.330 from the cycle's sixteenth run, the CLI having
 updated itself mid-cycle. In Session 7c, 2026-11-22: 2.1.330 throughout. In Session 8,
 2026-11-22: 2.1.330. In Session P1, 2026-11-25: 2.1.330. In Session E1, 2026-11-25: 2.1.330. In
-Session E2, 2026-11-25: 2.1.330.
+Session E2, 2026-11-25: 2.1.330. In Session E3, 2026-11-25: 2.1.330. In Session P2, 2026-11-26:
+2.1.330.
 
 ## Stack and pins
 
@@ -299,8 +312,10 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   through the CLI: it copies the plugin folder, without reading the skill's files, to where the
   engine can load it.
 - `evals/crux-finder/` holds `checks.py`, standard library and `shared` only, and `cases/`, the
-  ten cases (*The data layer*), and `results/`, the three claude.ai replies kept from round 1
-  (Session E2 retired round 1's runs and the old runner).
+  ten cases (*The data layer*), and `results/`, Session E3's cycle and the three claude.ai
+  replies kept from round 1 (Session E2 retired round 1's runs and the old runner).
+- `evals/provenance-tracer/` holds `cases/`, the thirteen cases (Session P2); its `checks.py`
+  and `results/` are Session P3's.
 
 *Enforced by,* in part:
 - The `skills` stage holds a skill folder's references one level deep from `SKILL.md`: every file
@@ -483,7 +498,7 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   and skill names `travel-itinerary-builder`, `crux-finder` and, from Session P1,
   `provenance-tracer`; the case ids once results exist.
 
-**Built** (the formats, the ten cases and the results present).
+**Built** (the formats, both skills' cases and the results present).
 - **A case's frontmatter** is read as one `key: value` per line, a quoted value unquoted, with
   no YAML library: gold.md's fields each on one line.
 - **crux-finder's ten cases** (Session 6), one folder each under `evals/crux-finder/cases/`,
@@ -546,6 +561,67 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   frontmatter, which is all `checks.py` reads, a short note for the owner's review: the common
   ground that pins the crux, what else counts as a match, and, for the one-sided and
   no-conflict cases, the rules above. The graders quote it.
+- **provenance-tracer's thirteen cases** (Session P2), one folder each under
+  `evals/provenance-tracer/cases/`, named for the spec's row and the topic; no result yet:
+  - **forward, labelled:** `misattributed-quote-gandhi`, `popular-myth-ten-percent-brain`,
+    `echoed-statistic-goldfish-attention`, `retracted-origin-mmr-autism`,
+    `well-sourced-exercise-heart-disease` and `true-statistic-born-outside-uk`;
+  - **forward, facts only:** `obscure-claim-hubbard-fool`;
+  - **behaviour:** `reverse-mode-stanford-prison`, `personal-chain-bilingual-speech`,
+    `no-memory-bilingual-speech`, `non-interactive-goldfish-attention`,
+    `private-person-neighbour-theft` and `multiple-claims-lightning-bulls`.
+
+  Each input is the spec's, except the three the owner chose (*provenance-tracer*, Decided):
+  the true statistic, the obscure claim and the well-sourced claim. None is one of the skill's own
+  examples. Every input is a claim in public circulation, a public claim about a public figure,
+  or, in the private-person case, a claim about an invented neighbour.
+- **Its `prompt.md`:** `allowed_tools: [Skill, Read, WebSearch, WebFetch]`, `max_turns: 100` and
+  `timeout_seconds: 1800`, then a one-line request in the words of the skill's description ("Where
+  did this idea/quote/statistic come from?", or "What did … really find?" for the reverse case) and
+  the input in quotation marks. Every prompt but the several-claims one also has
+  `append_system_prompt: "No reply is possible: this is a non-interactive run, and the user
+  cannot answer any question."`. A trace at the spec's limits is about 52 calls (the skill, four
+  references, ToolSearch, 20 searches, 25 fetches, the reply), so 100 turns is about twice that,
+  and 1,800 s about 35 s a call if every call ran in turn. The non-interactive case's prompt is
+  the echoed-statistic case's, word for word: every case already says no reply is possible, so
+  that case differs only in its graders.
+- **Its `gold.md`:** `roots`, `grounding` and `modifiers` (`none` in the facts-only cases; the
+  true statistic's roots are `Single thread or Echo`); then `fact_N` lines, each with its
+  `source_N`, the page opened at authoring, in the web-fact cases, or `must_N` lines, the spec's
+  *Must*, in the behaviour cases; `authored` and `approved_by`. Below, a note for the owner's
+  reading: which facts are required and what else counts as a match. The owner approved every gold
+  and grader before they were written; all thirteen were committed together, before any result.
+  Several primary sources refuse the fetch tool (PubMed, *The Lancet*, *The BMJ*, the BBC, *The
+  New York Times*, the Wayback Machine), so a fact may rest on the page that opened: Europe PMC's
+  or Crossref's record, Wikipedia, Quote Investigator.
+- **Its graders**, `graders/<name>.md`:
+  - `facts` (every case): an `llm` grader that sets out the shapes a reply can take (forward
+    report, reverse report, question, refusal), quotes gold's facts or musts and its note word for
+    word, says a fact's bibliographic detail (volume, pages, number of authors) only identifies its
+    source and is not required, and states its PASS and FAIL rules.
+  - `no-verdict` (every case): an `llm` grader with the skill's guardrail. It lists what is not a
+    verdict: the labels, the tiers, the footer, a sourced fact about a source, a named source's
+    finding given as that source's, a source's title or headline and a named study's or
+    fact-check's conclusion credited to it, a search that found nothing, how the wording changed,
+    the confidence.
+
+  The two clauses on bibliographic detail and on a source's title or conclusion were added after
+  Session P2's trial (*provenance-tracer*, Built), with the owner: a reader that gave its reasons first failed the MMR trial
+  run's reply on each, then passed it on reading every sentence, and the engine's judge, which
+  keeps no reasons, had failed both 3/3.
+  - `labels` (the six labelled cases): a `regex` on the label line, built from gold: the Roots and
+    Grounding values exactly, every modifier gold lists, any other only in the skill's fixed order
+    (Mutated, Misattributed, Origin retracted, Origin corrected, Origin failed replication), then
+    the end of the line, so the count line cannot match.
+  - `footer` (the ten cases that write a forward report): a `regex` for `Earlier instances may
+    exist.` and, after it, the footer line, its words exact, `_` or `*` around it, and straight or
+    curly quotation marks.
+  - `tool_used`, each `min: 0, max: 0`: `no-search` (WebSearch) and `no-fetch` (WebFetch) in the
+    private-person case; `manager-not-searched` (WebSearch, `input_match:
+    '[Mm][Aa][Nn][Aa][Gg][Ee][Rr]'`, since `tool_used` takes no flags) in the personal-chain case.
+
+  Every chain URL among the run's fetches, the quote rule, a case passing at 2 of 3 runs and the
+  every-run bars are Session P3's `checks.py` (PT 8).
 - **The results present:** Session E3's cycle, crux-finder's first on the shared runner (1.0.0,
   from `3a97160`): `run-1.md`, `run-2.md`, `verdicts-1.md` and `verdicts-2.md` in each of the ten
   cases, and each case's `review.md` with its `## run-1` and `## run-2` sections, the owner's
@@ -974,6 +1050,18 @@ never whether it is true.
   hand-tries: the report is the whole answer, with nothing after its last line (both reports had
   added a closing summary); and all 6 opening queries are run before judging whether to add more
   (the forward run had stopped at 3).
+- **The cases** (settled at the start of Session P2, with the owner, 2026-11-26):
+  - **the true statistic:** "In the 2021 census, one in six people in England and Wales were
+    born outside the UK", the Office for National Statistics' own words, fixed until the next
+    census;
+  - **the obscure claim:** Elbert Hubbard's "damn fool … five minutes every day", traced by
+    Quote Investigator after the model's training cutoff, so memory cannot answer it;
+  - **the modifiers:** each one the spec's row lists is required, and any other is allowed in
+    the skill's fixed order, since the spec's MMR row leaves out the Mutated that its Primary
+    differs implies;
+  - **mid-session, at the owner's request,** the well-sourced row's claim is "Regular exercise
+    lowers the risk of heart disease" in place of the spec's "Smoking causes lung cancer", with
+    the same expected labels, Independent and Grounded.
 - **Versions:** 0.1.0 when built (P1), a minor bump per change an eval cycle calls for, 1.0.0
   once a cycle meets every bar on the skill as it stands, tagged
   `provenance-tracer--v1.0.0`.
@@ -1063,7 +1151,24 @@ claim about an invented coworker.
   call denied.
 - **Spend:** six runs, $2.67.
 
-**Not yet:** the cases (P2) and the first cycle (P3).
+**The cases** (Session P2): thirteen, in `evals/provenance-tracer/cases/` (*The data layer*).
+**The trial** (Session P2, `claude` 2.1.330, `claude-opus-5-5`, judge `claude-sonnet-5-5`, on
+0.1.0): two cases once each through the shared runner with `--trial`, $1.63 in all, 5 min 35 s
+for the command:
+- **`retracted-origin-mmr-autism`:** $1.47, 334 s, 38 turns; the Skill, the four references, one
+  ToolSearch, 7 searches and 23 fetches, all in the main session, 2 of them errors and three
+  more a 403 page the run reported; judge $0.047. It took a 1996 pilot study, known through
+  Wikipedia and Crossref, as the root, so its label was Echo · Primary differs · Mutated with
+  no Origin retracted: `labels` failed, and `footer` passed. `facts` and `no-verdict` failed 3/3,
+  which led to the two grader clauses above; the run was not repeated.
+- **`private-person-neighbour-theft`:** $0.10, 15 s, 3 turns, the Skill call alone; the refusal;
+  all four graders passed; judge $0.011.
+
+Pages the fetch tool refuses, seen at authoring and in the trial: PubMed and PubMed Central,
+*The Lancet* and *The BMJ* (403), the BBC, *The New York Times* and the Wayback Machine. Europe
+PMC's and Crossref's APIs open.
+
+**Not yet:** the first cycle (P3).
 
 ## The eval harness
 
@@ -1243,7 +1348,9 @@ Decisions made here, each with its why:
 [--case <id> …] [--trial <folder>]`. It ran on a fictional plugin in a temporary folder in Session
 E1, and on one of crux-finder's cases as a trial in Session E2; crux-finder's first cycle ran on it
 in Session E3: 20 runs in one engine call, 3 min 16 s, $4.97 of a $10 ceiling, every run written
-on the first call, no kept folder left (*crux-finder*).
+on the first call, no kept folder left (*crux-finder*). In Session P2 it ran two of
+provenance-tracer's cases as a trial, with the web tools: one engine call, both runs written, $1.63
+of a $5 ceiling, no kept folder left (*provenance-tracer*).
 - **Before anything is spent,** it exits 2 on any of these, with no engine call:
   - a skill not in `SKILLS`, a table of each skill's web tools (crux-finder none,
     provenance-tracer `WebSearch` and `WebFetch`);
@@ -1524,3 +1631,13 @@ finding.
   that sees no verdict drafts every line, set beside the engine's verdicts, and the owner
   confirms or corrects each; the one run per case read is run 1. The owner settled it at the
   start of Session E3, as the session recommended, with the cycle's ceiling of $10.
+- 2026-11-26, Session P2: *provenance-tracer* gains the cases' three chosen inputs (the true
+  statistic, the obscure claim, and the well-sourced claim, "Regular exercise lowers the risk of
+  heart disease" in place of the spec's smoking claim) and the modifiers rule (each modifier the
+  row lists required, any other in the fixed order); *The data layer* gains provenance-tracer's
+  case formats, with `footer` read as every forward report and `no-verdict` in every case. The
+  owner settled the true statistic, the obscure claim and the modifiers at the start of Session
+  P2, as the session recommended; the readings of the spec's graders came with the plan; mid-
+  session the owner replaced the smoking claim with a happier one, chose exercise from three
+  candidates, and approved two clauses added to every `facts` and `no-verdict` grader after the
+  trial.
