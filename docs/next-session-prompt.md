@@ -15,8 +15,9 @@ P3 cuts no version.
 
 - **Round 2 is provenance-tracer, and one eval engine for every skill:** P1, E1, E2, E3 and P2
   are done; P3, P4 and P5 remain.
-- **Push status:** `origin/main` holds everything through E3's review commit. P2's commits are
-  local; a push needs the owner's yes.
+- **Push status:** `origin/main` holds everything through P2's review commit ("review: each gold
+  fact cites the page it rests on, and four doc fixes"), pushed with the owner's yes; nothing in
+  P2 changes what installs.
 - **What P2 left:**
   - **Thirteen cases** in `evals/provenance-tracer/cases/`, committed with their golds before any
     result. The well-sourced case is `well-sourced-exercise-heart-disease`, the owner's
@@ -44,7 +45,10 @@ P3 cuts no version.
   skipped; 15 Python files; 3 skill folders, 3 plugins, 3 marketplace entries; `claude` 2.1.330;
   crux-finder's `checks.py`: `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0.
 - **Not done:** an API error's shape in the engine's result is unmeasured (`docs/BACKLOG.md`); a
-  grader's own error shows only when its case runs, and eleven cases' graders have not run.
+  grader's own error shows only when its case runs. No case's `llm` graders have run as
+  committed: the trial ran before the two clauses were added, and its MMR `facts` and
+  `no-verdict` failed. Only the trial's `labels`, `footer`, `no-search` and `no-fetch` ran as
+  they stand; the other regex and `tool_used` graders were checked in node only.
 
 ## Watch for
 

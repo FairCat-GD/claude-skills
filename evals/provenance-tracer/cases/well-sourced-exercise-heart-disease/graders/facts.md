@@ -14,8 +14,10 @@ The reply answers a request to trace where a claim came from. It takes one of th
 
 The answer the maintainer wrote before any run says:
 
-> fact_1: Jerry Morris and colleagues reported in The Lancet in November 1953 (Coronary heart-disease and physical activity of work) that London's bus conductors, who climbed the stairs, had less coronary heart disease than the seated drivers.
-> fact_2: Ralph Paffenbarger and colleagues found the same inverse link in cohorts of their own: San Francisco longshoremen (New England Journal of Medicine, May 1970), and 16,936 Harvard alumni whose risk of a first heart attack fell as their reported energy expenditure rose (American Journal of Epidemiology, September 1978).
+> fact_1: Jerry Morris and colleagues published Coronary heart-disease and physical activity of work in The Lancet in November 1953.
+> fact_2: Morris found that the seated drivers of London's double-decker buses had higher rates of cardiovascular disease than the conductors, who climbed the stairs.
+> fact_3: Ralph Paffenbarger and colleagues studied San Francisco longshoremen's work activity and death from coronary heart disease (New England Journal of Medicine, May 1970).
+> fact_4: Paffenbarger and colleagues found that 16,936 Harvard alumni's risk of a first heart attack fell as their reported energy expenditure rose (American Journal of Epidemiology, September 1978).
 
 Its note says:
 

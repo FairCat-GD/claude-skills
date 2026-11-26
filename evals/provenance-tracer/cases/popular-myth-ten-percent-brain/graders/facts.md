@@ -14,7 +14,7 @@ The reply answers a request to trace where a claim came from. It takes one of th
 
 The answer the maintainer wrote before any run says:
 
-> fact_1: The idea has been linked to the psychologist William James, whose essay The Energies of Men (1907) says people make use of only a small part of their possible mental and physical resources, and gives no percentage.
+> fact_1: William James's essay The Energies of Men (1907) says people make use of only a small part of their possible mental and physical resources, and gives no percentage.
 > fact_2: The ten-percent figure was in print by the 1920s and 1930s, for example in Lowell Thomas's 1936 preface to Dale Carnegie's How to Win Friends and Influence People, which credits James with saying the average person develops only ten percent of their latent mental ability.
 > fact_3: No study is the source of the figure: Scientific American (2008) says there is no definitive culprit for starting it.
 

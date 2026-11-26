@@ -880,6 +880,29 @@ case as the pattern.
 - **Numbers:** 304 unit tests (±0), 0 skipped; 6 `verify` stages; 15 Python files (±0); 3 skill
   folders, 3 plugins, 3 marketplace entries; 13 cases, 45 graders; crux-finder's `checks.py`
   unchanged.
+- **Review (`/code-review high`), 5 findings: 5 fixed and 0 skipped.** The owner chose to fix
+  all five.
+  - **Gold facts stated details their cited page did not hold.** Each fact now cites the page
+    it rests on, a fact split where its clauses came from two pages, with no fact changed in
+    substance, still before any result: exercise's four facts (the 1953 paper by its Europe PMC
+    record, the bus finding by Wikipedia, each Paffenbarger study by its own record); MMR's fact 2
+    split, "eight of the 12" cited to its Europe PMC record and "did not claim to prove" to
+    Wikipedia; goldfish's report named by its Scribd copy, as a fact not required; and the
+    ten-percent case's fact 1 narrowed to what James's essay says. Their `facts` graders quote
+    the new golds. The owner approved the changed golds by choosing this fix.
+  - **The handoff said eleven cases' graders had not run:** no case's `llm` graders have run as
+    committed.
+  - ***The data layer*'s grader list was split** by the paragraph on the two clauses, with one
+    over-long line; it now follows the list.
+  - ***The data layer* misstated two prompts' request lines** (the private-person "claim", the
+    several-claims "these").
+  - ***The data layer* called the inputs "claims in public circulation",** a category
+    `CLAUDE.md`'s fixtures rule does not list; it now says each was written by the session and
+    approved by the owner, as crux-finder's synthetic cases were.
+  - **Checked:** the node check passes on the regenerated cases (no `regex` or `tool_used` grader
+    changed); only the four cases' `gold.md` and `facts.md` changed. Each new source is a page
+    opened at authoring.
+  - **Numbers after the review:** unchanged.
 
 ---
 

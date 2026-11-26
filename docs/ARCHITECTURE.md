@@ -573,14 +573,16 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
 
   Each input is the spec's, except the three the owner chose (*provenance-tracer*, Decided):
   the true statistic, the obscure claim and the well-sourced claim. None is one of the skill's own
-  examples. Every input is a claim in public circulation, a public claim about a public figure,
-  or, in the private-person case, a claim about an invented neighbour.
+  examples. Every input was written by the session and approved by the owner, as crux-finder's
+  synthetic cases were; a person it names is a public figure in a public claim, or, in the
+  private-person case, an invented neighbour (PT 3).
 - **Its `prompt.md`:** `allowed_tools: [Skill, Read, WebSearch, WebFetch]`, `max_turns: 100` and
-  `timeout_seconds: 1800`, then a one-line request in the words of the skill's description ("Where
-  did this idea/quote/statistic come from?", or "What did … really find?" for the reverse case) and
-  the input in quotation marks. Every prompt but the several-claims one also has
-  `append_system_prompt: "No reply is possible: this is a non-interactive run, and the user
-  cannot answer any question."`. A trace at the spec's limits is about 52 calls (the skill, four
+  `timeout_seconds: 1800`, then a one-line request in the words of the skill's description and
+  the input in quotation marks: "Where did this idea/quote/statistic/claim come from?", "Where did
+  these come from?" before the several-claims case's two claims, and "What did … really find?" in
+  the reverse case, whose input is the request itself. Every prompt but the several-claims one
+  also has `append_system_prompt: "No reply is possible: this is a non-interactive run, and the
+  user cannot answer any question."`. A trace at the spec's limits is about 52 calls (the skill, four
   references, ToolSearch, 20 searches, 25 fetches, the reply), so 100 turns is about twice that,
   and 1,800 s about 35 s a call if every call ran in turn. The non-interactive case's prompt is
   the echoed-statistic case's, word for word: every case already says no reply is possible, so
@@ -605,10 +607,6 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
     fact-check's conclusion credited to it, a search that found nothing, how the wording changed,
     the confidence.
 
-  The two clauses on bibliographic detail and on a source's title or conclusion were added after
-  Session P2's trial (*provenance-tracer*, Built), with the owner: a reader that gave its reasons first failed the MMR trial
-  run's reply on each, then passed it on reading every sentence, and the engine's judge, which
-  keeps no reasons, had failed both 3/3.
   - `labels` (the six labelled cases): a `regex` on the label line, built from gold: the Roots and
     Grounding values exactly, every modifier gold lists, any other only in the skill's fixed order
     (Mutated, Misattributed, Origin retracted, Origin corrected, Origin failed replication), then
@@ -619,6 +617,11 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   - `tool_used`, each `min: 0, max: 0`: `no-search` (WebSearch) and `no-fetch` (WebFetch) in the
     private-person case; `manager-not-searched` (WebSearch, `input_match:
     '[Mm][Aa][Nn][Aa][Gg][Ee][Rr]'`, since `tool_used` takes no flags) in the personal-chain case.
+
+  The two clauses on bibliographic detail and on a source's title or conclusion were added after
+  Session P2's trial (*provenance-tracer*, Built), with the owner: a reader that gave its reasons
+  first failed the MMR trial run's reply on each, then passed it on reading every sentence, and
+  the engine's judge, which keeps no reasons, had failed both 3/3.
 
   Every chain URL among the run's fetches, the quote rule, a case passing at 2 of 3 runs and the
   every-run bars are Session P3's `checks.py` (PT 8).
