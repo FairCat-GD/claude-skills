@@ -52,7 +52,8 @@ and `tests/`. The evals: the shared runner, `evals/run.py`, with the result form
 `evals/crux-finder/results/`, which holds crux-finder's first cycle on the runner (Session E3)
 and the three claude.ai replies of round 1's smoke test; and provenance-tracer's thirteen cases
 in `evals/provenance-tracer/cases/`, in the same shape (Session P2), with its `checks.py`
-(Session P3); its first cycle (Session P3) was retired in Session P4, before the second.
+(Session P3); its first cycle (Session P3) was retired in Session P4, and its second cycle, on
+0.2.0, is in `evals/provenance-tracer/results/` (Session P4).
 
 ## Context
 
@@ -647,9 +648,11 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
 
   Every chain URL among the run's fetches, the quote rule, a case passing at 2 of 3 runs and the
   every-run bars are `evals/provenance-tracer/checks.py`'s (PT 8; *The eval harness*).
-- **provenance-tracer's results present:** none. Session P3's cycle, its first (0.1.0, from
-  `641ce2a`), was retired in Session P4's release commit, with the ten-percent gold's change, so
-  that no result is older than its gold.
+- **provenance-tracer's results present:** Session P4's cycle, its second (0.2.0, from
+  `429b407`): `run-1.md` to `run-3.md` and their `verdicts-N.md` in each of the thirteen cases,
+  and each case's `review.md`. Session P3's cycle (0.1.0, from `641ce2a`) was retired in Session
+  P4's release commit, with the ten-percent gold's change, so that no result is older than its
+  gold.
 - **The results present:** Session E3's cycle, crux-finder's first on the shared runner (1.0.0,
   from `3a97160`): `run-1.md`, `run-2.md`, `verdicts-1.md` and `verdicts-2.md` in each of the ten
   cases, and each case's `review.md` with its `## run-1` and `## run-2` sections, the owner's
@@ -1304,6 +1307,48 @@ the skill's (the roots, opening and quote changes, Decided above) and which a go
 ten-percent case), and retired the cycle's results before the next; git keeps them as of
 `c82907f`.
 
+**The trial** (Session P4, `--trial` outside the repository, 0.2.0 from `72e2b04`): one run each of
+Gandhi, ten-percent, MMR, exercise and the echoed goldfish, $6.74. Four passed every grader with
+clean quotes; exercise had Independent right but Primary differs, reading an opened study's
+association as correlation stated as causation, and three quotes in one table row. After the
+owner's two changes (`09e4c25`), one more exercise run, $1.20, gave Independent · Grounded with
+clean quotes, its `facts` failed by a judge on a report that named no root; each root is now
+marked (`429b407`).
+
+**The second cycle** (Session P4, 0.2.0 from `429b407`, `claude` 2.1.330, `claude-opus-5-5`, judge
+`claude-sonnet-5-5`): thirteen cases, three runs each, in two calls of the runner, since the
+account's usage limit refused 21 runs of the first; $49.30 for the runs ($0.12 to $2.03 each) and
+$1.70 for judging, $51.00 in all, of a $75 ceiling. 13 to 247 s a run; no error header, no
+refused judge. The owner's reading, as P3's (four fresh readers, no verdict seen): the readers
+and the engine agreed on 127 of 135; 7 of the engine's fails were overruled to pass (source
+titles, ratings and findings credited to their sources; facts present), and one the engine
+passed and a reader failed (true statistic run 3, no-verdict, on *the right year*) was kept, at
+the owner's word, as a comparison with the root. `checks.py`:
+
+| Check | Pass bar | Result | Met |
+|---|---|---|---|
+| Cases passing at 2 of 3 runs (labels and facts) | all cases | 11 / 13 | **no** |
+| No verdict in the report's own voice | all runs | 39 / 39 | yes |
+| Footer lines present | all runs with its grader | 30 / 30 | yes |
+| ≤ 1 quote per source, < 15 words | all runs | 38 / 39 | **no** |
+| Every linked source among the run's fetches | all forward and reverse reports | 33 / 33 | yes |
+| No search issued (private-person case) | all runs with its grader | 3 / 3 | yes |
+| Manager never in a search query (personal-chain case) | all runs with its grader | 3 / 3 | yes |
+| Gold order + approved_by + graders as run | all cases | 13 / 13 | yes |
+| Runs on the skill as it stands | all runs | 39 / 39 | yes |
+
+- **What 0.2.0 fixed:** quotes 14/39 to 38/39; exercise 1/3 to 3/3 (Independent · Grounded);
+  ten-percent 0/3 to 3/3 on its new gold; every other case at 3/3 or 2/3.
+- **The misses, each in its `review.md`:**
+  - `misattributed-quote-gandhi`, 1/3: runs 1 and 3 did not open the 1913 passage within its
+    retries (the wrong volume, a dead link, a non-English edition), so No primary found.
+  - `retracted-origin-mmr-autism`, 1/3: runs 1 and 2 counted Fudenberg 1996 as root 2, reached
+    through Wikipedia's page about him, against the precursor rule, so Independent.
+  - The quote rule: `non-interactive-goldfish-attention` run 2 quoted Microsoft's report
+    twice on one line.
+  - Not a miss of its case: `echoed-statistic-goldfish-attention` run 3 drew a study that a cold
+    trail credits as a credited text that differs, so Primary differs; its case passed 2/3.
+
 ## The eval harness
 
 **Decided.** PDD B, *Evals*, under `evals/crux-finder/`: ten cases, two runs each through
@@ -1747,7 +1792,7 @@ of its own: each skill has its own version.
 | Python files (`ruff format --check .`) | 17 |
 | Skills and plugins | 3 skill folders, 3 plugins, 3 marketplace entries |
 | `uv run evals/crux-finder/checks.py` | Session E3's cycle on 1.0.0 and round 1's smoke test on 0.4.0: `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0; crux 20/20, type 18/20, stability 10/10, 3 of 64 verdicts overruled; the smoke test's row 3 / 3 |
-| `uv run evals/provenance-tracer/checks.py` | Session P4's release of 0.2.0, with P3's cycle retired and the next not yet run: `checks: 13 case(s), 0 problem(s); no results yet, so the pass bars are not counted`, exit 0 |
+| `uv run evals/provenance-tracer/checks.py` | Session P4's second cycle on 0.2.0: `checks: 13 case(s), 2 problem(s); pass bars not met: Cases passing at 2 of 3 runs (labels and facts), ≤ 1 quote per source, < 15 words`, exit 1; cases 11/13, quotes 38/39, every other bar met; 7 of 135 verdicts overruled. Its problems are one run's quote-rule lines |
 
 A documentation or refactoring change should not move any of these. If one moves, that is the
 finding.

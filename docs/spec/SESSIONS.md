@@ -19,6 +19,7 @@ Versions are per skill: the column names the skill a session releases.
 | P2 | provenance-tracer's thirteen cases: prompts, golds and graders | PT 3, 6–8; EE 2, 3 | — |
 | P3 | provenance-tracer's `checks.py`, its first cycle and the owner's spot check | PT 5, 8; EE 4–6, 9 | — |
 | P4 | The changes P3's cycle calls for, and the next cycle (dropped, with its reason logged, if P3's cycle meets every bar) | PT 2, 5, 8 | provenance-tracer **0.2.0** |
+| P4a | The changes P4's cycle calls for, and a cycle only at the owner's word (inserted in Session P4) | PT 2, 5, 8 | provenance-tracer **0.3.0** |
 | P5 | 1.0.0, the claude.ai smoke test, the round's `ARCHITECTURE.md` sections read cold, close the round | PT 2, 4; EE 8 | provenance-tracer **1.0.0**, tagged `provenance-tracer--v1.0.0` |
 
 As in round 1, a session is inserted (P4a, E3a…) for each further cycle a changed skill needs,
@@ -1109,6 +1110,122 @@ EE 4–6, 9; `ARCHITECTURE.md` invariants 5–7, *The eval harness*, *The data l
 
 **Watch for:**
 - **`SKILL.md` stays under 300 lines** as rules are added: move detail to the references.
+
+**Done (2026-11-27, provenance-tracer 0.2.0).**
+- **Decided with the owner:**
+  - **At the start:** the ten-percent gold to Primary differs, over a narrower Grounding rule; a
+    5-run trial at `--max-cost-usd 10`, then the cycle at `--max-cost-usd 75`; an adversarial
+    review of the plan. The owner intends this cycle to be the last: nothing more runs without
+    the owner's word.
+  - **With the plan, after its adversarial review:** the roots refinements (citing defined, a
+    work passing the claim on with a source is a node, precursors, a misattribution adds no root,
+    two teams' studies two roots), opening a Primary in other copies, and the quote rule made
+    concrete. The review's findings were folded in: goldfish in the trial in place of the
+    reverse case, the precursor rule, the footer's quotation marks left alone, nothing in the
+    plugin folder edited while a runner call was pending.
+  - **After the trial:** Grounding on a study's own data, an association included, with
+    correlation stated as causation only where the study stops short of a cause; one quote per
+    row of *How it changed*; each root marked in the chain.
+  - **The reading:** 7 engine fails overruled to pass; 5 `labels` fails confirmed; the true
+    statistic's run 3 `no-verdict` kept a pass, decided by the session at the owner's word.
+  - **After the cycle:** commit it and open P4a for a later session.
+- **Shipped:**
+  - `plugins/provenance-tracer/` 0.2.0: `SKILL.md` (219 lines), the four references, the
+    version in `plugin.json` and `metadata.version`, `CHANGELOG.md`, `README.md`;
+  - `popular-myth-ten-percent-brain`'s `gold.md` and `labels` grader, re-authored (its three
+    pages opened again, unchanged);
+  - P3's cycle retired; the second cycle: 39 `run-N.md` and `verdicts-N.md`, 13 `review.md`.
+- **The commits:** the release (`fa3326f`), its review (`72e2b04`), two fixes the trial called
+  for (`09e4c25`, `429b407`), then the cycle's.
+- **The trial** ($6.74, then $1.20): four of five passed every grader with clean quotes;
+  exercise read an association as a drift and packed three quotes in a row; its re-check, after
+  the fix, gave Independent · Grounded with clean quotes, and a `facts` fail on a report that
+  named no root.
+- **The cycle** (0.2.0 from `429b407`, `claude` 2.1.330, `claude-opus-5-5`, judge
+  `claude-sonnet-5-5`): two runner calls, since the account's usage limit refused 21 runs of the
+  first; $49.30 for the runs and $1.70 for judging, $51.00 of $75; no refused judge, no error.
+  With the trial, P4 spent $58.94.
+- **The owner's reading,** made as P3's: four fresh readers with bundles of prompts, golds,
+  graders and runs and no verdicts; they agreed with the engine on 127 of 135.
+- **`checks.py` on the cycle:** `checks: 13 case(s), 2 problem(s); pass bars not met: Cases
+  passing at 2 of 3 runs (labels and facts), ≤ 1 quote per source, < 15 words`, exit 1.
+
+  | Check | Pass bar | Result | Met |
+  |---|---|---|---|
+  | Cases passing at 2 of 3 runs (labels and facts) | all cases | 11 / 13 | **no** |
+  | No verdict in the report's own voice | all runs | 39 / 39 | yes |
+  | Footer lines present | all runs with its grader | 30 / 30 | yes |
+  | ≤ 1 quote per source, < 15 words | all runs | 38 / 39 | **no** |
+  | Every linked source among the run's fetches | all forward and reverse reports | 33 / 33 | yes |
+  | No search issued (private-person case) | all runs with its grader | 3 / 3 | yes |
+  | Manager never in a search query (personal-chain case) | all runs with its grader | 3 / 3 | yes |
+  | Gold order + approved_by + graders as run | all cases | 13 / 13 | yes |
+  | Runs on the skill as it stands | all runs | 39 / 39 | yes |
+
+  Verdicts the owner overruled: 7 of 135.
+- **What the results showed:**
+  - **Fixed:** quotes 14/39 to 38/39; exercise 1/3 to 3/3; ten-percent 0/3 to 3/3 on its new gold.
+  - **Missed:** Gandhi 1/3 (the 1913 text not opened in runs 1 and 3); MMR 1/3 (Fudenberg as
+    root 2 through a page about him, runs 1 and 2); one quote run (non-interactive goldfish run
+    2, Microsoft's report quoted twice on one line).
+  - **Seen, its case still passing:** echoed goldfish run 3 drew a study a cold trail credits as a
+    credited text that differs, so Primary differs.
+- **Docs:** `ARCHITECTURE.md` (*Overview* Built; *The data layer*; *provenance-tracer* Decided,
+  Built, the trial and the second cycle; the baseline; a *Decision log* line); the plugin's
+  README and CHANGELOG; this block and P4a's; the handoff.
+- **Amendments:**
+  - **Two commits and more,** since the runner refuses an uncommitted plugin: the release before
+    any run, the cycle after; with the owner.
+  - **The owner's review of the release before any spend,** so no later review could leave the
+    cycle stale; with the owner.
+  - **A trial, and two fixes from it,** each committed before the cycle; with the owner.
+  - **P4a inserted,** since two bars are still missed; the owner chose to open it for later.
+- **Checked by hand:** the readers' bundles held no verdicts file; every run's header `claude`
+  2.1.330 and `commit` `429b407`; no `grader threw`; hygiene green over the results.
+- **Falsified:** the new ten-percent `labels` pattern, against P3's three real label lines (match)
+  and Grounded, No primary found, Independent and the count line (no match). No other check is
+  new.
+- **Numbers:** 374 unit tests, 0 skipped, unchanged; 6 `verify` stages; 17 Python files;
+  3 skill folders, 3 plugins, 3 marketplace entries; `results/`: 39 runs, 39 verdicts, 13
+  reviews, as P3's.
+- **The release's review (`/code-review high`), 7 findings: 7 fixed and 0 skipped,** the owner
+  choosing to fix all seven, before any run:
+  - a precursor does not count as something earlier the root cites;
+  - every quote linked, as the spec asks;
+  - a credited text counted under the rule for several Primaries;
+  - the heading a fixed line;
+  - a credited text and a precursor not counted as retellings;
+  - the precursor note out of the status checks' list;
+  - the handoff kept true between the commits.
+
+---
+
+## P4a: The changes P4's cycle calls for
+
+Inserted in Session P4, with the owner, since its cycle left two bars unmet. The owner decides at
+its start whether it runs a cycle at all.
+
+**Read:** `FEATURE-provenance-tracer.md` PT 2, 5, 8; `ARCHITECTURE.md` *provenance-tracer*,
+*The eval harness*; P4's done-note and the cases' `review.md`.
+
+- **The skill changed** for each miss, each change general and settled with the owner:
+  - **a precursor reached through a page about its author** taken as a second root (MMR runs 1
+    and 2), against the rule 0.2.0 already states;
+  - **a credited text not opened** within its retries (Gandhi runs 1 and 3): the wrong volume,
+    a dead link, a non-English edition;
+  - **two quotes from one page on one line** (non-interactive goldfish run 2);
+  - and, its case still passing, **a credited text that only a cold trail credits** drawn as
+    differing (echoed goldfish run 3).
+- **`0.3.0`** in `plugin.json` and `metadata.version`, and its `CHANGELOG.md` entry.
+- **The next cycle,** only at the owner's word, after P4's results are removed.
+- **Ask at the start of P4a:** whether to run a cycle, and its ceiling.
+
+**Gates:**
+- `uv run scripts/verify.py`, green.
+- `uv run evals/provenance-tracer/checks.py` on a new cycle, if the owner runs one.
+
+**Watch for:**
+- **The owner does not intend to spend on every session:** a cycle costs about $51.
 
 ---
 
