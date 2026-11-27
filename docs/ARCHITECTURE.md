@@ -507,10 +507,10 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   verdicts and names every disagreement; the owner confirms or corrects every line before
   `review.md` records it. The one run per case the owner reads is run 1, fixed before any result
   exists, so it is never a pick.
-- **Settled at the start of Session P3, with the owner** (2026-11-26), for provenance-tracer's
-  results:
-  - **gold order** is reckoned as crux-finder's, by the same code, moved into `evals/shared.py`;
-  - **`review.md`** has a `## run-1` section with a note in every case, the one run per case the
+- **Settled in Session P3, with the owner** (2026-11-26), for provenance-tracer's results:
+  - **gold order,** at the start: reckoned as crux-finder's, by the same code, moved into
+    `evals/shared.py`;
+  - **`review.md`,** with the plan the owner approved: a `## run-1` section with a note in every case, the one run per case the
     owner reads, and a section for any other run with a failed verdict; its lines are the
     graders' and `note`, with no stability field.
 - **Machine identifiers, never renamed:** the marketplace name `faircat-skills`; the plugin
@@ -1336,7 +1336,8 @@ now (*The data layer*).
   lines that link the same single source hold one quote between them, except *How it changed*,
   whose link is a drift's node rather than the quote's source; the user's own text exempt.
   Mid-session, on the cycle's replies, the owner kept it strict: a quoted word or year is a
-  quote.
+  quote. In the session's review, the owner set the user's text as any fragment of a claim, the
+  prompt's quoted claims or the heading's, and not the prompt's request line.
 - **Linked sources:** a reverse report's `**Source:**` line and *Popular versions* links are held
   to the fetches as a forward report's chain is.
 - **With the plan, after its adversarial review:** the heading's restated claim is the user's
@@ -1443,17 +1444,25 @@ no problem and either no results yet or every bar met.
   result exists, exactly run-1 to run-3, and nothing else in `results/<id>/` but `review.md`
   and dotfiles.
 - **Per run:**
+  - **The reply's kind:** forward where it has a label line naming Roots then Grounding, in any
+    markup, or a chain section; else forward or reverse by whether its `## Provenance:` heading
+    is quoted; a refusal or a question has no heading. A section ends at a `#` heading, or at a
+    bold line naming one of the templates' sections, so a bold label inside a chain does not end
+    it.
   - **Linked sources:** a forward report's chain section (`### Chain`, `## Chain` or `**Chain**`,
     to the next heading), or a reverse report's `**Source:**` line and *Popular versions*.
     Each link must be among the run's `WebFetch` arguments, in any subagent and with any
     outcome. Links are read inline (balanced parentheses, a title dropped), as autolinks and
-    bare, trailing punctuation trimmed. Both sides are compared without `<>`, Markdown escapes
+    bare, a bare one ending at whitespace, `<>`, `|` or a quotation mark, trailing punctuation
+    trimmed. A run whose file cannot be read counts as a report whose links failed. Both sides are compared without `<>`, Markdown escapes
     or a fragment, then percent-decoded.
   - **Quotes:** per line, URLs taken out first, the heading and *Your version* lines skipped;
-    marks folded; a blockquote is one quote. A span found in the prompt or the heading's claim,
-    letter case aside, is the user's. Two spans are the same when one holds the other.
-  - **`tool_used` re-counted:** each such grader's `tool`, `input_match`, `min` and `max`
-    applied to run-N.md's calls; a count out of range is a problem whatever the verdict.
+    marks folded; a blockquote is one quote. A span found in one of the user's claims, letter
+    case aside, is theirs: each span the prompt quotes (the whole prompt where it quotes none)
+    and the heading's claim. Two spans are the same when one holds the other.
+  - **`tool_used` re-counted:** each such grader's `tool`, `input_match`, `min` and `max`, both
+    bounds required, applied to run-N.md's calls; a count out of range is a problem whatever
+    the verdict.
 - **The table:** each run's verdict as the owner's line has it, else the engine's. The
   all-runs rows count over three runs per case, so a missing run misses them; the hard tool
   rows need both the verdict and the re-count.
@@ -1661,7 +1670,7 @@ of its own: each skill has its own version.
 | Check | Expected |
 |---|---|
 | `uv run scripts/verify.py` | green: 6 stages (`skills`, `plugins`, `format`, `lint`, `tests`, `hygiene`), about 37 s with uv's cache warm, most of it the eval tooling's git fixtures |
-| Unit tests (`tests`) | 367 passed, 0 skipped: 121 in `test_crux_finder_checks.py`, 62 in `test_provenance_tracer_checks.py`, 51 in `test_evals_run.py`, 45 in `test_hygiene.py`, 36 in `test_check_skills.py`, 20 in `test_check_plugins.py`, 18 in `test_evals_shared.py`, 10 in `test_verify.py`, 4 in `test_evals_stdlib.py` |
+| Unit tests (`tests`) | 374 passed, 0 skipped: 121 in `test_crux_finder_checks.py`, 69 in `test_provenance_tracer_checks.py`, 51 in `test_evals_run.py`, 45 in `test_hygiene.py`, 36 in `test_check_skills.py`, 20 in `test_check_plugins.py`, 18 in `test_evals_shared.py`, 10 in `test_verify.py`, 4 in `test_evals_stdlib.py` |
 | `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
 | Python files (`ruff format --check .`) | 17 |
 | Skills and plugins | 3 skill folders, 3 plugins, 3 marketplace entries |
@@ -1775,4 +1784,5 @@ finding.
   the quote rule per line and per linked source, a reverse report's links held to the fetches,
   and five readings the plan review added. The owner settled the first four at the start of
   Session P3, as the session recommended, the reverse links and the five readings with the plan,
-  and kept the quote rule strict mid-session, on the cycle's replies.
+  and kept the quote rule strict mid-session, on the cycle's replies. In the session's review the
+  owner set the user's text as any fragment of a claim, not the prompt's request line.

@@ -59,20 +59,35 @@ PER_CASE = (LABELS, FACTS)
 TOOL_USED = "tool_used"
 FETCH = "WebFetch"
 REVIEW = "review.md"
+# The report kind of a run whose file cannot be read.
+UNREAD = "unreadable"
 
 _RUN = re.compile(r"run-([1-9][0-9]*)\.md")
 _VERDICTS = re.compile(r"verdicts-([1-9][0-9]*)\.md")
 _DATE = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
 _NUMBERED = re.compile(r"(fact|source|must)_([1-9][0-9]*)")
 _HEADING = re.compile(r"\s*#{1,6}\s+(.*)")
-# A line that is bold and nothing else, as a section heading may be written.
+# A line that is bold and nothing else, as a section heading may be written; it is one only
+# when it names a section of the skill's templates, so a bold label inside a chain is not.
 _BOLD_HEADING = re.compile(r"\s*\*\*([^*\n]+?):?\*\*:?\s*")
+SECTIONS = (
+    "chain",
+    "how it changed",
+    "status of the root",
+    "cold trails",
+    "confidence",
+    "status",
+    "what it found",
+    "popular versions",
+    "your beliefs",
+)
 _PROVENANCE = re.compile(r"\s*##\s+Provenance:(.*)")
-_LABEL_LINE = re.compile(r"\*\*Roots:\*\*[^\n]*\*\*Grounding:\*\*")
+# The label line in any markup: Roots, then Grounding, on one line; the count line has no Grounding.
+_LABEL_LINE = re.compile(r"\bRoots\b[^\n]*\bGrounding\b")
 _SOURCE_LINE = re.compile(r"\*\*Source:\*\*")
 _LINK_TEXT = re.compile(r"!?\[(?:[^\[\]]|\[[^\[\]]*\])*\]\(")
 _AUTOLINK = re.compile(r"<(https?://[^\s<>]+)>")
-_BARE = re.compile(r"https?://[^\s<>\"\u201c\u201d]+")
+_BARE = re.compile(r"https?://[^\s<>|\"\u201c\u201d]+")
 _ESCAPE = re.compile(r"\\([!-/:-@\[-`{-~])")
 # A link after these words names where a fact was found, not the source a quote is from.
 _NOT_THE_SOURCE = re.compile(r"(?:\bper|\bcited by)[\s*_(]*$", re.IGNORECASE)
@@ -184,15 +199,20 @@ def links(line: str) -> tuple[list[Link], str]:
 
 
 def _heading(line: str) -> str | None:
-    """A line's section name, if it is a heading: `#`s, or bold and nothing else."""
-    match = _HEADING.fullmatch(line) or _BOLD_HEADING.fullmatch(line)
-    return match.group(1).strip().rstrip(":").strip() if match else None
+    """A line's section name, if it is a heading: `#`s, or bold and nothing else naming one of the
+    templates' sections."""
+    match = _HEADING.fullmatch(line)
+    if match:
+        return match.group(1).strip().rstrip(":").strip()
+    match = _BOLD_HEADING.fullmatch(line)
+    name = match.group(1).strip().rstrip(":").strip() if match else None
+    return name if name and name.casefold() in SECTIONS else None
 
 
 def kind(body: str) -> str | None:
     """`forward` or `reverse` for a report, None for a refusal or a question."""
     lines = body.split("\n")
-    if any(_LABEL_LINE.search(line) for line in lines):
+    if any(_LABEL_LINE.search(line) for line in lines) or section(body, "Chain") is not None:
         return "forward"
     for line in lines:
         match = _PROVENANCE.fullmatch(line)
@@ -329,13 +349,21 @@ def quotes(body: str) -> tuple[list[Quote], list[int], str]:
     return found, unpaired, claim
 
 
-def users_text(span: str, prompt: str, claim: str) -> bool:
-    """Whether a quote is the user's own text: found in the prompt or in the heading's claim,
-    letter case aside."""
+def claims(prompt: str, heading: str) -> list[str]:
+    """The user's claims: each span the prompt quotes, or the whole prompt where it quotes none,
+    and the claim as the heading restates it."""
+    spans = [span for span in shared.fold(prompt).split('"')[1::2] if span.strip()]
+    found = spans or [prompt]
+    restated = shared.fold(heading).strip().strip('"').strip()
+    return found + ([restated] if restated else [])
+
+
+def users_text(span: str, prompt: str, heading: str) -> bool:
+    """Whether a quote is the user's own text: found in one of their claims, letter case aside.
+    A fragment counts, since *How it changed* sets the user's words against the root's; the
+    prompt's request line does not, since it is no claim."""
     folded = span.casefold()
-    return shared.found_verbatim(folded, prompt.casefold()) or (
-        bool(claim) and shared.found_verbatim(folded, claim.casefold())
-    )
+    return any(shared.found_verbatim(folded, claim.casefold()) for claim in claims(prompt, heading))
 
 
 def quote_problems(body: str, prompt: str) -> list[str]:
@@ -378,7 +406,7 @@ class ToolRule:
     tool: str
     pattern: str | None
     low: int
-    high: int | None
+    high: int
 
 
 def tool_rule(text: str) -> ToolRule | None:
@@ -393,9 +421,11 @@ def tool_rule(text: str) -> ToolRule | None:
     pattern = found.get("input_match") or None
     if pattern is not None:
         re.compile(pattern)
+    # Both bounds are required: the engine's default for a missing one was never measured.
+    if not found.get("min") or not found.get("max"):
+        raise ValueError("no min or no max")
     try:
-        low = int(found.get("min", "1"))
-        high = int(found["max"]) if found.get("max") else None
+        low, high = int(found["min"]), int(found["max"])
     except ValueError:
         raise ValueError("min or max is not a whole number") from None
     return ToolRule(found["tool"], pattern, low, high)
@@ -415,7 +445,7 @@ def counted(rule: ToolRule, calls: list[shared.Call]) -> int:
 
 def holds(rule: ToolRule, calls: list[shared.Call]) -> bool:
     count = counted(rule, calls)
-    return count >= rule.low and (rule.high is None or count <= rule.high)
+    return rule.low <= count <= rule.high
 
 
 # --- Runs and the case ------------------------------------------------------------------------
@@ -616,7 +646,17 @@ def _read_run(
     try:
         run = shared.read_run(path.read_text(encoding="utf-8"))
     except (OSError, ValueError) as error:
-        output = Run(case, number, where, {}, quotes=False, tools=dict.fromkeys(rules, False))
+        # Unread, it may be a report: it counts as one whose links failed, never as none.
+        output = Run(
+            case,
+            number,
+            where,
+            {},
+            report=UNREAD,
+            quotes=False,
+            fetched=False,
+            tools=dict.fromkeys(rules, False),
+        )
         output.verdicts, more = _read_verdicts(
             root, case, number, path.with_name(f"verdicts-{number}.md"), graders
         )
@@ -644,11 +684,10 @@ def _read_run(
     for name, rule in rules.items():
         output.tools[name] = holds(rule, run.calls)
         if not output.tools[name]:
-            high = "" if rule.high is None else str(rule.high)
             match = f" matching {rule.pattern}" if rule.pattern else ""
             problems.append(
                 f"{where}: {counted(rule, run.calls)} {rule.tool} call(s){match}, where {name} "
-                f"allows {rule.low}..{high}"
+                f"allows {rule.low}..{rule.high}"
             )
     output.verdicts, more = _read_verdicts(
         root, case, number, path.with_name(f"verdicts-{number}.md"), graders

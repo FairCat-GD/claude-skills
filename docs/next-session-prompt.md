@@ -11,8 +11,9 @@ the changes P3's cycle calls for, release 0.2.0. P4 covers:
 
 - **Round 2 is provenance-tracer, and one eval engine for every skill:** P1, E1, E2, E3, P2 and
   P3 are done; P4 and P5 remain.
-- **Push status:** `origin/main` holds everything through P2's review commit; P3's commits are
-  local until the owner approves a push.
+- **Push status:** `origin/main` holds everything through P3's review commit ("review: a bold
+  label keeps the chain open, the user's text is a claim, and 5 smaller"), pushed with the
+  owner's yes; nothing in P3 changes what installs.
 - **What P3 left:**
   - **`evals/provenance-tracer/checks.py`** on the cycle: `checks: 13 case(s), 59 problem(s);
     pass bars not met: Cases passing at 2 of 3 runs (labels and facts), ≤ 1 quote per source,
@@ -38,7 +39,7 @@ the changes P3's cycle calls for, release 0.2.0. P4 covers:
     P3's results.
 - **Baseline** (ARCHITECTURE's table):
   - `verify` green, 6 stages;
-  - 367 unit tests passed, 0 skipped;
+  - 374 unit tests passed, 0 skipped;
   - 17 Python files;
   - 3 skill folders, 3 plugins, 3 marketplace entries;
   - `claude` 2.1.330;

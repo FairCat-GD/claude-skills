@@ -307,6 +307,28 @@ def test_the_chain_heading_is_found_in_any_of_its_forms(heading: str) -> None:
     assert checks.unfetched(body, "forward", {GAZETTE}) == [BLOG]
 
 
+def test_a_bold_label_inside_the_chain_does_not_end_it() -> None:
+    chain = (
+        f'Your version: "{CLAIM}" (where you met it: not given)\n'
+        f"**Branch 1**\n └─ [Gazette]({GAZETTE}), 1931, Secondary\n"
+        f"**Branch 2**\n └─ [Blog]({BLOG}), 2019, Tertiary\n"
+    )
+    assert checks.unfetched(forward(chain=chain), "forward", {GAZETTE}) == [BLOG]
+
+
+def test_a_forward_report_is_known_by_its_labels_in_any_markup_or_its_chain() -> None:
+    loose = forward().replace(f'## Provenance: "{CLAIM}"', f"## Provenance: {CLAIM}")
+    loose = loose.replace("**Roots:** Echo · **Grounding:**", "**Roots**: Echo · **Grounding**:")
+    assert checks.kind(loose) == "forward"
+    unlabelled = "## Provenance: kites\n\n### Chain\n └─ [Blog](https://b.example.invalid/)\n"
+    assert checks.kind(unlabelled) == "forward"
+
+
+def test_a_bare_url_stops_at_a_tables_pipe() -> None:
+    found, _ = checks.links('| "kites" | https://d.example.invalid/p| scope widened |')
+    assert [link.url for link in found] == ["https://d.example.invalid/p"]
+
+
 def test_a_forward_report_with_no_chain_section_cannot_be_checked() -> None:
     body = forward().replace("### Chain\n", "")
     assert checks.unfetched(body, "forward", set(FETCHED)) is None
@@ -368,10 +390,22 @@ def test_the_users_own_text_is_exempt_from_the_prompt_or_the_heading() -> None:
     assert _quote_problems(restated) == []
 
 
-def test_the_prompts_own_words_beyond_the_claim_are_exempt() -> None:
-    # The request line is the user's text but not the heading's claim.
-    body = forward(more='\nYou asked "where did this idea come from" of "kites were outlawed".\n')
+def test_the_claim_as_typed_is_exempt_where_the_heading_restates_it() -> None:
+    # Only the prompt holds the claim as typed: the heading has it in other words.
+    body = forward().replace(
+        f'## Provenance: "{CLAIM}"', '## Provenance: "Ashwick outlawed every kite in 1902"'
+    )
+    body = body.replace("None found.\n", f'It says "kites were outlawed", against "{CLAIM}".\n')
     assert _quote_problems(body) == []
+
+
+def test_a_fragment_of_the_claim_is_exempt_and_the_request_line_is_not() -> None:
+    # How it changed sets the user's words against the root's: a fragment is still theirs.
+    fragment = forward(more='\nThe gazette says "kites were outlawed", not "banned kites".\n')
+    assert _quote_problems(fragment) == []
+    # The request line is the user's but no claim, so quoting it is a second quote.
+    request = forward(more='\nAsked "where did this idea come from", it says "kites flew".\n')
+    assert any("2 quotes on one line" in p for p in _quote_problems(request))
 
 
 def test_typographic_quotation_marks_are_read_as_straight_ones() -> None:
@@ -419,6 +453,12 @@ def test_a_tool_used_rule_is_read_and_counted_from_the_calls() -> None:
     assert not checks.holds(rule, calls)
     assert checks.holds(rule, calls[:1])
     assert checks.tool_rule(LLM) is None
+
+
+@pytest.mark.parametrize("missing", ["min: 0\n", "max: 0\n"])
+def test_a_tool_used_rule_without_both_bounds_cannot_be_read(missing: str) -> None:
+    with pytest.raises(ValueError, match="no min or no max"):
+        checks.tool_rule(NO_SEARCH.replace(missing, ""))
 
 
 # --- the whole cycle --------------------------------------------------------------------------
@@ -549,6 +589,13 @@ def test_a_quote_breach_is_a_problem_and_misses_its_bar(root: Path) -> None:
     _run(root, "kites", 2, _git(root, "rev-parse", "HEAD").strip(), body=body)
     assert any("2 quotes on one line" in p for p in _problems(root, "kites/run-2.md"))
     assert not _row(root, "≤ 1 quote").met
+
+
+def test_an_unreadable_run_counts_as_a_report_whose_links_failed(root: Path) -> None:
+    cycle(root)
+    _write(root, f"{EVALS}/results/kites/run-2.md", "not a run file\n")
+    row = _row(root, "Every linked source")
+    assert (row.passed, row.total, row.met) == (5, 6, False)
 
 
 # --- review.md --------------------------------------------------------------------------------

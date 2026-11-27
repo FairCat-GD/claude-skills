@@ -1059,6 +1059,31 @@ EE 4–6, 9; `ARCHITECTURE.md` invariants 5–7, *The eval harness*, *The data l
   - 3 skill folders, 3 plugins, 3 marketplace entries;
   - `results/`: +78 run and verdicts files, +13 `review.md`;
   - crux-finder's `checks.py` unchanged: 0 problems, every bar met.
+- **Review (`/code-review high`), 7 findings: 7 fixed and 0 skipped.** The owner chose to fix all
+  seven.
+  - **A bold-only line ended a section:** a bold branch label inside a chain left the links after
+    it unchecked. A bold line is a heading now only when it names a template section.
+  - **The user's-text exemption took any span in the prompt.** The owner was shown the first
+    fix, a span needing half the claim's words: on the cycle it flagged the user's own words in
+    *How it changed* (quotes 14/39 to 11/39). The owner chose any fragment of a claim instead:
+    the prompt's quoted claims and the heading's, never its request line. A source quote that
+    repeats the claim's words stays exempt, the stated gap.
+  - **A forward report could be read as reverse,** its chain unchecked, where its label line was
+    in other markup and its heading unquoted: a label line in any markup, or a chain section,
+    now makes it forward.
+  - **A bare URL ran on through a table's `|`;** it now ends there.
+  - **A `tool_used` grader without `min` was re-counted as `min: 1`,** a default never
+    measured; both bounds are now required.
+  - **An unreadable run left the linked-sources row,** which could then read met; it now counts
+    as a report whose links failed.
+  - ***The data layer* called the `review.md` shape settled at the start;** it came with the plan.
+  - **Falsified:** each fix reverted in turn, only its own new test failing: any bold line a
+    heading; any prompt fragment exempt (the half-claim rule, then the whole prompt for the
+    request line); a chain alone not making a report forward; a bare URL through a pipe;
+    missing bounds read; an unreadable run not a report.
+  - **On the cycle:** `checks.py` prints the same 59 problems and table as before the review.
+  - **Numbers after the review:** 374 unit tests (+7), 69 in
+    `test_provenance_tracer_checks.py`; the other counts unchanged.
 
 ---
 
