@@ -102,8 +102,8 @@ Name such a drift plainly in the *Change* column. Do not stretch one of the six 
 | Hedge dropped | a pilot study suggests the coating may reduce corrosion | the coating reduces corrosion | [Coastal Works Weekly](<url as fetched>), 2015 |
 ````
 
-- **Root says.** Paraphrase the root. Quote it only if the linked page has no quote anywhere
-  else in the reply, in 12 words at most, and never two quotes in one row. A word that changed is
+- **Root says.** Paraphrase the root. Quote it only if the page has no quote anywhere else in the
+  reply, linked to that page, in 12 words at most, and never two quotes in one row. A word that changed is
   shown in italics, as in *want* became *wish*, not in quotation marks.
 - **Your version.** The user's own words exactly as typed, which are exempt from the quote rule.
 - **One row per drift.** Write `None found.` under the heading when there is no drift.

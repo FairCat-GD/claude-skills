@@ -97,7 +97,8 @@ public figure's public words or acts is traced as usual.
    Unknown. A node is Primary only if you opened it: a paper's abstract or full text, or the
    passage of a book, speech or document. Otherwise label it
    `Primary (not opened, per <opened source>)` and cap Confidence at Medium. A work that passes
-   on the claim with a source for it is a node citing that source, not a Primary.
+   on the claim with a source for it is a node citing that source, not a Primary; a study with
+   its own data stays a Primary for its own finding, whatever precursor it names.
 6. **Link** the personal chain to the matching node, if any.
 7. **Root.** By the rules in `references/labels.md`: a node that cites nothing earlier and
    originates the claim, or, where no chain reaches an origin, the earliest instance found. Any
@@ -206,6 +207,7 @@ A reverse report carries no labels.
    line, the footer) and the user's words exactly as typed. Then check:
    - no line holds two quotes;
    - no linked page is quoted on two lines;
+   - every quote is linked to the page it comes from;
    - every quote is 12 words or fewer, counted;
    - quotation marks inside a quote are single;
    - every quote is the page's own words, word for word.

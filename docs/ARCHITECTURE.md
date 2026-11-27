@@ -1103,19 +1103,22 @@ never whether it is true.
     - a work that passes the claim on with a source for it is a node citing that source, a
       Primary only for its own data or text;
     - a study with its own data is where its own finding begins, and what it names as background
-      is a precursor, not a hop, unless retellings of the claim cite it too;
+      is a precursor, not a hop and not something earlier the root cites, unless retellings of
+      the claim cite it too;
     - a study by another team with its own data, credited by retellings, is a root of its own even
       when it names the earlier one, where 0.1.0 made it a node in the earlier one's chain; studies
       by one team are one root, and a review or guideline is a node;
     - a misattribution adds no root: the root is where the words or finding first appear, and the
-      credited text, opened, is a Primary that differs, drawn under the node that credits it.
+      credited text, opened, counts as one Primary that differs under the rule for several
+      Primaries, drawn under the node that credits it, and neither it nor a precursor is counted
+      as a retelling.
   - **Opening a Primary** (*a node is Primary only if opened*): another copy is tried before a
     Primary is marked not opened, up to 4 fetches for the root's and a credited text, 2 for any
     other; a paper's abstract or full text, or a passage from any copy, counts as opened for what
     it states.
   - **Quotes** (the spec's quote guardrail): quotation marks make a quote whatever they hold; a
-    quote counts against the page it is linked to; one quote per page in the whole reply and one
-    per line; 12 words at most, the skill's own margin inside the spec's 15; italics for a word
+    quote is linked to, and counts against, the page it comes from; one quote per page in the
+    whole reply and one per line; 12 words at most, the skill's own margin inside the spec's 15; italics for a word
     pointed to; the template's fixed lines and the user's words exactly as typed left alone.
 - **The ten-percent case's gold** (settled at the start of Session P4, with the owner,
   2026-11-27): Grounding `Primary differs`, where the spec's table row has No primary found. The
@@ -1132,7 +1135,7 @@ never whether it is true.
 `plugins/provenance-tracer/`, in crux-finder's shape. What 0.2.0 changed is under *0.2.0* below;
 the rest is as 0.1.0 built it.
 
-- **`SKILL.md`** (217 lines; 185 in 0.1.0). Its frontmatter: `name`, the spec's description word for word in
+- **`SKILL.md`** (219 lines; 185 in 0.1.0). Its frontmatter: `name`, the spec's description word for word in
   double quotes (it holds a colon), `license: MIT` and `metadata.version`. Its body:
   - what to read and when;
   - the need for web tools;

@@ -97,8 +97,8 @@ _Tiers describe position in the chain, not reliability. "No primary found" means
 ## Quotes and titles
 
 - **Quotation marks make a quote,** whatever they hold: a sentence, a phrase, one word, a year, a
-  rating or a term. Quote only words the page gives word for word. Never reproduce lyrics or
-  poems.
+  rating or a term. Quote only words the page gives word for word, linked to that page. Never
+  reproduce lyrics or poems.
 - **A quote counts against the page you link it to,** the page you read it on, whoever first
   said the words.
 - **One quote per page in the whole reply.** A page's one quote goes in one place, in one
@@ -109,10 +109,10 @@ _Tiers describe position in the chain, not reliability. "No primary found" means
 - **Pointing at a word, figure, rating or term without quoting it:** use italics or plain text,
   as in *want* became *wish*, or rated it *False*.
 - **Quotation marks inside a quote, or inside a title,** become single quotes.
-- **The user's words exactly as typed are exempt,** on the heading, the *Your version* line and
-  the *Your version* column. Words close to theirs but not as typed are a quote.
-- **The template's fixed lines stay as written,** the footer's quoted "No primary found"
-  included.
+- **The template's fixed lines stay as written:** the heading with the claim as restated in
+  forward step 1, the *Your version* line, and the footer with its quoted "No primary found".
+- **Elsewhere, the user's words exactly as typed are exempt,** as in the *Your version* column.
+  Words close to theirs but not as typed are a quote.
 - **Titles in italics,** never in quotation marks, so quotation marks hold only quotes and the
   user's claim.
 - **No verdict.** No sentence of your own calls the claim true, false, a myth or debunked. A

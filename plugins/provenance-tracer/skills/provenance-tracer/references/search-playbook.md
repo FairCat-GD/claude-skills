@@ -144,8 +144,9 @@ finding about another Primary names that source at the start of its bullet.
    one line. In a forward trace, a later study by another team that found the same with its own
    data, and that retellings credit, is a root in the chain (`labels.md`): *Status* keeps failed
    replications, reanalyses and studies that found otherwise.
-6. **Precursors:** a work the root names as background, but that no retelling cites, gets one
-   bullet here, starting `Background:`.
+
+A precursor, a work the root names as background but that no retelling cites (`labels.md`), is no
+check and costs no fetch: give it one bullet under *Status of the root*, starting `Background:`.
 
 With no Primary in the chain, there is nothing to check. The report says so.
 

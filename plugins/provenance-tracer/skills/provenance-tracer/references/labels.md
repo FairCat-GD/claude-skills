@@ -50,12 +50,15 @@ A **root** is where a chain begins. Find the roots this way:
 4. **Precursors are not roots.** A work that a root names, but that no retelling of the claim
    cites, is a precursor: name it in a background bullet under *Status of the root*, never as an
    earlier root or as the earliest instance. A page about its author, or the root's own
-   reference list, does not make it a retelling.
+   reference list, does not make it a retelling. A precursor is not something earlier the root
+   cites: the root still cites nothing earlier, even where it names the precursor beside the
+   claim, and a study with its own data stays a Primary for its own finding.
 5. **A misattribution adds no root.** A node may credit the claim to a person or work whose own
    text, once opened, does not state it as theirs. Then the root is where the claim's words or
-   finding first appear. The credited text is a Primary that differs: it gives the Grounding
-   value, and Misattributed when the user's version carries the credit. It is drawn under the
-   node that credits it and ends that branch, and it is not a root.
+   finding first appear. The credited text counts as one opened Primary that differs, weighed
+   with any other opened Primary by the Grounding rule for several Primaries below, and it gives
+   Misattributed when the user's version carries the credit. It is drawn under the node that
+   credits it and ends that branch, and it is not a root.
 6. **Where no chain reaches such an origin, the earliest instance found is the one root.**
 7. **Every other node that states the claim and cites nothing is a cold trail:** listed under
    *Cold trails*, counted as a retelling, never as a root. Two blog posts that each repeat a claim
@@ -71,7 +74,8 @@ A **root** is where a chain begins. Find the roots this way:
 
 **Retellings found** counts the nodes you found by search: the root, every node on a chain, and
 every cold trail. The user's own version, and the Personal and Hearsay nodes of the personal
-chain, are not counted. A `(not opened)` node is counted, since an opened page names it.
+chain, are not counted. Nor are a credited text, which does not state the claim, or a precursor,
+which is no node. A `(not opened)` node is counted, since an opened page names it.
 
 ## The two axes
 
