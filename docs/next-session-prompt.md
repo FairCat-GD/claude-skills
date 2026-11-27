@@ -1,64 +1,58 @@
-Read docs/spec/FEATURE-provenance-tracer.md PT 5, 8, and the spec's *Evals*;
-docs/spec/FEATURE-eval-engine.md EE 4–6, 9; docs/ARCHITECTURE.md invariants 5–7, *The eval
-harness*, *The data layer*, *provenance-tracer*; P2's done-note; `evals/crux-finder/checks.py` as
-the pattern; then CLAUDE.md, *The session cycle* in docs/DEVELOPMENT-WORKFLOW.md,
-docs/ARCHITECTURE.md's overview, invariants and baseline, docs/spec/SESSIONS.md's header, your
-block and P2's done-note, then this file, and do Session P3: provenance-tracer's checks and first
-cycle. P3 covers:
-- `evals/provenance-tracer/checks.py` and its tests, on the shared code, every check falsified;
-- the cycle: thirteen cases, three runs each, four at a time, through `evals/run.py`;
-- the owner's reading of every failed verdict and one run per case, recorded in `review.md`.
-
-P3 cuts no version.
+Read docs/spec/FEATURE-provenance-tracer.md PT 2, 5, 8; docs/ARCHITECTURE.md *provenance-tracer*
+and *The eval harness*; P3's done-note; then CLAUDE.md, *The session cycle* in
+docs/DEVELOPMENT-WORKFLOW.md, docs/ARCHITECTURE.md's overview, invariants and baseline,
+docs/spec/SESSIONS.md's header, your block and P3's done-note, then this file, and do Session P4:
+the changes P3's cycle calls for, release 0.2.0. P4 covers:
+- the skill changed for each bar P3's cycle missed, each change general, settled with the owner;
+- `0.2.0` in `plugin.json` and `metadata.version`, and its `CHANGELOG.md` entry;
+- the next cycle on the skill as it stands, after P3's results are removed.
 
 ## State you need that is not in the specs
 
-- **Round 2 is provenance-tracer, and one eval engine for every skill:** P1, E1, E2, E3 and P2
-  are done; P3, P4 and P5 remain.
-- **Push status:** `origin/main` holds everything through P2's review commit ("review: each gold
-  fact cites the page it rests on, and four doc fixes"), pushed with the owner's yes; nothing in
-  P2 changes what installs.
-- **What P2 left:**
-  - **Thirteen cases** in `evals/provenance-tracer/cases/`, committed with their golds before any
-    result. The well-sourced case is `well-sourced-exercise-heart-disease`, the owner's
-    replacement for the spec's smoking claim.
-  - **The graders `checks.py` maps to bars:** `labels` (six cases), `facts` and `no-verdict`
-    (all thirteen), `footer` (the ten forward reports), `no-search` and `no-fetch` (the
-    private-person case, together "No search issued") and `manager-not-searched` (the
-    personal-chain case). gold.md's fields: `roots`, `grounding`, `modifiers`, `fact_N` with
-    `source_N` or `must_N`, `authored`, `approved_by` (*The data layer*).
-  - **The trial's cost:** the MMR forward run $1.47 and 334 s (7 searches, 23 fetches, 38
-    turns), the private-person refusal $0.10 and 15 s; judging $0.01 to $0.05 a run. A cycle of
-    39 runs at four at a time: the eleven cases that trace (33 runs) at about $1.50 each is about
-    $50, the refusal and question cases (6 runs) under $1; time about 45 minutes. One forward run
-    is a small sample: a trace that runs to the spec's limits may cost more.
-  - **The trial's verdicts are a lead, not a result:** the MMR run took a 1996 pilot study as the
-    root ahead of Wakefield's paper, so `labels` failed without Origin retracted. Whether that
-    root is right is the owner's reading in P3. `facts` and `no-verdict` failed 3/3 under the
-    judge's first wording; two clauses were added after, with the owner, and are untried.
-  - **The fetch tool refuses** PubMed, PubMed Central, *The Lancet*, *The BMJ*, the BBC, *The New
-    York Times* and the Wayback Machine. Runs reach primaries through Europe PMC or Crossref, or
-    leave them `(not opened)`; a 403 page comes back as a call that returned, not an error.
-- **What the runner needs** is unchanged: `--max-cost-usd` is required; it refuses while
-  `plugins/provenance-tracer/` or `evals/provenance-tracer/cases/` has uncommitted changes.
-- **Baseline** (ARCHITECTURE's table): `verify` green with 6 stages; 304 unit tests passed, 0
-  skipped; 15 Python files; 3 skill folders, 3 plugins, 3 marketplace entries; `claude` 2.1.330;
-  crux-finder's `checks.py`: `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0.
-- **Not done:** an API error's shape in the engine's result is unmeasured (`docs/BACKLOG.md`); a
-  grader's own error shows only when its case runs. No case's `llm` graders have run as
-  committed: the trial ran before the two clauses were added, and its MMR `facts` and
-  `no-verdict` failed. Only the trial's `labels`, `footer`, `no-search` and `no-fetch` ran as
-  they stand; the other regex and `tool_used` graders were checked in node only.
+- **Round 2 is provenance-tracer, and one eval engine for every skill:** P1, E1, E2, E3, P2 and
+  P3 are done; P4 and P5 remain.
+- **Push status:** `origin/main` holds everything through P2's review commit; P3's commits are
+  local until the owner approves a push.
+- **What P3 left:**
+  - **`evals/provenance-tracer/checks.py`** on the cycle: `checks: 13 case(s), 59 problem(s);
+    pass bars not met: Cases passing at 2 of 3 runs (labels and facts), ≤ 1 quote per source,
+    < 15 words`, exit 1. Cases 9/13; quotes 14/39; every other bar met.
+  - **The four cases that miss, with the owner's notes in each `review.md`:**
+    - Gandhi (labels 0/3): the 1913 passage did not open, so No primary found; one run made it
+      a second root.
+    - Ten-percent (labels 0/3): James's essay taken as a Primary that differs; gold says No
+      primary found, which the spec's tier definition may not support. Gold or skill is the
+      owner's call; a gold change starts that case over.
+    - MMR (1/3): Fudenberg 1996, not opened, taken as the root; the owner judged it wrong.
+    - Exercise (1/3): Morris 1953 alone, not opened, in two runs.
+  - **The quote rule,** kept strict by the owner mid-session: 25 runs quote one source twice,
+    often a phrase and a cited word or year. The skill's own text already says one quote per
+    source.
+  - **The shared reckoning** in `evals/shared.py`, which both skills' checks call.
+- **The runner and the engine:**
+  - **The ceiling:** `--max-cost-usd` is required. P3's 39 runs cost $46.71, judging included,
+    plus $2.88 for two runs removed.
+  - **The refusal:** the runner refuses while `plugins/provenance-tracer/` or
+    `evals/provenance-tracer/cases/` has uncommitted changes.
+  - **Skipped runs:** it skips a run whose file exists, so the next cycle starts by removing
+    P3's results.
+- **Baseline** (ARCHITECTURE's table):
+  - `verify` green, 6 stages;
+  - 367 unit tests passed, 0 skipped;
+  - 17 Python files;
+  - 3 skill folders, 3 plugins, 3 marketplace entries;
+  - `claude` 2.1.330;
+  - crux-finder's `checks.py`: `checks: 10 case(s), 0 problem(s); every pass bar met`.
+- **Not done:** the runner writes a run whose `llm` judges a usage limit refused, as graded
+  fails (`docs/BACKLOG.md`).
 
 ## Watch for
 
-- **The Ask at the start of P3:** the cycle's cost ceiling, `--max-cost-usd`, from the trial's
-  cost per run above.
-- **How gold order is reckoned** (crux-finder's `checks.py` reckons only committed results from
-  history, and reads paths with `-z`) is P3's to settle with the owner.
-- **The judge keeps no reasons:** the owner reads every failed verdict; a reader that gives its
-  reasons helps tell a grader's wording from the reply.
-- **A real page can hold a word on the term list** (`CLAUDE.md`): ask the owner; never trim a
-  quote silently.
+- **The Ask at the start of P4:** the next cycle's ceiling, `--max-cost-usd`, from P3's cost per
+  run (about $1.20 a tracing run).
+- **A change fitted to one case** is not general: each change names the rule it serves.
+- **`SKILL.md` stays under 300 lines:** move detail to the references.
+- **A usage limit mid-cycle:** check every `verdicts-N.md` for `grader threw` before the
+  reading.
 - **A cycle spends real model runs and the live web:** one cycle at a time, never in a parallel
   part.

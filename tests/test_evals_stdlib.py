@@ -39,7 +39,12 @@ def outside_the_standard_library(folder: Path) -> list[str]:
 def test_everything_under_evals_imports_the_standard_library_only() -> None:
     # The scan is not vacuous: the runner, the shared code and a skill's checks are all in it.
     files = set(EVALS.rglob("*.py"))
-    assert {EVALS / "run.py", EVALS / "shared.py", EVALS / "crux-finder" / "checks.py"} <= files
+    assert {
+        EVALS / "run.py",
+        EVALS / "shared.py",
+        EVALS / "crux-finder" / "checks.py",
+        EVALS / "provenance-tracer" / "checks.py",
+    } <= files
     assert outside_the_standard_library(EVALS) == []
 
 

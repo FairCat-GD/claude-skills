@@ -651,6 +651,18 @@ def test_a_run_on_a_commit_without_gold_fails(root: Path) -> None:
     )
 
 
+def test_a_claude_ai_reply_on_a_commit_without_gold_fails(root: Path) -> None:
+    # Gold order reads the commit every output names, a claude.ai reply's as well as a run's.
+    first = _git(root, "rev-parse", "HEAD").strip()
+    _case(root, "ferry")
+    _commit(root)
+    _claude_ai(root, "ferry", reply(), first)
+    assert (
+        f"{EVALS}/cases/ferry/gold.md: not in commit {first[:12]}, which claude-ai ran on"
+        in _problems(root, "gold.md")
+    )
+
+
 # --- the case as it ran ----------------------------------------------------------------------
 
 

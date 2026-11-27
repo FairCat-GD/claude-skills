@@ -15,12 +15,10 @@ Usage: uv run evals/crux-finder/checks.py
 """
 
 import re
-import subprocess
 import sys
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from fractions import Fraction
-from math import ceil
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -54,26 +52,15 @@ SMOKE_CASES = 3
 
 _RUN = re.compile(r"run-([1-9][0-9]*)\.md")
 _VERDICTS = re.compile(r"verdicts-([1-9][0-9]*)\.md")
-# A `version:` key indented under `metadata:`, with any value, quoted or not.
-_VERSION = re.compile(r"[ \t]+version:[ \t]*\S.*")
 _REPORT = re.compile(r"^## Crux report[ \t]*$", re.MULTILINE)
 _STEELMAN = re.compile(r"\*\*([AB])(?: \([^)\n]*\))?, strongest form:\*\*[ \t]*(.*)")
 _CRUX_LABEL = re.compile(r"\*\*(?:(?:Double crux|Crux for [AB]) · [^*\n]+|No crux)\*\*")
 _HEADING = re.compile(r"#{1,3}\s")
 _CLAIM_MAP = re.compile(r"###\s+Claim map\s*")
-_FIELD = re.compile(r"- ([a-z0-9_-]+):[ \t]*(.*)")
 _HEADER_LINE = re.compile(r"[a-z0-9_]+:.*")
-_ELLIPSIS = re.compile(r"…|\.\.\.")
-# Typographic quotation marks and apostrophes read as their plain forms: the double ones
-# (curly, low, reversed, double prime) as ", the single ones as '.
-_DOUBLE = "\u201c\u201d\u201e\u201f\u2033"
-_SINGLE = "\u2018\u2019\u201a\u201b\u2032"
-_FOLD = str.maketrans(dict.fromkeys(_DOUBLE, '"') | dict.fromkeys(_SINGLE, "'"))
 
-
-def words(text: str) -> int:
-    """A word is a whitespace-separated token with a letter or digit; markup alone is none."""
-    return sum(1 for token in text.split() if any(ch.isalnum() for ch in token))
+words = shared.words
+found_verbatim = shared.found_verbatim
 
 
 def is_report(body: str) -> bool:
@@ -124,10 +111,6 @@ def symmetry_problem(body: str) -> str | None:
     return None
 
 
-def _fold(text: str) -> str:
-    return " ".join(text.translate(_FOLD).split())
-
-
 def quoted_spans(body: str) -> tuple[list[str], int]:
     """Every quoted span and the count of quotation marks without a partner.
 
@@ -141,7 +124,7 @@ def quoted_spans(body: str) -> tuple[list[str], int]:
 
     def close_paragraph() -> None:
         nonlocal unpaired
-        marks = _fold(" ".join(paragraph)).split('"')
+        marks = shared.fold(" ".join(paragraph)).split('"')
         spans.extend(marks[1::2])
         unpaired += 0 if len(marks) % 2 else 1
         paragraph.clear()
@@ -154,7 +137,7 @@ def quoted_spans(body: str) -> tuple[list[str], int]:
             if _CRUX_LABEL.fullmatch(previous):
                 paragraph.extend(block)
             else:
-                spans.append(_fold(" ".join(block)).strip('"'))
+                spans.append(shared.fold(" ".join(block)).strip('"'))
             block.clear()
             previous = ""
 
@@ -172,23 +155,6 @@ def quoted_spans(body: str) -> tuple[list[str], int]:
     close_block()
     close_paragraph()
     return spans, unpaired
-
-
-def found_verbatim(span: str, source: str) -> bool:
-    """Whether the span is in the source, line breaks joined and quotation marks folded; with an
-    ellipsis, piece by piece, in order. A mark that ends the sentence inside the closing
-    quotation mark is not part of the quote."""
-    pieces = [piece.strip() for piece in _ELLIPSIS.split(_fold(span))]
-    pieces = [piece for piece in pieces if piece]
-    if pieces:
-        pieces[-1] = pieces[-1].rstrip(".,;:!?") or pieces[-1]
-    text, position = _fold(source), 0
-    for piece in pieces:
-        index = text.find(piece, position)
-        if index < 0:
-            return False
-        position = index + len(piece)
-    return True
 
 
 @dataclass
@@ -226,19 +192,10 @@ class Output:
 
 
 @dataclass
-class Row:
-    check: str
-    bar: str
-    passed: int
-    total: int
-    met: bool
-
-
-@dataclass
 class Report:
     problems: list[str] = field(default_factory=list)
-    rows: list[Row] = field(default_factory=list)
-    smoke: Row | None = None
+    rows: list[shared.Row] = field(default_factory=list)
+    smoke: shared.Row | None = None
     cases: int = 0
     runs: int = 0
     results: bool = False
@@ -252,48 +209,6 @@ class Report:
         ]
 
 
-def _git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
-        ["git", *args], cwd=root, capture_output=True, text=True, stdin=subprocess.DEVNULL
-    )
-
-
-def without_version(text: str) -> str:
-    """SKILL.md with its frontmatter's metadata.version line left out, the one line of the skill
-    folder a release changes; a text with no such line is returned as it is."""
-    lines = text.split("\n")
-    if lines[0].rstrip() != "---":
-        return text
-    in_metadata = False
-    for index, line in enumerate(lines[1:], start=1):
-        bare = line.rstrip("\r")
-        if bare.rstrip() == "---":
-            break
-        if bare[:1] and not bare[:1].isspace():
-            in_metadata = bare.rstrip() == "metadata:"
-        elif in_metadata and _VERSION.fullmatch(bare):
-            return "\n".join(lines[:index] + lines[index + 1 :])
-    return text
-
-
-def _skill_unchanged_since(root: Path, commit: str) -> bool:
-    """Whether the skill folder, in the working tree, is as it was in the commit, SKILL.md's
-    metadata.version aside: a change to it alone is a release, not a change to the skill, so a
-    run on the commit before it ran the skill as it stands."""
-    skill = f"{SKILL_FOLDER}/SKILL.md"
-    rest = _git(root, "diff", "--quiet", commit, "--", SKILL_FOLDER, f":(exclude){skill}")
-    then = _git(root, "show", f"{commit}:{skill}")
-    try:
-        now = (root / skill).read_text(encoding="utf-8")
-    except OSError:
-        return False
-    return (
-        rest.returncode == 0
-        and then.returncode == 0
-        and without_version(then.stdout) == without_version(now)
-    )
-
-
 def _by_commit(outputs: list["Output"]) -> dict[str, list[str]]:
     """The outputs' names by the commit each names; the runs of one cycle share one."""
     found: dict[str, list[str]] = {}
@@ -303,77 +218,16 @@ def _by_commit(outputs: list["Output"]) -> dict[str, list[str]]:
     return found
 
 
-@dataclass(frozen=True)
-class Snapshot:
-    """A case folder in one commit, read against the working tree."""
-
-    # Every file the folder held in the commit; None where the commit cannot be read.
-    held: frozenset[str] | None
-    # The tracked files that differ in the working tree, removed ones included.
-    changed: frozenset[str]
-
-
-def _names(text: str) -> frozenset[str]:
-    """Paths as git prints them with -z: separated by NUL and never quoted, so a name with a
-    non-ASCII letter reads as the folder holds it."""
-    return frozenset(name for name in text.split("\0") if name)
-
-
-def _snapshots(root: Path) -> Callable[[str], Snapshot]:
-    """Every case folder in a commit, each commit read once, since a cycle's runs share theirs."""
-    folder = f"{EVALS}/cases"
-    cache: dict[str, Snapshot] = {}
-
-    def snapshot(commit: str) -> Snapshot:
-        if commit not in cache:
-            listed = _git(root, "ls-tree", "-z", "-r", "--name-only", commit, "--", folder)
-            if listed.returncode != 0:
-                cache[commit] = Snapshot(None, frozenset())
-            else:
-                changed = _git(
-                    root, "diff", "-z", "--no-renames", "--name-only", commit, "--", folder
-                )
-                cache[commit] = Snapshot(_names(listed.stdout), _names(changed.stdout))
-        return cache[commit]
-
-    return snapshot
+def _snapshots(root: Path) -> Callable[[str], shared.Snapshot]:
+    return shared.snapshots(root, EVALS)
 
 
 def _added_in(root: Path) -> dict[str, str]:
-    """Each file ever added under results/, by the latest commit that added it. Without
-    `--no-renames` a file renamed there is logged as renamed, never as added. With -z each
-    commit's line is `%x01` and its hash, and each name follows a NUL, unquoted."""
-    log = _git(
-        root,
-        "log",
-        "-z",
-        "--no-renames",
-        "--diff-filter=A",
-        "--format=%x01%H",
-        "--name-only",
-        "--",
-        f"{EVALS}/results",
-    )
-    added: dict[str, str] = {}
-    commit, first = "", False
-    for token in log.stdout.split("\0"):
-        if token.startswith("\x01"):
-            commit, first = token[1:], True
-            continue
-        if first:
-            # git puts one newline between a commit's line and its first name.
-            token, first = token.removeprefix("\n"), False
-        if token:
-            # The log runs newest first, so the first commit seen is the latest adding.
-            added.setdefault(token, commit)
-    return added
+    return shared.added_in(root, EVALS)
 
 
 def _committed(root: Path) -> frozenset[str]:
-    """Every file under results/ that HEAD holds."""
-    return _names(
-        _git(root, "ls-tree", "-z", "-r", "--name-only", "HEAD", "--", f"{EVALS}/results").stdout
-    )
+    return shared.committed(root, EVALS)
 
 
 def gold_order(
@@ -381,81 +235,23 @@ def gold_order(
     case: str,
     outputs: list[Output],
     present: list[str],
-    snapshot: Callable[[str], Snapshot],
+    snapshot: Callable[[str], shared.Snapshot],
     added: dict[str, str],
     committed: frozenset[str],
 ) -> list[str]:
-    """Invariant 7: gold.md committed before every result present now, and unchanged since.
-
-    Each file HEAD holds under results/<id>/ counts from the commit that added it, its latest
-    adding for a file removed and added again, so a retired cycle kept in history never counts.
-    A file not yet committed has no adding of its own: any adding its path has in history is a
-    retired cycle's, so it is not reckoned from history. The commit that adds it will follow
-    HEAD, which must hold gold, and gold must have no uncommitted change, both checked here."""
-    gold = f"{EVALS}/cases/{case}/gold.md"
-    head = snapshot("HEAD")
-    if head.held is None or gold not in head.held:
-        return [f"{gold}: not committed"]
-    problems: list[str] = []
-    by_adding: dict[str, list[str]] = {}
-    for path in present:
-        if path not in committed:
-            continue
-        if path in added:
-            by_adding.setdefault(added[path], []).append(path.rsplit("/", 1)[-1])
-        else:
-            # Committed, yet no commit adds it: the order cannot be reckoned, so it is no pass.
-            problems.append(f"{gold}: no commit adds {path}, so its order cannot be checked")
-    for commit, names in by_adding.items():
-        which = f"{', '.join(names)}, added in {commit[:12]}"
-        before = snapshot(f"{commit}^")
-        if before.held is None or gold not in before.held:
-            problems.append(f"{gold}: not committed before {which}")
-        elif gold in before.changed:
-            problems.append(f"{gold}: changed since {which}")
-    for commit, names in _by_commit(outputs).items():
-        which = f"which {', '.join(names)} ran on"
-        then = snapshot(commit)
-        if then.held is None or gold not in then.held:
-            problems.append(f"{gold}: not in commit {commit[:12]}, {which}")
-        elif gold in then.changed:
-            problems.append(f"{gold}: changed since commit {commit[:12]}, {which}")
-    if present and gold in head.changed:
-        problems.append(f"{gold}: uncommitted changes while results exist")
-    return problems
-
-
-def _grader_files(root: Path, case: str) -> list[str]:
-    folder = root / EVALS / "cases" / case / "graders"
-    return sorted(p.name for p in folder.glob("*.md")) if folder.is_dir() else []
+    """Invariant 7, as `shared.gold_order` reckons it, over every output: the runs and the
+    claude.ai reply."""
+    return shared.gold_order(
+        root, EVALS, case, _by_commit(outputs), present, snapshot, added, committed
+    )
 
 
 def case_as_run(
-    root: Path, case: str, runs: list[Output], snapshot: Callable[[str], Snapshot]
+    root: Path, case: str, runs: list[Output], snapshot: Callable[[str], shared.Snapshot]
 ) -> list[str]:
-    """Each run's prompt.md and graders unchanged since the commit it names: the case as it ran.
-    A claude.ai reply is older than every grader and not held to this."""
-    prompt = f"{EVALS}/cases/{case}/prompt.md"
-    graders = f"{EVALS}/cases/{case}/graders"
-    now = _grader_files(root, case)
-    problems = []
-    for commit, names in _by_commit(runs).items():
-        which = f"commit {commit[:12]}, which {', '.join(names)} ran on"
-        then = snapshot(commit)
-        held = then.held or frozenset()
-        if prompt not in held:
-            problems.append(f"{prompt}: not in {which}")
-        elif prompt in then.changed:
-            problems.append(f"{prompt}: changed since {which}")
-        inside = [path[len(graders) + 1 :] for path in held if path.startswith(f"{graders}/")]
-        before = sorted(name for name in inside if "/" not in name and name.endswith(".md"))
-        if not before:
-            problems.append(f"{graders}: not in {which}")
-        elif before != now:
-            problems.append(f"{graders}: graders added or removed since {which}")
-        elif any(path.startswith(f"{graders}/") for path in then.changed):
-            problems.append(f"{graders}: changed since {which}")
-    return problems
+    """Each run's prompt.md and graders unchanged since the commit it names. A claude.ai reply
+    is older than every grader and not held to this."""
+    return shared.case_as_run(root, EVALS, case, _by_commit(runs), snapshot)
 
 
 def _gold_fields(root: Path, case: str) -> list[str]:
@@ -487,7 +283,7 @@ def _prompt(root: Path, case: str) -> tuple[str, list[str]]:
 def _graders(root: Path, case: str) -> tuple[list[str], list[str]]:
     """The case's graders by name, each one a bar reads, and every case's three present."""
     where = f"{EVALS}/cases/{case}/graders"
-    names = [name.removesuffix(".md") for name in _grader_files(root, case)]
+    names = [name.removesuffix(".md") for name in shared.grader_files(root, EVALS, case)]
     problems = [f"{where}: no {name}.md" for name in REQUIRED_GRADERS if name not in names]
     problems += [
         f"{where}/{name}.md: a grader no bar reads" for name in names if name not in GRADERS
@@ -609,34 +405,6 @@ def _read_run(
     return output, problems + judged + more
 
 
-def parse_review(text: str, where: str) -> tuple[dict[str, dict[str, str]], list[str]]:
-    """review.md: `# Review: <id>`, then a `## run-N` or `## claude-ai` section per output, each
-    of `- field: value` lines."""
-    sections: dict[str, dict[str, str]] = {}
-    problems = []
-    current = None
-    for number, line in enumerate(text.split("\n"), start=1):
-        stripped = line.strip()
-        if not stripped or (stripped.startswith("# ") and current is None):
-            continue
-        if stripped.startswith("## "):
-            name = stripped[3:].strip()
-            if name in sections:
-                problems.append(f"{where}:{number}: a second section for {name}")
-            current = sections.setdefault(name, {})
-            continue
-        match = _FIELD.fullmatch(stripped)
-        if current is None or not match:
-            problems.append(f"{where}:{number}: not a `- field: value` line in an output's section")
-            continue
-        key, value = match.groups()
-        if key in current:
-            problems.append(f"{where}:{number}: {key} given twice")
-        else:
-            current[key] = value.strip()
-    return sections, problems
-
-
 def _run_review(where: str, output: Output, section: dict[str, str] | None) -> list[str]:
     """A run's section: stability from run 2 on, a line for every failed verdict, a note."""
     failed = [grader for grader, passed in output.verdicts.items() if not passed]
@@ -700,7 +468,7 @@ def _review(root: Path, case: str, outputs: list[Output]) -> list[str]:
             o for o in outputs if o.number is None or o.number > 1 or not all(o.verdicts.values())
         ]
         return [f"{where}: missing"] if needs else []
-    sections, problems = parse_review(path.read_text(encoding="utf-8"), where)
+    sections, problems = shared.parse_review(path.read_text(encoding="utf-8"), where)
     names = {output.name for output in outputs}
     problems += [
         f"{where}: a section for {name}, which has no output"
@@ -721,29 +489,24 @@ def _said(output: Output, key: str, value: str = "yes") -> bool:
     return bool(output.review) and output.review.get(key) == value
 
 
-def _all(check: str, passed: int, total: int, unit: str) -> Row:
-    return Row(check, f"all {unit}", passed, total, passed == total)
-
-
-def _ratio(check: str, ratio: Fraction, passed: int, total: int, unit: str) -> Row:
-    need = ceil(ratio * total)
-    return Row(check, f"≥ {need} / {total} {unit}", passed, total, total > 0 and passed >= need)
-
-
-def _graded(check: str, runs: list[Output], grader: str) -> Row:
+def _graded(check: str, runs: list[Output], grader: str) -> shared.Row:
     # Counted over the runs of the cases that have this grader, which must be at least one.
     graded = [run for run in runs if grader in run.verdicts]
     passed = sum(run.passed(grader) for run in graded)
-    return Row(check, "all runs with its grader", passed, len(graded), 0 < passed == len(graded))
+    return shared.Row(
+        check, "all runs with its grader", passed, len(graded), 0 < passed == len(graded)
+    )
 
 
 def _as_it_stands(root: Path, runs: list[Output]) -> int:
     commits = {run.header.get("commit") for run in runs} - {None, ""}
-    current = {commit for commit in commits if _skill_unchanged_since(root, commit)}
+    current = {
+        commit for commit in commits if shared.skill_unchanged_since(root, SKILL_FOLDER, commit)
+    }
     return sum(run.header.get("commit") in current for run in runs)
 
 
-def bars(root: Path, runs: list[Output], cases: dict[str, bool]) -> list[Row]:
+def bars(root: Path, runs: list[Output], cases: dict[str, bool]) -> list[shared.Row]:
     """PDD B's pass bars over the cycle's runs, and decision 22's row."""
     by_case: dict[str, list[Output]] = {}
     for run in runs:
@@ -754,36 +517,38 @@ def bars(root: Path, runs: list[Output], cases: dict[str, bool]) -> list[Row]:
     )
     reports = [run for run in runs if run.report]
     return [
-        _ratio(
+        shared.at_least(
             "Crux matches gold",
             Fraction(4, 5),
             sum(run.passed(CRUX) for run in runs),
             len(runs),
             "runs",
         ),
-        _ratio(
+        shared.at_least(
             "Type matches gold",
             Fraction(9, 10),
             sum(run.passed(TYPE) for run in runs),
             len(runs),
             "runs",
         ),
-        _ratio(
+        shared.at_least(
             "Stability: same primary crux in both runs",
             Fraction(4, 5),
             stable,
             len(repeated),
             "cases",
         ),
-        _all("Quotes verbatim", sum(r.quotes for r in runs), len(runs), "runs"),
-        _all("Steelman symmetry", sum(bool(r.symmetry) for r in reports), len(reports), "reports"),
-        _all(
+        shared.all_of("Quotes verbatim", sum(r.quotes for r in runs), len(runs), "runs"),
+        shared.all_of(
+            "Steelman symmetry", sum(bool(r.symmetry) for r in reports), len(reports), "reports"
+        ),
+        shared.all_of(
             f"Length ≤ {LENGTH} words",
             sum(bool(r.length) for r in reports),
             len(reports),
             "reports",
         ),
-        _all(
+        shared.all_of(
             "No statement about people",
             sum(run.passed(PEOPLE) for run in runs),
             len(runs),
@@ -791,8 +556,10 @@ def bars(root: Path, runs: list[Output], cases: dict[str, bool]) -> list[Row]:
         ),
         _graded("One-sided gate fires", runs, GATE),
         _graded("No-conflict case reports no conflict or a Framing crux", runs, NO_CONFLICT),
-        _all("Gold order + approved_by + graders as run", sum(cases.values()), len(cases), "cases"),
-        _all(
+        shared.all_of(
+            "Gold order + approved_by + graders as run", sum(cases.values()), len(cases), "cases"
+        ),
+        shared.all_of(
             "Runs on the skill as it stands (decision 22)",
             _as_it_stands(root, runs),
             len(runs),
@@ -801,7 +568,7 @@ def bars(root: Path, runs: list[Output], cases: dict[str, bool]) -> list[Row]:
     ]
 
 
-def smoke(outputs: list[Output]) -> Row:
+def smoke(outputs: list[Output]) -> shared.Row:
     """The claude.ai smoke test: three cases, each matching gold and passing every check."""
     passed = sum(
         _said(o, "crux_match")
@@ -811,7 +578,7 @@ def smoke(outputs: list[Output]) -> Row:
         and o.length is not False
         for o in outputs
     )
-    return Row(
+    return shared.Row(
         "claude.ai smoke test",
         f"{SMOKE_CASES} / {SMOKE_CASES} cases",
         passed,
@@ -824,7 +591,7 @@ def _check_case(
     root: Path,
     case: str,
     report: Report,
-    snapshot: Callable[[str], Snapshot],
+    snapshot: Callable[[str], shared.Snapshot],
     added: dict[str, str],
     committed: frozenset[str],
 ) -> tuple[list[Output], list[Output], bool]:
@@ -907,14 +674,6 @@ def check(root: Path) -> Report:
     return report
 
 
-def table(rows: list[Row]) -> str:
-    lines = ["| Check | Pass bar | Result | Met |", "|---|---|---|---|"]
-    for row in rows:
-        met = "yes" if row.met else "**no**"
-        lines.append(f"| {row.check} | {row.bar} | {row.passed} / {row.total} | {met} |")
-    return "\n".join(lines)
-
-
 def state(report: Report) -> str:
     if not report.cases:
         return "no cases yet"
@@ -937,12 +696,12 @@ def main() -> int:
         print(problem)
     if report.rows:
         print()
-        print(table(report.rows))
+        print(shared.table(report.rows))
         print()
         print(f"Verdicts the owner overruled: {report.overruled} of {report.verdicts}")
     if report.smoke:
         print()
-        print(table([report.smoke]))
+        print(shared.table([report.smoke]))
     print(f"checks: {report.cases} case(s), {len(report.problems)} problem(s); {state(report)}")
     return 1 if report.problems or report.missed else 0
 

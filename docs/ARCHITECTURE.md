@@ -46,11 +46,13 @@ ships nowhere.
 each with its skill folder at `plugins/<skill>/skills/<skill>/`. The tooling:
 `scripts/verify.py`, `scripts/hygiene.py`, `scripts/check_skills.py`, `scripts/check_plugins.py`
 and `tests/`. The evals: the shared runner, `evals/run.py`, with the result formats it writes,
-`evals/shared.py` (Session E1); crux-finder's ten cases in `evals/crux-finder/cases/`, each a
+`evals/shared.py` (Session E1), which also holds the reckoning both skills' checks share
+(Session P3); crux-finder's ten cases in `evals/crux-finder/cases/`, each a
 `prompt.md`, its graders and `gold.md`, and its `checks.py` (Session E2); and
 `evals/crux-finder/results/`, which holds crux-finder's first cycle on the runner (Session E3)
 and the three claude.ai replies of round 1's smoke test; and provenance-tracer's thirteen cases
-in `evals/provenance-tracer/cases/`, in the same shape (Session P2), with no results yet.
+in `evals/provenance-tracer/cases/`, in the same shape (Session P2), with its `checks.py` and
+its first cycle in `evals/provenance-tracer/results/` (Session P3).
 
 ## Context
 
@@ -229,6 +231,16 @@ in `evals/provenance-tracer/cases/`, in the same shape (Session P2), with no res
     (`WebSearch called 0x (expected 0..0)`).
   - **Fetches:** *The Lancet* and *The BMJ* answered 403, which the engine records as a call that
     returned, not an error; two news pages failed as errors.
+- **provenance-tracer's first cycle, measured in Session P3** (2026-11-26 and 27, `claude`
+  2.1.330), through the runner (*provenance-tracer*, Built):
+  - **A usage limit mid-call:** the account's limit stopped the first call after 9 of 39 runs.
+    The 30 runs it refused were not written. Two that ran had their `llm` judges refused, and
+    the engine graded them anyway, each such verdict `fail` with `grader threw: judge call
+    failed` as its explanation and no votes; the runner wrote both as graded runs. The session
+    removed them, uncommitted, and the second call ran them again.
+  - **The calls:** 253 searches and 553 fetches over 39 runs, 57 of the fetches errors; every web
+    call in the main session. One private-person run called Grep, not in its `allowed_tools`,
+    and it ran.
 
 Measured at intake, 2026-11-17, and again in Session 2, 2026-11-18: `claude` 2.1.326; uv 0.12.3;
 Python 3.10.20 installed through uv. In Session 4, 2026-11-20: `claude` 2.1.328. In Session 5,
@@ -237,7 +249,7 @@ Python 3.10.20 installed through uv. In Session 4, 2026-11-20: `claude` 2.1.328.
 updated itself mid-cycle. In Session 7c, 2026-11-22: 2.1.330 throughout. In Session 8,
 2026-11-22: 2.1.330. In Session P1, 2026-11-25: 2.1.330. In Session E1, 2026-11-25: 2.1.330. In
 Session E2, 2026-11-25: 2.1.330. In Session E3, 2026-11-25: 2.1.330. In Session P2, 2026-11-26:
-2.1.330.
+2.1.330. In Session P3, 2026-11-26 and 27: 2.1.330, every run of its cycle included.
 
 ## Stack and pins
 
@@ -367,7 +379,8 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
 7. **Each `gold.md` is committed before any file now under its `results/<id>/`, and names who
    approved it.** *Why:* gold written after the results could be fitted to them. "Now" since the
    round 2 intake (*The data layer*): a retired cycle stays in history, and its files never
-   count. *Enforced by* `evals/crux-finder/checks.py`, from git: gold.md committed; in the parent
+   count. *Enforced by* each skill's `checks.py`, through the one reckoning in `evals/shared.py`
+   (`gold_order`, Session P3), from git: gold.md committed; in the parent
    of the commit that added each file HEAD holds under `results/<id>/` (its latest adding, for a
    file removed and added again, a rename counted as an adding) and unchanged since, a committed
    file no commit adds being a problem, and a file not yet committed reckoned from HEAD; in the
@@ -494,6 +507,12 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   verdicts and names every disagreement; the owner confirms or corrects every line before
   `review.md` records it. The one run per case the owner reads is run 1, fixed before any result
   exists, so it is never a pick.
+- **Settled at the start of Session P3, with the owner** (2026-11-26), for provenance-tracer's
+  results:
+  - **gold order** is reckoned as crux-finder's, by the same code, moved into `evals/shared.py`;
+  - **`review.md`** has a `## run-1` section with a note in every case, the one run per case the
+    owner reads, and a section for any other run with a failed verdict; its lines are the
+    graders' and `note`, with no stability field.
 - **Machine identifiers, never renamed:** the marketplace name `faircat-skills`; the plugin
   and skill names `travel-itinerary-builder`, `crux-finder` and, from Session P1,
   `provenance-tracer`; the case ids once results exist.
@@ -624,7 +643,11 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   the engine's judge, which keeps no reasons, had failed both 3/3.
 
   Every chain URL among the run's fetches, the quote rule, a case passing at 2 of 3 runs and the
-  every-run bars are Session P3's `checks.py` (PT 8).
+  every-run bars are `evals/provenance-tracer/checks.py`'s (PT 8; *The eval harness*).
+- **provenance-tracer's results present:** Session P3's cycle, its first (0.1.0, from
+  `641ce2a`): `run-1.md` to `run-3.md` and their `verdicts-N.md` in each of the thirteen
+  cases, and each case's `review.md`, the owner's lines: `## run-1` with a note in every case,
+  and a section for each other run with a failed verdict.
 - **The results present:** Session E3's cycle, crux-finder's first on the shared runner (1.0.0,
   from `3a97160`): `run-1.md`, `run-2.md`, `verdicts-1.md` and `verdicts-2.md` in each of the ten
   cases, and each case's `review.md` with its `## run-1` and `## run-2` sections, the owner's
@@ -656,6 +679,10 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
     `run-`, so no pattern for runs takes it in.
   - In both, every machine path is a placeholder (*The eval harness*), and a line break inside a
     value is written as `\n`.
+- **provenance-tracer's `review.md`** (Session P3) has `## run-N` sections only, each of
+  `- <grader>: pass|fail` lines for graders in that run's `verdicts-N.md`, and a `note`. Run 1's
+  is required in every case; any other run's, where a verdict failed. P5 adds the claude.ai
+  replies' sections.
 - **`review.md`** is `# Review: <id>`, then a `## run-N` or `## claude-ai` section per output,
   each of `- field: value` lines, one per field, values in lower case. A line of any other shape
   is a problem, so a note stays on one line.
@@ -1171,7 +1198,39 @@ Pages the fetch tool refuses, seen at authoring and in the trial: PubMed and Pub
 *The Lancet* and *The BMJ* (403), the BBC, *The New York Times* and the Wayback Machine. Europe
 PMC's and Crossref's APIs open.
 
-**Not yet:** the first cycle (P3).
+**The first cycle** (Session P3, 0.1.0 from `641ce2a`, `claude` 2.1.330, `claude-opus-5-5`,
+judge `claude-sonnet-5-5`): thirteen cases, three runs each, in two calls of the runner, since a
+usage limit stopped the first after 9 runs (*Context*); $46.71 for the 39 runs kept ($45.16
+the runs, $0.12 to $1.75 each; $1.55 the judging), and $2.88 more for two runs removed because
+their judges were refused. 12 to 357 s a run; 253 searches and 553 fetches, 57 of them errors.
+`checks.py`, after the owner's reading (4 of 135 verdicts overruled):
+
+| Check | Pass bar | Result | Met |
+|---|---|---|---|
+| Cases passing at 2 of 3 runs (labels and facts) | all cases | 9 / 13 | **no** |
+| No verdict in the report's own voice | all runs | 39 / 39 | yes |
+| Footer lines present | all runs with its grader | 30 / 30 | yes |
+| ≤ 1 quote per source, < 15 words | all runs | 14 / 39 | **no** |
+| Every linked source among the run's fetches | all forward and reverse reports | 33 / 33 | yes |
+| No search issued (private-person case) | all runs with its grader | 3 / 3 | yes |
+| Manager never in a search query (personal-chain case) | all runs with its grader | 3 / 3 | yes |
+| Gold order + approved_by + graders as run | all cases | 13 / 13 | yes |
+| Runs on the skill as it stands | all runs | 39 / 39 | yes |
+
+- **The four cases that miss:**
+  - `misattributed-quote-gandhi`, labels 0/3: two runs could not open Gandhi's 1913 passage, so
+    No primary found; the third opened it and counted it as a second root, Independent.
+  - `popular-myth-ten-percent-brain`, labels 0/3: each took James's essay, opened and giving no
+    percentage, as a Primary that differs, where gold has No primary found.
+  - `retracted-origin-mmr-autism`, 1/3: two runs took Fudenberg's 1996 paper, not opened, as the
+    root, which the owner judged wrong, so no Origin retracted.
+  - `well-sourced-exercise-heart-disease`, 1/3: two runs traced Morris 1953 alone, not opened, so
+    one root and No primary found.
+- **Quotes:** 25 runs break the quote rule, nearly all with a second quoted span from one
+  source: a phrase and a cited word, two years, a fact-check's rating beside its sentence.
+
+The owner's reading is in each `review.md`; P4 decides with the owner which misses are the
+skill's and which a gold's.
 
 ## The eval harness
 
@@ -1268,6 +1327,23 @@ now (*The data layer*).
   mentions the Union's endurance; in the one-sided case, a reply with no `## Crux report`
   heading and no `### The crux` section writes no report.
 
+**Settled at the start of Session P3, with the owner** (2026-11-26), how provenance-tracer's
+`checks.py` reads the spec's bars:
+- **The ceiling** of its first cycle: `--max-cost-usd 75`.
+- **Gold order** as crux-finder's, from one copy of the code in `evals/shared.py`.
+- **A case passes** when 2 of its 3 runs pass both `labels`, where it has them, and `facts`.
+- **The quote rule:** every quote under 15 words; no line holds two different quotes; the
+  lines that link the same single source hold one quote between them, except *How it changed*,
+  whose link is a drift's node rather than the quote's source; the user's own text exempt.
+  Mid-session, on the cycle's replies, the owner kept it strict: a quoted word or year is a
+  quote.
+- **Linked sources:** a reverse report's `**Source:**` line and *Popular versions* links are held
+  to the fetches as a forward report's chain is.
+- **With the plan, after its adversarial review:** the heading's restated claim is the user's
+  text too; a blockquote is a quote; a link after `per` or `cited by` is where a fact was found,
+  not a quote's source; a forward report with no chain section is a problem; `footer` is required
+  wherever `labels` is.
+
 **Built.** The shared runner, `evals/run.py`, with `evals/shared.py` (below), and crux-finder's
 `evals/crux-finder/checks.py`, all standard library only, on Python 3.10. Round 1's
 `evals/crux-finder/run.py` and its tests were retired in Session E2, with the results they
@@ -1346,6 +1422,51 @@ Decisions made here, each with its why:
   version-shaped line anywhere else, in `SKILL.md`'s body or in a reference, still counts as a
   change. It needs no git option newer than `show` and `diff`. The row came with the plan the
   owner approved.
+
+**The shared reckoning** (Session P3), in `evals/shared.py` beside the result formats: what
+crux-finder's `checks.py` had built and both skills now call, each function given the skill's
+evals folder or skill folder. The git reads (`snapshots`, `added_in`, `committed`, every path
+with `-z`); `gold_order`, given the commit of every output, a claude.ai reply's included, and
+`case_as_run`, given the runs' alone; `without_version` and `skill_unchanged_since`;
+`parse_review`; `words`, `fold` and `found_verbatim`; `Row`, `all_of`, `at_least` and `table`.
+crux-finder's `checks.py` keeps thin wrappers under the names its tests call, and its output on
+its results was byte for byte the same after the move. One change came with it: an untracked
+file in the skill folder now counts as a change to the skill, which `git diff` alone did not see.
+
+**provenance-tracer's `checks.py`** (Session P3) prints its problems, the table and the count of
+verdicts overruled, then `checks: <n> case(s), <n> problem(s); <state>`, and exits 0 only with
+no problem and either no results yet or every bar met.
+- **Per case:** `prompt.md` with a body; `facts` and `no-verdict`, `labels` exactly where gold's
+  `roots` is not `none`, `footer` wherever `labels` is, `no-search` and `no-fetch` together, and
+  no other grader; gold's five fields, `authored` a date, `fact_N` or `must_N` from 1 with no
+  gap, each fact with its source; gold order and the case as it ran, from `shared`; once any
+  result exists, exactly run-1 to run-3, and nothing else in `results/<id>/` but `review.md`
+  and dotfiles.
+- **Per run:**
+  - **Linked sources:** a forward report's chain section (`### Chain`, `## Chain` or `**Chain**`,
+    to the next heading), or a reverse report's `**Source:**` line and *Popular versions*.
+    Each link must be among the run's `WebFetch` arguments, in any subagent and with any
+    outcome. Links are read inline (balanced parentheses, a title dropped), as autolinks and
+    bare, trailing punctuation trimmed. Both sides are compared without `<>`, Markdown escapes
+    or a fragment, then percent-decoded.
+  - **Quotes:** per line, URLs taken out first, the heading and *Your version* lines skipped;
+    marks folded; a blockquote is one quote. A span found in the prompt or the heading's claim,
+    letter case aside, is the user's. Two spans are the same when one holds the other.
+  - **`tool_used` re-counted:** each such grader's `tool`, `input_match`, `min` and `max`
+    applied to run-N.md's calls; a count out of range is a problem whatever the verdict.
+- **The table:** each run's verdict as the owner's line has it, else the engine's. The
+  all-runs rows count over three runs per case, so a missing run misses them; the hard tool
+  rows need both the verdict and the re-count.
+
+Decisions made here, each with its why:
+- **The `tool_used` graders are re-counted from run-N.md,** since a judge or grader slip would
+  otherwise pass the spec's hard checks unseen, and the owner's line cannot make a search
+  unsent.
+- **A tried fetch counts, whatever its outcome,** since the skill links a `(not opened)` node
+  only if it tried to fetch it.
+- **A quote's source is the one link on its line,** since the report marks no other: a line that
+  links several, or a `per`/`cited by` link only, attributes its quotes to none, and they are held
+  to length and one per line alone. *How it changed* is held per line only.
 
 **The shared runner** (Session E1), `uv run evals/run.py <skill> --runs N --max-cost-usd USD
 [--case <id> …] [--trial <folder>]`. It ran on a fictional plugin in a temporary folder in Session
@@ -1452,8 +1573,10 @@ owner reading every failed verdict and one run per case (*The eval harness*).
 
 Built: Validators (the `skills` and `plugins` stages), Unit (`tests/test_verify.py`,
 `tests/test_hygiene.py`, `tests/test_check_skills.py`, `tests/test_check_plugins.py`,
-`tests/test_crux_finder_checks.py`, `tests/test_evals_run.py`, `tests/test_evals_shared.py`,
-`tests/test_evals_stdlib.py`) and Hygiene. The shared runner's tests run it against a stub engine
+`tests/test_crux_finder_checks.py`, `tests/test_provenance_tracer_checks.py`,
+`tests/test_evals_run.py`, `tests/test_evals_shared.py`, `tests/test_evals_stdlib.py`) and
+Hygiene. The reckoning `evals/shared.py` holds for both skills is tested through crux-finder's
+checks' tests, and provenance-tracer's tests cover what it adds. The shared runner's tests run it against a stub engine
 whose result file and traces copy the shapes measured in Session E1; the runner itself ran end to
 end on a fictional plugin in that session, and on one crux-finder case as a trial in Session E2.
 `checks.py`'s tests build a fictional repository whose results the shared code writes. Evals: the
@@ -1461,8 +1584,9 @@ runner, crux-finder's `checks.py` and its ten cases with their graders (Session 
 cycles ran on the retired runner, in Session 7 on crux-finder 0.1.0, 7a on 0.2.0, 7b on 0.3.0 and
 7c on 0.4.0, which met every bar and was followed by the claude.ai smoke test on three cases.
 crux-finder's first cycle on the engine, in Session E3 on 1.0.0, met every bar with the owner's
-reading made by a fresh reader's draft. provenance-tracer has no eval set yet
-(P2, P3); its first version was tried by hand, headless and installed (Session P1).
+reading made by a fresh reader's draft. provenance-tracer's first cycle, in Session P3 on 0.1.0, missed two bars, the
+case pass and the quote rule, with the owner's reading made the same way; it was also tried by
+hand, headless and installed (Session P1).
 
 ## Packaging
 
@@ -1530,18 +1654,19 @@ provenance-tracer, the third plugin, in Session P1:
 
 ## Baseline
 
-Measured 2026-11-25 with Python 3.10.20, uv 0.12.3, ruff 0.17.5, pytest 9.2.0, `claude` 2.1.330
+Measured 2026-11-27 with Python 3.10.20, uv 0.12.3, ruff 0.17.5, pytest 9.2.0, `claude` 2.1.330
 and the validator at `83021e2`. The heading carries no version because the repository has none
 of its own: each skill has its own version.
 
 | Check | Expected |
 |---|---|
-| `uv run scripts/verify.py` | green: 6 stages (`skills`, `plugins`, `format`, `lint`, `tests`, `hygiene`), about 27 s with uv's cache warm, most of it the eval tooling's git fixtures |
-| Unit tests (`tests`) | 304 passed, 0 skipped: 120 in `test_crux_finder_checks.py`, 51 in `test_evals_run.py`, 45 in `test_hygiene.py`, 36 in `test_check_skills.py`, 20 in `test_check_plugins.py`, 18 in `test_evals_shared.py`, 10 in `test_verify.py`, 4 in `test_evals_stdlib.py` |
+| `uv run scripts/verify.py` | green: 6 stages (`skills`, `plugins`, `format`, `lint`, `tests`, `hygiene`), about 37 s with uv's cache warm, most of it the eval tooling's git fixtures |
+| Unit tests (`tests`) | 367 passed, 0 skipped: 121 in `test_crux_finder_checks.py`, 62 in `test_provenance_tracer_checks.py`, 51 in `test_evals_run.py`, 45 in `test_hygiene.py`, 36 in `test_check_skills.py`, 20 in `test_check_plugins.py`, 18 in `test_evals_shared.py`, 10 in `test_verify.py`, 4 in `test_evals_stdlib.py` |
 | `uv run scripts/verify.py hygiene --all` | green; 0 hits in pushed history |
-| Python files (`ruff format --check .`) | 15 |
+| Python files (`ruff format --check .`) | 17 |
 | Skills and plugins | 3 skill folders, 3 plugins, 3 marketplace entries |
 | `uv run evals/crux-finder/checks.py` | Session E3's cycle on 1.0.0 and round 1's smoke test on 0.4.0: `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0; crux 20/20, type 18/20, stability 10/10, 3 of 64 verdicts overruled; the smoke test's row 3 / 3 |
+| `uv run evals/provenance-tracer/checks.py` | Session P3's first cycle on 0.1.0: `checks: 13 case(s), 59 problem(s); pass bars not met: Cases passing at 2 of 3 runs (labels and facts), ≤ 1 quote per source, < 15 words`, exit 1; cases 9/13, quotes 14/39, every other bar met; 4 of 135 verdicts overruled. Its problems are the quote rule's, one line each |
 
 A documentation or refactoring change should not move any of these. If one moves, that is the
 finding.
@@ -1644,3 +1769,10 @@ finding.
   session the owner replaced the smoking claim with a happier one, chose exercise from three
   candidates, and approved two clauses added to every `facts` and `no-verdict` grader after the
   trial.
+- 2026-11-26, Session P3: *The data layer* gains provenance-tracer's `review.md` and gold order
+  reckoned as crux-finder's; *The eval harness* gains how provenance-tracer's `checks.py` reads the
+  spec's bars: the cycle's ceiling, a case passing at 2 of 3 runs on labels and facts together,
+  the quote rule per line and per linked source, a reverse report's links held to the fetches,
+  and five readings the plan review added. The owner settled the first four at the start of
+  Session P3, as the session recommended, the reverse links and the five readings with the plan,
+  and kept the quote rule strict mid-session, on the cycle's replies.

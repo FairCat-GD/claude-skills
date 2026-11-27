@@ -943,6 +943,123 @@ EE 4–6, 9; `ARCHITECTURE.md` invariants 5–7, *The eval harness*, *The data l
 - **A reply can hold a word on the owner's term list,** or a researcher's name: names of public
   figures are allowed (PT 3); a listed term is asked about.
 
+**Done (2026-11-27, no release).**
+- **Decided with the user:**
+  - **The block's Ask:** `--max-cost-usd 75`, as recommended, against an estimate of about $52.
+  - **The handoff's Ask, gold order:** as crux-finder's, with that code moved into
+    `evals/shared.py` so both skills run one copy, as recommended.
+  - **With the plan:**
+    - a case passes when 2 of its 3 runs pass `labels` and `facts` together;
+    - the quote rule per line and per linked source, *How it changed* per line only, the user's
+      text exempt;
+    - a reverse report's source and popular-version links held to the fetches;
+    - after the plan's adversarial review, five readings: the heading's claim exempt, a
+      blockquote a quote, a `per`/`cited by` link not a quote's source, a forward report with
+      no chain a problem, `footer` wherever `labels` is.
+  - **Mid-session, on the cycle's replies:** the quote rule stays strict, a quoted word or year
+    a quote; the remaining $65 of the ceiling spent on the runs a usage limit had refused.
+  - **The reading:** four verdicts overruled to pass (personal-chain runs 1 and 3 `facts`, Gandhi
+    run 3 and MMR run 1 `no-verdict`); MMR's Fudenberg root judged wrong, its run 1 `facts`
+    confirmed fail; every `labels` fail and exercise's two `facts` fails confirmed, with notes
+    for P4.
+- **Shipped:**
+  - `evals/provenance-tracer/checks.py` and `tests/test_provenance_tracer_checks.py` (62
+    tests);
+  - `evals/shared.py` gains the reckoning crux-finder's `checks.py` had built: gold order,
+    graders as run, the skill as it stands, `review.md`, words and quotation marks, the table.
+    crux-finder's `checks.py` calls it through thin wrappers, its output byte for byte the same.
+    An untracked file in the skill folder now counts as a change to the skill;
+  - one crux-finder test, a claude.ai reply's commit checked for gold;
+  - the cycle: 39 `run-N.md` and `verdicts-N.md`, and 13 `review.md`.
+- **The cycle** (0.1.0 from `641ce2a`, `claude` 2.1.330 throughout, `claude-opus-5-5`, judge
+  `claude-sonnet-5-5`):
+  - **First call** (`--max-cost-usd 75`): 9 runs before the account's usage limit refused the
+    rest. Two of the 9, Gandhi runs 2 and 3, came back with their `llm` judges refused and
+    written as fails. The session removed them, uncommitted (*Context*; `docs/BACKLOG.md`).
+  - **Second call** (`--max-cost-usd 65`, the rest of the ceiling): the other 32, exit 0, 23 min
+    31 s.
+  - **Spend:** $46.71 for the 39 kept ($45.16 runs, $0.12 to $1.75 each; $1.55 judging), $2.88
+    for the two removed. 253 searches, 553 fetches (57 errors), 12 to 357 s a run, no error
+    header, no kept folder, no machine path.
+- **The owner's reading,** made as E3's: four fresh readers, each given a bundle of its cases'
+  prompts, golds, graders and runs and no verdict, drafted every verdict and run 1's note. They
+  agreed with the engine on 130 of 135; the five disputes and every failed verdict went to the
+  owner, who confirmed or corrected each line (above).
+- **`checks.py` on the cycle:** `checks: 13 case(s), 59 problem(s); pass bars not met: Cases
+  passing at 2 of 3 runs (labels and facts), ≤ 1 quote per source, < 15 words`, exit 1. Every
+  problem is a quote-rule line.
+
+  | Check | Pass bar | Result | Met |
+  |---|---|---|---|
+  | Cases passing at 2 of 3 runs (labels and facts) | all cases | 9 / 13 | **no** |
+  | No verdict in the report's own voice | all runs | 39 / 39 | yes |
+  | Footer lines present | all runs with its grader | 30 / 30 | yes |
+  | ≤ 1 quote per source, < 15 words | all runs | 14 / 39 | **no** |
+  | Every linked source among the run's fetches | all forward and reverse reports | 33 / 33 | yes |
+  | No search issued (private-person case) | all runs with its grader | 3 / 3 | yes |
+  | Manager never in a search query (personal-chain case) | all runs with its grader | 3 / 3 | yes |
+  | Gold order + approved_by + graders as run | all cases | 13 / 13 | yes |
+  | Runs on the skill as it stands | all runs | 39 / 39 | yes |
+
+  Verdicts the owner overruled: 4 of 135.
+- **What the results showed:**
+  - **The cases that miss:**
+    - Gandhi, labels 0/3: the 1913 passage did not open in two runs, so No primary found; the
+      third opened it and made it a second root.
+    - Ten-percent, labels 0/3: James's essay, opened, taken as a Primary that differs, where gold
+      has No primary found. The spec's tier definition allows the runs' reading.
+    - MMR, 1/3: Fudenberg 1996 as the root in two runs, so no Origin retracted.
+    - Exercise, 1/3: Morris alone, not opened, in two runs.
+  - **Quotes:** 25 runs quote a source twice: a phrase beside a cited word, two years, a rating
+    beside its sentence.
+  - **Every other bar is met:** no-verdict 39/39 after the reading, footer 30/30, links 33/33,
+    no search 3/3, the manager in no query 3/3.
+  - **Behaviour:** one private-person run called Grep, not in its `allowed_tools`, and it ran.
+- **No version:** no shipped file changed.
+- **Docs:**
+  - `CLAUDE.md`: *Commands*.
+  - `ARCHITECTURE.md`:
+    - *Overview* Built;
+    - *Context* (the cycle's limit and calls, the CLI);
+    - invariant 7's *Enforced by*;
+    - *The data layer* (Decided and Built);
+    - *provenance-tracer* Built (the first cycle);
+    - *The eval harness* (Decided: the readings; Built: the shared reckoning, provenance-tracer's
+      `checks.py` and its decisions);
+    - *Testing strategy*, the baseline, a *Decision log* line.
+  - `docs/BACKLOG.md`: the judge refusal written as a graded run.
+- **Amendments:**
+  - **The plan's ceiling ran in two calls,** since a usage limit stopped the first; the second
+    spent what was left, at the owner's word.
+  - **`skill_unchanged_since` changed with the move:** its test found that an untracked file
+    in the skill folder was not counted as a change.
+- **Checked by hand:** the readers' bundles held no verdicts file; no `/Users/`, `/var/folders`
+  or `/private/` path in `results/`; hygiene green over the results; every run's `claude:`
+  header 2.1.330.
+- **Falsified:** each check broken in turn, its own test failing, then restored:
+  - the case pass at 1 of 3, and without `labels`;
+  - a failed fetch, and a subagent's, left out;
+  - a missing chain passed;
+  - the quote limit at 16;
+  - the per-line count, and the per-source count;
+  - the prompt exemption (no test failed at first, so one was added), and the heading's;
+  - a `per` link taken as the source;
+  - blockquotes ignored;
+  - the `tool_used` re-count;
+  - run 1's required section;
+  - the gold-order call;
+  - a stray results file allowed;
+  - the version-line rule;
+  - the untracked-file check;
+  - crux-finder's new test, by building gold order from runs alone.
+- **Numbers:**
+  - 367 unit tests (+63), 0 skipped: 62 in `test_provenance_tracer_checks.py`, 121 in
+    `test_crux_finder_checks.py`;
+  - 6 `verify` stages; 17 Python files (+2);
+  - 3 skill folders, 3 plugins, 3 marketplace entries;
+  - `results/`: +78 run and verdicts files, +13 `review.md`;
+  - crux-finder's `checks.py` unchanged: 0 problems, every bar met.
+
 ---
 
 ## P4: The changes the cycle calls for

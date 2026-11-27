@@ -60,6 +60,10 @@ these are the parts only a person can see.
 - **The engine's result for an API error.** Session E1 could not provoke one. The shared runner
   writes nothing for a run with no grader results, as the engine's docs describe an API error,
   and its tests use that shape. The first rate limit or overload in a real cycle shows it.
+  Session P3's usage limit showed one shape: refused runs came back without results and were
+  not written, but a run whose `llm` judges were refused came back graded, each such verdict
+  `fail` with `grader threw: judge call failed` and no votes, and the runner wrote it. The
+  session removed the two by hand. The runner should not write a run with a grader that threw.
 - **The itinerary skill's fallbacks:** the interview asked in chat with no question tool, and
   the plan delivered in chat where WeasyPrint can't run. Session 3 measured the PDF build's
   own fallbacks (offline fonts, PyMuPDF page images); these two paths need an agent without the
