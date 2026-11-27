@@ -1184,7 +1184,9 @@ Every example in the references is invented and marked so. None is a spec eval c
   Internet Archive's plain text, Wikisource, Project Gutenberg) and the retries' budget; several
   studies named as a finding's start each followed; a confirming study by another team a root,
   and a precursor a `Background:` bullet, under *Status*.
-- **`output-template.md`:** the quote rule in full; a credited text drawn under `→ credits`; the
+- **`output-template.md`:** each root marked `root` (`root 1`, `root 2`) in the chain, since the
+  trial's `facts` judge failed a report that counted two roots without naming them; the quote
+  rule in full; a credited text drawn under `→ credits`; the
   `Background:` bullet; the reverse report's quotes.
 - **`mutation-types.md`:** its examples' wordings in italics; *Root says* paraphrased, with a
   changed word in italics, and the only cell that may quote; *First appears in* a node's name,

@@ -25,7 +25,10 @@ the changes P3's cycle calls for, release 0.2.0. P4 covers:
   - **The trial** (5 runs, $6.74): Gandhi, ten-percent, MMR and goldfish passed every grader with
     clean quotes; exercise had Independent right but Primary differs for Grounded, and three
     quotes on one row, which the fix answers; one more exercise run checks it.
-  - **Left:** the exercise re-check; the cycle; the owner's reading as in P3; `checks.py`'s
+  - **The exercise re-check** ($1.20): Independent · Grounded, clean quotes, `facts` failed by
+    the judge on a report that counted two roots without naming them; each root is now marked
+    in the chain (`fix: …`), at the owner's word, with no further trial run.
+  - **Left:** the cycle; the owner's reading as in P3; `checks.py`'s
     table; the docs, P4's done-note (with the release review's seven findings, all fixed) and
     this handoff; the cycle's commit; its review.
   - **Amendments to the block:** two commits, since the runner refuses an uncommitted plugin;

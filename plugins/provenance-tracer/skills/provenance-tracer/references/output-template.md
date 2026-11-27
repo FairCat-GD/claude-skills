@@ -54,6 +54,9 @@ _Tiers describe position in the chain, not reliability. "No primary found" means
   - **A node** is `<source>, <year>, <tier>`, the source linked to the URL exactly as you passed it
     to the fetch tool, and the year with `date unknown` where you found none. The template shows
     the tier on the root line; give it on every node.
+  - **A root** says so: its node ends with `, root`, or `, root 1`, `, root 2` and so on when
+    there are several, so the count line's roots can be found in the chain. A root reached by
+    two branches is marked once, and the other branch points to it.
   - **A node not opened** is `<citation>, <year>, (not opened), per <opened source>`. A Primary
     you did not open is `Primary (not opened, per <opened source>)`. Link its URL only if you
     tried to fetch it.
