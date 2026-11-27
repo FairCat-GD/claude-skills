@@ -1127,7 +1127,10 @@ EE 4–6, 9; `ARCHITECTURE.md` invariants 5–7, *The eval harness*, *The data l
     correlation stated as causation only where the study stops short of a cause; one quote per
     row of *How it changed*; each root marked in the chain.
   - **The reading:** 7 engine fails overruled to pass; 5 `labels` fails confirmed; the true
-    statistic's run 3 `no-verdict` kept a pass, decided by the session at the owner's word.
+    statistic's run 3 `no-verdict` kept a pass, decided by the session at the owner's word. In
+    the cycle commit's review, the owner asked the session to decide echoed goldfish run 2's
+    `facts` again from fact 1's full text: kept a pass, since fact 1 is the provenance the run
+    gives, and run 1, which the engine passed, lacks the same figures.
   - **After the cycle:** commit it and open P4a for a later session.
 - **Shipped:**
   - `plugins/provenance-tracer/` 0.2.0: `SKILL.md` (219 lines), the four references, the
@@ -1137,14 +1140,14 @@ EE 4–6, 9; `ARCHITECTURE.md` invariants 5–7, *The eval harness*, *The data l
   - P3's cycle retired; the second cycle: 39 `run-N.md` and `verdicts-N.md`, 13 `review.md`.
 - **The commits:** the release (`fa3326f`), its review (`72e2b04`), two fixes the trial called
   for (`09e4c25`, `429b407`), then the cycle's.
-- **The trial** ($6.74, then $1.20): four of five passed every grader with clean quotes;
+- **The trial** ($6.74, then $1.20, and $0.26 of judging: $8.20): four of five passed every grader with clean quotes;
   exercise read an association as a drift and packed three quotes in a row; its re-check, after
   the fix, gave Independent · Grounded with clean quotes, and a `facts` fail on a report that
   named no root.
 - **The cycle** (0.2.0 from `429b407`, `claude` 2.1.330, `claude-opus-5-5`, judge
   `claude-sonnet-5-5`): two runner calls, since the account's usage limit refused 21 runs of the
   first; $49.30 for the runs and $1.70 for judging, $51.00 of $75; no refused judge, no error.
-  With the trial, P4 spent $58.94.
+  With the trials, P4 spent $59.20.
 - **The owner's reading,** made as P3's: four fresh readers with bundles of prompts, golds,
   graders and runs and no verdicts; they agreed with the engine on 127 of 135.
 - **`checks.py` on the cycle:** `checks: 13 case(s), 2 problem(s); pass bars not met: Cases
@@ -1197,6 +1200,17 @@ EE 4–6, 9; `ARCHITECTURE.md` invariants 5–7, *The eval harness*, *The data l
   - a credited text and a precursor not counted as retellings;
   - the precursor note out of the status checks' list;
   - the handoff kept true between the commits.
+- **The cycle commit's review (`/code-review high`), 4 findings: 4 fixed and 0 skipped,** the
+  owner choosing to fix all four; none touched the skill folder, so the cycle stays on the skill
+  as it stands:
+  - echoed goldfish run 2's `facts` overrule had rested on a misstated rule; decided again from
+    fact 1's full text, it stays a pass, its `review.md` line giving the reason;
+  - the root marking, which the owner settled, added to *provenance-tracer* Decided and the
+    *Decision log*;
+  - P4's spend given with the trials' judging, $59.20;
+  - the handoff names the review commits as they are.
+- **After the review:** `checks.py` prints the same 2 problems and table; the other numbers are
+  unchanged.
 
 ---
 

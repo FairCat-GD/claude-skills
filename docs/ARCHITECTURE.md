@@ -1131,6 +1131,9 @@ never whether it is true.
   cause. The spec's well-sourced row, observational studies giving Grounded, reads so. With it,
   *How it changed* holds one quote per row by construction: only *Root says* may quote, and
   *First appears in* holds the node's name, year and link alone.
+- **Each root marked in the chain** (settled mid-Session P4, with the owner, 2026-11-27, after the
+  trial's exercise re-check counted two roots without naming either and its `facts` judge failed
+  it): a root's node ends with `root`, or `root 1`, `root 2` where there are several.
 - **The ten-percent case's gold** (settled at the start of Session P4, with the owner,
   2026-11-27): Grounding `Primary differs`, where the spec's table row has No primary found. The
   spec's own Grounding definition, any opened Primary, gives it: James's essay, which the figure is
@@ -1308,12 +1311,12 @@ ten-percent case), and retired the cycle's results before the next; git keeps th
 `c82907f`.
 
 **The trial** (Session P4, `--trial` outside the repository, 0.2.0 from `72e2b04`): one run each of
-Gandhi, ten-percent, MMR, exercise and the echoed goldfish, $6.74. Four passed every grader with
+Gandhi, ten-percent, MMR, exercise and the echoed goldfish, $6.74 for the runs. Four passed every grader with
 clean quotes; exercise had Independent right but Primary differs, reading an opened study's
 association as correlation stated as causation, and three quotes in one table row. After the
 owner's two changes (`09e4c25`), one more exercise run, $1.20, gave Independent · Grounded with
 clean quotes, its `facts` failed by a judge on a report that named no root; each root is now
-marked (`429b407`).
+marked (`429b407`). With their judging, $0.26, the trials cost $8.20.
 
 **The second cycle** (Session P4, 0.2.0 from `429b407`, `claude` 2.1.330, `claude-opus-5-5`, judge
 `claude-sonnet-5-5`): thirteen cases, three runs each, in two calls of the runner, since the
@@ -1910,5 +1913,5 @@ finding.
   owner settled the gold at the start of Session P4, choosing the gold over a narrower Grounding
   rule, and the three changes with the plan, after an adversarial review of it that the owner
   asked for. Mid-session, after the trial, the owner settled Grounding on a study's own data,
-  an association included, as the session recommended, and one quote per row of *How it
-  changed*.
+  an association included, as the session recommended, one quote per row of *How it
+  changed*, and each root marked in the chain.

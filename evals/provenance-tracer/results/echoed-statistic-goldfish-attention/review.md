@@ -6,7 +6,7 @@
 
 ## run-2
 - facts: pass
-- note: Facts overruled: TIME, the Microsoft report and Statistic Brain's credit are all there; the 12, 8 and 9 second figures are not required.
+- note: Facts overruled: TIME 2015 citing Microsoft's Spring 2015 report, and Statistic Brain as the figures' source, are fact 1's provenance and fact 3; the 12, 8 and 9 seconds are missing, as in run 1, which the engine passed, so both runs are held alike.
 
 ## run-3
 - labels: fail

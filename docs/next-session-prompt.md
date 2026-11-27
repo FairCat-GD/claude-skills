@@ -11,11 +11,12 @@ P4a: the changes P4's cycle calls for, release 0.3.0. P4a covers:
 
 - **Round 2 is provenance-tracer, and one eval engine for every skill:** P1, E1, E2, E3, P2, P3
   and P4 are done; P4a (inserted in P4) and P5 remain.
-- **Push status:** `origin/main` holds everything through P3's review commit. P4's commits are
-  local and unpushed: the 0.2.0 release, its review, two fixes from the trial, and the cycle's
-  commit with its review. A push makes 0.2.0 installable; it needs the owner's yes.
-- **The owner does not intend to spend on every session.** P4 spent $58.94 (the trial $7.94,
-  the cycle $51.00). P4a asks at its start whether to run a cycle at all, and its ceiling.
+- **Push status:** `origin/main` holds everything through P4's last review commit ("review: a
+  goldfish overrule decided again from its fact's full text, …"), pushed with the owner's yes, so
+  0.2.0 is installable.
+- **The owner does not intend to spend on every session.** P4 spent $59.20 (the trials $8.20,
+  the cycle $51.00, judging included in both). P4a asks at its start whether to run a cycle at
+  all, and its ceiling.
 - **What P4 left:**
   - **`evals/provenance-tracer/checks.py`** on P4's cycle: `checks: 13 case(s), 2 problem(s);
     pass bars not met: Cases passing at 2 of 3 runs (labels and facts), ≤ 1 quote per source,
