@@ -110,8 +110,9 @@ public figure's public words or acts is traced as usual.
      a precursor, not an earlier root;
    - studies by different teams, each with its own data and credited by retellings, are separate
      roots, even when the later names the earlier;
-   - a root beyond the first needs a retelling that credits it: a page that only records its
-     author's career, such as a biography, credits nothing, and what only it names is a precursor;
+   - where two or more works could be roots, each needs a retelling that credits it: a page that
+     only records its author's career, such as a biography, credits nothing, and a work only it
+     names, beside a root retellings credit, is a precursor, however early;
    - a misattribution adds no root: the credited text, opened, is a Primary that differs where it
      speaks to the claim, drawn under the node that credits it.
 
@@ -188,7 +189,8 @@ A reverse report carries no labels.
   exempt. Never reproduce lyrics or poems. In practice, as `references/output-template.md` sets
   out:
   - quotation marks make a quote, whatever they hold: one word, a year and a rating count too;
-  - a quote counts against the page you link it to, and that page is the one link on its line;
+  - a quote counts against the page you link it to, the one link on its line besides links after
+    *per* or *cited by* (in *How it changed*, the *Root says* cell's link);
   - one quote per page in the whole reply, and one per line;
   - a *Status* bullet that quotes draws on one page;
   - 12 words at most;
@@ -202,8 +204,8 @@ A reverse report carries no labels.
    Single thread, Echo or Independent agrees with the roots and retellings you counted.
 2. **Roots:** each root originates the claim. None is a precursor that only another root names,
    or a text that a misattribution points to. Each study by another team with its own data,
-   credited by retellings, is a root of its own. No second root is credited only by a page
-   recording its author's career, or by a reference list. Every Primary you weigh speaks to the
+   credited by retellings, is a root of its own. With two or more roots, none is credited only
+   by a page recording its author's career, or by a reference list. Every Primary you weigh speaks to the
    claim; a cited work silent on it is a *Status* bullet, not a Primary.
 3. **The chain:** every node opened and linked as fetched, or marked `(not opened)`; every
    Primary opened, or labelled `Primary (not opened, per …)` with Confidence at most Medium.

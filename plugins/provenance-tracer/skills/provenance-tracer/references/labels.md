@@ -26,10 +26,13 @@ Tier every node by its position in the chain, not by how reliable it seems.
   you know only because an opened page names it is `Primary (not opened, per <opened source>)`,
   and the report's Confidence is at most Medium.
 - **A Primary speaks to the claim:** it holds an assertion the claim could be a version of, the
-  same idea with another number, subject, scope, strength, cause, wording or author. A work is
+  same idea with another number, scope, strength, cause, wording or author, or another name for
+  the same thing. A work on a different question, however near its topic, does not. A work is
   **silent** on the claim only when you read the passage the citing page points to, or the whole
   text, in a copy checked to be the work (`search-playbook.md`, *Opening a page*), and it holds
-  no such assertion. A silent work is no Primary for this claim, and the citation of it does not
+  no such assertion. A fetch that answers *not found* shows silence only when the text it
+  returned reaches the pages or the heading around where the citing page puts the passage;
+  otherwise the copy failed. A silent work is no Primary for this claim, and the citation of it does not
   hold: it is not drawn as a node or a credited text, the citing node's branch ends
   `→ stopped: citation does not hold`, one bullet under *Status of the root* says what the work
   covers, and it adds nothing to Grounding or to the retellings counted. An abstract, a record,
@@ -57,9 +60,9 @@ A **root** is where a chain begins. Find the roots this way:
    own data, study, document, speech or text, or the work the claim grew from.
 3. **A study with its own data is where its own finding begins.** What it names as background, as
    a method, or as the idea it set out to test is not a hop.
-4. **Precursors are not roots.** A precursor is a work, beside a root that retellings credit,
-   that no retelling of the claim credits itself: one the root names as background, or one that
-   only a page recording its author's career, or the root's own reference list, ties to the claim
+4. **Precursors are not roots.** A precursor is a work that no retelling of the claim credits:
+   one a root names as background, or, beside a root that retellings credit, one that only a
+   page recording its author's career, or the root's own reference list, ties to the claim
    (rule 8), whether or not the root names it. Name it in a background bullet under *Status of
    the root*, never as a root, as the earliest instance or as a retelling. A precursor is not
    something earlier the root cites: the root still cites nothing earlier, even where it names
@@ -83,14 +86,14 @@ A **root** is where a chain begins. Find the roots this way:
    meta-analysis, a guideline or a textbook weighs others' data: it is a node, and the studies it
    names are leads to follow.
 
-   **A root beyond the first needs a retelling that credits it,** as a source of the claim or as
-   an earlier instance of it. A retelling passes on the claim or weighs its evidence, whatever
+   **Where two or more works could be roots, each needs a retelling that credits it,** as a
+   source of the claim or as an earlier instance of it, whichever is the earliest. A retelling passes on the claim or weighs its evidence, whatever
    else it is about: a news story, a blog, a fact-check, a quotation page, a review or a history
    of the evidence. What decides is what the page does with the claim, not whom it is about. A
    page that only records, as one fact of a person's career, that their work made the claim (a
-   biography, an encyclopedia entry on them, an obituary) does not make that work a further
-   root, and nor does a reference list: beside a root that retellings credit, the work is a
-   precursor (rule 4), and the page is not drawn as a node.
+   biography, an encyclopedia entry on them, an obituary) does not credit that work, and nor
+   does a reference list: beside a root that retellings credit, the work is a precursor (rule
+   4), and the page is not drawn as a node.
 
 ## Counting retellings
 

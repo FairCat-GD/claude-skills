@@ -1252,6 +1252,19 @@ its start whether it runs a cycle at all.
 - **P4's results retired in a commit of their own,** after the trial holds, so 0.2.0's results
   stay in HEAD until the cycle is sure to run.
 
+**The release's review (`/code-review high`, before any spend), 6 findings: 6 fixed and 0
+skipped,** the owner choosing to fix all six:
+- *another subject* in what speaks to the claim let a study of a different question count;
+- *a root beyond the first* left which root is first open, so an earliest instance tied to the
+  claim only by a biography could stay root 1;
+- the precursor a root names as background had been limited to roots that retellings credit;
+- a fetch's *not found* on a text cut short could be read as silence;
+- the quote guardrail in `SKILL.md` lacked the *per*, *cited by* and *Root says* exceptions;
+- *Decided* said the archive record costs no fetch, where it costs no extra one.
+
+**The account's window,** said by the owner after the review: the runs fit within the 5-hour
+window left (40%), so the cycle runs in batches of cases read against the usage tool.
+
 ---
 
 ## P5: The release and the round's close

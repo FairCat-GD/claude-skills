@@ -2,9 +2,8 @@ Read docs/spec/FEATURE-provenance-tracer.md PT 2, 5, 8; docs/ARCHITECTURE.md *pr
 and *The eval harness*; P4's done-note and each case's `review.md`; then CLAUDE.md, *The session
 cycle* in docs/DEVELOPMENT-WORKFLOW.md, docs/ARCHITECTURE.md's overview, invariants and baseline,
 docs/spec/SESSIONS.md's header, your block and P4's done-note, then this file, and finish Session
-P4a: the changes P4's cycle calls for, release 0.3.0. P4a is in progress: the release is
-committed, and what is left is:
-- the owner's `/code-review high` on the release, before any spend, and its `review:` commit;
+P4a: the changes P4's cycle calls for, release 0.3.0. P4a is in progress: the release and its
+review are committed, and what is left is:
 - the trial, then, if it holds, P4's results retired in a commit of their own and the full cycle;
 - the owner's reading, `checks.py`, the done-note, this handoff for P5 (or an inserted P4b), the
   cycle commit and its review.
@@ -43,6 +42,10 @@ committed, and what is left is:
 
 ## Watch for
 
+- **The account's 5-hour window:** the owner asked that runs fit within the window left. Read
+  it with the app's usage tool before each runner call, and run the cycle in batches of cases
+  (`--case`) that fit, never into a limit, since a judge a limit refuses is written as a graded
+  fail (`docs/BACKLOG.md`).
 - **A usage limit mid-cycle:** check every `verdicts-N.md` for `grader threw` before the
   reading.
 - **A cycle spends real model runs and the live web:** one cycle at a time, never in a parallel

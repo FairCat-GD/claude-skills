@@ -92,8 +92,9 @@ The pages they cite are your next fetches.
     extra fetch. Skip an item whose record does not match.
   - **In the fetch that reads the text,** ask for the passage by its words and its heading, not
     its page number, which differs between editions, and for the title, volume and language the
-    text itself shows. A text of another volume, edition or language, or one that stops before
-    the passage, is a failed copy, not a silent work (`labels.md`, *Tiers*): try the next.
+    text itself shows, and for the heading or page numbers it reaches around that place. A text
+    of another volume, edition or language, or one that stops before the passage, is a failed
+    copy, not a silent work (`labels.md`, *Tiers*): try the next.
   - **Never fetch the same address twice.**
 - **What counts as opened:** a paper whose abstract or full text you fetched, for what that text
   states; a book's, speech's or document's passage, from any copy whose text the fetch returned.

@@ -1143,12 +1143,17 @@ never whether it is true.
 - **The changes the second cycle called for** (settled at the start of Session P4a, with the
   owner, 2026-11-27, the details with the plan the owner approved after an adversarial review
   of it against the cycle's 39 runs), each serving a rule of the spec:
-  - **A root beyond the first needs a retelling that credits it** (the Roots axis), as a source
-    of the claim or an earlier instance of it. A retelling passes on the claim or weighs its
-    evidence, whatever else it is about; a page that only records, as one fact of a person's
+  - **Where two or more works could be roots, each needs a retelling that credits it** (the
+    Roots axis), as a source of the claim or an earlier instance of it, whichever is earliest.
+    A retelling passes on the claim or weighs its evidence, whatever else it is about; a page that only records, as one fact of a person's
     career, that their work made the claim (a biography, an encyclopedia entry, an obituary)
-    credits nothing, nor does a reference list. A work only such a page ties to the claim is a
-    precursor, whether or not the root names it. Scoped to a second root and to what a page does
+    credits nothing, nor does a reference list. A work only such a page ties to the claim,
+    beside a root that retellings credit, is a precursor, whether or not the root names it; a
+    work a root names as background stays a precursor of any root. A work speaks to the claim
+    with the same idea in another number, scope, strength, cause, wording or author, or another
+    name for the same thing, never as a work on a different question; a fetch's *not found*
+    shows silence only when its text reaches the passage's place. These four came from the
+    owner's review of the release. Scoped to two or more roots and to what a page does
     with the claim, since a test of whom a page is about would have caught single roots reached
     through a history of a field and a review written in a researcher's memory.
   - **A work silent on the claim is no Primary** (*Primary differs*: a Primary that says
@@ -1162,7 +1167,7 @@ never whether it is true.
   - **A copy of a passage found by its words and checked as it is read** (*a node is Primary
     only if opened*): a search for the passage's own words, the Internet Archive's record before
     its text (its direct file address skipping the `download` link's redirect, so the check
-    costs no fetch), the passage asked for by its words and heading, a copy of another volume,
+    costs no extra fetch), the passage asked for by its words and heading, a copy of another volume,
     edition or language a failed one, no address fetched twice; the copies' budget unchanged at
     4.
   - **A quote stays beside its page's link** (the quote guardrail): a quote's page is the one
@@ -1245,13 +1250,13 @@ Decisions made here, each with its why:
 
 **0.3.0** (Session P4a), the changes Decided above, placed so:
 - **`labels.md`:** *Tiers* says when a Primary speaks to the claim and when a work is silent;
-  *Roots* rule 4 makes a precursor any work beside the root that no retelling credits, rule 5
-  counts a credited text as differing where it speaks to the claim, and rule 8 needs a
-  retelling for a root beyond the first, the page that only records a career kept out of the
-  chain beside such a root; *Counting retellings* leaves out a silent work and that page; the
+  *Roots* rule 4 makes a precursor a work no retelling credits, named by a root as background
+  or, beside a root retellings credit, tied to the claim only by a career page; rule 5 counts a
+  credited text as differing where it speaks to the claim; rule 8 needs a retelling for each of
+  two or more roots, the career page kept out of the chain beside such a root; *Counting retellings* leaves out a silent work and that page; the
   Grounding table's *Primary differs* is on the claim's point; two new invented examples.
-  Both rules on a career page are scoped to a root beyond the first, so a single root reached
-  through a history page stays the root.
+  Both rules on a career page apply only beside a root that retellings credit, so a single
+  root reached through a history page stays the root.
 - **`search-playbook.md`:** *Finding and checking a copy of a passage* under *Opening a page*;
   a copy's record and its text each a fetch of the copies' budget; *A study's own background*
   and *A citation that does not hold* follow the two rules above; the precursor note under
@@ -1977,10 +1982,14 @@ finding.
   an association included, as the session recommended, one quote per row of *How it
   changed*, and each root marked in the chain.
 - 2026-11-27, Session P4a: *provenance-tracer* gains the changes the second cycle called for,
-  each serving a rule of the spec (a root beyond the first needs a retelling that credits it; a
+  each serving a rule of the spec (where two or more works could be roots, each needs a
+  retelling that credits it; a
   work silent on the claim is no Primary; a copy of a passage found by its words and checked as
   it is read; a quote beside its page's link), P4's credited-text line amended to match, and the
   session's spend, a five-case trial and then the full cycle. The owner settled the spend, the
   silent-work rule over a credit-must-travel rule, and the copies' search and check with the
   budget unchanged at the start of Session P4a, and the rest with the plan, after an adversarial
-  review of it that the owner asked for, which scoped the roots rule to a second root.
+  review of it that the owner asked for, which scoped the roots rule to two or more roots. In
+  the release's review the owner had four of its wordings tightened: which root is first, the
+  precursor a root names kept for any root, a work on a different question silent, and a
+  fetch's *not found* silence only when its text reaches the passage.
