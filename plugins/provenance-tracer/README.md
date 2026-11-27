@@ -21,7 +21,8 @@ claim is true.
   Each change is shown with the source where it first appears.
 - **Labels every trace on two axes:**
   - **Roots:** one source retold once (*Single thread*), one origin echoed by many (*Echo*), or
-    several origins found independently (*Independent*).
+    several origins found independently (*Independent*), such as separate studies with their own
+    data.
   - **Grounding:** an original source was opened and says what your version says (*Grounded*),
     it was opened and says something materially different (*Primary differs*), or none was
     opened (*No primary found*).
@@ -47,7 +48,8 @@ What it never does:
 - **Say whether a claim is true.** "No primary found" means the search found none, not that the
   claim is false; a fact-check it cites is named as a source.
 - **Invent a source, date, link or quote.** A page it could not open is marked *not opened*.
-- **Quote a source at length.** It quotes each source at most once, under 15 words, linked.
+- **Quote a source at length.** It quotes each source at most once, in a dozen words at most,
+  linked.
 - **Trace a claim about a private person.** A claim whose subject is not a public figure is
   declined before any search.
 - **Trace more than one claim per run.**
@@ -123,7 +125,7 @@ git clone https://github.com/FairCat-GD/claude-skills.git
 
 ## Version
 
-0.1.0, in development: its behaviour may still change before 1.0.0. What changed in each version
+0.2.0, in development: its behaviour may still change before 1.0.0. What changed in each version
 is in [CHANGELOG.md](./CHANGELOG.md).
 
 ## License

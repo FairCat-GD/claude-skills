@@ -58,6 +58,9 @@ _Tiers describe position in the chain, not reliability. "No primary found" means
     you did not open is `Primary (not opened, per <opened source>)`. Link its URL only if you
     tried to fetch it.
   - **Each node but the last** ends with `→ cites`.
+  - **A credited text** (a misattribution, `labels.md`): the node that credits it ends with
+    `→ credits <person or work>`, and the text sits under it as `<source>, <year>, Primary
+    (credited, differs)`. Its branch ends there, and it is not a root.
   - **More than one branch:** draw each branch from the node where it splits.
   - **A branch that ends short of a root,** at the hop limit, a failed fetch or the end of the
     budget, ends with its reason: `→ stopped: 6 hops`, `→ stopped: not opened`,
@@ -74,7 +77,8 @@ _Tiers describe position in the chain, not reliability. "No primary found" means
   the checks: `- No retraction, correction or failed replication found (journal page, Crossref,
   Retraction Watch, PubPeer).` With no Primary root, `- No primary found, so there was no status
   to check.` A status found for another Primary in the chain goes here too, after the root's,
-  its bullet starting with that source's name.
+  its bullet starting with that source's name. A precursor the root names, but that no retelling
+  cites (`labels.md`), gets a bullet starting `Background:`.
 - **Cold trails.** Each node that states the claim and cites nothing, other than the root (the
   rule in `labels.md`), linked, with its year. With none, `None.`
 - **Confidence** in the trace, not in the claim: `High`, `Medium` or `Low`, then the reason in one
@@ -86,20 +90,34 @@ _Tiers describe position in the chain, not reliability. "No primary found" means
   - **Low:** no node was opened that states the claim before the user's source, or the chain stops
     at its limits short of anything that cites nothing.
 - **The footer** is the last line of every forward report, word for word as in the template, and
-  the last line of your reply. Nothing follows it: no rule, no summary, no "in short", no note on
+  the last line of your reply. Nothing follows it: no rule, no summary, no *in short*, no note on
   how the search went.
 - **Every heading stays,** in the template's order.
 
 ## Quotes and titles
 
-- **Quotes.** At most one quote per source, under 15 words, in quotation marks, linked to the
-  source. Quote only text the source says word for word. Never reproduce lyrics or poems. The
-  user's own claim text, on the heading and the *Your version* line, is exempt.
+- **Quotation marks make a quote,** whatever they hold: a sentence, a phrase, one word, a year, a
+  rating or a term. Quote only words the page gives word for word. Never reproduce lyrics or
+  poems.
+- **A quote counts against the page you link it to,** the page you read it on, whoever first
+  said the words.
+- **One quote per page in the whole reply.** A page's one quote goes in one place, in one
+  section; everywhere else that page is paraphrased.
+- **One quote per line,** besides the user's own words.
+- **12 words at most,** counted before you send: the few words that matter, the rest
+  paraphrased.
+- **Pointing at a word, figure, rating or term without quoting it:** use italics or plain text,
+  as in *want* became *wish*, or rated it *False*.
+- **Quotation marks inside a quote, or inside a title,** become single quotes.
+- **The user's words exactly as typed are exempt,** on the heading, the *Your version* line and
+  the *Your version* column. Words close to theirs but not as typed are a quote.
+- **The template's fixed lines stay as written,** the footer's quoted "No primary found"
+  included.
 - **Titles in italics,** never in quotation marks, so quotation marks hold only quotes and the
   user's claim.
 - **No verdict.** No sentence of your own calls the claim true, false, a myth or debunked. A
-  fact-check that says so is a source: name it and give its finding in its words, within the
-  quote rule, or a neutral paraphrase.
+  fact-check that says so is a source: name it and give its finding in a neutral paraphrase, or
+  in its one quote.
 
 ## The search note
 
@@ -201,13 +219,14 @@ table only if the user named beliefs. It carries no labels.
 - **Status** follows *Status of the root* above, including its line for checks that found
   nothing.
 - **What it found** is the source's own result, in the source's terms: its sample, place, period
-  and hedges. Paraphrase it, or use the one quote the source allows.
+  and hedges. Paraphrase it, or use the one quote the source allows, if *Status* has not used it.
 - **Popular versions:** the 2 or 3 most common retellings, each opened and linked, with the drifts
-  `mutation-types.md` names.
+  `mutation-types.md` names. Each row holds at most one quote, and a page quoted elsewhere in the
+  reply is paraphrased here.
 - **Your beliefs** appears only when the user named beliefs resting on this source. The
   `Support from this source` cell holds one of the three ratings, word for word.
 - **The last section is the end of your reply:** *Popular versions*, or *Your beliefs* when it
-  appears. Nothing follows it: no rule, no summary, no "in short", no note on how the search went.
+  appears. Nothing follows it: no rule, no summary, no *in short*, no note on how the search went.
   A check that failed or a page that would not open is said in *Status*.
 
 ## Saving a report

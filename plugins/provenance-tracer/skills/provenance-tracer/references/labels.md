@@ -20,9 +20,15 @@ Tier every node by its position in the chain, not by how reliable it seems.
 | Hearsay | something a person told the user |
 | Unknown | none of these can be told from what you opened |
 
-- **A node is Primary only if you opened it.** A Primary you know only because an opened page
-  names it is `Primary (not opened, per <opened source>)`, and the report's Confidence is at most
-  Medium.
+- **A node is Primary only if you opened it:** a paper whose abstract or full text you fetched,
+  for what that text states, or a book's, speech's or document's passage, from any copy whose text
+  the fetch returned. Try other copies first (`search-playbook.md`, *Opening a page*). A Primary
+  you know only because an opened page names it is `Primary (not opened, per <opened source>)`,
+  and the report's Confidence is at most Medium.
+- **A work that gives the claim with a source for it is a node that cites that source,** whatever
+  kind of work it is: a chart's source line, a footnote, *according to X*. It is a Primary only for
+  its own data or its own text. A report, an advert or a survey that passes on someone else's
+  figure is no Primary for that figure.
 - **Personal and Hearsay nodes come from the user,** in the personal chain (forward step 2). They
   are shown on the *Your version* line, never searched by name unless they are public figures or
   publications, and never counted as retellings.
@@ -33,18 +39,33 @@ Tier every node by its position in the chain, not by how reliable it seems.
 
 A **root** is where a chain begins. Find the roots this way:
 
-1. **Follow every chain back** until a node cites nothing earlier. Naming a person, work or body as
-   the claim's source counts as citing it, even with no link or reference: a page that says "as
-   the survey found" cites the survey.
+1. **Follow every chain back** until a node cites nothing earlier. A node *cites* what it gives
+   as the source of the claim's words, number or finding. Naming a person, work or body as that
+   source counts, even with no link or reference: a page that says *as the survey found* cites
+   the survey.
 2. **A node that cites nothing earlier and originates the claim is a root:** a Primary that is its
    own data, study, document, speech or text, or the work the claim grew from.
-3. **Where no chain reaches such an origin, the earliest instance found is the one root.**
-4. **Every other node that states the claim and cites nothing is a cold trail:** listed under
+3. **A study with its own data is where its own finding begins.** What it names as background, as
+   a method, or as the idea it set out to test is not a hop.
+4. **Precursors are not roots.** A work that a root names, but that no retelling of the claim
+   cites, is a precursor: name it in a background bullet under *Status of the root*, never as an
+   earlier root or as the earliest instance. A page about its author, or the root's own
+   reference list, does not make it a retelling.
+5. **A misattribution adds no root.** A node may credit the claim to a person or work whose own
+   text, once opened, does not state it as theirs. Then the root is where the claim's words or
+   finding first appear. The credited text is a Primary that differs: it gives the Grounding
+   value, and Misattributed when the user's version carries the credit. It is drawn under the
+   node that credits it and ends that branch, and it is not a root.
+6. **Where no chain reaches such an origin, the earliest instance found is the one root.**
+7. **Every other node that states the claim and cites nothing is a cold trail:** listed under
    *Cold trails*, counted as a retelling, never as a root. Two blog posts that each repeat a claim
    with no source are cold trails of one root, not two roots.
-5. **Two roots are independent origins,** each reached by its own chain and neither citing the
-   other: two studies with their own data, two documents written apart. A later study that
-   repeats an earlier one, and cites it, is a node in the earlier one's chain.
+8. **Two roots are independent origins,** each reached by its own chain: two documents written
+   apart, or two studies by different teams, each with its own data. A study by another team with
+   its own data is a root of its own when retellings of the claim credit it as a source, even if
+   it names the earlier study as background. Studies by one team are one root. A review, a
+   meta-analysis, a guideline or a textbook weighs others' data: it is a node, and the studies it
+   names are leads to follow.
 
 ## Counting retellings
 
@@ -87,8 +108,8 @@ Add each that applies, after the Grounding value, each after ` · `, in this ord
 | Origin corrected | a root that is a Primary has a published correction or erratum, by a notice you opened |
 | Origin failed replication | a later study set out to repeat a root's finding and did not, by the study or a report of it you opened |
 
-The three *Origin* modifiers need an opened notice or study: a page that only says a study was
-"discredited" is a lead to follow, not a status. With no Primary root, none of them applies.
+The three *Origin* modifiers need an opened notice or study: a page that only calls a study
+*discredited* is a lead to follow, not a status. With no Primary root, none of them applies.
 
 ## The label line
 
@@ -101,7 +122,7 @@ retellings found. It is a different line, though it starts with the same word.
 
 ## Examples
 
-Invented, one for each value.
+Invented: one for each value, and one for each roots rule that is easy to get wrong.
 
 - **Single thread · Grounded.** The user says the Harlow Valley Transit Board counted about 41,000
   weekday riders last year. The board's own annual table, opened, gives 41,200. One source, a
@@ -116,9 +137,18 @@ Invented, one for each value.
 - **Echo · Primary differs · Mutated.** The user says a study found that orchard workers who drink
   cider sleep two hours longer. The study, opened, reports a 20-minute difference in a sample of 30
   workers, and calls it preliminary. Retellings dropped the hedge and changed the number.
+- **Independent · Grounded, the later study naming the earlier.** The user says that walking to
+  work lowers blood pressure. A 1962 survey of Tarrow postal workers, with its own data, found it.
+  A 1981 cohort study of Elsby office staff, by another team with its own data, found it too, and
+  names the 1962 survey as its background. Retellings credit both. Two roots.
 - **Echo · Primary differs · Mutated · Misattributed.** The user credits a line about patience to
   a 19th-century ferry captain. The line first appears, opened, in a 1987 self-help book that
-  paraphrases the captain's logbook; the logbook, opened, says something narrower.
+  paraphrases the captain's logbook; the logbook, opened, says something narrower. The book is
+  the one root; the logbook is the credited text, drawn under the node that credits it, not a
+  second root.
+- **A precursor.** The user says a fertiliser makes tomatoes sweeter. Every retelling cites a 2004
+  trial with its own data, the root. The trial names a 1990 greenhouse note as the idea it tested;
+  no retelling cites the note, so it is a background bullet under *Status of the root*.
 - **Echo · Primary differs · Mutated · Origin retracted.** The user says a soil additive doubles
   wheat yields. The trial that started the claim, opened, reported a smaller gain on one farm; its
   journal's retraction notice, opened, withdraws it.

@@ -6,7 +6,7 @@ first appears. Each drift found is one row of the report's *How it changed* tabl
 at all adds the Mutated modifier.
 
 Every example below is invented, to show the shape: the studies, bodies and numbers do not exist.
-Never cite them.
+Never cite them. Their wordings are in italics, so as not to model quotation marks.
 
 ## Finding where a drift first appears
 
@@ -22,8 +22,8 @@ the earliest of them. If it shows only in the user's version, write `your versio
 The claim now covers more than the root did: more people, places, times or cases.
 
 - Root: a survey of 200 night-shift nurses in one regional hospital.
-- Later: "nurses".
-- Later still: "healthcare workers".
+- Later: *nurses*.
+- Later still: *healthcare workers*.
 
 Look for a narrowing word the root had that is gone, such as *in this sample*, *in adults over
 60*, *in one county*, *in 2009*.
@@ -32,9 +32,9 @@ Look for a narrowing word the root had that is gone, such as *in this sample*, *
 
 A figure is rounded, inflated, shrunk, converted, or attached to a different quantity.
 
-- Root: "27% of respondents".
-- Later: "about a third".
-- Later still: "most people".
+- Root: *27% of respondents*.
+- Later: *about a third*.
+- Later still: *most people*.
 
 A percentage read as an absolute number, a mean read as a typical case, or a figure moved to a
 different year all count. Give both figures in the table, the root's first.
@@ -44,15 +44,15 @@ different year all count. Give both figures in the table, the root's first.
 The root's uncertainty is gone: *may*, *suggests*, *in this sample*, *preliminary*, *associated
 with*, *requires further study*.
 
-- Root: "a small pilot study suggests the coating may reduce corrosion".
-- Later: "the coating reduces corrosion".
+- Root: *a small pilot study suggests the coating may reduce corrosion*.
+- Later: *the coating reduces corrosion*.
 
 ### Correlation stated as causation
 
 The root reports two things that go together. A retelling says one causes the other.
 
 - Root: households with more houseplants reported fewer colds.
-- Later: "houseplants prevent colds".
+- Later: *houseplants prevent colds*.
 
 This is distinct from a dropped hedge. The root may be quite certain of the association and still
 claim no cause. Record both drifts where both happened.
@@ -62,7 +62,7 @@ claim no cause. Record both drifts where both happened.
 The words or finding are credited to someone other than the source they came from. Three forms:
 
 - **Another person.** Words written by a minor author are credited to a famous one.
-- **Another source.** A blog's estimate is credited to "a university study".
+- **Another source.** A blog's estimate is credited to *a university study*.
 - **A paraphrase given as a direct quote.**
 
 This drift always brings the Misattributed modifier too (see `labels.md`).
@@ -74,8 +74,8 @@ This drift always brings the Misattributed modifier too (see `labels.md`).
 
 What made the root's statement true where it stood is gone.
 
-- Root: a figure from one year's drought: "river levels fell 40% in the dry summer of 2003".
-- Later: "river levels have fallen 40%".
+- Root: a figure from one year's drought: *river levels fell 40% in the dry summer of 2003*.
+- Later: *river levels have fallen 40%*.
 
 Other forms:
 
@@ -102,8 +102,9 @@ Name such a drift plainly in the *Change* column. Do not stretch one of the six 
 | Hedge dropped | a pilot study suggests the coating may reduce corrosion | the coating reduces corrosion | [Coastal Works Weekly](<url as fetched>), 2015 |
 ````
 
-- **Root says.** Paraphrase the root, or quote it under the quote rule: at most one quote per
-  source, under 15 words, linked.
-- **Your version.** The user's own words, which are exempt from the quote rule.
+- **Root says.** Paraphrase the root. Quote it only if the linked page has no quote anywhere
+  else in the reply, in 12 words at most, and never two quotes in one row. A word that changed is
+  shown in italics, as in *want* became *wish*, not in quotation marks.
+- **Your version.** The user's own words exactly as typed, which are exempt from the quote rule.
 - **One row per drift.** Write `None found.` under the heading when there is no drift.
 - **No verdict.** The table reports what changed, never which version is true.

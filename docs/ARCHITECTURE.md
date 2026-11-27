@@ -51,8 +51,8 @@ and `tests/`. The evals: the shared runner, `evals/run.py`, with the result form
 `prompt.md`, its graders and `gold.md`, and its `checks.py` (Session E2); and
 `evals/crux-finder/results/`, which holds crux-finder's first cycle on the runner (Session E3)
 and the three claude.ai replies of round 1's smoke test; and provenance-tracer's thirteen cases
-in `evals/provenance-tracer/cases/`, in the same shape (Session P2), with its `checks.py` and
-its first cycle in `evals/provenance-tracer/results/` (Session P3).
+in `evals/provenance-tracer/cases/`, in the same shape (Session P2), with its `checks.py`
+(Session P3); its first cycle (Session P3) was retired in Session P4, before the second.
 
 ## Context
 
@@ -612,6 +612,9 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   *Must*, in the behaviour cases; `authored` and `approved_by`. Below, a note for the owner's
   reading: which facts are required and what else counts as a match. The owner approved every gold
   and grader before they were written; all thirteen were committed together, before any result.
+  `popular-myth-ten-percent-brain`'s was re-authored in Session P4 (`grounding: Primary differs`,
+  `authored: 2026-11-27`, its three pages opened again and unchanged, its note unchanged), with its
+  `labels` regex, after P3's results were retired and before any new one.
   Several primary sources refuse the fetch tool (PubMed, *The Lancet*, *The BMJ*, the BBC, *The
   New York Times*, the Wayback Machine), so a fact may rest on the page that opened: Europe PMC's
   or Crossref's record, Wikipedia, Quote Investigator.
@@ -644,10 +647,9 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
 
   Every chain URL among the run's fetches, the quote rule, a case passing at 2 of 3 runs and the
   every-run bars are `evals/provenance-tracer/checks.py`'s (PT 8; *The eval harness*).
-- **provenance-tracer's results present:** Session P3's cycle, its first (0.1.0, from
-  `641ce2a`): `run-1.md` to `run-3.md` and their `verdicts-N.md` in each of the thirteen
-  cases, and each case's `review.md`, the owner's lines: `## run-1` with a note in every case,
-  and a section for each other run with a failed verdict.
+- **provenance-tracer's results present:** none. Session P3's cycle, its first (0.1.0, from
+  `641ce2a`), was retired in Session P4's release commit, with the ten-percent gold's change, so
+  that no result is older than its gold.
 - **The results present:** Session E3's cycle, crux-finder's first on the shared runner (1.0.0,
   from `3a97160`): `run-1.md`, `run-2.md`, `verdicts-1.md` and `verdicts-2.md` in each of the ten
   cases, and each case's `review.md` with its `## run-1` and `## run-2` sections, the owner's
@@ -1075,7 +1077,8 @@ never whether it is true.
   own data, study, document, speech or text, or, where no chain reaches such an origin, it is the
   earliest instance found. Any other node that states the claim and cites nothing is a cold trail:
   counted as a retelling, never a root. Independent means two or more such origins. Read so, the
-  spec's six labelled cases give the labels it expects.
+  spec's six labelled cases give the labels it expects, with the refinements of Session P4 below
+  and the ten-percent case's gold as P4 changed it.
 - **Two rules added mid-Session P1, with the owner** (2026-11-25), after the first three
   hand-tries: the report is the whole answer, with nothing after its last line (both reports had
   added a closing summary); and all 6 opening queries are run before judging whether to add more
@@ -1092,15 +1095,44 @@ never whether it is true.
   - **mid-session, at the owner's request,** the well-sourced row's claim is "Regular exercise
     lowers the risk of heart disease" in place of the spec's "Smoking causes lung cancer", with
     the same expected labels, Independent and Grounded.
+- **The changes the first cycle called for** (settled in Session P4, with the owner, 2026-11-27,
+  with the plan the owner approved after an adversarial review of it), each serving a rule of the
+  spec:
+  - **Roots** (the Roots axis, and the roots rule above):
+    - a node *cites* what it gives as the source of the claim's words, number or finding;
+    - a work that passes the claim on with a source for it is a node citing that source, a
+      Primary only for its own data or text;
+    - a study with its own data is where its own finding begins, and what it names as background
+      is a precursor, not a hop, unless retellings of the claim cite it too;
+    - a study by another team with its own data, credited by retellings, is a root of its own even
+      when it names the earlier one, where 0.1.0 made it a node in the earlier one's chain; studies
+      by one team are one root, and a review or guideline is a node;
+    - a misattribution adds no root: the root is where the words or finding first appear, and the
+      credited text, opened, is a Primary that differs, drawn under the node that credits it.
+  - **Opening a Primary** (*a node is Primary only if opened*): another copy is tried before a
+    Primary is marked not opened, up to 4 fetches for the root's and a credited text, 2 for any
+    other; a paper's abstract or full text, or a passage from any copy, counts as opened for what
+    it states.
+  - **Quotes** (the spec's quote guardrail): quotation marks make a quote whatever they hold; a
+    quote counts against the page it is linked to; one quote per page in the whole reply and one
+    per line; 12 words at most, the skill's own margin inside the spec's 15; italics for a word
+    pointed to; the template's fixed lines and the user's words exactly as typed left alone.
+- **The ten-percent case's gold** (settled at the start of Session P4, with the owner,
+  2026-11-27): Grounding `Primary differs`, where the spec's table row has No primary found. The
+  spec's own Grounding definition, any opened Primary, gives it: James's essay, which the figure is
+  credited to, is opened and gives no percentage, as Gandhi's 1913 text is the credited text of
+  the misattributed quote.
 - **Versions:** 0.1.0 when built (P1), a minor bump per change an eval cycle calls for, 1.0.0
   once a cycle meets every bar on the skill as it stands, tagged
   `provenance-tracer--v1.0.0`.
 - **Out of scope:** the notes-vault mode, truth verdicts, more than one claim per run, claims
   about private individuals (`docs/BACKLOG.md`, the last by design).
 
-**Built.** Version 0.1.0 (2026-11-25), in `plugins/provenance-tracer/`, in crux-finder's shape.
+**Built.** Version 0.2.0 (2026-11-27, Session P4; 0.1.0 on 2026-11-25), in
+`plugins/provenance-tracer/`, in crux-finder's shape. What 0.2.0 changed is under *0.2.0* below;
+the rest is as 0.1.0 built it.
 
-- **`SKILL.md`** (185 lines). Its frontmatter: `name`, the spec's description word for word in
+- **`SKILL.md`** (217 lines; 185 in 0.1.0). Its frontmatter: `name`, the spec's description word for word in
   double quotes (it holds a colon), `license: MIT` and `metadata.version`. Its body:
   - what to read and when;
   - the need for web tools;
@@ -1131,6 +1163,28 @@ never whether it is true.
   - saving a report.
 
 Every example in the references is invented and marked so. None is a spec eval case.
+
+**0.2.0** (Session P4), the changes Decided above, placed so:
+- **`labels.md`:** *Tiers* says what counts as opened and that a work passing the claim on with a
+  source is a node; *Roots* has eight steps (citing defined, precursors, a misattribution, two
+  teams' studies); three new invented examples; quoted words in its prose set in italics.
+- **`search-playbook.md`:** another copy of a Primary (Europe PMC's record, PubMed Central, the
+  Internet Archive's plain text, Wikisource, Project Gutenberg) and the retries' budget; several
+  studies named as a finding's start each followed; a confirming study by another team a root,
+  and a precursor a `Background:` bullet, under *Status*.
+- **`output-template.md`:** the quote rule in full; a credited text drawn under `→ credits`; the
+  `Background:` bullet; the reverse report's quotes.
+- **`mutation-types.md`:** its examples' wordings in italics, and *Root says* paraphrased, with a
+  changed word in italics.
+- **`SKILL.md`:** forward steps 4, 5 and 7, the quote guardrail, and two checks before sending
+  (roots, and a line-by-line quote scan).
+
+Decisions made here, each with its why:
+- **The examples' wordings are in italics,** since a reference that quotes single words in
+  quotation marks models the habit the quote rule forbids.
+- **The quote scan names the footer and the heading as fixed text,** since the `footer` grader
+  needs the footer's quotation marks around *No primary found*, and a scan that removed every
+  extra quotation mark would strip them.
 
 Decisions made here, each with its why:
 - **No web search or no page fetch: say so and stop.** A trace from memory would break *opened
@@ -1229,8 +1283,10 @@ their judges were refused. 12 to 357 s a run; 253 searches and 553 fetches, 57 o
 - **Quotes:** 25 runs break the quote rule, nearly all with a second quoted span from one
   source: a phrase and a cited word, two years, a fact-check's rating beside its sentence.
 
-The owner's reading is in each `review.md`; P4 decides with the owner which misses are the
-skill's and which a gold's.
+The owner's reading was in each `review.md`. Session P4 settled with the owner which misses were
+the skill's (the roots, opening and quote changes, Decided above) and which a gold's (the
+ten-percent case), and retired the cycle's results before the next; git keeps them as of
+`c82907f`.
 
 ## The eval harness
 
@@ -1675,7 +1731,7 @@ of its own: each skill has its own version.
 | Python files (`ruff format --check .`) | 17 |
 | Skills and plugins | 3 skill folders, 3 plugins, 3 marketplace entries |
 | `uv run evals/crux-finder/checks.py` | Session E3's cycle on 1.0.0 and round 1's smoke test on 0.4.0: `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0; crux 20/20, type 18/20, stability 10/10, 3 of 64 verdicts overruled; the smoke test's row 3 / 3 |
-| `uv run evals/provenance-tracer/checks.py` | Session P3's first cycle on 0.1.0: `checks: 13 case(s), 59 problem(s); pass bars not met: Cases passing at 2 of 3 runs (labels and facts), ≤ 1 quote per source, < 15 words`, exit 1; cases 9/13, quotes 14/39, every other bar met; 4 of 135 verdicts overruled. Its problems are the quote rule's, one line each |
+| `uv run evals/provenance-tracer/checks.py` | Session P4's release of 0.2.0, with P3's cycle retired and the next not yet run: `checks: 13 case(s), 0 problem(s); no results yet, so the pass bars are not counted`, exit 0 |
 
 A documentation or refactoring change should not move any of these. If one moves, that is the
 finding.
@@ -1786,3 +1842,10 @@ finding.
   Session P3, as the session recommended, the reverse links and the five readings with the plan,
   and kept the quote rule strict mid-session, on the cycle's replies. In the session's review the
   owner set the user's text as any fragment of a claim, not the prompt's request line.
+- 2026-11-27, Session P4: *provenance-tracer* gains the changes the first cycle called for, each
+  serving a rule of the spec (roots refined: citing defined, precursors, a misattribution adds no
+  root, two teams' studies two roots; a Primary tried in other copies; the quote rule made
+  concrete), and the ten-percent case's gold, Primary differs, against the spec's table row. The
+  owner settled the gold at the start of Session P4, choosing the gold over a narrower Grounding
+  rule, and the three changes with the plan, after an adversarial review of it that the owner
+  asked for.

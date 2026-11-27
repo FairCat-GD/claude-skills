@@ -3,7 +3,7 @@ name: provenance-tracer
 description: "Traces where a claim came from: its origin, the chain of retellings, and how it changed. Use when asked where an idea, statistic or quote came from, or what a named study really found."
 license: MIT
 metadata:
-  version: "0.1.0"
+  version: "0.2.0"
 ---
 
 # Provenance Tracer
@@ -84,18 +84,33 @@ public figure's public words or acts is traced as usual.
    more: an early answer from a fact-check site does not end the search.
 4. **Chain.** Fetch every page you use; never rely on a search snippet. For each node record its
    date, where the date came from (byline, archive capture, cited by), the source, the exact
-   variant of the claim it states, and what it cites. Follow citations backwards.
+   variant of the claim it states, and what it cites. The variant you record is a note to
+   yourself: in the report, each page's words are quoted at most once, in one place. Follow
+   citations backwards: what each node gives as the source of the claim, not its whole
+   reference list.
    - Stop rules: at most 6 hops per branch, at most 25 fetches per trace.
-   - A fetch that fails or meets a paywall: keep the node as `(not opened)`, citing the opened page
-     that names it.
+   - A Primary whose page fails, or opens the wrong edition, gets another copy first (an
+     abstract record, a full-text scan), per the playbook's *Opening a page*.
+   - A fetch that fails or meets a paywall, with no other copy found: keep the node as
+     `(not opened)`, citing the opened page that names it.
 5. **Tier** each node by `references/labels.md`: Primary, Secondary, Tertiary, Personal, Hearsay or
-   Unknown. A node is Primary only if you opened it. Otherwise label it
-   `Primary (not opened, per <opened source>)` and cap Confidence at Medium.
+   Unknown. A node is Primary only if you opened it: a paper's abstract or full text, or the
+   passage of a book, speech or document. Otherwise label it
+   `Primary (not opened, per <opened source>)` and cap Confidence at Medium. A work that passes
+   on the claim with a source for it is a node citing that source, not a Primary.
 6. **Link** the personal chain to the matching node, if any.
-7. **Root.** By the rule in `references/labels.md`: a node that cites nothing earlier and
+7. **Root.** By the rules in `references/labels.md`: a node that cites nothing earlier and
    originates the claim, or, where no chain reaches an origin, the earliest instance found. Any
-   other node that states the claim and cites nothing is a cold trail, never a root. Report the
-   earliest instance found with its date source, and always add: "Earlier instances may exist."
+   other node that states the claim and cites nothing is a cold trail, never a root. In brief:
+   - a study with its own data is where its finding begins, and what it names as background is
+     a precursor, not an earlier root;
+   - studies by different teams, each with its own data and credited by retellings, are separate
+     roots, even when the later names the earlier;
+   - a misattribution adds no root: the credited text, opened, is a Primary that differs, drawn
+     under the node that credits it.
+
+   Report the earliest instance found with its date source, and always add: "Earlier instances
+   may exist."
 8. **Status** of any Primary, per the playbook: the publisher's or journal's page, Crossref,
    Retraction Watch, PubPeer. Record retraction, correction, failed replication and major later
    studies, each as a sourced fact. The root's Primary comes first; every finding goes under
@@ -143,7 +158,7 @@ A reverse report carries no labels.
 - **In chat,** in the exact format of `references/output-template.md`: the forward report, or the
   reverse report.
 - **The report is the whole answer.** Nothing follows its last line, the footer of a forward
-  report or the last section of a reverse one: no summary, no "in short", no closing note, no note
+  report or the last section of a reverse one: no summary, no *in short*, no closing note, no note
   on how the search went. A fetch that failed belongs in the chain, *Status* or *Confidence*.
 - **Saved only when asked,** and only in Claude Code: write
   `./provenance-reports/YYYY-MM-DD-<claim-slug>.md`, where the slug is the first 6 words of the
@@ -164,7 +179,13 @@ A reverse report carries no labels.
 - **Searches.** The claim's text goes into searches; say so once at the start. Hearsay and
   personal-chain names never go into searches unless they are public figures or publications.
 - **Quotes.** At most one quote per source, under 15 words, linked. The user's own claim text is
-  exempt. Never reproduce lyrics or poems.
+  exempt. Never reproduce lyrics or poems. In practice, as `references/output-template.md` sets
+  out:
+  - quotation marks make a quote, whatever they hold: one word, a year and a rating count too;
+  - a quote counts against the page you link it to;
+  - one quote per page in the whole reply, and one per line;
+  - 12 words at most;
+  - a word you point to without quoting goes in italics.
 - **No private individuals.** A claim about a private person is refused before any tool call, as
   *Mode selection* says.
 
@@ -172,14 +193,25 @@ A reverse report carries no labels.
 
 1. **Labels:** exactly one Roots value and one Grounding value, then any modifiers in their order.
    Single thread, Echo or Independent agrees with the roots and retellings you counted.
-2. **The chain:** every node opened and linked as fetched, or marked `(not opened)`; every
+2. **Roots:** each root originates the claim. None is a precursor that only another root names,
+   or a text that a misattribution points to. Each study by another team with its own data,
+   credited by retellings, is a root of its own.
+3. **The chain:** every node opened and linked as fetched, or marked `(not opened)`; every
    Primary opened, or labelled `Primary (not opened, per …)` with Confidence at most Medium.
-3. **The earliest instance line** ends with "Earlier instances may exist."
-4. **The footer line** closes every forward report, word for word as the template gives it, and
+4. **The earliest instance line** ends with "Earlier instances may exist."
+5. **The footer line** closes every forward report, word for word as the template gives it, and
    nothing follows the report's last line, forward or reverse.
-5. **Quotes:** one per source at most, each under 15 words and linked; nothing quoted that the
-   source does not say word for word.
-6. **No verdict:** no sentence of your own says the claim is true, false, a myth or debunked; a
+6. **Quotes.** Read the reply line by line. Every pair of double quotation marks, and every
+   blockquote, is a quote. Leave out the template's fixed lines (the heading, the *Your version*
+   line, the footer) and the user's words exactly as typed. Then check:
+   - no line holds two quotes;
+   - no linked page is quoted on two lines;
+   - every quote is 12 words or fewer, counted;
+   - quotation marks inside a quote are single;
+   - every quote is the page's own words, word for word.
+
+   Turn each extra quote into a paraphrase, or into italics.
+7. **No verdict:** no sentence of your own says the claim is true, false, a myth or debunked; a
    fact-check that says so is named as a source, in its own words or a neutral paraphrase.
-7. **When no reply was possible:** the assumptions block above the report's heading, and no
+8. **When no reply was possible:** the assumptions block above the report's heading, and no
    question anywhere in the reply.

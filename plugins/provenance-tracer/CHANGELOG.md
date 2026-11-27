@@ -5,6 +5,24 @@ All notable changes to provenance-tracer are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.2.0] — 2026-11-27
+
+Changes from the first eval cycle, still in development before 1.0.0.
+
+### Changed
+
+- **Origins are told apart more carefully.** Separate studies by different teams, each with its
+  own data, now count as independent origins even when the later one mentions the earlier. Work
+  that a study names only as background is shown as background, not as an earlier origin. A
+  saying credited to the wrong person no longer counts that person's own writing as a second
+  origin: the report shows it as the text the credit points to, and how it differs.
+- **Original sources are opened more often.** When a study's or a book's own page won't open,
+  the skill looks for another copy, such as the study's abstract record or a full-text scan of the
+  book, before marking it as not opened.
+- **Quotes are fewer and shorter.** Each source is quoted at most once in the whole report, one
+  quote to a line, a dozen words at most. A single word or a rating it points to is set in
+  italics instead of quotation marks.
+
 ## [0.1.0] — 2026-11-25
 
 The first release, in development: it works end to end, and its behaviour may still change

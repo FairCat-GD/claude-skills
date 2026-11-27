@@ -32,8 +32,8 @@ Fact, Reuters Fact Check, AFP Fact Check, PolitiFact, and Wikiquote's *Misattrib
 *Disputed* sections. Treat each as any other node:
 - open it before you use it;
 - name it as a source;
-- report what it found as its finding, in its words or a neutral paraphrase, never as your
-  verdict.
+- report what it found as its finding, in a neutral paraphrase or in the one quote the page
+  allows, never as your verdict.
 
 The pages they cite are your next fetches.
 
@@ -45,6 +45,9 @@ The pages they cite are your next fetches.
 - **Fetches:** at most 25 per trace, each fetch you attempt counted, failed ones included. Spend
   them on the chain first: the pages that cite something earlier, then what they cite, then status
   checks, then cold trails.
+- **Copies of one Primary** (*Opening a page*): up to 4 fetches for the root's Primary and for a
+  credited text, up to 2 for any other Primary. The root's status checks come before any other
+  Primary's retries.
 - **Hops:** at most 6 per branch. A hop is following one citation back, from a node to the node it
   cites.
 - **A branch ends** at:
@@ -66,17 +69,38 @@ The pages they cite are your next fetches.
   - every source the page cites for it, with links.
 
   Ask for the exact words, not a summary, so the variant you record is the page's own.
-- **A fetch that fails, a paywall, or a login wall:** keep the node as `(not opened)`, citing the
-  opened page that names it. Never fill in what the page probably says.
+- **A Primary gets more than one try.** When its page fails (an error, a paywall, a login or
+  cookie wall, a PDF with no text) or opens the wrong volume or edition, look for another copy
+  before you mark it `(not opened)`:
+  - **a paper:** its Europe PMC record, which gives the abstract
+    (`https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:<doi>&resultType=core&format=json`,
+    or `EXT_ID:<PubMed id>` in place of the DOI); its full text on PubMed Central or Europe PMC;
+    a preprint; an author's or university repository;
+  - **a book, speech, letter or collected works:** the Internet Archive's plain-text file of the
+    right volume (the item's `_djvu.txt`); Wikisource; Project Gutenberg; an official transcript.
+
+  Check that the copy is the work itself: its title, volume and edition, and the passage where
+  the citing page says it is.
+- **What counts as opened:** a paper whose abstract or full text you fetched, for what that text
+  states; a book's, speech's or document's passage, from any copy whose text the fetch returned.
+- **A fetch that fails, a paywall, or a login wall,** with no other copy found: keep the node as
+  `(not opened)`, citing the opened page that names it. Never fill in what the page probably
+  says.
 - **A redirect:** fetch the address it gives and link that address, since every link in the report
   must be one you fetched.
 - **A PDF or a scanned book page** counts as opened if the fetch returned its text.
 
 ## Following citations back
 
-- A page's own references, footnotes and links come first, then what the text names ("a 2004
-  survey by…"). Search for a named source you have no link for, by its title, authors and year.
+- A page's own references, footnotes and links come first, then what the text names (*a 2004
+  survey by…*). Search for a named source you have no link for, by its title, authors and year.
 - **Naming a source is citing it,** even with no link, so the chain continues to the named work.
+  A node cites what it gives as the source of the claim's words, number or finding, not
+  everything in its reference list (`labels.md`, *Roots*).
+- **Several studies named as where a finding began:** follow each one. A study by another team
+  with its own data may be a root of its own.
+- **A study's own background:** what a study with its own data names as the idea it tested, or
+  as earlier work, is a precursor unless retellings of the claim cite it too (`labels.md`).
 - **A citation that does not hold:** the cited work, opened, does not say what the citing page
   says. Record what it does say. The drift starts at the citing page.
 - **Circular citation.** Two pages may cite each other, or a page may cite a retelling of
@@ -96,7 +120,7 @@ Give each node a year and say where it came from, in the report's form
 - **Cited by X:** an opened later page that names this one with its date.
 
 When none of these gives a date, write `date unknown`. Never guess one from the page's style or
-topic. A page's "last updated" date is not its first date.
+topic. A page's *last updated* date is not its first date.
 
 ## Status of a Primary
 
@@ -117,7 +141,11 @@ finding about another Primary names that source at the start of its bullet.
 5. **Replications and major later studies:** search `"<title>" replication`, `<finding> failed to
    replicate`, `<first author> <year> reanalysis`, and `<topic> meta-analysis`. Report a later
    study that set out to repeat the finding, or a review that weighed it, with what it found, in
-   one line.
+   one line. In a forward trace, a later study by another team that found the same with its own
+   data, and that retellings credit, is a root in the chain (`labels.md`): *Status* keeps failed
+   replications, reanalyses and studies that found otherwise.
+6. **Precursors:** a work the root names as background, but that no retelling cites, gets one
+   bullet here, starting `Background:`.
 
 With no Primary in the chain, there is nothing to check. The report says so.
 

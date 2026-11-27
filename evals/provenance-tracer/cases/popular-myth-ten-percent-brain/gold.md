@@ -1,6 +1,6 @@
 ---
 roots: Echo
-grounding: No primary found
+grounding: Primary differs
 modifiers: none
 fact_1: William James's essay The Energies of Men (1907) says people make use of only a small part of their possible mental and physical resources, and gives no percentage.
 source_1: https://psychclassics.yorku.ca/James/energies.htm
@@ -8,7 +8,7 @@ fact_2: The ten-percent figure was in print by the 1920s and 1930s, for example 
 source_2: https://en.wikipedia.org/wiki/Ten-percent-of-the-brain_myth
 fact_3: No study is the source of the figure: Scientific American (2008) says there is no definitive culprit for starting it.
 source_3: https://www.scientificamerican.com/article/do-people-only-use-10-percent-of-their-brains/
-authored: 2026-11-26
+authored: 2026-11-27
 approved_by: FairCat-GD
 ---
 
