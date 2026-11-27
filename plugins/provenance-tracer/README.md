@@ -125,7 +125,7 @@ git clone https://github.com/FairCat-GD/claude-skills.git
 
 ## Version
 
-0.2.0, in development: its behaviour may still change before 1.0.0. What changed in each version
+0.3.0, in development: its behaviour may still change before 1.0.0. What changed in each version
 is in [CHANGELOG.md](./CHANGELOG.md).
 
 ## License

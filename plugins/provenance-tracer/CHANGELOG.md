@@ -5,6 +5,25 @@ All notable changes to provenance-tracer are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.3.0] — 2026-11-27
+
+Changes from the second eval cycle, still in development before 1.0.0.
+
+### Changed
+
+- **A second origin needs the claim's own retellings.** An earlier work counts as a separate
+  origin only when sources that retell the claim, or weigh its evidence, credit it. A work you
+  would know only from a biography of its author is shown as background instead.
+- **A cited source that doesn't address the claim no longer counts.** When a page cites a study
+  or a book for the claim, and that work, read in full, says nothing on it, the report says the
+  citation does not hold and what the work covers, rather than treating it as an original that
+  differs. A copy that failed to load, or an abstract alone, is never read as silence.
+- **Original passages are found more reliably.** The skill searches for a book's or speech's
+  passage by its own words, checks each copy's title, volume and language, and doesn't fetch the
+  same address twice.
+- **Quotes stay with their sources.** A quote sits on the line that links the page it comes
+  from, and a status line that quotes draws on one source.
+
 ## [0.2.0] — 2026-11-27
 
 Changes from the first eval cycle, still in development before 1.0.0.

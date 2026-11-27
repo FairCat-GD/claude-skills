@@ -1114,7 +1114,8 @@ never whether it is true.
     - a misattribution adds no root: the root is where the words or finding first appear, and the
       credited text, opened, counts as one Primary that differs under the rule for several
       Primaries, drawn under the node that credits it, and neither it nor a precursor is counted
-      as a retelling.
+      as a retelling. Amended in Session P4a, with the owner: the credited text counts so where it
+      speaks to the claim (below).
   - **Opening a Primary** (*a node is Primary only if opened*): another copy is tried before a
     Primary is marked not opened, up to 4 fetches for the root's and a credited text, 2 for any
     other; a paper's abstract or full text, or a passage from any copy, counts as opened for what
@@ -1139,17 +1140,51 @@ never whether it is true.
   spec's own Grounding definition, any opened Primary, gives it: James's essay, which the figure is
   credited to, is opened and gives no percentage, as Gandhi's 1913 text is the credited text of
   the misattributed quote.
+- **The changes the second cycle called for** (settled at the start of Session P4a, with the
+  owner, 2026-11-27, the details with the plan the owner approved after an adversarial review
+  of it against the cycle's 39 runs), each serving a rule of the spec:
+  - **A root beyond the first needs a retelling that credits it** (the Roots axis), as a source
+    of the claim or an earlier instance of it. A retelling passes on the claim or weighs its
+    evidence, whatever else it is about; a page that only records, as one fact of a person's
+    career, that their work made the claim (a biography, an encyclopedia entry, an obituary)
+    credits nothing, nor does a reference list. A work only such a page ties to the claim is a
+    precursor, whether or not the root names it. Scoped to a second root and to what a page does
+    with the claim, since a test of whom a page is about would have caught single roots reached
+    through a history of a field and a review written in a researcher's memory.
+  - **A work silent on the claim is no Primary** (*Primary differs*: a Primary that says
+    something materially different). A Primary speaks to the claim when it holds an assertion
+    the claim could be a version of: the same idea with another number, subject, scope,
+    strength, cause, wording or author. A work is silent only when its passage or whole text,
+    in a copy checked to be the work, holds no such assertion; the citation of it does not
+    hold, its branch stops there, and a *Status* bullet says what it covers. An abstract, a
+    record or a failed copy never makes a work silent. The owner chose this over a rule that a
+    credit must travel with the claim.
+  - **A copy of a passage found by its words and checked as it is read** (*a node is Primary
+    only if opened*): a search for the passage's own words, the Internet Archive's record before
+    its text (its direct file address skipping the `download` link's redirect, so the check
+    costs no fetch), the passage asked for by its words and heading, a copy of another volume,
+    edition or language a failed one, no address fetched twice; the copies' budget unchanged at
+    4.
+  - **A quote stays beside its page's link** (the quote guardrail): a quote's page is the one
+    link on its line, besides links after *per* or *cited by*, and in *How it changed* the
+    *Root says* cell's; a *Status* bullet that quotes draws on one page.
+  - **The spend:** a trial, one run each outside the repository at `--max-cost-usd 10`, of the
+    four cases the changes target and, with the plan, exercise, the case the roots change most
+    risks; then, if it holds, the full cycle at `--max-cost-usd 75`. The owner
+    asked why not re-run only the cases that missed; the full cycle stays, since the changes
+    touch rules every forward case shares and the 1.0.0 rule needs a cycle on the skill as it
+    stands.
 - **Versions:** 0.1.0 when built (P1), a minor bump per change an eval cycle calls for, 1.0.0
   once a cycle meets every bar on the skill as it stands, tagged
   `provenance-tracer--v1.0.0`.
 - **Out of scope:** the notes-vault mode, truth verdicts, more than one claim per run, claims
   about private individuals (`docs/BACKLOG.md`, the last by design).
 
-**Built.** Version 0.2.0 (2026-11-27, Session P4; 0.1.0 on 2026-11-25), in
-`plugins/provenance-tracer/`, in crux-finder's shape. What 0.2.0 changed is under *0.2.0* below;
-the rest is as 0.1.0 built it.
+**Built.** Version 0.3.0 (2026-11-27, Session P4a; 0.2.0 in Session P4, 0.1.0 on 2026-11-25),
+in `plugins/provenance-tracer/`, in crux-finder's shape. What 0.2.0 and 0.3.0 changed is under
+*0.2.0* and *0.3.0* below; the rest is as 0.1.0 built it.
 
-- **`SKILL.md`** (219 lines; 185 in 0.1.0). Its frontmatter: `name`, the spec's description word for word in
+- **`SKILL.md`** (229 lines; 219 in 0.2.0, 185 in 0.1.0). Its frontmatter: `name`, the spec's description word for word in
   double quotes (it holds a colon), `license: MIT` and `metadata.version`. Its body:
   - what to read and when;
   - the need for web tools;
@@ -1208,7 +1243,33 @@ Decisions made here, each with its why:
   needs the footer's quotation marks around *No primary found*, and a scan that removed every
   extra quotation mark would strip them.
 
+**0.3.0** (Session P4a), the changes Decided above, placed so:
+- **`labels.md`:** *Tiers* says when a Primary speaks to the claim and when a work is silent;
+  *Roots* rule 4 makes a precursor any work beside the root that no retelling credits, rule 5
+  counts a credited text as differing where it speaks to the claim, and rule 8 needs a
+  retelling for a root beyond the first, the page that only records a career kept out of the
+  chain beside such a root; *Counting retellings* leaves out a silent work and that page; the
+  Grounding table's *Primary differs* is on the claim's point; two new invented examples.
+  Both rules on a career page are scoped to a root beyond the first, so a single root reached
+  through a history page stays the root.
+- **`search-playbook.md`:** *Finding and checking a copy of a passage* under *Opening a page*;
+  a copy's record and its text each a fetch of the copies' budget; *A study's own background*
+  and *A citation that does not hold* follow the two rules above; the precursor note under
+  *Status* reworded.
+- **`output-template.md`:** the stop reason `→ stopped: citation does not hold`, a silent
+  credited text not drawn; under *Status of the root*, a silent work's bullet and one page to a
+  quoting bullet; under *Quotes and titles*, a quote's page the one link on its line.
+- **`SKILL.md`:** forward steps 4, 5 and 7, the quote guardrail, and check items 2 and 6.
+
 Decisions made here, each with its why:
+- **The Internet Archive's direct file address,** `https://<server><dir>/<file>` from the item's
+  record, since the `download` link answers with a redirect to a mirror, which the redirect rule
+  makes a second fetch: the record then costs nothing extra. Checked once in plan mode, on the
+  item run 2 of Gandhi opened: the direct address answered 200 and the `download` link 302.
+- **The stop reason names the citation,** `citation does not hold`, the playbook's existing
+  words, so a reader sees why the branch ends short of a root.
+
+Decisions 0.1.0 made, each with its why:
 - **No web search or no page fetch: say so and stop.** A trace from memory would break *opened
   sources only*, and search without fetch leaves nothing that can be opened. Each may come as a
   tool, a deferred tool or a subagent, and the skill looks for every form first, since a headless
@@ -1795,7 +1856,7 @@ of its own: each skill has its own version.
 | Python files (`ruff format --check .`) | 17 |
 | Skills and plugins | 3 skill folders, 3 plugins, 3 marketplace entries |
 | `uv run evals/crux-finder/checks.py` | Session E3's cycle on 1.0.0 and round 1's smoke test on 0.4.0: `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0; crux 20/20, type 18/20, stability 10/10, 3 of 64 verdicts overruled; the smoke test's row 3 / 3 |
-| `uv run evals/provenance-tracer/checks.py` | Session P4's second cycle on 0.2.0: `checks: 13 case(s), 2 problem(s); pass bars not met: Cases passing at 2 of 3 runs (labels and facts), ≤ 1 quote per source, < 15 words`, exit 1; cases 11/13, quotes 38/39, every other bar met; 7 of 135 verdicts overruled. Its problems are one run's quote-rule lines |
+| `uv run evals/provenance-tracer/checks.py` | Session P4's second cycle on 0.2.0, the skill now 0.3.0: `checks: 13 case(s), 2 problem(s); pass bars not met: Cases passing at 2 of 3 runs (labels and facts), ≤ 1 quote per source, < 15 words, Runs on the skill as it stands`, exit 1; cases 11/13, quotes 38/39, skill as it stands 0/39, every other bar met; 7 of 135 verdicts overruled. Its problems are one run's quote-rule lines. Session P4a's third cycle replaces it |
 
 A documentation or refactoring change should not move any of these. If one moves, that is the
 finding.
@@ -1915,3 +1976,11 @@ finding.
   asked for. Mid-session, after the trial, the owner settled Grounding on a study's own data,
   an association included, as the session recommended, one quote per row of *How it
   changed*, and each root marked in the chain.
+- 2026-11-27, Session P4a: *provenance-tracer* gains the changes the second cycle called for,
+  each serving a rule of the spec (a root beyond the first needs a retelling that credits it; a
+  work silent on the claim is no Primary; a copy of a passage found by its words and checked as
+  it is read; a quote beside its page's link), P4's credited-text line amended to match, and the
+  session's spend, a five-case trial and then the full cycle. The owner settled the spend, the
+  silent-work rule over a credit-must-travel rule, and the copies' search and check with the
+  budget unchanged at the start of Session P4a, and the rest with the plan, after an adversarial
+  review of it that the owner asked for, which scoped the roots rule to a second root.

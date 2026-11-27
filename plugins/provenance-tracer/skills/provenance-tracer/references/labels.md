@@ -25,6 +25,16 @@ Tier every node by its position in the chain, not by how reliable it seems.
   the fetch returned. Try other copies first (`search-playbook.md`, *Opening a page*). A Primary
   you know only because an opened page names it is `Primary (not opened, per <opened source>)`,
   and the report's Confidence is at most Medium.
+- **A Primary speaks to the claim:** it holds an assertion the claim could be a version of, the
+  same idea with another number, subject, scope, strength, cause, wording or author. A work is
+  **silent** on the claim only when you read the passage the citing page points to, or the whole
+  text, in a copy checked to be the work (`search-playbook.md`, *Opening a page*), and it holds
+  no such assertion. A silent work is no Primary for this claim, and the citation of it does not
+  hold: it is not drawn as a node or a credited text, the citing node's branch ends
+  `→ stopped: citation does not hold`, one bullet under *Status of the root* says what the work
+  covers, and it adds nothing to Grounding or to the retellings counted. An abstract, a record,
+  or a copy that leaves the passage out (another volume, edition or language, a text cut short)
+  does not make a work silent: try another copy, or keep it `(not opened)`.
 - **A work that gives the claim with a source for it is a node that cites that source,** whatever
   kind of work it is: a chart's source line, a footnote, *according to X*. It is a Primary only for
   its own data or its own text. A report, an advert or a survey that passes on someone else's
@@ -47,18 +57,21 @@ A **root** is where a chain begins. Find the roots this way:
    own data, study, document, speech or text, or the work the claim grew from.
 3. **A study with its own data is where its own finding begins.** What it names as background, as
    a method, or as the idea it set out to test is not a hop.
-4. **Precursors are not roots.** A work that a root names, but that no retelling of the claim
-   cites, is a precursor: name it in a background bullet under *Status of the root*, never as an
-   earlier root or as the earliest instance. A page about its author, or the root's own
-   reference list, does not make it a retelling. A precursor is not something earlier the root
-   cites: the root still cites nothing earlier, even where it names the precursor beside the
-   claim, and a study with its own data stays a Primary for its own finding.
+4. **Precursors are not roots.** A precursor is a work, beside a root that retellings credit,
+   that no retelling of the claim credits itself: one the root names as background, or one that
+   only a page recording its author's career, or the root's own reference list, ties to the claim
+   (rule 8), whether or not the root names it. Name it in a background bullet under *Status of
+   the root*, never as a root, as the earliest instance or as a retelling. A precursor is not
+   something earlier the root cites: the root still cites nothing earlier, even where it names
+   the precursor beside the claim, and a study with its own data stays a Primary for its own
+   finding.
 5. **A misattribution adds no root.** A node may credit the claim to a person or work whose own
    text, once opened, does not state it as theirs. Then the root is where the claim's words or
-   finding first appear. The credited text counts as one opened Primary that differs, weighed
-   with any other opened Primary by the Grounding rule for several Primaries below, and it gives
-   Misattributed when the user's version carries the credit. It is drawn under the node that
-   credits it and ends that branch, and it is not a root.
+   finding first appear. The credited text, where it speaks to the claim (*Tiers*), counts as one
+   opened Primary that differs, weighed with any other opened Primary by the Grounding rule for
+   several Primaries below. It is drawn under the node that credits it and ends that branch, and
+   it is not a root. A credited text silent on the claim is no Primary, as *Tiers* says. Either
+   way, the credit gives Misattributed when the user's version carries it.
 6. **Where no chain reaches such an origin, the earliest instance found is the one root.**
 7. **Every other node that states the claim and cites nothing is a cold trail:** listed under
    *Cold trails*, counted as a retelling, never as a root. Two blog posts that each repeat a claim
@@ -70,12 +83,22 @@ A **root** is where a chain begins. Find the roots this way:
    meta-analysis, a guideline or a textbook weighs others' data: it is a node, and the studies it
    names are leads to follow.
 
+   **A root beyond the first needs a retelling that credits it,** as a source of the claim or as
+   an earlier instance of it. A retelling passes on the claim or weighs its evidence, whatever
+   else it is about: a news story, a blog, a fact-check, a quotation page, a review or a history
+   of the evidence. What decides is what the page does with the claim, not whom it is about. A
+   page that only records, as one fact of a person's career, that their work made the claim (a
+   biography, an encyclopedia entry on them, an obituary) does not make that work a further
+   root, and nor does a reference list: beside a root that retellings credit, the work is a
+   precursor (rule 4), and the page is not drawn as a node.
+
 ## Counting retellings
 
 **Retellings found** counts the nodes you found by search: the root, every node on a chain, and
 every cold trail. The user's own version, and the Personal and Hearsay nodes of the personal
 chain, are not counted. Nor are a credited text, which does not state the claim, or a precursor,
-which is no node. A `(not opened)` node is counted, since an opened page names it.
+a silent work or a page *Roots* rule 8 keeps out of the chain, which are no nodes. A
+`(not opened)` node is counted, since an opened page names it.
 
 ## The two axes
 
@@ -94,8 +117,8 @@ Every forward report carries exactly one value on each axis.
 | Value | When |
 | --- | --- |
 | Grounded | a Primary was opened and states the claim: as the user put it, or with no drift that changes what it asserts. A study whose own data show the claim's finding states it, an association included, unless the study itself hedges or disclaims the cause |
-| Primary differs | a Primary was opened and says something materially different: a different number, scope, strength, cause or author |
-| No primary found | no Primary was opened (a Primary known only as `not opened` counts as none) |
+| Primary differs | a Primary was opened and says something materially different on the claim's point: a different number, scope, strength, cause or author |
+| No primary found | no Primary was opened (a Primary known only as `not opened` counts as none, and so does a work silent on the claim) |
 
 With more than one opened Primary: Grounded if any of them states the claim, and the report's *How
 it changed* notes any that differs; Primary differs only if every opened Primary differs.
@@ -153,6 +176,17 @@ Invented: one for each value, and one for each roots rule that is easy to get wr
 - **A precursor.** The user says a fertiliser makes tomatoes sweeter. Every retelling cites a 2004
   trial with its own data, the root. The trial names a 1990 greenhouse note as the idea it tested;
   no retelling cites the note, so it is a background bullet under *Status of the root*.
+- **A biography is no retelling.** The user says a hot drink before bed shortens sleep. Every
+  retelling cites a 2009 sleep-lab study with its own data, the root. An encyclopedia entry on a
+  physician says she made the same claim in a 1994 paper, and no retelling of the claim credits
+  that paper. Echo, one root: the 1994 paper is a background bullet, not a second root and not
+  the earliest instance.
+- **A cited work that differs, and one that is silent.** The user says a third of commuters fall
+  asleep on the train. A blog cites two sources for it: a rail operator's 2004 passenger survey
+  and its annual accounts. The survey, opened in full, gives a quarter: it speaks to the claim
+  with another number, a Primary that differs. The accounts, opened in full, give fares and
+  ridership and nothing on sleep: silent, so the citation of them does not hold. A bullet under
+  *Status of the root* says what they cover, and they are neither a node nor a Primary.
 - **Echo · Primary differs · Mutated · Origin retracted.** The user says a soil additive doubles
   wheat yields. The trial that started the claim, opened, reported a smaller gain on one farm; its
   journal's retraction notice, opened, withdraws it.

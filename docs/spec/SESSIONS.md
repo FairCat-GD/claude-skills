@@ -1241,6 +1241,17 @@ its start whether it runs a cycle at all.
 **Watch for:**
 - **The owner does not intend to spend on every session:** a cycle costs about $51.
 
+**Amended at plan time, with the owner (2026-11-27):**
+- **A trial before the cycle:** one run each of the four cases the changes target and of
+  exercise, the case the roots change most risks, outside the repository at
+  `--max-cost-usd 10`; the cycle only if it holds. The owner asked why not re-run only the four
+  cases: the changes touch rules every forward case shares, and 1.0.0 needs a cycle on the skill
+  as it stands.
+- **The owner's review of the release before any spend,** as in P4, so no later review leaves
+  the cycle stale.
+- **P4's results retired in a commit of their own,** after the trial holds, so 0.2.0's results
+  stay in HEAD until the cycle is sure to run.
+
 ---
 
 ## P5: The release and the round's close

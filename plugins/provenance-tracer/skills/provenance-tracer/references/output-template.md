@@ -63,11 +63,14 @@ _Tiers describe position in the chain, not reliability. "No primary found" means
   - **Each node but the last** ends with `→ cites`.
   - **A credited text** (a misattribution, `labels.md`): the node that credits it ends with
     `→ credits <person or work>`, and the text sits under it as `<source>, <year>, Primary
-    (credited, differs)`. Its branch ends there, and it is not a root.
+    (credited, differs)`. Its branch ends there, and it is not a root. A credited text silent on
+    the claim is not drawn: the node ends `→ stopped: citation does not hold` instead, and the
+    text gets a *Status* bullet.
   - **More than one branch:** draw each branch from the node where it splits.
-  - **A branch that ends short of a root,** at the hop limit, a failed fetch or the end of the
-    budget, ends with its reason: `→ stopped: 6 hops`, `→ stopped: not opened`,
-    `→ stopped: fetch budget`.
+  - **A branch that ends short of a root,** at the hop limit, a failed fetch, the end of the
+    budget or a cited work silent on the claim (`labels.md`, *Tiers*), ends with its reason:
+    `→ stopped: 6 hops`, `→ stopped: not opened`, `→ stopped: fetch budget`,
+    `→ stopped: citation does not hold`.
   - **Your version.** Your version: "<claim as typed>", then in brackets the personal chain:
     - where the user met the claim, the role of whoever told them (Hearsay) or what they saw
       themselves (Personal), and the year;
@@ -80,8 +83,11 @@ _Tiers describe position in the chain, not reliability. "No primary found" means
   the checks: `- No retraction, correction or failed replication found (journal page, Crossref,
   Retraction Watch, PubPeer).` With no Primary root, `- No primary found, so there was no status
   to check.` A status found for another Primary in the chain goes here too, after the root's,
-  its bullet starting with that source's name. A precursor the root names, but that no retelling
-  cites (`labels.md`), gets a bullet starting `Background:`.
+  its bullet starting with that source's name. A precursor, a work beside the root that no
+  retelling of the claim credits (`labels.md`), gets a bullet starting `Background:`. A silent work, whose citation does
+  not hold, gets a bullet saying what it covers. Each bullet that quotes draws on one page: what
+  a second page says about the same work goes in a bullet of its own, led by the work, then that
+  page.
 - **Cold trails.** Each node that states the claim and cites nothing, other than the root (the
   rule in `labels.md`), linked, with its year. With none, `None.`
 - **Confidence** in the trace, not in the claim: `High`, `Medium` or `Low`, then the reason in one
@@ -104,6 +110,9 @@ _Tiers describe position in the chain, not reliability. "No primary found" means
   reproduce lyrics or poems.
 - **A quote counts against the page you link it to,** the page you read it on, whoever first
   said the words.
+- **A quote's page is the one link on its line,** besides links after *per* or *cited by*; in
+  *How it changed*, the link in the *Root says* cell. A quote whose page is linked only on
+  another line is paraphrased.
 - **One quote per page in the whole reply.** A page's one quote goes in one place, in one
   section; everywhere else that page is paraphrased.
 - **One quote per line,** besides the user's own words.

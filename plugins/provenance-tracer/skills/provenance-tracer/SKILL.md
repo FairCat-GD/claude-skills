@@ -3,7 +3,7 @@ name: provenance-tracer
 description: "Traces where a claim came from: its origin, the chain of retellings, and how it changed. Use when asked where an idea, statistic or quote came from, or what a named study really found."
 license: MIT
 metadata:
-  version: "0.2.0"
+  version: "0.3.0"
 ---
 
 # Provenance Tracer
@@ -90,7 +90,8 @@ public figure's public words or acts is traced as usual.
    reference list.
    - Stop rules: at most 6 hops per branch, at most 25 fetches per trace.
    - A Primary whose page fails, or opens the wrong edition, gets another copy first (an
-     abstract record, a full-text scan), per the playbook's *Opening a page*.
+     abstract record, a full-text scan), found by the passage's own words and checked as you
+     read it, per the playbook's *Opening a page*.
    - A fetch that fails or meets a paywall, with no other copy found: keep the node as
      `(not opened)`, citing the opened page that names it.
 5. **Tier** each node by `references/labels.md`: Primary, Secondary, Tertiary, Personal, Hearsay or
@@ -98,7 +99,9 @@ public figure's public words or acts is traced as usual.
    passage of a book, speech or document. Otherwise label it
    `Primary (not opened, per <opened source>)` and cap Confidence at Medium. A work that passes
    on the claim with a source for it is a node citing that source, not a Primary; a study with
-   its own data stays a Primary for its own finding, whatever precursor it names.
+   its own data stays a Primary for its own finding, whatever precursor it names. A cited work
+   that, read in full, is silent on the claim's point is no Primary for it: the citation does not
+   hold (`references/labels.md`, *Tiers*).
 6. **Link** the personal chain to the matching node, if any.
 7. **Root.** By the rules in `references/labels.md`: a node that cites nothing earlier and
    originates the claim, or, where no chain reaches an origin, the earliest instance found. Any
@@ -107,8 +110,10 @@ public figure's public words or acts is traced as usual.
      a precursor, not an earlier root;
    - studies by different teams, each with its own data and credited by retellings, are separate
      roots, even when the later names the earlier;
-   - a misattribution adds no root: the credited text, opened, is a Primary that differs, drawn
-     under the node that credits it.
+   - a root beyond the first needs a retelling that credits it: a page that only records its
+     author's career, such as a biography, credits nothing, and what only it names is a precursor;
+   - a misattribution adds no root: the credited text, opened, is a Primary that differs where it
+     speaks to the claim, drawn under the node that credits it.
 
    Report the earliest instance found with its date source, and always add: "Earlier instances
    may exist."
@@ -183,8 +188,9 @@ A reverse report carries no labels.
   exempt. Never reproduce lyrics or poems. In practice, as `references/output-template.md` sets
   out:
   - quotation marks make a quote, whatever they hold: one word, a year and a rating count too;
-  - a quote counts against the page you link it to;
+  - a quote counts against the page you link it to, and that page is the one link on its line;
   - one quote per page in the whole reply, and one per line;
+  - a *Status* bullet that quotes draws on one page;
   - 12 words at most;
   - a word you point to without quoting goes in italics.
 - **No private individuals.** A claim about a private person is refused before any tool call, as
@@ -196,7 +202,9 @@ A reverse report carries no labels.
    Single thread, Echo or Independent agrees with the roots and retellings you counted.
 2. **Roots:** each root originates the claim. None is a precursor that only another root names,
    or a text that a misattribution points to. Each study by another team with its own data,
-   credited by retellings, is a root of its own.
+   credited by retellings, is a root of its own. No second root is credited only by a page
+   recording its author's career, or by a reference list. Every Primary you weigh speaks to the
+   claim; a cited work silent on it is a *Status* bullet, not a Primary.
 3. **The chain:** every node opened and linked as fetched, or marked `(not opened)`; every
    Primary opened, or labelled `Primary (not opened, per …)` with Confidence at most Medium.
 4. **The earliest instance line** ends with "Earlier instances may exist."
@@ -207,7 +215,9 @@ A reverse report carries no labels.
    line, the footer) and the user's words exactly as typed. Then check:
    - no line holds two quotes, and in *How it changed* only the *Root says* cell quotes;
    - no linked page is quoted on two lines;
-   - every quote is linked to the page it comes from;
+   - every quote is linked to the page it comes from, the one link on its line besides links
+     after *per* or *cited by* (in *How it changed*, the *Root says* cell's link);
+   - a *Status* bullet that quotes draws on one page;
    - every quote is 12 words or fewer, counted;
    - quotation marks inside a quote are single;
    - every quote is the page's own words, word for word.

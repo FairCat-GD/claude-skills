@@ -46,8 +46,8 @@ The pages they cite are your next fetches.
   them on the chain first: the pages that cite something earlier, then what they cite, then status
   checks, then cold trails.
 - **Copies of one Primary** (*Opening a page*): up to 4 fetches for the root's Primary and for a
-  credited text, up to 2 for any other Primary. The root's status checks come before any other
-  Primary's retries.
+  credited text, up to 2 for any other Primary; a copy's record and its text are each one fetch.
+  The root's status checks come before any other Primary's retries.
 - **Hops:** at most 6 per branch. A hop is following one citation back, from a node to the node it
   cites.
 - **A branch ends** at:
@@ -81,6 +81,20 @@ The pages they cite are your next fetches.
 
   Check that the copy is the work itself: its title, volume and edition, and the passage where
   the citing page says it is.
+- **Finding and checking a copy of a passage:**
+  - **Find it by its words.** Search the passage's most distinctive words, as a citing page
+    gives them, in quotation marks, alone and with the work's title. A result whose snippet shows
+    them is the copy to open first: the snippet picks the page and is never evidence.
+  - **On the Internet Archive,** fetch the item's record first,
+    `https://archive.org/metadata/<identifier>`. It gives the title, volume and language, and the
+    `server` and `dir` that make a file's direct address, `https://<server><dir>/<file>`. Fetch
+    the `_djvu.txt` there, which skips the `download` link's redirect, so the record costs no
+    extra fetch. Skip an item whose record does not match.
+  - **In the fetch that reads the text,** ask for the passage by its words and its heading, not
+    its page number, which differs between editions, and for the title, volume and language the
+    text itself shows. A text of another volume, edition or language, or one that stops before
+    the passage, is a failed copy, not a silent work (`labels.md`, *Tiers*): try the next.
+  - **Never fetch the same address twice.**
 - **What counts as opened:** a paper whose abstract or full text you fetched, for what that text
   states; a book's, speech's or document's passage, from any copy whose text the fetch returned.
 - **A fetch that fails, a paywall, or a login wall,** with no other copy found: keep the node as
@@ -100,9 +114,14 @@ The pages they cite are your next fetches.
 - **Several studies named as where a finding began:** follow each one. A study by another team
   with its own data may be a root of its own.
 - **A study's own background:** what a study with its own data names as the idea it tested, or
-  as earlier work, is a precursor unless retellings of the claim cite it too (`labels.md`).
+  as earlier work, is a precursor unless retellings of the claim cite it too (`labels.md`). So,
+  beside a root that retellings credit, is an earlier work that only a page recording its
+  author's career, such as a biography, ties to the claim; that page is then no node.
 - **A citation that does not hold:** the cited work, opened, does not say what the citing page
-  says. Record what it does say. The drift starts at the citing page.
+  says. Record what it does say. Where it speaks to the claim in another way, it is a Primary
+  that differs, and the drift starts at the citing page. Where, read in full, it is silent on the
+  claim, it is no Primary: the branch ends `→ stopped: citation does not hold`, and one *Status*
+  bullet says what it covers (`labels.md`, *Tiers*).
 - **Circular citation.** Two pages may cite each other, or a page may cite a retelling of
   itself. When that happens, stop the branch at the earlier one and say so.
 
@@ -145,8 +164,8 @@ finding about another Primary names that source at the start of its bullet.
    data, and that retellings credit, is a root in the chain (`labels.md`): *Status* keeps failed
    replications, reanalyses and studies that found otherwise.
 
-A precursor, a work the root names as background but that no retelling cites (`labels.md`), is no
-check and costs no fetch: give it one bullet under *Status of the root*, starting `Background:`.
+A precursor, a work beside the root that no retelling of the claim credits (`labels.md`, *Roots*),
+is no check and costs no fetch: give it one bullet under *Status of the root*, starting `Background:`.
 
 With no Primary in the chain, there is nothing to check. The report says so.
 

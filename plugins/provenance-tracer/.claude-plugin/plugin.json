@@ -1,6 +1,6 @@
 {
   "name": "provenance-tracer",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Traces where a claim came from: its origin, the chain of retellings, and how it changed.",
   "author": {
     "name": "Svyat Marutyak"
