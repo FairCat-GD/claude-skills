@@ -89,7 +89,8 @@ The pages they cite are your next fetches.
     `https://archive.org/metadata/<identifier>`. It gives the title, volume and language, and the
     `server` and `dir` that make a file's direct address, `https://<server><dir>/<file>`. Fetch
     the `_djvu.txt` there, which skips the `download` link's redirect, so the record costs no
-    extra fetch. Skip an item whose record does not match.
+    extra fetch. Skip an item whose record does not match, and one whose record marks it
+    `access-restricted-item`: its text is not served.
   - **In the fetch that reads the text,** ask for the passage by its words and its heading, not
     its page number, which differs between editions, and for the title, volume and language the
     text itself shows, and for the heading or page numbers it reaches around that place. A text

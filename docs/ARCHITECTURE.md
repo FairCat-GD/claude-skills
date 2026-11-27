@@ -1273,6 +1273,10 @@ Decisions made here, each with its why:
   item run 2 of Gandhi opened: the direct address answered 200 and the `download` link 302.
 - **The stop reason names the citation,** `citation does not hold`, the playbook's existing
   words, so a reader sees why the branch ends short of a root.
+- **An item marked `access-restricted-item` is skipped,** since its text answers 403: the trial's
+  Gandhi run checked three records and spent its copies' budget on such an item's English
+  volume, and P4's run that opened the passage used an item with no such flag. Added after the
+  trial, at the owner's word, before the cycle.
 
 Decisions 0.1.0 made, each with its why:
 - **No web search or no page fetch: say so and stop.** A trace from memory would break *opened

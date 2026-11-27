@@ -1262,6 +1262,12 @@ skipped,** the owner choosing to fix all six:
 - the quote guardrail in `SKILL.md` lacked the *per*, *cited by* and *Root says* exceptions;
 - *Decided* said the archive record costs no fetch, where it costs no extra one.
 
+**The trial** (five runs, $7.67 and $0.23 of judging, from `a03e7f1`): both goldfish runs Echo ·
+No primary found, exercise Independent · Grounded, MMR Echo · Primary differs · Origin retracted
+with Fudenberg a `Background:` bullet, every quote and link clean; Gandhi No primary found, its
+one English copy an access-restricted item (403). At the owner's word, the playbook skips such an
+item, committed before the cycle without another trial.
+
 **The account's window,** said by the owner after the review: the runs fit within the 5-hour
 window left (40%), so the cycle runs in batches of cases read against the usage tool.
 
