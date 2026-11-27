@@ -82,9 +82,13 @@ The pages they cite are your next fetches.
   Check that the copy is the work itself: its title, volume and edition, and the passage where
   the citing page says it is.
 - **Finding and checking a copy of a passage:**
-  - **Find it by its words.** Search the passage's most distinctive words, as a citing page
-    gives them, in quotation marks, alone and with the work's title. A result whose snippet shows
-    them is the copy to open first: the snippet picks the page and is never evidence.
+  - **Find it by its words, before any catalogue.** Search the web for the passage's most
+    distinctive words, as a citing page gives them, in quotation marks: alone, with the work's
+    title, and with `archive.org` or `wikisource`. A result whose snippet shows them is the copy
+    to open first: the snippet picks the page and is never evidence. Search a catalogue by title
+    (such as the Internet Archive's advanced search) only when no such result turns up, since
+    catalogue titles and volume labels are often wrong: a scan labelled with the right volume may
+    hold another.
   - **On the Internet Archive,** fetch the item's record first,
     `https://archive.org/metadata/<identifier>`. It gives the title, volume and language, and the
     `server` and `dir` that make a file's direct address, `https://<server><dir>/<file>`. Fetch
@@ -96,7 +100,8 @@ The pages they cite are your next fetches.
     text itself shows, and for the heading or page numbers it reaches around that place. A text
     of another volume, edition or language, or one that stops before the passage, is a failed
     copy, not a silent work (`labels.md`, *Tiers*): try the next.
-  - **Never fetch the same address twice.**
+  - **Never fetch the same address twice,** even with another prompt; a copy that failed once
+    is not tried again from another link.
 - **What counts as opened:** a paper whose abstract or full text you fetched, for what that text
   states; a book's, speech's or document's passage, from any copy whose text the fetch returned.
 - **A fetch that fails, a paywall, or a login wall,** with no other copy found: keep the node as

@@ -1268,6 +1268,12 @@ with Fudenberg a `Background:` bullet, every quote and link clean; Gandhi No pri
 one English copy an access-restricted item (403). At the owner's word, the playbook skips such an
 item, committed before the cycle without another trial.
 
+**The cycle's first batch, discarded** (12 runs: Gandhi, MMR, private person, several claims;
+$9.34 and $0.31 of judging): Gandhi 0/3, each run sent by the catalogue to a mislabelled scan;
+at the owner's word the copies' search puts a web search for the passage's words first, and the
+cycle starts again on the skill as it then stands. The batch's files are kept outside the
+repository; MMR was Echo in 3/3, and two private-person runs did not invoke the skill.
+
 **The account's window,** said by the owner after the review: the runs fit within the 5-hour
 window left (40%), so the cycle runs in batches of cases read against the usage tool.
 

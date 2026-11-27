@@ -1277,6 +1277,12 @@ Decisions made here, each with its why:
   Gandhi run checked three records and spent its copies' budget on such an item's English
   volume, and P4's run that opened the passage used an item with no such flag. Added after the
   trial, at the owner's word, before the cycle.
+- **A web search for the passage's words comes before a catalogue search by title,** and a copy
+  that failed is never fetched again: the cycle's first batch, on the rule as the trial ran it,
+  took all three Gandhi runs to the Internet Archive's catalogue, which returned the scan
+  labelled vol. XII that holds other material, each run fetching it twice, while P4's run that
+  opened the passage had found its copy by a web search. Added at the owner's word, with the
+  batch discarded and the cycle started again.
 
 Decisions 0.1.0 made, each with its why:
 - **No web search or no page fetch: say so and stop.** A trace from memory would break *opened
