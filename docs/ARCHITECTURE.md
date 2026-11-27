@@ -52,8 +52,8 @@ and `tests/`. The evals: the shared runner, `evals/run.py`, with the result form
 `evals/crux-finder/results/`, which holds crux-finder's first cycle on the runner (Session E3)
 and the three claude.ai replies of round 1's smoke test; and provenance-tracer's thirteen cases
 in `evals/provenance-tracer/cases/`, in the same shape (Session P2), with its `checks.py`
-(Session P3); its first cycle (Session P3) was retired in Session P4, and its second cycle, on
-0.2.0, is in `evals/provenance-tracer/results/` (Session P4).
+(Session P3); its first cycle (Session P3) was retired in Session P4, and its second (Session
+P4, on 0.2.0) in Session P4a, before the third.
 
 ## Context
 
@@ -648,11 +648,11 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
 
   Every chain URL among the run's fetches, the quote rule, a case passing at 2 of 3 runs and the
   every-run bars are `evals/provenance-tracer/checks.py`'s (PT 8; *The eval harness*).
-- **provenance-tracer's results present:** Session P4's cycle, its second (0.2.0, from
-  `429b407`): `run-1.md` to `run-3.md` and their `verdicts-N.md` in each of the thirteen cases,
-  and each case's `review.md`. Session P3's cycle (0.1.0, from `641ce2a`) was retired in Session
-  P4's release commit, with the ten-percent gold's change, so that no result is older than its
-  gold.
+- **provenance-tracer's results present:** none, between cycles. Session P4's cycle, its second
+  (0.2.0, from `429b407`), was retired in Session P4a in a commit of its own, after the trial
+  and before the third cycle; git keeps it as of `89fb485`. Session P3's cycle (0.1.0, from
+  `641ce2a`) was retired in Session P4's release commit, with the ten-percent gold's change, so
+  that no result is older than its gold.
 - **The results present:** Session E3's cycle, crux-finder's first on the shared runner (1.0.0,
   from `3a97160`): `run-1.md`, `run-2.md`, `verdicts-1.md` and `verdicts-2.md` in each of the ten
   cases, and each case's `review.md` with its `## run-1` and `## run-2` sections, the owner's
@@ -1865,7 +1865,7 @@ of its own: each skill has its own version.
 | Python files (`ruff format --check .`) | 17 |
 | Skills and plugins | 3 skill folders, 3 plugins, 3 marketplace entries |
 | `uv run evals/crux-finder/checks.py` | Session E3's cycle on 1.0.0 and round 1's smoke test on 0.4.0: `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0; crux 20/20, type 18/20, stability 10/10, 3 of 64 verdicts overruled; the smoke test's row 3 / 3 |
-| `uv run evals/provenance-tracer/checks.py` | Session P4's second cycle on 0.2.0, the skill now 0.3.0: `checks: 13 case(s), 2 problem(s); pass bars not met: Cases passing at 2 of 3 runs (labels and facts), ≤ 1 quote per source, < 15 words, Runs on the skill as it stands`, exit 1; cases 11/13, quotes 38/39, skill as it stands 0/39, every other bar met; 7 of 135 verdicts overruled. Its problems are one run's quote-rule lines. Session P4a's third cycle replaces it |
+| `uv run evals/provenance-tracer/checks.py` | Between cycles, P4's retired in Session P4a: `checks: 13 case(s), 0 problem(s); no results yet, so the pass bars are not counted`, exit 0, until the third cycle |
 
 A documentation or refactoring change should not move any of these. If one moves, that is the
 finding.

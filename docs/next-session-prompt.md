@@ -4,7 +4,7 @@ cycle* in docs/DEVELOPMENT-WORKFLOW.md, docs/ARCHITECTURE.md's overview, invaria
 docs/spec/SESSIONS.md's header, your block and P4's done-note, then this file, and finish Session
 P4a: the changes P4's cycle calls for, release 0.3.0. P4a is in progress: the release and its
 review are committed, and what is left is:
-- P4's results retired in a commit of their own, and the full cycle, the round's last, in batches
+- P4's results are retired (their own commit); the full cycle, the round's last, runs in batches
   that fit the 5-hour window, continued after each reset (the trial is done; P4a's block);
 - the owner's reading, `checks.py`, the done-note, this handoff for P5 (or an inserted P4b), the
   cycle commit and its review.
@@ -36,8 +36,7 @@ review are committed, and what is left is:
   - 17 Python files;
   - 3 skill folders, 3 plugins, 3 marketplace entries;
   - `claude` 2.1.330;
-  - provenance-tracer's `checks.py`, P4's cycle with the skill at 0.3.0: 2 problems, cases 11/13,
-    quotes 38/39, skill as it stands 0/39, exit 1, until the third cycle replaces it.
+  - provenance-tracer's `checks.py`: no results yet, 0 problems, exit 0, until the third cycle.
 - **Not done:** the runner writes a run whose `llm` judges a usage limit refused, as graded
   fails (`docs/BACKLOG.md`).
 
