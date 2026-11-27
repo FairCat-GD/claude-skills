@@ -1120,6 +1120,14 @@ never whether it is true.
     quote is linked to, and counts against, the page it comes from; one quote per page in the
     whole reply and one per line; 12 words at most, the skill's own margin inside the spec's 15; italics for a word
     pointed to; the template's fixed lines and the user's words exactly as typed left alone.
+- **Grounding on a study's own data** (settled mid-Session P4, with the owner, 2026-11-27, after
+  the trial's exercise run read an opened study's inverse association with risk as correlation
+  stated as causation): an opened study whose own data show the claim's finding states it, an
+  association included, so the claim is Grounded on it; correlation stated as causation is a
+  drift only where the study itself calls the link an association only, hedges it or disclaims a
+  cause. The spec's well-sourced row, observational studies giving Grounded, reads so. With it,
+  *How it changed* holds one quote per row by construction: only *Root says* may quote, and
+  *First appears in* holds the node's name, year and link alone.
 - **The ten-percent case's gold** (settled at the start of Session P4, with the owner,
   2026-11-27): Grounding `Primary differs`, where the spec's table row has No primary found. The
   spec's own Grounding definition, any opened Primary, gives it: James's essay, which the figure is
@@ -1168,7 +1176,8 @@ the rest is as 0.1.0 built it.
 Every example in the references is invented and marked so. None is a spec eval case.
 
 **0.2.0** (Session P4), the changes Decided above, placed so:
-- **`labels.md`:** *Tiers* says what counts as opened and that a work passing the claim on with a
+- **`labels.md`:** *Grounded* includes a study's own data showing the finding; *Tiers* says what
+  counts as opened and that a work passing the claim on with a
   source is a node; *Roots* has eight steps (citing defined, precursors, a misattribution, two
   teams' studies); three new invented examples; quoted words in its prose set in italics.
 - **`search-playbook.md`:** another copy of a Primary (Europe PMC's record, PubMed Central, the
@@ -1177,8 +1186,10 @@ Every example in the references is invented and marked so. None is a spec eval c
   and a precursor a `Background:` bullet, under *Status*.
 - **`output-template.md`:** the quote rule in full; a credited text drawn under `→ credits`; the
   `Background:` bullet; the reverse report's quotes.
-- **`mutation-types.md`:** its examples' wordings in italics, and *Root says* paraphrased, with a
-  changed word in italics.
+- **`mutation-types.md`:** its examples' wordings in italics; *Root says* paraphrased, with a
+  changed word in italics, and the only cell that may quote; *First appears in* a node's name,
+  year and link alone; *Correlation stated as causation* only where the root stops short of a
+  cause.
 - **`SKILL.md`:** forward steps 4, 5 and 7, the quote guardrail, and two checks before sending
   (roots, and a line-by-line quote scan).
 
@@ -1851,4 +1862,6 @@ finding.
   concrete), and the ten-percent case's gold, Primary differs, against the spec's table row. The
   owner settled the gold at the start of Session P4, choosing the gold over a narrower Grounding
   rule, and the three changes with the plan, after an adversarial review of it that the owner
-  asked for.
+  asked for. Mid-session, after the trial, the owner settled Grounding on a study's own data,
+  an association included, as the session recommended, and one quote per row of *How it
+  changed*.

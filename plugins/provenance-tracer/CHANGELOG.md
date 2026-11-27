@@ -16,6 +16,9 @@ Changes from the first eval cycle, still in development before 1.0.0.
   that a study names only as background is shown as background, not as an earlier origin. A
   saying credited to the wrong person no longer counts that person's own writing as a second
   origin: the report shows it as the text the credit points to, and how it differs.
+- **A study's own findings count as grounding.** When an opened study's own data show what your
+  version says, the report marks it *Grounded*, even where the study reports an association. A
+  retold cause is flagged as a change only where the study itself held back from claiming one.
 - **Original sources are opened more often.** When a study's or a book's own page won't open,
   the skill looks for another copy, such as the study's abstract record or a full-text scan of the
   book, before marking it as not opened.

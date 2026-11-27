@@ -49,13 +49,18 @@ with*, *requires further study*.
 
 ### Correlation stated as causation
 
-The root reports two things that go together. A retelling says one causes the other.
+The root says two things go together and stops short of a cause: it calls the link an
+association only, hedges it, or disclaims a cause. A retelling says one causes the other.
 
-- Root: households with more houseplants reported fewer colds.
+- Root: households with more houseplants reported fewer colds, which the authors say may reflect
+  other habits, not the plants.
 - Later: *houseplants prevent colds*.
 
-This is distinct from a dropped hedge. The root may be quite certain of the association and still
-claim no cause. Record both drifts where both happened.
+A root whose own data show the outcome lower or higher with the factor, and that draws no such
+line, is not drifted from by a retelling that states the effect: that root states the claim
+(`labels.md`, *Grounded*). Where the root does draw the line, this drift is distinct from a
+dropped hedge: the root may be quite certain of the association and still claim no cause. Record
+both drifts where both happened.
 
 ### Attribution shifted
 
@@ -103,8 +108,11 @@ Name such a drift plainly in the *Change* column. Do not stretch one of the six 
 ````
 
 - **Root says.** Paraphrase the root. Quote it only if the page has no quote anywhere else in the
-  reply, linked to that page, in 12 words at most, and never two quotes in one row. A word that changed is
+  reply, linked to that page, in 12 words at most. It is the only cell that may quote, so a row
+  holds one quote at most. A word that changed is
   shown in italics, as in *want* became *wish*, not in quotation marks.
 - **Your version.** The user's own words exactly as typed, which are exempt from the quote rule.
+- **First appears in.** The node's name, year and link, and nothing else: no quote, no
+  paraphrase of what it says.
 - **One row per drift.** Write `None found.` under the heading when there is no drift.
 - **No verdict.** The table reports what changed, never which version is true.

@@ -93,7 +93,7 @@ Every forward report carries exactly one value on each axis.
 
 | Value | When |
 | --- | --- |
-| Grounded | a Primary was opened and states the claim: as the user put it, or with no drift that changes what it asserts |
+| Grounded | a Primary was opened and states the claim: as the user put it, or with no drift that changes what it asserts. A study whose own data show the claim's finding states it, an association included, unless the study itself hedges or disclaims the cause |
 | Primary differs | a Primary was opened and says something materially different: a different number, scope, strength, cause or author |
 | No primary found | no Primary was opened (a Primary known only as `not opened` counts as none) |
 

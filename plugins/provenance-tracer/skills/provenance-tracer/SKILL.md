@@ -205,7 +205,7 @@ A reverse report carries no labels.
 6. **Quotes.** Read the reply line by line. Every pair of double quotation marks, and every
    blockquote, is a quote. Leave out the template's fixed lines (the heading, the *Your version*
    line, the footer) and the user's words exactly as typed. Then check:
-   - no line holds two quotes;
+   - no line holds two quotes, and in *How it changed* only the *Root says* cell quotes;
    - no linked page is quoted on two lines;
    - every quote is linked to the page it comes from;
    - every quote is 12 words or fewer, counted;

@@ -12,7 +12,8 @@ the changes P3's cycle calls for, release 0.2.0. P4 covers:
 
 - **P4 is under way; this handoff records where it stands until its last commit rewrites it.**
   - **Committed** (local, not pushed): the 0.2.0 release (`feat: provenance-tracer 0.2.0, …`)
-    and its review's fixes (`review: …`). The skill's changes, the ten-percent gold's change and
+    and its review's fixes (`review: …`), then the trial's fix (`fix: …`: Grounding on a study's
+    own data, one quote per row of *How it changed*). The skill's changes, the ten-percent gold's change and
     the owner's decisions are in `docs/ARCHITECTURE.md` (*provenance-tracer*, Decided and Built;
     the *Decision log*). P3's results are retired: `checks.py` prints `no results yet`.
   - **Settled with the owner:** the trial, 5 single runs with `--max-cost-usd 10` on
@@ -21,7 +22,10 @@ the changes P3's cycle calls for, release 0.2.0. P4 covers:
     `echoed-statistic-goldfish-attention`, into a folder outside the repository; then the cycle,
     `--max-cost-usd 75`. The owner intends this cycle to be the last: if a bar still misses,
     nothing more runs without the owner's word.
-  - **Left:** the trial and its reading; the cycle; the owner's reading as in P3; `checks.py`'s
+  - **The trial** (5 runs, $6.74): Gandhi, ten-percent, MMR and goldfish passed every grader with
+    clean quotes; exercise had Independent right but Primary differs for Grounded, and three
+    quotes on one row, which the fix answers; one more exercise run checks it.
+  - **Left:** the exercise re-check; the cycle; the owner's reading as in P3; `checks.py`'s
     table; the docs, P4's done-note (with the release review's seven findings, all fixed) and
     this handoff; the cycle's commit; its review.
   - **Amendments to the block:** two commits, since the runner refuses an uncommitted plugin;
