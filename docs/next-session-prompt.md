@@ -10,10 +10,10 @@ and plan the round in `docs/spec/`, a Read line in every block (see
 - **provenance-tracer 1.0.0 is released.** Round 2 (provenance-tracer, and one eval engine for
   every skill: P1, E1, E2, E3, P2, P3, P4, P4a, P5) is closed. Its spec files are deleted; the
   last done-note is in `docs/spec/SESSIONS.md` as of the review commit before the close
-  (`<sha>`, filled in by the close).
-- **Push status:** `origin/main` holds everything through `a616d76`; P5's commits wait for the
-  next approved push. The tag `provenance-tracer--v1.0.0` is not made; it waits for the owner's
-  yes after the close.
+  (`a6b85f2`).
+- **Push status:** `origin/main` holds everything through the close commit ("docs: close round
+  2"), pushed with the owner's yes, so provenance-tracer 1.0.0 is installable. The tag
+  `provenance-tracer--v1.0.0` is not made; it waits for the owner's yes after the push.
 - **Open items live in `docs/BACKLOG.md`**, including what this round added there:
   provenance-tracer's private-person case no longer starting the skill, the 1978 paper on the
   live web, a misattributed-quote case, and the runner writing a run whose judges were refused.
