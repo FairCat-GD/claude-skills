@@ -1405,3 +1405,38 @@ alone on that cycle. The 1.0.0 bullet and the Gates above read so.
   runner must refuse while it loads; delete the upload afterwards unless the owner keeps it.
 - **A 1.0.0 that changes more than its version lines** leaves the last cycle no longer on the
   skill as it stands.
+
+**Done (2026-11-28, provenance-tracer 1.0.0).**
+- **Decided with the owner:**
+  - **The smoke test dropped** at the owner's word (PT 4 amended by the owner); the
+    `checks.py` support for claude.ai replies built for it was reverted unused.
+  - **After the cold read,** three Decided parts the code already followed: a plugin README may
+    say in prose where its cases are kept (*Layout and boundaries*); one line after a saved
+    report says where it was saved; the silent-work rule drops *subject*, as the owner's review
+    of 0.3.0 had it (*provenance-tracer*).
+  - **The spend:** none; the account's window was read before any run.
+- **Shipped:**
+  - `plugins/provenance-tracer/` 1.0.0: the version in `plugin.json` and `metadata.version`
+    alone, so the third cycle stays on the skill as it stands; `CHANGELOG.md`'s 1.0.0 entry,
+    linked to its tag; the README's *How it was tested*, with the third cycle's table and its two
+    misses named, and its version line.
+  - The root README no longer marks provenance-tracer in development; `CLAUDE.md` names both
+    READMEs that hold eval results.
+- **Amendments:** none beyond the drop above.
+- **Revised** (`ARCHITECTURE.md`, read cold by three fresh readers, each finding checked against
+  the code): the tests list and the by-path imports; the data layer's grader counts (five
+  labelled, nine with a footer), a claude.ai reply's `commit` held to gold order, which header
+  values may hold a line break, and which review values are lower case; folder discovery;
+  provenance-tracer's `SKILL.md` lines (231), 0.2.0's examples and 0.3.0's precursor rule; the
+  eval harness's checks list, results entries, reply kinds, the runner's history and its
+  unguarded total cost; *Testing strategy*'s provenance-tracer cycles; *Packaging*'s install
+  line; the CLI versions of P4 to P5; the baseline's date; and the intro's round 2 spec files,
+  as closed.
+- **Checked by hand:** `checks.py` for both skills after the bump, unchanged.
+- **Falsified:** nothing new is kept; no check was added.
+- **Numbers:** 374 unit tests, 0 skipped, unchanged; 6 `verify` stages; 17 Python files; 3 skill
+  folders, 3 plugins, 3 marketplace entries; provenance-tracer's `checks.py` 4 problems, exit 1,
+  as the baseline gives it.
+- **Backlog:** the private-person case's trigger, the 1978 paper on the live web, a
+  misattributed-quote case, and the runner's write of a run whose judges were refused, moved to
+  *Deferred*.

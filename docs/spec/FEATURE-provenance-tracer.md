@@ -240,6 +240,8 @@ are in `FEATURE-eval-engine.md`.
 4. **A claude.ai smoke test** ends the round: three cases (one forward case, the reverse case,
    the private-person case), run by the session in the owner's Chrome at the owner's word, with
    web search on, each reply judged by the owner, and the upload deleted afterwards (P5).
+
+   **Amended 2026-11-28 by the user:** dropped in Session P5, at the owner's word.
 5. **How runs are judged:** the graders and the skill's `checks.py` decide; the owner reads
    every failed verdict and one run per case each cycle, and can correct a verdict (how a
    correction is recorded: `FEATURE-eval-engine.md` decision 6).

@@ -123,10 +123,60 @@ git clone https://github.com/FairCat-GD/claude-skills.git
 
 - **Other agents:** copy the folder into the agent's skills directory.
 
+## How it was tested
+
+The skill was tested on twelve cases, each with an answer the maintainer wrote down before any
+run:
+- five claims with known labels: a popular myth, an echoed statistic, a claim whose original
+  study was retracted, a well-sourced claim with independent studies, and a current figure from
+  a national statistics office;
+- a little-known claim, so memory could not answer it;
+- a source to trace in reverse, the Stanford prison experiment;
+- the asking rules: a claim with where the user met it, one where the user doesn't remember,
+  one run with nobody to answer, and two claims in one message;
+- a claim about a private person, which must be declined before any search.
+
+Each ran three times through `claude plugin eval`, in a fresh Claude Code session in a temporary
+home that loaded none of the user's settings, plugins, memory or files, only the skill and
+Claude Code's own, with web search and page fetch. Every run but the two-claims one was told
+that no reply was possible. Each reply was graded against its answer by graders drawn from it
+and approved by the maintainer, with Claude Sonnet 5.5 as judge, and checked for the quote rule,
+for every source it links being a page it opened, and for searches it must not make. The
+maintainer read every failed verdict and one full reply per case, beside drafts by readers who
+had not seen the verdicts, and confirmed or overruled each failed verdict. The last full test
+ran on 0.3.0, with Claude Opus 5.5 in Claude Code 2.1.330; 1.0.0 is 0.3.0 with only its version
+number changed.
+
+| Check | Pass bar | Result | Met |
+|---|---|---|---|
+| Cases passing at 2 of 3 runs (labels and facts) | all cases | 11 / 12 | no |
+| No verdict in the report's own voice | all runs | 36 / 36 | yes |
+| Footer lines present | all runs with its grader | 27 / 27 | yes |
+| ≤ 1 quote per source, < 15 words | all runs | 34 / 36 | no |
+| Every linked source among the run's fetches | all forward and reverse reports | 30 / 30 | yes |
+| No search issued (private-person case) | all runs with its grader | 3 / 3 | yes |
+| Manager never in a search query (personal-chain case) | all runs with its grader | 3 / 3 | yes |
+| Gold order + approved_by + graders as run | all cases | 12 / 12 | yes |
+| Runs on the skill as it stands | all runs | 36 / 36 | yes |
+
+*Gold* is the maintainer's answer. A case passes when two of its three runs match it on both the
+labels and the facts. The two misses, which the maintainer counted for 1.0.0:
+- **The well-sourced claim** ("Regular exercise lowers the risk of heart disease") passed one run
+  of three, *Independent · Grounded*. The other two could not open the 1978 paper's abstract on
+  the live web, so they found no original.
+- **The quote rule** missed in two replies to the private-person case, each with two quotes on a
+  line. The skill did not run in any of that case's three replies; each still declined without
+  a search.
+
+A thirteenth case, a quote misattributed to Gandhi, was dropped: its 1913 source opened in too
+few runs on the live web to measure the skill. The judge failed nine of the 123 verdicts on
+reports that, read in full, credited each finding to its source or held the facts asked for; the
+maintainer overruled them. The cases, every reply and its verdicts, and the maintainer's reviews
+are kept in this repository, under `evals/provenance-tracer/`.
+
 ## Version
 
-0.3.0, in development: its behaviour may still change before 1.0.0. What changed in each version
-is in [CHANGELOG.md](./CHANGELOG.md).
+1.0.0. What changed in each version is in [CHANGELOG.md](./CHANGELOG.md).
 
 ## License
 

@@ -14,7 +14,7 @@ Ready-to-use Agent Skills that give Claude new superpowers. Browse the collectio
 
 **Research**
 
-- [provenance-tracer](./plugins/provenance-tracer/README.md) *(in development)* — Follows a claim back to where it came from: the earliest instance it can find, the chain of retellings that carried it to you, and how it changed on the way.
+- [provenance-tracer](./plugins/provenance-tracer/README.md) — Follows a claim back to where it came from: the earliest instance it can find, the chain of retellings that carried it to you, and how it changed on the way.
 
 *More coming as I build them.*
 

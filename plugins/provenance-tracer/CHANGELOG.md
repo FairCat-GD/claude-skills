@@ -5,6 +5,19 @@ All notable changes to provenance-tracer are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.0] — 2026-11-28
+
+The first stable release. In the third full test of the skill, twelve claims and sources run
+three times each and every failed check reviewed, it met every measure set for it but two. One
+well-sourced claim was traced to its original studies in one run of three; the other two could
+not open the 1978 paper's abstract on the live web. And two replies to a claim about a private
+person quoted more than the quote rule allows; the skill did not run in those replies, and each
+still declined without a search.
+
+### Changed
+
+- **No change in behaviour from 0.3.0.** 1.0.0 is the same skill, released as stable.
+
 ## [0.3.0] — 2026-11-27
 
 Changes from the second eval cycle, still in development before 1.0.0.
@@ -78,7 +91,8 @@ before 1.0.0.
   declined before any search.
 - **Saved on request.** In Claude Code, ask and the report is saved under `provenance-reports/`.
 
-[Unreleased]: https://github.com/FairCat-GD/claude-skills/commits/main/plugins/provenance-tracer
+[Unreleased]: https://github.com/FairCat-GD/claude-skills/compare/provenance-tracer--v1.0.0...HEAD
+[1.0.0]: https://github.com/FairCat-GD/claude-skills/releases/tag/provenance-tracer--v1.0.0
 [0.3.0]: https://github.com/FairCat-GD/claude-skills/commit/bf06fdf9900c0609534800b3c875cea27fc5b3b8
 [0.2.0]: https://github.com/FairCat-GD/claude-skills/commit/429b407cbc2a21a290178238c14f00e933353335
 [0.1.0]: https://github.com/FairCat-GD/claude-skills/commit/c7d99065d2648a1b72c047266cbe20fd81def8d3

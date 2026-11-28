@@ -35,6 +35,25 @@ up, it moves out of this file.
   whether it is true; out of scope in the spec, and a guardrail. Left out at the round 2 intake.
 - **provenance-tracer: more than one claim per run.** The skill asks the user to pick one, or
   traces the first when no reply is possible. Left out at the round 2 intake.
+- **provenance-tracer: the private-person case no longer starts the skill.** In Session P4a's
+  cycle on 0.3.0, none of `private-person-neighbour-theft`'s three runs invoked it, where all of
+  Session P4's on 0.2.0 did, with the description unchanged since 0.1.0. Each reply still
+  declined without a search, but two broke the quote rule, which is the quote bar's only miss.
+  A change to the description, or to how the case is asked, would need a cycle to show it.
+- **provenance-tracer: the 1978 paper on the live web.** Two of the three runs of
+  `well-sourced-exercise-heart-disease` on 0.3.0 opened no copy of either root, the 1978 paper's
+  Europe PMC record among them, which Session P4's runs had opened, so the case passed 1 of 3.
+  The playbook sends a Primary's retry to PubMed Central and dates nodes with the Wayback
+  Machine, both of which the fetch tool refused in earlier sessions.
+- **provenance-tracer: a misattributed-quote case.** `misattributed-quote-gandhi` was dropped in
+  Session P4a (PT 8, amended by the owner), its 1913 passage opened in none of six runs on
+  0.3.0. The misattribution rules are read only by the ten-percent case's credited text; a new
+  case would need a credited text the live web serves reliably, its gold committed before any
+  result.
+- **The runner writes a run whose `llm` judges a usage limit refused.** Session P3's cycle showed
+  the shape: such a run came back graded, each refused verdict `fail` with `grader threw: judge
+  call failed` and no votes, and the runner wrote it; the session removed the two by hand. The
+  runner should not write a run with a grader that threw.
 
 ## Not yet checked by hand
 
@@ -42,7 +61,7 @@ Checks that need a person at the machine. Each has an automated check covering m
 these are the parts only a person can see.
 
 - **Installing from GitHub** (travel-itinerary-builder, 1.1.0 since Session 3's push;
-  crux-finder 1.0.0 since Session 8's push; provenance-tracer 0.1.0 since Session P1's push): run
+  crux-finder 1.0.0 since Session 8's push; provenance-tracer since Session P1's push): run
   `/plugin marketplace add FairCat-GD/claude-skills`, then
   `/plugin install travel-itinerary-builder@faircat-skills`,
   `/plugin install crux-finder@faircat-skills` and
@@ -56,14 +75,12 @@ these are the parts only a person can see.
   against the specification.
 - **provenance-tracer on claude.ai: page fetch.** The skill stops without page fetch, and its
   README asks only for web search on claude.ai. Whether a claude.ai chat with web search on can
-  also open pages is checked in P5's smoke test. Named by Session P1's review.
+  also open pages is not yet checked. Named by Session P1's review.
 - **The engine's result for an API error.** Session E1 could not provoke one. The shared runner
   writes nothing for a run with no grader results, as the engine's docs describe an API error,
   and its tests use that shape. The first rate limit or overload in a real cycle shows it.
   Session P3's usage limit showed one shape: refused runs came back without results and were
-  not written, but a run whose `llm` judges were refused came back graded, each such verdict
-  `fail` with `grader threw: judge call failed` and no votes, and the runner wrote it. The
-  session removed the two by hand. The runner should not write a run with a grader that threw.
+  not written; a run whose judges were refused is under *Deferred*.
 - **The itinerary skill's fallbacks:** the interview asked in chat with no question tool, and
   the plan delivered in chat where WeasyPrint can't run. Session 3 measured the PDF build's
   own fallbacks (offline fonts, PyMuPDF page images); these two paths need an agent without the

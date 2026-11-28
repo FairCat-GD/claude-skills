@@ -12,8 +12,9 @@ Round 1's spec files, cited throughout (`SPEC.md` and its numbered decisions, `P
 the audit `REVIEW-2026-11-17.md`, and `SESSIONS.md`'s blocks and done-notes), were deleted from
 `docs/spec/` when the round closed; git history keeps them, as of the review commit before
 `docs: close round 1`. Round 2's, `FEATURE-provenance-tracer.md` and `FEATURE-eval-engine.md`
-with their `SESSIONS.md`, are in `docs/spec/` while the round runs; what they decided about how
-the repository is built is stated here in full.
+(cited as PT and EE) with their `SESSIONS.md`, were deleted the same way, and git keeps them as
+of the review commit before `docs: close round 2`; what they decided about how the repository is
+built is stated here in full.
 
 ## Overview
 
@@ -55,7 +56,7 @@ in `evals/provenance-tracer/cases/`, in the same shape (Session P2; thirteen unt
 dropped the misattributed quote), with its `checks.py`
 (Session P3); its first cycle (Session P3) was retired in Session P4, its second (Session P4, on
 0.2.0) in Session P4a, and its third, on 0.3.0, is in `evals/provenance-tracer/results/`
-(Session P4a).
+(Session P4a), counted for 1.0.0 (Session P5).
 
 ## Context
 
@@ -252,7 +253,8 @@ Python 3.10.20 installed through uv. In Session 4, 2026-11-20: `claude` 2.1.328.
 updated itself mid-cycle. In Session 7c, 2026-11-22: 2.1.330 throughout. In Session 8,
 2026-11-22: 2.1.330. In Session P1, 2026-11-25: 2.1.330. In Session E1, 2026-11-25: 2.1.330. In
 Session E2, 2026-11-25: 2.1.330. In Session E3, 2026-11-25: 2.1.330. In Session P2, 2026-11-26:
-2.1.330. In Session P3, 2026-11-26 and 27: 2.1.330, every run of its cycle included.
+2.1.330. In Session P3, 2026-11-26 and 27: 2.1.330, every run of its cycle included. In Session
+P4, 2026-11-27, Session P4a, 2026-11-27 and 28, and Session P5, 2026-11-28: 2.1.330.
 
 ## Stack and pins
 
@@ -302,7 +304,10 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
 - **Boundaries:**
   - A skill folder holds only what ships, and refers only to files inside itself, one level
     deep from `SKILL.md`.
-  - Nothing under `plugins/` refers to `evals/`, `scripts/` or `tests/`.
+  - Nothing under `plugins/` refers to `evals/`, `scripts/` or `tests/`. **Amended in Session P5,
+    with the owner** (2026-11-28): a plugin's README may say in prose where its cases are kept;
+    nothing under `plugins/` loads, runs or links into those folders, and a skill folder names
+    none of them.
   - `evals/` reaches a skill only through the `claude` CLI or a zip, never by importing or
     reading it as code.
   - `verify` never runs the evals.
@@ -316,12 +321,12 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   standard library only. The two checks are named for their stages with a `check_` prefix, so
   neither reads as the `plugins/` folder on the import path.
 - `tests/` holds `test_verify.py`, `test_hygiene.py`, `test_check_skills.py`,
-  `test_check_plugins.py`, `test_crux_finder_checks.py`, `test_evals_run.py`,
-  `test_evals_shared.py`, `test_evals_stdlib.py` and `fixtures/terms.txt`, a term list of three
-  fictional words. The check tests build fictional plugin trees in a temporary folder. The tests
-  import the scripts through pytest's `pythonpath`, which holds `scripts/` and `evals/`, and the
-  runner and crux-finder's `checks.py` by their paths under names of their own, since a folder
-  named `crux-finder` is no package.
+  `test_check_plugins.py`, `test_crux_finder_checks.py`, `test_provenance_tracer_checks.py`,
+  `test_evals_run.py`, `test_evals_shared.py`, `test_evals_stdlib.py` and `fixtures/terms.txt`,
+  a term list of three fictional words. The check tests build fictional plugin trees in a
+  temporary folder. The tests import the scripts through pytest's `pythonpath`, which holds
+  `scripts/` and `evals/`, and the runner and each skill's `checks.py` by their paths under names
+  of their own, since a folder named like `crux-finder` is no package.
 - `evals/` holds the shared runner, `run.py`, and the code every skill's eval tooling shares,
   `shared.py`, both standard library only (*The eval harness*). The runner reaches a skill only
   through the CLI: it copies the plugin folder, without reading the skill's files, to where the
@@ -337,8 +342,9 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   under `references/` is linked from `SKILL.md`, and every `references/` path it names exists.
 - The `plugins` stage holds the shape of `plugins/`: every folder listed, each holding one skill
   folder of its plugin's name.
-- The last read of each diff covers the rest: that nothing under `plugins/` refers to `evals/`,
-  `scripts/` or `tests/`, and that `evals/` reaches a skill only through the CLI or a zip.
+- The last read of each diff covers the rest: that nothing under `plugins/` loads, runs or links
+  into `evals/`, `scripts/` or `tests/`, and that `evals/` reaches a skill only through the CLI or
+  a zip.
 
 ## The invariants
 
@@ -632,11 +638,11 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
     fact-check's conclusion credited to it, a search that found nothing, how the wording changed,
     the confidence.
 
-  - `labels` (the six labelled cases): a `regex` on the label line, built from gold: the Roots and
+  - `labels` (the five labelled cases): a `regex` on the label line, built from gold: the Roots and
     Grounding values exactly, every modifier gold lists, any other only in the skill's fixed order
     (Mutated, Misattributed, Origin retracted, Origin corrected, Origin failed replication), then
     the end of the line, so the count line cannot match.
-  - `footer` (the ten cases that write a forward report): a `regex` for `Earlier instances may
+  - `footer` (the nine cases that write a forward report): a `regex` for `Earlier instances may
     exist.` and, after it, the footer line, its words exact, `_` or `*` around it, and straight or
     curly quotation marks.
   - `tool_used`, each `min: 0, max: 0`: `no-search` (WebSearch) and `no-fetch` (WebFetch) in the
@@ -668,7 +674,8 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   their done-notes.
 - **`claude-ai.md`** is a claude.ai reply as its Copy button gives it, under a header of `case`,
   `target`, `model`, `skill_version`, `commit` (the commit holding the zipped skill) and `date`,
-  written by the session; the header is optional and is left out of the checks. An output's
+  written by the session; the header is optional and is left out of the reply's checks, but its
+  `commit`, where present, is held to gold order like a run's. An output's
   leading block is its header only when it closes and holds `key: value` lines alone, so a
   reply that opens with a `---` rule is checked whole.
 - **The shared runner's formats** (Session E1), the ones crux-finder's results take from Session
@@ -687,13 +694,14 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
     three, as `pass pass fail`, else `none`) and `- explanation:`. Its name does not start with
     `run-`, so no pattern for runs takes it in.
   - In both, every machine path is a placeholder (*The eval harness*), and a line break inside a
-    value is written as `\n`.
+    call's argument, a verdict's field or the run header's `error` is written as `\n`; any other
+    header value with one is refused, so that run is not written.
 - **provenance-tracer's `review.md`** (Session P3) has `## run-N` sections only, each of
   `- <grader>: pass|fail` lines for graders in that run's `verdicts-N.md`, and a `note`. Run 1's
-  is required in every case; any other run's, where a verdict failed. P5 adds the claude.ai
-  replies' sections.
+  is required in every case; any other run's, where a verdict failed.
 - **`review.md`** is `# Review: <id>`, then a `## run-N` or `## claude-ai` section per output,
-  each of `- field: value` lines, one per field, values in lower case. A line of any other shape
+  each of `- field: value` lines, one per field, `yes`, `no`, `pass` and `fail` in lower case
+  and a note as written. A line of any other shape
   is a problem, so a note stays on one line.
   - **A run's section** (Session E2) holds `same_crux_as_run_1: yes|no` from run 2 on, never on
     run 1; a `<grader>: pass|fail` line for each of its failed verdicts and any it overrules,
@@ -781,8 +789,9 @@ Decisions made here, each with its why:
   whose defaults are what the specification allows. A skill's own limits then read in one
   place, as the per-skill limits are one table in the Decided part. Its two rows, crux-finder's
   and provenance-tracer's, are each `Limits(lines=300, scripts=False)`.
-- **Folder discovery lives in `check_plugins.py`;** `check_skills.py` and `verify` import it, so
-  the stages and their checks never disagree on what a skill or plugin folder is. A dot folder
+- **Folder discovery lives in `check_plugins.py`** (`plugin_folders`, `skill_folders_of`);
+  `check_skills.skill_folders` composes them, and `verify` imports both, so the stages and their
+  checks never disagree on what a skill or plugin folder is. A dot folder
   is neither.
 - **No two entries share a name or a source,** since install would then pick one.
 - **An entry that sets a version fails,** which holds *Deliberate decisions*' third bullet.
@@ -1089,7 +1098,8 @@ never whether it is true.
 - **Two rules added mid-Session P1, with the owner** (2026-11-25), after the first three
   hand-tries: the report is the whole answer, with nothing after its last line (both reports had
   added a closing summary); and all 6 opening queries are run before judging whether to add more
-  (the forward run had stopped at 3).
+  (the forward run had stopped at 3). **Amended in Session P5, with the owner** (2026-11-28): when
+  the user asks for the report to be saved, one line after it says where, as the template has it.
 - **The cases** (settled at the start of Session P2, with the owner, 2026-11-26):
   - **the true statistic:** "In the 2021 census, one in six people in England and Wales were
     born outside the UK", the Office for National Statistics' own words, fixed until the next
@@ -1162,8 +1172,8 @@ never whether it is true.
     through a history of a field and a review written in a researcher's memory.
   - **A work silent on the claim is no Primary** (*Primary differs*: a Primary that says
     something materially different). A Primary speaks to the claim when it holds an assertion
-    the claim could be a version of: the same idea with another number, subject, scope,
-    strength, cause, wording or author. A work is silent only when its passage or whole text,
+    the claim could be a version of: the same idea with another number, scope, strength,
+    cause, wording or author. A work is silent only when its passage or whole text,
     in a copy checked to be the work, holds no such assertion; the citation of it does not
     hold, its branch stops there, and a *Status* bullet says what it covers. An abstract, a
     record or a failed copy never makes a work silent. The owner chose this over a rule that a
@@ -1194,14 +1204,17 @@ never whether it is true.
   `provenance-tracer--v1.0.0`. **Amended 2026-11-28 by the owner** (PT 2): Session P4a's cycle on
   0.3.0 counts for 1.0.0 with its two misses named, the well-sourced case's live-web opening and
   the quote bar's private-person replies written without the skill; no further full cycle.
+  Released as 1.0.0 in Session P5, its version lines alone changed.
 - **Out of scope:** the notes-vault mode, truth verdicts, more than one claim per run, claims
   about private individuals (`docs/BACKLOG.md`, the last by design).
 
-**Built.** Version 0.3.0 (2026-11-27, Session P4a; 0.2.0 in Session P4, 0.1.0 on 2026-11-25),
-in `plugins/provenance-tracer/`, in crux-finder's shape. What 0.2.0 and 0.3.0 changed is under
-*0.2.0* and *0.3.0* below; the rest is as 0.1.0 built it.
+**Built.** Version 1.0.0 (2026-11-28, Session P5), which is 0.3.0 (2026-11-27, Session P4a)
+with only its version lines changed; 0.2.0 in Session P4, 0.1.0 on 2026-11-25. It is in
+`plugins/provenance-tracer/`, in crux-finder's shape, and its README gives the third cycle's
+results under *How it was tested*. What 0.2.0 and 0.3.0 changed is under *0.2.0* and *0.3.0*
+below; the rest is as 0.1.0 built it.
 
-- **`SKILL.md`** (229 lines; 219 in 0.2.0, 185 in 0.1.0). Its frontmatter: `name`, the spec's description word for word in
+- **`SKILL.md`** (231 lines; 219 in 0.2.0, 185 in 0.1.0). Its frontmatter: `name`, the spec's description word for word in
   double quotes (it holds a colon), `license: MIT` and `metadata.version`. Its body:
   - what to read and when;
   - the need for web tools;
@@ -1237,7 +1250,8 @@ Every example in the references is invented and marked so. None is a spec eval c
 - **`labels.md`:** *Grounded* includes a study's own data showing the finding; *Tiers* says what
   counts as opened and that a work passing the claim on with a
   source is a node; *Roots* has eight steps (citing defined, precursors, a misattribution, two
-  teams' studies); three new invented examples; quoted words in its prose set in italics.
+  teams' studies); two new invented examples and the misattribution example extended; quoted
+  words in its prose set in italics.
 - **`search-playbook.md`:** another copy of a Primary (Europe PMC's record, PubMed Central, the
   Internet Archive's plain text, Wikisource, Project Gutenberg) and the retries' budget; several
   studies named as a finding's start each followed; a confirming study by another team a root,
@@ -1263,7 +1277,8 @@ Decisions made here, each with its why:
 **0.3.0** (Session P4a), the changes Decided above, placed so:
 - **`labels.md`:** *Tiers* says when a Primary speaks to the claim and when a work is silent;
   *Roots* rule 4 makes a precursor a work no retelling credits, named by a root as background
-  or, beside a root retellings credit, tied to the claim only by a career page; rule 5 counts a
+  or, beside a root retellings credit, tied to the claim only by a career page or the root's
+  reference list; rule 5 counts a
   credited text as differing where it speaks to the claim; rule 8 needs a retelling for each of
   two or more roots, the career page kept out of the chain beside such a root; *Counting retellings* leaves out a silent work and that page; the
   Grounding table's *Primary differs* is on the claim's point; two new invented examples.
@@ -1484,7 +1499,8 @@ sources, four `facts` with the facts present); four fails kept. `checks.py`:
   - The quote rule: two `private-person-neighbour-theft` replies, written without the skill,
     which none of the case's three runs invoked (P4's all did); each declined without a search,
     one confirmed failing `facts` for declining over the name rather than the person.
-- **PT 2 as the owner amended it** counts this cycle for 1.0.0 with these two misses named.
+- **PT 2 as the owner amended it** counts this cycle for 1.0.0 with these two misses named;
+  Session P5 released 1.0.0 on it, `checks.py` giving the same table and 4 problems.
 
 ## The eval harness
 
@@ -1599,8 +1615,9 @@ now (*The data layer*).
   not a quote's source; a forward report with no chain section is a problem; `footer` is required
   wherever `labels` is.
 
-**Built.** The shared runner, `evals/run.py`, with `evals/shared.py` (below), and crux-finder's
-`evals/crux-finder/checks.py`, all standard library only, on Python 3.10. Round 1's
+**Built.** The shared runner, `evals/run.py`, with `evals/shared.py` (below), crux-finder's
+`evals/crux-finder/checks.py` and provenance-tracer's `evals/provenance-tracer/checks.py`, all
+standard library only, on Python 3.10. Round 1's
 `evals/crux-finder/run.py` and its tests were retired in Session E2, with the results they
 wrote; git keeps them.
 
@@ -1695,12 +1712,13 @@ no problem and either no results yet or every bar met.
   `roots` is not `none`, `footer` wherever `labels` is, `no-search` and `no-fetch` together, and
   no other grader; gold's five fields, `authored` a date, `fact_N` or `must_N` from 1 with no
   gap, each fact with its source; gold order and the case as it ran, from `shared`; once any
-  result exists, exactly run-1 to run-3, and nothing else in `results/<id>/` but `review.md`
-  and dotfiles.
+  result exists, exactly run-1 to run-3, and nothing else in `results/<id>/` but `run-N.md`,
+  `verdicts-N.md` beside its run, `review.md` and dotfiles.
 - **Per run:**
   - **The reply's kind:** forward where it has a label line naming Roots then Grounding, in any
     markup, or a chain section; else forward or reverse by whether its `## Provenance:` heading
-    is quoted; a refusal or a question has no heading. A section ends at a `#` heading, or at a
+    is quoted; else reverse where a `**Source:**` line appears; a refusal or a question has
+    none of these. A section ends at a `#` heading, or at a
     bold line naming one of the templates' sections, so a bold label inside a chain does not end
     it.
   - **Linked sources:** a forward report's chain section (`### Chain`, `## Chain` or `**Chain**`,
@@ -1737,7 +1755,8 @@ E1, and on one of crux-finder's cases as a trial in Session E2; crux-finder's fi
 in Session E3: 20 runs in one engine call, 3 min 16 s, $4.97 of a $10 ceiling, every run written
 on the first call, no kept folder left (*crux-finder*). In Session P2 it ran two of
 provenance-tracer's cases as a trial, with the web tools: one engine call, both runs written, $1.63
-of a $5 ceiling, no kept folder left (*provenance-tracer*).
+of a $5 ceiling, no kept folder left. provenance-tracer's three cycles and the trials of Sessions
+P4 and P4a ran on it too (*provenance-tracer*).
 - **Before anything is spent,** it exits 2 on any of these, with no engine call:
   - a skill not in `SKILLS`, a table of each skill's web tools (crux-finder none,
     provenance-tracer `WebSearch` and `WebFetch`);
@@ -1762,7 +1781,8 @@ of a $5 ceiling, no kept folder left (*provenance-tracer*).
     costs only its own case;
   - a case that did not come back did not load;
   - each run is written or not by the rule above, and a value the runner cannot read (a cost
-    that is not a number, a line break in a grader's name) skips that run, never the command.
+    that is not a number, a line break in a grader's name) skips that run, never the command;
+    only the call's total cost, read after its runs are written, is taken as a number unguarded.
 
   The isolation check reads the run's start event:
   - the model;
@@ -1847,9 +1867,12 @@ runner, crux-finder's `checks.py` and its ten cases with their graders (Session 
 cycles ran on the retired runner, in Session 7 on crux-finder 0.1.0, 7a on 0.2.0, 7b on 0.3.0 and
 7c on 0.4.0, which met every bar and was followed by the claude.ai smoke test on three cases.
 crux-finder's first cycle on the engine, in Session E3 on 1.0.0, met every bar with the owner's
-reading made by a fresh reader's draft. provenance-tracer's first cycle, in Session P3 on 0.1.0, missed two bars, the
-case pass and the quote rule, with the owner's reading made the same way; it was also tried by
-hand, headless and installed (Session P1).
+reading made by a fresh reader's draft. provenance-tracer's twelve cases and its `checks.py`
+(Sessions P2 and P3): its first cycle, in Session P3 on 0.1.0, missed two bars, the case pass and
+the quote rule, with the owner's reading made the same way; its second, in P4 on 0.2.0, missed
+the same two; its third, in P4a on 0.3.0, missed them by one case and two private-person
+replies, and PT 2 as the owner amended it counts it for 1.0.0. It was also tried by hand,
+headless and installed (Session P1).
 
 ## Packaging
 
@@ -1860,8 +1883,8 @@ hand, headless and installed (Session P1).
 - **claude.ai:** a zip with the skill folder at its root, uploaded as a custom skill.
 - **Other agents:** the skill folder copied into the agent's skills directory.
 - **Releases:** a skill's version moves in its own session; crux-finder 1.0.0 is tagged
-  `crux-finder--v1.0.0`, and provenance-tracer's 1.0.0 will be tagged
-  `provenance-tracer--v1.0.0` (settled at the round 2 intake, 2026-11-25). Pushes and tags are
+  `crux-finder--v1.0.0`, and provenance-tracer's 1.0.0 is tagged `provenance-tracer--v1.0.0`
+  (settled at the round 2 intake, 2026-11-25). Pushes and tags are
   each the owner's yes.
 
 **Built.** The marketplace, checked locally: `claude plugin marketplace add ./` and
@@ -1869,7 +1892,8 @@ hand, headless and installed (Session P1).
 `claude plugin details` listed its one skill at 1.0.1. Adding it from GitHub is not yet checked
 by hand (`docs/BACKLOG.md`). Each plugin's README gives each target's install, the claude.ai zip
 and the Plugins page it is uploaded on included. crux-finder 1.0.0 is tagged
-`crux-finder--v1.0.0`, made with `claude plugin tag`, which checks that `plugin.json` and the
+`crux-finder--v1.0.0` and provenance-tracer 1.0.0 `provenance-tracer--v1.0.0`, each made with
+`claude plugin tag`, which checks that `plugin.json` and the
 marketplace entry agree; travel-itinerary-builder 1.1.0 is untagged. crux-finder was
 installed the same way in Session 4 (`claude plugin details crux-finder` listed its one skill at
 0.1.0, about 94 tokens always on), and its zip, `zip -r crux-finder.zip crux-finder` from
@@ -1886,9 +1910,8 @@ provenance-tracer, the third plugin, in Session P1:
     always on and 3.6k on invoke;
   - `claude plugin marketplace remove faircat-skills` removed both; neither list shows them.
 - **Its claude.ai zip** (`zip -r -X provenance-tracer.zip provenance-tracer -x '*.DS_Store'`, made
-  outside the repository) holds the folder at its root: `SKILL.md` and the four references. It
-  is not uploaded until P5.
-- **Untagged.** It joins the install from GitHub once pushed.
+  outside the repository) holds the folder at its root: `SKILL.md` and the four references.
+- **From GitHub** it has been installable since Session P1's push, at the version pushed last.
 
 ## Deliberate decisions
 
@@ -1917,7 +1940,7 @@ provenance-tracer, the third plugin, in Session P1:
 
 ## Baseline
 
-Measured 2026-11-27 with Python 3.10.20, uv 0.12.3, ruff 0.17.5, pytest 9.2.0, `claude` 2.1.330
+Measured 2026-11-28 with Python 3.10.20, uv 0.12.3, ruff 0.17.5, pytest 9.2.0, `claude` 2.1.330
 and the validator at `83021e2`. The heading carries no version because the repository has none
 of its own: each skill has its own version.
 
@@ -1929,7 +1952,7 @@ of its own: each skill has its own version.
 | Python files (`ruff format --check .`) | 17 |
 | Skills and plugins | 3 skill folders, 3 plugins, 3 marketplace entries |
 | `uv run evals/crux-finder/checks.py` | Session E3's cycle on 1.0.0 and round 1's smoke test on 0.4.0: `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0; crux 20/20, type 18/20, stability 10/10, 3 of 64 verdicts overruled; the smoke test's row 3 / 3 |
-| `uv run evals/provenance-tracer/checks.py` | Session P4a's third cycle on 0.3.0: `checks: 12 case(s), 4 problem(s); pass bars not met: Cases passing at 2 of 3 runs (labels and facts), ≤ 1 quote per source, < 15 words`, exit 1; cases 11/12, quotes 34/36, every other bar met; 9 of 123 verdicts overruled. Its problems are the private-person replies' quote lines, written without the skill; PT 2 as amended counts the cycle for 1.0.0 |
+| `uv run evals/provenance-tracer/checks.py` | Session P4a's third cycle on 0.3.0: `checks: 12 case(s), 4 problem(s); pass bars not met: Cases passing at 2 of 3 runs (labels and facts), ≤ 1 quote per source, < 15 words`, exit 1; cases 11/12, quotes 34/36, every other bar met; 9 of 123 verdicts overruled. Its problems are the private-person replies' quote lines, written without the skill; PT 2 as amended counts the cycle for 1.0.0, released in Session P5 |
 
 A documentation or refactoring change should not move any of these. If one moves, that is the
 finding.
@@ -2072,3 +2095,8 @@ finding.
 - 2026-11-28, Session P4a: *provenance-tracer*'s copy search gains two rules the owner settled
   mid-session: an access-restricted archive item skipped, after the trial, and a web search for
   the passage's words before any catalogue, after the cycle's first batch.
+- 2026-11-28, Session P5: *Layout and boundaries* lets a plugin's README say in prose where its
+  cases are kept; *provenance-tracer* lets one line after a saved report say where it was saved,
+  and its silent-work rule drops *subject*, as the owner's review of 0.3.0 had it. The owner
+  settled all three after the cold read of this file found each against the code, choosing
+  in each the reading the shipped files already follow.

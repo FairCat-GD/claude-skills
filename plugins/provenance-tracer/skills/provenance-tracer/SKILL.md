@@ -3,7 +3,7 @@ name: provenance-tracer
 description: "Traces where a claim came from: its origin, the chain of retellings, and how it changed. Use when asked where an idea, statistic or quote came from, or what a named study really found."
 license: MIT
 metadata:
-  version: "0.3.0"
+  version: "1.0.0"
 ---
 
 # Provenance Tracer
