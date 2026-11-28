@@ -77,5 +77,6 @@ before 1.0.0.
 - **Saved on request.** In Claude Code, ask and the report is saved under `provenance-reports/`.
 
 [Unreleased]: https://github.com/FairCat-GD/claude-skills/commits/main/plugins/provenance-tracer
+[0.3.0]: https://github.com/FairCat-GD/claude-skills/commit/bf06fdf9900c0609534800b3c875cea27fc5b3b8
 [0.2.0]: https://github.com/FairCat-GD/claude-skills/commit/429b407cbc2a21a290178238c14f00e933353335
 [0.1.0]: https://github.com/FairCat-GD/claude-skills/commit/c7d99065d2648a1b72c047266cbe20fd81def8d3

@@ -53,8 +53,9 @@ and `tests/`. The evals: the shared runner, `evals/run.py`, with the result form
 and the three claude.ai replies of round 1's smoke test; and provenance-tracer's twelve cases
 in `evals/provenance-tracer/cases/`, in the same shape (Session P2; thirteen until Session P4a
 dropped the misattributed quote), with its `checks.py`
-(Session P3); its first cycle (Session P3) was retired in Session P4, and its second (Session
-P4, on 0.2.0) in Session P4a, before the third.
+(Session P3); its first cycle (Session P3) was retired in Session P4, its second (Session P4, on
+0.2.0) in Session P4a, and its third, on 0.3.0, is in `evals/provenance-tracer/results/`
+(Session P4a).
 
 ## Context
 
@@ -649,9 +650,11 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
 
   Every chain URL among the run's fetches, the quote rule, a case passing at 2 of 3 runs and the
   every-run bars are `evals/provenance-tracer/checks.py`'s (PT 8; *The eval harness*).
-- **provenance-tracer's results present:** none, between cycles. Session P4's cycle, its second
-  (0.2.0, from `429b407`), was retired in Session P4a in a commit of its own, after the trial
-  and before the third cycle; git keeps it as of `89fb485`. Session P3's cycle (0.1.0, from
+- **provenance-tracer's results present:** Session P4a's cycle, its third (0.3.0, the skill as
+  of `bf06fdf`): `run-1.md` to `run-3.md` and their `verdicts-N.md` in each of the twelve cases,
+  and each case's `review.md`. Session P4's cycle, its second (0.2.0, from `429b407`), was
+  retired in Session P4a in a commit of its own, after the trial and before the third cycle;
+  git keeps it as of `89fb485`. Session P3's cycle (0.1.0, from
   `641ce2a`) was retired in Session P4's release commit, with the ten-percent gold's change, so
   that no result is older than its gold.
 - **The results present:** Session E3's cycle, crux-finder's first on the shared runner (1.0.0,
@@ -1186,7 +1189,9 @@ never whether it is true.
   cycle's runs already made stay on the skill as it stands and none is run again.
 - **Versions:** 0.1.0 when built (P1), a minor bump per change an eval cycle calls for, 1.0.0
   once a cycle meets every bar on the skill as it stands, tagged
-  `provenance-tracer--v1.0.0`.
+  `provenance-tracer--v1.0.0`. **Amended 2026-11-28 by the owner** (PT 2): Session P4a's cycle on
+  0.3.0 counts for 1.0.0 with its two misses named, the well-sourced case's live-web opening and
+  the quote bar's private-person replies written without the skill; no further full cycle.
 - **Out of scope:** the notes-vault mode, truth verdicts, more than one claim per run, claims
   about private individuals (`docs/BACKLOG.md`, the last by design).
 
@@ -1433,6 +1438,51 @@ the owner's word, as a comparison with the root. `checks.py`:
     twice on one line.
   - Not a miss of its case: `echoed-statistic-goldfish-attention` run 3 drew a study that a cold
     trail credits as a credited text that differs, so Primary differs; its case passed 2/3.
+
+**The trial** (Session P4a, `--trial` outside the repository, 0.3.0 from `a03e7f1`): one run each
+of Gandhi, MMR, both goldfish cases and exercise, $7.67 and $0.23 of judging. Both goldfish runs
+gave No primary found, exercise Independent · Grounded, MMR Echo with Fudenberg a `Background:`
+bullet, and every quote and link was clean; Gandhi's one English copy was an access-restricted
+item, which the playbook now skips (`89fb485`).
+
+**The third cycle** (Session P4a, 0.3.0, the skill as of `bf06fdf`, `claude` 2.1.330,
+`claude-opus-5-5`, judge `claude-sonnet-5-5`), in batches of cases sized to the account's 5-hour
+window at the owner's ask:
+- **A first batch, discarded** (12 runs, $9.65 with judging): Gandhi 0/3, sent by the archive's
+  catalogue to a scan labelled vol. XII that holds other material; the copies' search was then
+  put web-first (`bf06fdf`) and the cycle started again.
+- **Batch A** gave Gandhi 0/3 again ($5.32 with judging, set aside outside the repository); the
+  owner dropped the case (PT 8 amended), and the skill stayed as it was, so no other run was
+  made again. A second batch was stopped before it wrote a run.
+- **Kept:** twelve cases, three runs each, $46.41 for the runs ($0.08 to $2.07 each, 12 to
+  307 s) and $1.28 for judging, $47.69; no error header, no `grader threw`.
+
+The owner's reading, as P4's but with two fresh readers, no verdict seen: they agreed with the
+engine but for nine fails, overruled to pass (five `no-verdict` on findings credited to their
+sources, four `facts` with the facts present); four fails kept. `checks.py`:
+
+| Check | Pass bar | Result | Met |
+|---|---|---|---|
+| Cases passing at 2 of 3 runs (labels and facts) | all cases | 11 / 12 | **no** |
+| No verdict in the report's own voice | all runs | 36 / 36 | yes |
+| Footer lines present | all runs with its grader | 27 / 27 | yes |
+| ≤ 1 quote per source, < 15 words | all runs | 34 / 36 | **no** |
+| Every linked source among the run's fetches | all forward and reverse reports | 30 / 30 | yes |
+| No search issued (private-person case) | all runs with its grader | 3 / 3 | yes |
+| Manager never in a search query (personal-chain case) | all runs with its grader | 3 / 3 | yes |
+| Gold order + approved_by + graders as run | all cases | 12 / 12 | yes |
+| Runs on the skill as it stands | all runs | 36 / 36 | yes |
+
+- **What 0.3.0 fixed:** MMR 1/3 to 3/3, Fudenberg a `Background:` bullet in each run; both
+  goldfish cases 3/3 at No primary found, no credited text drawn; every quote the skill wrote
+  clean.
+- **The misses, each in its `review.md`:**
+  - `well-sourced-exercise-heart-disease`, 1/3: runs 2 and 3 opened no copy of either root, the
+    1978 paper's Europe PMC record among them, which P4's runs had opened, so No primary found.
+  - The quote rule: two `private-person-neighbour-theft` replies, written without the skill,
+    which none of the case's three runs invoked (P4's all did); each declined without a search,
+    one confirmed failing `facts` for declining over the name rather than the person.
+- **PT 2 as the owner amended it** counts this cycle for 1.0.0 with these two misses named.
 
 ## The eval harness
 
@@ -1877,7 +1927,7 @@ of its own: each skill has its own version.
 | Python files (`ruff format --check .`) | 17 |
 | Skills and plugins | 3 skill folders, 3 plugins, 3 marketplace entries |
 | `uv run evals/crux-finder/checks.py` | Session E3's cycle on 1.0.0 and round 1's smoke test on 0.4.0: `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0; crux 20/20, type 18/20, stability 10/10, 3 of 64 verdicts overruled; the smoke test's row 3 / 3 |
-| `uv run evals/provenance-tracer/checks.py` | Between cycles, P4's retired in Session P4a: `checks: 12 case(s), 0 problem(s); no results yet, so the pass bars are not counted`, exit 0, until the third cycle |
+| `uv run evals/provenance-tracer/checks.py` | Session P4a's third cycle on 0.3.0: `checks: 12 case(s), 4 problem(s); pass bars not met: Cases passing at 2 of 3 runs (labels and facts), ≤ 1 quote per source, < 15 words`, exit 1; cases 11/12, quotes 34/36, every other bar met; 9 of 123 verdicts overruled. Its problems are the private-person replies' quote lines, written without the skill; PT 2 as amended counts the cycle for 1.0.0 |
 
 A documentation or refactoring change should not move any of these. If one moves, that is the
 finding.
@@ -2012,3 +2062,8 @@ finding.
 - 2026-11-28, Session P4a: *provenance-tracer* and *The data layer* lose the misattributed-quote
   case, at the owner's word mid-session (PT 8 amended by the owner), after its credited text
   opened in none of six runs on 0.3.0; the copies' search stays, so no run is made again.
+- 2026-11-28, Session P4a: *provenance-tracer*'s versions gain the owner's amendment of PT 2:
+  the third cycle, on 0.3.0, counts for 1.0.0 with its two misses named (exercise's live-web
+  opening, and private-person replies written without the skill), and no further full cycle
+  runs. The owner settled it after the reading, choosing it over closing the round at 0.3.0 or
+  an inserted session.

@@ -224,6 +224,12 @@ are in `FEATURE-eval-engine.md`.
 2. **Versions:** `0.1.0` when the skill is built (P1); a minor bump for each change an eval
    cycle calls for; `1.0.0` once a cycle meets every bar on the skill as it stands, tagged
    `provenance-tracer--v1.0.0` on the owner's yes (P5).
+
+   **Amended 2026-11-28 by the user:** Session P4a's cycle, on 0.3.0, counts for 1.0.0 with its
+   two misses named, since neither comes from a rule of the skill: the well-sourced case passed
+   1 of 3 runs, the other two unable to open the 1978 paper's abstract on the live web; and the
+   quote bar was 34 of 36, both misses in private-person replies written without the skill, which
+   none of that case's runs invoked. No further full cycle runs before 1.0.0.
 3. **Names in cases and results.** The spec's cases name public figures in public claims (the
    misattributed quote, the retracted study's author), and its private-person case names an
    invented neighbour. Both are allowed in eval cases, and so in the committed replies and the

@@ -1284,6 +1284,76 @@ with the eight cases not yet run, none run again. Batch B was stopped before it 
 **The account's window,** said by the owner after the review: the runs fit within the 5-hour
 window left (40%), so the cycle runs in batches of cases read against the usage tool.
 
+**Done (2026-11-28, provenance-tracer 0.3.0).**
+- **Decided with the owner:**
+  - **At the start:** the silent-work rule over a credit-must-travel rule; the copies found by
+    their passage and checked, the budget unchanged; an adversarial review of the plan, which
+    scoped the roots rule to two or more roots, made silence need a full reading, and added
+    exercise to the trial; the spend, a trial then the full cycle. The owner asked why passing
+    cases run again: rules every forward case shares changed, and PT 2 needed the skill as it
+    stands.
+  - **Mid-session:** all six of the release review's findings fixed; runs fitted to the account's
+    5-hour window; after the trial, the access-restricted skip; after the first batch, the
+    copies' search web-first and the cycle restarted; after batch A, the misattributed-quote case
+    dropped (PT 8 amended by the owner), the copies' search kept as it was by the session so no
+    run was made again.
+  - **The reading:** 9 engine fails overruled to pass, 4 kept, at the owner's word.
+  - **After the reading:** PT 2 amended by the owner: this cycle counts for 1.0.0 with its two
+    misses named, and no further full cycle runs.
+- **Shipped:**
+  - `plugins/provenance-tracer/` 0.3.0: `SKILL.md` (231 lines), `labels.md`,
+    `search-playbook.md`, `output-template.md`, the version in `plugin.json` and
+    `metadata.version`, `CHANGELOG.md`, the README's version line;
+  - `misattributed-quote-gandhi` deleted; P4's cycle retired; the third cycle: 36 `run-N.md` and
+    `verdicts-N.md`, 12 `review.md`.
+- **The commits:** the release (`504be85`), its review (`a03e7f1`), two fixes (`89fb485`,
+  `bf06fdf`), the retirement (`5ea77ee`), the dropped case (`5d9abd7`), then the cycle's.
+- **The trial** ($7.67 and $0.23 of judging, from `a03e7f1`): both goldfish runs No primary found,
+  exercise Independent · Grounded, MMR Echo with Fudenberg a `Background:` bullet, every quote and
+  link clean; Gandhi's one copy access-restricted.
+- **The cycle** (0.3.0, the skill as of `bf06fdf`, `claude` 2.1.330, `claude-opus-5-5`, judge
+  `claude-sonnet-5-5`), in batches within the window: a first batch discarded ($9.65); batch A's
+  Gandhi runs set aside ($5.32); a batch stopped before it wrote a run; kept, $46.41 for the runs
+  and $1.28 for judging, $47.69. With the trial, P4a spent about $70.56, and the stopped call's
+  share is unknown.
+- **The owner's reading:** two fresh readers with the cases and runs and no verdicts; they agreed
+  with the engine but for nine fails, all overruled.
+- **`checks.py` on the cycle:** `checks: 12 case(s), 4 problem(s); pass bars not met: Cases passing
+  at 2 of 3 runs (labels and facts), ≤ 1 quote per source, < 15 words`, exit 1.
+
+  | Check | Pass bar | Result | Met |
+  |---|---|---|---|
+  | Cases passing at 2 of 3 runs (labels and facts) | all cases | 11 / 12 | **no** |
+  | No verdict in the report's own voice | all runs | 36 / 36 | yes |
+  | Footer lines present | all runs with its grader | 27 / 27 | yes |
+  | ≤ 1 quote per source, < 15 words | all runs | 34 / 36 | **no** |
+  | Every linked source among the run's fetches | all forward and reverse reports | 30 / 30 | yes |
+  | No search issued (private-person case) | all runs with its grader | 3 / 3 | yes |
+  | Manager never in a search query (personal-chain case) | all runs with its grader | 3 / 3 | yes |
+  | Gold order + approved_by + graders as run | all cases | 12 / 12 | yes |
+  | Runs on the skill as it stands | all runs | 36 / 36 | yes |
+
+  Verdicts the owner overruled: 9 of 123.
+- **What the results showed:**
+  - **Fixed:** MMR 1/3 to 3/3; both goldfish cases 3/3, no credited text drawn; every quote the
+    skill wrote clean.
+  - **Missed:** exercise 1/3 (runs 2 and 3 opened no copy of either root); the quote bar, in two
+    private-person replies written without the skill, which no run of that case invoked.
+  - **Dropped:** Gandhi, its 1913 passage opened in none of six runs on 0.3.0.
+- **Docs:** `ARCHITECTURE.md` (*Overview*, *Layout*, *The data layer*, *provenance-tracer* Decided
+  and Built, the baseline, four *Decision log* lines); PT 2 and PT 8 amended by the owner; the
+  plugin's CHANGELOG and README; this block, P5's and the handoff.
+- **Amendments:** the trial with a fifth case, the release's review before any spend, and P4's
+  results retired in a commit of their own (at plan time); the case dropped and the cycle run in
+  batches (mid-session); each with the owner.
+- **Checked by hand:** the archive's direct file address (200 where `download` gave 302); every
+  run's header `claude` 2.1.330 and its commit's skill folder as `bf06fdf`'s; no `grader threw`;
+  hygiene green over the results.
+- **Falsified:** nothing new; no check was added.
+- **Numbers:** 374 unit tests, 0 skipped, unchanged; 6 `verify` stages; 17 Python files; 3 skill
+  folders, 3 plugins, 3 marketplace entries; provenance-tracer's cases 13 to 12; `results/`: 36
+  runs, 36 verdicts, 12 reviews.
+
 ---
 
 ## P5: The release and the round's close
@@ -1310,6 +1380,10 @@ read cold against the code; the last cycle's done-note.
 - `uv run scripts/verify.py`, green.
 - `uv run evals/provenance-tracer/checks.py` and `uv run evals/crux-finder/checks.py`: every
   bar met, the smoke test's row 3 / 3.
+
+**Amended in Session P4a, by the owner (PT 2):** the last cycle is P4a's, on 0.3.0, counted for
+1.0.0 with its two misses named; no further full cycle runs, so 1.0.0 is the version fields
+alone on that cycle.
 
 **Watch for:**
 - **A skill uploaded to claude.ai syncs into every Claude Code session** (`CLAUDE.md`): the
