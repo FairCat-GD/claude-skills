@@ -50,8 +50,9 @@ and `tests/`. The evals: the shared runner, `evals/run.py`, with the result form
 (Session P3); crux-finder's ten cases in `evals/crux-finder/cases/`, each a
 `prompt.md`, its graders and `gold.md`, and its `checks.py` (Session E2); and
 `evals/crux-finder/results/`, which holds crux-finder's first cycle on the runner (Session E3)
-and the three claude.ai replies of round 1's smoke test; and provenance-tracer's thirteen cases
-in `evals/provenance-tracer/cases/`, in the same shape (Session P2), with its `checks.py`
+and the three claude.ai replies of round 1's smoke test; and provenance-tracer's twelve cases
+in `evals/provenance-tracer/cases/`, in the same shape (Session P2; thirteen until Session P4a
+dropped the misattributed quote), with its `checks.py`
 (Session P3); its first cycle (Session P3) was retired in Session P4, and its second (Session
 P4, on 0.2.0) in Session P4a, before the third.
 
@@ -327,7 +328,7 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
 - `evals/crux-finder/` holds `checks.py`, standard library and `shared` only, and `cases/`, the
   ten cases (*The data layer*), and `results/`, Session E3's cycle and the three claude.ai
   replies kept from round 1 (Session E2 retired round 1's runs and the old runner).
-- `evals/provenance-tracer/` holds `cases/`, the thirteen cases (Session P2); its `checks.py`
+- `evals/provenance-tracer/` holds `cases/`, the twelve cases (Session P2, less one in P4a); its `checks.py`
   and `results/` are Session P3's.
 
 *Enforced by,* in part:
@@ -581,10 +582,10 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
   frontmatter, which is all `checks.py` reads, a short note for the owner's review: the common
   ground that pins the crux, what else counts as a match, and, for the one-sided and
   no-conflict cases, the rules above. The graders quote it.
-- **provenance-tracer's thirteen cases** (Session P2), one folder each under
-  `evals/provenance-tracer/cases/`, named for the spec's row and the topic; no result yet:
-  - **forward, labelled:** `misattributed-quote-gandhi`, `popular-myth-ten-percent-brain`,
-    `echoed-statistic-goldfish-attention`, `retracted-origin-mmr-autism`,
+- **provenance-tracer's twelve cases** (Session P2; the thirteenth, `misattributed-quote-gandhi`,
+  deleted in Session P4a at the owner's word, PT 8's amendment), one folder each under
+  `evals/provenance-tracer/cases/`, named for the spec's row and the topic:
+  - **forward, labelled:** `popular-myth-ten-percent-brain`, `echoed-statistic-goldfish-attention`, `retracted-origin-mmr-autism`,
     `well-sourced-exercise-heart-disease` and `true-statistic-born-outside-uk`;
   - **forward, facts only:** `obscure-claim-hubbard-fool`;
   - **behaviour:** `reverse-mode-stanford-prison`, `personal-chain-bilingual-speech`,
@@ -1179,6 +1180,10 @@ never whether it is true.
     asked why not re-run only the cases that missed; the full cycle stays, since the changes
     touch rules every forward case shares and the 1.0.0 rule needs a cycle on the skill as it
     stands.
+- **The misattributed-quote case dropped** (the owner, 2026-11-28, mid-Session P4a; PT 8's
+  amendment): its credited text opened in too few runs on the live web to measure the skill.
+  The copies' search of 0.3.0 stays as it is, decided by the session at the owner's word, so the
+  cycle's runs already made stay on the skill as it stands and none is run again.
 - **Versions:** 0.1.0 when built (P1), a minor bump per change an eval cycle calls for, 1.0.0
   once a cycle meets every bar on the skill as it stands, tagged
   `provenance-tracer--v1.0.0`.
@@ -1333,7 +1338,8 @@ claim about an invented coworker.
   call denied.
 - **Spend:** six runs, $2.67.
 
-**The cases** (Session P2): thirteen, in `evals/provenance-tracer/cases/` (*The data layer*).
+**The cases** (Session P2): thirteen, in `evals/provenance-tracer/cases/` (*The data layer*);
+twelve since Session P4a.
 **The trial** (Session P2, `claude` 2.1.330, `claude-opus-5-5`, judge `claude-sonnet-5-5`, on
 0.1.0): two cases once each through the shared runner with `--trial`, $1.63 in all, 5 min 35 s
 for the command:
@@ -1871,7 +1877,7 @@ of its own: each skill has its own version.
 | Python files (`ruff format --check .`) | 17 |
 | Skills and plugins | 3 skill folders, 3 plugins, 3 marketplace entries |
 | `uv run evals/crux-finder/checks.py` | Session E3's cycle on 1.0.0 and round 1's smoke test on 0.4.0: `checks: 10 case(s), 0 problem(s); every pass bar met`, exit 0; crux 20/20, type 18/20, stability 10/10, 3 of 64 verdicts overruled; the smoke test's row 3 / 3 |
-| `uv run evals/provenance-tracer/checks.py` | Between cycles, P4's retired in Session P4a: `checks: 13 case(s), 0 problem(s); no results yet, so the pass bars are not counted`, exit 0, until the third cycle |
+| `uv run evals/provenance-tracer/checks.py` | Between cycles, P4's retired in Session P4a: `checks: 12 case(s), 0 problem(s); no results yet, so the pass bars are not counted`, exit 0, until the third cycle |
 
 A documentation or refactoring change should not move any of these. If one moves, that is the
 finding.
@@ -2003,3 +2009,6 @@ finding.
   the release's review the owner had four of its wordings tightened: which root is first, the
   precursor a root names kept for any root, a work on a different question silent, and a
   fetch's *not found* silence only when its text reaches the passage.
+- 2026-11-28, Session P4a: *provenance-tracer* and *The data layer* lose the misattributed-quote
+  case, at the owner's word mid-session (PT 8 amended by the owner), after its credited text
+  opened in none of six runs on 0.3.0; the copies' search stays, so no run is made again.

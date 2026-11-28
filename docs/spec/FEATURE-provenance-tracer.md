@@ -251,6 +251,13 @@ are in `FEATURE-eval-engine.md`.
    runs 3 times; a case passes at 2 of 3; the spec's hard checks pass on every run. The spec's
    graders that no engine grader can express (2 of 3, every run, every chain URL fetched, the
    quote rule) are `evals/provenance-tracer/checks.py`'s.
+
+   **Amended 2026-11-28 by the user:** the spec's *Misattributed quote* row is dropped from the
+   evals, and its case, `misattributed-quote-gandhi`, deleted. Its credited text, Gandhi's 1913
+   passage, opened in 1 of 3 runs in each of two cycles and in none of the six runs on 0.3.0, so
+   the case measured the live web's copies of one book more than the skill, at the cost of the
+   most expensive runs. The other twelve cases stand; the misattribution rules are still read by
+   the ten-percent case's credited text.
 9. **No CI.** The spec's "CI: `claude plugin validate .`" is `verify`'s `plugins` stage, run
    before every commit; CI is in `docs/BACKLOG.md`'s *Decided against*.
 10. **The skill's own limits:** `SKILL.md` under 300 lines, as the spec says; instructions and

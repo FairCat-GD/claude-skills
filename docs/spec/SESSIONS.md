@@ -1274,6 +1274,13 @@ at the owner's word the copies' search puts a web search for the passage's words
 cycle starts again on the skill as it then stands. The batch's files are kept outside the
 repository; MMR was Echo in 3/3, and two private-person runs did not invoke the skill.
 
+**The cycle restarted on `bf06fdf`:** batch A (Gandhi, MMR, private person, several claims; $9.86
+and $0.36 of judging) gave Gandhi 0/3 again, its runs searching the passage's words first and
+then reaching the same mislabelled scans. At the owner's word, the misattributed-quote case is
+dropped (PT 8 amended by the owner) and its runs set aside outside the repository; the copies'
+search stays, decided by the session, so batch A's other nine runs stand and the cycle goes on
+with the eight cases not yet run, none run again. Batch B was stopped before it wrote a run.
+
 **The account's window,** said by the owner after the review: the runs fit within the 5-hour
 window left (40%), so the cycle runs in batches of cases read against the usage tool.
 
