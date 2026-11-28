@@ -1884,7 +1884,8 @@ headless and installed (Session P1).
 - **Other agents:** the skill folder copied into the agent's skills directory.
 - **Releases:** a skill's version moves in its own session; crux-finder 1.0.0 is tagged
   `crux-finder--v1.0.0`, and provenance-tracer's 1.0.0 is tagged `provenance-tracer--v1.0.0`
-  (settled at the round 2 intake, 2026-11-25). Pushes and tags are
+  as the last act of round 2's close, on the owner's yes (settled at the round 2 intake,
+  2026-11-25). Pushes and tags are
   each the owner's yes.
 
 **Built.** The marketplace, checked locally: `claude plugin marketplace add ./` and
@@ -1892,9 +1893,9 @@ headless and installed (Session P1).
 `claude plugin details` listed its one skill at 1.0.1. Adding it from GitHub is not yet checked
 by hand (`docs/BACKLOG.md`). Each plugin's README gives each target's install, the claude.ai zip
 and the Plugins page it is uploaded on included. crux-finder 1.0.0 is tagged
-`crux-finder--v1.0.0` and provenance-tracer 1.0.0 `provenance-tracer--v1.0.0`, each made with
-`claude plugin tag`, which checks that `plugin.json` and the
-marketplace entry agree; travel-itinerary-builder 1.1.0 is untagged. crux-finder was
+`crux-finder--v1.0.0`, made with `claude plugin tag`, which checks that `plugin.json` and the
+marketplace entry agree; provenance-tracer 1.0.0 is tagged the same way after round 2's close,
+and the handoff records whether it was; travel-itinerary-builder 1.1.0 is untagged. crux-finder was
 installed the same way in Session 4 (`claude plugin details crux-finder` listed its one skill at
 0.1.0, about 94 tokens always on), and its zip, `zip -r crux-finder.zip crux-finder` from
 `plugins/crux-finder/skills/`, was uploaded to claude.ai as a custom skill and run once. In

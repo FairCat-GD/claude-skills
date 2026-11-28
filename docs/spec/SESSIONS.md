@@ -1414,7 +1414,7 @@ alone on that cycle. The 1.0.0 bullet and the Gates above read so.
     say in prose where its cases are kept (*Layout and boundaries*); one line after a saved
     report says where it was saved; the silent-work rule drops *subject*, as the owner's review
     of 0.3.0 had it (*provenance-tracer*).
-  - **The spend:** none; the account's window was read before any run.
+  - **The spend:** none; no run was made.
 - **Shipped:**
   - `plugins/provenance-tracer/` 1.0.0: the version in `plugin.json` and `metadata.version`
     alone, so the third cycle stays on the skill as it stands; `CHANGELOG.md`'s 1.0.0 entry,
@@ -1440,3 +1440,15 @@ alone on that cycle. The 1.0.0 bullet and the Gates above read so.
 - **Backlog:** the private-person case's trigger, the 1978 paper on the live web, a
   misattributed-quote case, and the runner's write of a run whose judges were refused, moved to
   *Deferred*.
+
+**Review (`/code-review high`), 6 findings: 6 fixed and 0 skipped,** the owner choosing to fix
+all six; none touched the skill folder:
+- *Packaging* stated the 1.0.0 tag before it existed; it now says the tag is made after the
+  close, on the owner's yes, and that the handoff records whether it was;
+- the README held a linked source to a page opened, where the check takes any page it tried to
+  open;
+- the README gave the private-person replies two quotes on a line, where one had three;
+- the README's case list read as if one case alone ran with nobody to answer;
+- the README called the replies whose verdicts were overruled reports, though one was a refusal;
+- this done-note's spend line implied a run.
+- **Numbers after the review:** unchanged.

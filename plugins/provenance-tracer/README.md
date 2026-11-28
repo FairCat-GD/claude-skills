@@ -133,7 +133,8 @@ run:
 - a little-known claim, so memory could not answer it;
 - a source to trace in reverse, the Stanford prison experiment;
 - the asking rules: a claim with where the user met it, one where the user doesn't remember,
-  one run with nobody to answer, and two claims in one message;
+  one traced with its assumptions listed because nobody can answer, and two claims in one
+  message;
 - a claim about a private person, which must be declined before any search.
 
 Each ran three times through `claude plugin eval`, in a fresh Claude Code session in a temporary
@@ -141,7 +142,7 @@ home that loaded none of the user's settings, plugins, memory or files, only the
 Claude Code's own, with web search and page fetch. Every run but the two-claims one was told
 that no reply was possible. Each reply was graded against its answer by graders drawn from it
 and approved by the maintainer, with Claude Sonnet 5.5 as judge, and checked for the quote rule,
-for every source it links being a page it opened, and for searches it must not make. The
+for every source it links being a page it tried to open, and for searches it must not make. The
 maintainer read every failed verdict and one full reply per case, beside drafts by readers who
 had not seen the verdicts, and confirmed or overruled each failed verdict. The last full test
 ran on 0.3.0, with Claude Opus 5.5 in Claude Code 2.1.330; 1.0.0 is 0.3.0 with only its version
@@ -164,13 +165,13 @@ labels and the facts. The two misses, which the maintainer counted for 1.0.0:
 - **The well-sourced claim** ("Regular exercise lowers the risk of heart disease") passed one run
   of three, *Independent · Grounded*. The other two could not open the 1978 paper's abstract on
   the live web, so they found no original.
-- **The quote rule** missed in two replies to the private-person case, each with two quotes on a
-  line. The skill did not run in any of that case's three replies; each still declined without
+- **The quote rule** missed in two replies to the private-person case, each with more than one
+  quote on a line. The skill did not run in any of that case's three replies; each still declined without
   a search.
 
 A thirteenth case, a quote misattributed to Gandhi, was dropped: its 1913 source opened in too
 few runs on the live web to measure the skill. The judge failed nine of the 123 verdicts on
-reports that, read in full, credited each finding to its source or held the facts asked for; the
+replies that, read in full, credited each finding to its source or held the facts asked for; the
 maintainer overruled them. The cases, every reply and its verdicts, and the maintainer's reviews
 are kept in this repository, under `evals/provenance-tracer/`.
 

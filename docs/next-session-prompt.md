@@ -12,7 +12,8 @@ and plan the round in `docs/spec/`, a Read line in every block (see
   last done-note is in `docs/spec/SESSIONS.md` as of the review commit before the close
   (`<sha>`, filled in by the close).
 - **Push status:** `origin/main` holds everything through `a616d76`; P5's commits wait for the
-  next approved push.
+  next approved push. The tag `provenance-tracer--v1.0.0` is not made; it waits for the owner's
+  yes after the close.
 - **Open items live in `docs/BACKLOG.md`**, including what this round added there:
   provenance-tracer's private-person case no longer starting the skill, the 1978 paper on the
   live web, a misattributed-quote case, and the runner writing a run whose judges were refused.
