@@ -18,9 +18,11 @@ Changes from the second eval cycle, still in development before 1.0.0.
   or a book for the claim, and that work, read in full, says nothing on it, the report says the
   citation does not hold and what the work covers, rather than treating it as an original that
   differs. A copy that failed to load, or an abstract alone, is never read as silence.
-- **Original passages are found more reliably.** The skill searches for a book's or speech's
-  passage by its own words, checks each copy's title, volume and language, and doesn't fetch the
-  same address twice.
+- **Original passages are looked for by their own words.** For a book's or speech's passage,
+  the skill searches the web for the passage's words before any library catalogue, checks each
+  copy's title, volume and language as it reads it, skips an archive copy that isn't served, and
+  doesn't fetch the same address twice. A passage held only in a few online copies may still not
+  open.
 - **Quotes stay with their sources.** A quote sits on the line that links the page it comes
   from, and a status line that quotes draws on one source.
 

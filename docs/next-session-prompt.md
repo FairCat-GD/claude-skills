@@ -1,5 +1,5 @@
-Read docs/spec/FEATURE-provenance-tracer.md PT 2, 4 and 8 (each with the owner's amendment of
-2026-11-28) and the spec's *Distribution*; docs/spec/FEATURE-eval-engine.md EE 8;
+Read docs/spec/FEATURE-provenance-tracer.md PT 2 and 8 (each with the owner's amendment of
+2026-11-28), PT 4 and the spec's *Distribution*; docs/spec/FEATURE-eval-engine.md EE 8;
 docs/ARCHITECTURE.md every section this round's blocks named, read cold against the code; P4a's
 done-note; then CLAUDE.md, *The session cycle* in docs/DEVELOPMENT-WORKFLOW.md,
 docs/ARCHITECTURE.md's overview, invariants and baseline, docs/spec/SESSIONS.md's header, your
@@ -10,9 +10,8 @@ release 1.0.0.
 
 - **Round 2 is provenance-tracer, and one eval engine for every skill:** P1, E1, E2, E3, P2, P3,
   P4 and P4a are done; P5 closes the round.
-- **Push status:** `origin/main` holds everything through P4's last review commit ("review: a
-  goldfish overrule decided again from its fact's full text, …"). Nothing of P4a is pushed;
-  `git log origin/main..HEAD` lists its commits.
+- **Push status:** `origin/main` holds everything through P4a's last review commit ("review:
+  P5's gates read PT 2 as amended, …"), pushed with the owner's yes, so 0.3.0 is installable.
 - **The last cycle is P4a's,** on 0.3.0 (the skill as of `bf06fdf`), twelve cases: `checks.py`
   gives 4 problems and two bars missed, cases 11/12 (exercise) and quotes 34/36 (private-person
   replies written without the skill). PT 2, as the owner amended it, counts this cycle for 1.0.0

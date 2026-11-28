@@ -329,8 +329,8 @@ blocks inside Markdown, and a skill's Markdown ships as written. ruff selects `E
 - `evals/crux-finder/` holds `checks.py`, standard library and `shared` only, and `cases/`, the
   ten cases (*The data layer*), and `results/`, Session E3's cycle and the three claude.ai
   replies kept from round 1 (Session E2 retired round 1's runs and the old runner).
-- `evals/provenance-tracer/` holds `cases/`, the twelve cases (Session P2, less one in P4a); its `checks.py`
-  and `results/` are Session P3's.
+- `evals/provenance-tracer/` holds `cases/`, the twelve cases (Session P2, less one in P4a); its
+  `checks.py` is Session P3's, and `results/` holds Session P4a's cycle.
 
 *Enforced by,* in part:
 - The `skills` stage holds a skill folder's references one level deep from `SKILL.md`: every file
@@ -1173,7 +1173,9 @@ never whether it is true.
     its text (its direct file address skipping the `download` link's redirect, so the check
     costs no extra fetch), the passage asked for by its words and heading, a copy of another volume,
     edition or language a failed one, no address fetched twice; the copies' budget unchanged at
-    4.
+    4. **Mid-Session P4a, at the owner's word:** an item whose record marks it
+    `access-restricted-item` skipped (after the trial), and a web search for the passage's words
+    before any catalogue search by title (after the cycle's first batch).
   - **A quote stays beside its page's link** (the quote guardrail): a quote's page is the one
     link on its line, besides links after *per* or *cited by*, and in *How it changed* the
     *Root says* cell's; a *Status* bullet that quotes draws on one page.
@@ -2067,3 +2069,6 @@ finding.
   opening, and private-person replies written without the skill), and no further full cycle
   runs. The owner settled it after the reading, choosing it over closing the round at 0.3.0 or
   an inserted session.
+- 2026-11-28, Session P4a: *provenance-tracer*'s copy search gains two rules the owner settled
+  mid-session: an access-restricted archive item skipped, after the trial, and a web search for
+  the passage's words before any catalogue, after the cycle's first batch.

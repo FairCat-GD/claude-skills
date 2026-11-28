@@ -1354,6 +1354,19 @@ window left (40%), so the cycle runs in batches of cases read against the usage 
   folders, 3 plugins, 3 marketplace entries; provenance-tracer's cases 13 to 12; `results/`: 36
   runs, 36 verdicts, 12 reviews.
 
+**The cycle commit's review (`/code-review high`), 5 findings: 5 fixed and 0 skipped,** the owner
+choosing to fix all five; none touched the skill folder, so the cycle stays on the skill as it
+stands:
+- P5's 1.0.0 bullet and Gates still asked for every bar met, against PT 2 as amended;
+- the 0.3.0 changelog said passages are found more reliably, and left out the web-first search
+  and the access-restricted skip;
+- those two rules, which the owner settled, added to *provenance-tracer* Decided and the
+  *Decision log*;
+- the handoff's Read line no longer says PT 4 was amended;
+- *Layout and boundaries* names the results as P4a's cycle.
+- **After the review:** `checks.py` prints the same 4 problems and table; the other numbers are
+  unchanged.
+
 ---
 
 ## P5: The release and the round's close
@@ -1362,8 +1375,9 @@ window left (40%), so the cycle runs in batches of cases read against the usage 
 `FEATURE-eval-engine.md` EE 8; `ARCHITECTURE.md` every section this round's blocks named,
 read cold against the code; the last cycle's done-note.
 
-- **1.0.0:** the version fields alone, once the last cycle met every bar on the skill as it
-  stands; its `CHANGELOG.md` entry; the root README's *(in development)* removed.
+- **1.0.0:** the version fields alone, on P4a's cycle, which PT 2 as the owner amended it counts
+  for 1.0.0 with its two misses named; its `CHANGELOG.md` entry; the root README's *(in
+  development)* removed.
 - **The claude.ai smoke test** (PT 4): the skill zipped as its README says, uploaded on
   claude.ai's Plugins page, three cases each in a fresh chat with web search on (one forward,
   the reverse case, the private-person case), run by the session in the owner's Chrome at the
@@ -1378,12 +1392,13 @@ read cold against the code; the last cycle's done-note.
 
 **Gates:**
 - `uv run scripts/verify.py`, green.
-- `uv run evals/provenance-tracer/checks.py` and `uv run evals/crux-finder/checks.py`: every
-  bar met, the smoke test's row 3 / 3.
+- `uv run evals/provenance-tracer/checks.py`: as the baseline gives it, 4 problems and exit 1,
+  only the two misses PT 2 names (cases 11/12, quotes 34/36), every other bar met.
+- `uv run evals/crux-finder/checks.py`: every bar met, the smoke test's row 3 / 3.
 
 **Amended in Session P4a, by the owner (PT 2):** the last cycle is P4a's, on 0.3.0, counted for
 1.0.0 with its two misses named; no further full cycle runs, so 1.0.0 is the version fields
-alone on that cycle.
+alone on that cycle. The 1.0.0 bullet and the Gates above read so.
 
 **Watch for:**
 - **A skill uploaded to claude.ai syncs into every Claude Code session** (`CLAUDE.md`): the
